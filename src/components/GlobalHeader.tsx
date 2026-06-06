@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Sparkles } from "lucide-react";
-import { SmartCartDrawer } from "@/modules/retail/shared/components/SmartCartDrawer";
+import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/SmartCartDrawer";
 
 export function GlobalHeader() {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (

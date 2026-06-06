@@ -3,10 +3,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, Stethoscope } from "lucide-react";
 
+export interface CartItem {
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
 interface SmartCartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItems: any[];
+  cartItems: CartItem[];
 }
 
 export function SmartCartDrawer({ isOpen, onClose, cartItems }: SmartCartDrawerProps) {
