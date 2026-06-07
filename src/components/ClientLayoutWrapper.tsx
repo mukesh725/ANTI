@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Preloader } from "./Preloader";
 import { GlobalHeader } from "./GlobalHeader";
+import { AiraChatbot } from "./AiraChatbot";
 
 export function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,9 @@ export function ClientLayoutWrapper({ children }: { children: React.ReactNode })
         <main className="flex-grow pt-28">
           {children}
         </main>
+        <AiraChatbot />
       </div>
     </>
   );
 }
+
