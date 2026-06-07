@@ -45,19 +45,19 @@ const ecosystemCategories = [
     name: "Essentials", 
     desc: "Organic produce, daily nutrition, and wellness-focused retail.", 
     href: "/grocery", 
-    status: "Active" 
+    status: "Coming Soon" 
   },
   { 
     name: "Pharmacy", 
     desc: "Clinical-grade prescription care, longevity protocols, and supplements.", 
     href: "/pharmacy", 
-    status: "Active" 
+    status: "Coming Soon" 
   },
   { 
     name: "Minute Clinic", 
     desc: "Walk-in care, vaccinations, and everyday healthcare consultations.", 
     href: "/minute-clinic", 
-    status: "Active" 
+    status: "Coming Soon" 
   },
   { 
     name: "Diagnostics", 
@@ -92,59 +92,54 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#FAF8F5] text-[#0B2114] overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
 
       {/* =========================================================================
-          SECTION 1: HERO SECTION
+          SECTION 1: HERO SECTION (FULL-WIDTH BACKGROUND)
           ========================================================================= */}
-      <section ref={heroRef} className="relative px-6 md:px-16 pt-8 pb-24 md:pb-36 max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <section ref={heroRef} className="relative h-[85vh] md:h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
+        {/* Full-width Background Image with Parallax & Slow Zoom */}
+        <div className="absolute inset-0 w-full h-full">
+          <ParallaxImage 
+            src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2000" 
+            alt="AIRO Connected Wellness"
+            className="w-full h-full"
+            speed={0.1}
+          />
+          {/* Elegant dark gradient mask for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B2114] via-[#0B2114]/75 to-transparent" />
+        </div>
+
+        {/* Hero Content Overlay */}
+        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+            <Sparkles className="w-3 h-3 text-[#FAF8F5]" /> A Connected Wellness Ecosystem
+          </div>
           
-          {/* Left Hero Content */}
-          <div className="lg:col-span-7 flex flex-col justify-center pt-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
-              <Sparkles className="w-3 h-3 text-[#0B2114]" /> A Connected Wellness Ecosystem
-            </div>
-            
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#0B2114] mb-8">
-              The Future of <br/>
-              <span className="italic font-light text-[#0B2114]/80">Preventive Healthcare.</span>
-            </h1>
-            
-            <p className="font-serif text-lg md:text-2xl text-[#0B2114]/90 italic max-w-xl leading-relaxed mb-6">
-              An ecosystem uniting nutrition, diagnostics, pharmacy, clinical care, and digital health.
-            </p>
-            
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-12 tracking-wide">
-              At AIRO, we believe healthcare shouldn&apos;t be reactive. By integrating clinical precision with daily wellness, we build a connected environment designed to optimize your biology, ensure longevity, and prevent illness before it starts.
-            </p>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FAF8F5] mb-8">
+            The Future of <br/>
+            <span className="italic font-light text-[#FAF8F5]/80">Preventive Healthcare.</span>
+          </h1>
+          
+          <p className="font-serif text-lg md:text-2xl text-[#FAF8F5]/95 italic max-w-2xl leading-relaxed mb-6">
+            An ecosystem uniting nutrition, diagnostics, pharmacy, clinical care, and digital health.
+          </p>
+          
+          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-12 tracking-wide">
+            At AIRO, we believe healthcare shouldn&apos;t be reactive. By integrating clinical precision with daily wellness, we build a connected environment designed to optimize your biology, ensure longevity, and prevent illness before it starts.
+          </p>
 
-            <div className="flex flex-wrap gap-4 items-center">
-              <Link
-                href="/grocery"
-                className="bg-[#0B2114] text-[#FAF8F5] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-95 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
-              >
-                Explore The Ecosystem <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/pharmacy"
-                className="border border-[#0B2114]/20 text-[#0B2114] hover:bg-[#0B2114]/5 px-8 py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
-              >
-                Join Compounding Waitlist
-              </Link>
-            </div>
+          <div className="flex flex-wrap gap-4 items-center">
+            <Link
+              href="/grocery"
+              className="bg-[#FAF8F5] text-[#0B2114] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+            >
+              Explore Essentials <ArrowRight className="w-4 h-4 text-[#0B2114]" />
+            </Link>
+            <Link
+              href="/pharmacy"
+              className="border border-[#FAF8F5]/20 text-[#FAF8F5] hover:bg-[#FAF8F5]/5 px-8 py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
+            >
+              Join Compounding Waitlist
+            </Link>
           </div>
-
-          {/* Right Hero Visual */}
-          <div className="lg:col-span-5 w-full">
-            <div className="relative aspect-[4/5] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
-              <ParallaxImage 
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2000" 
-                alt="AIRO Connected Wellness"
-                className="w-full h-full"
-                speed={0.08}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114]/20 via-transparent to-transparent" />
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -186,7 +181,7 @@ export default function HomePage() {
                 href="/grocery" 
                 className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#0B2114] hover:text-[#0B2114]/60 silent-luxury-transition"
               >
-                Browse The Market <ArrowRight className="w-3.5 h-3.5" />
+                Browse Essentials <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
@@ -369,17 +364,11 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* Status / Link action */}
+              {/* Status / Link action (All are marked Coming Soon as requested) */}
               <div className="flex items-center gap-4 shrink-0">
-                {cat.status === "Coming Soon" ? (
-                  <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/40 border border-[#0B2114]/10 px-4 py-1.5 rounded-full">
-                    Coming Soon
-                  </span>
-                ) : (
-                  <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#0B2114] bg-[#0B2114]/5 px-4 py-1.5 rounded-full group-hover:bg-[#0B2114] group-hover:text-[#FAF8F5] silent-luxury-transition">
-                    Enter Portal
-                  </span>
-                )}
+                <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/40 border border-[#0B2114]/10 px-4 py-1.5 rounded-full">
+                  Coming Soon
+                </span>
                 <div className="w-8 h-8 rounded-full border border-[#0B2114]/10 flex items-center justify-center text-[#0B2114] group-hover:border-[#0B2114] group-hover:bg-[#0B2114]/5 silent-luxury-transition">
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
@@ -402,7 +391,7 @@ export default function HomePage() {
         />
         <div className="absolute inset-0 bg-[#0B2114]/15" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 pointer-events-none">
-          <h2 className="font-serif text-4xl md:text-6xl text-[#FAF8F5] tracking-tight mb-4 drop-shadow-md">
+          <h2 className="font-serif text-4xl md:text-6xl text-[#FAF8F5] tracking-tight mb-4 drop-shadow-lg">
             Sourced for Longevity, <br/><span className="italic font-light">Engineered for Purity.</span>
           </h2>
           <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/90 font-bold">
@@ -459,7 +448,7 @@ export default function HomePage() {
           <div>
             <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Ecosystem Portals</h3>
             <ul className="space-y-4 text-sm text-[#FAF8F5]/80 font-medium">
-              <li><Link href="/grocery" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">The Grocer</Link></li>
+              <li><Link href="/grocery" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Essentials</Link></li>
               <li><Link href="/pharmacy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Pharmacy Portal</Link></li>
               <li><Link href="/minute-clinic" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Minute Clinic</Link></li>
             </ul>

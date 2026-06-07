@@ -345,9 +345,8 @@ export default function PharmacyPage() {
             AIRO<span className="opacity-50">.</span>
           </Link>
           <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
-            <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Grocery</Link>
-            <Link href="/bakery" className="hover:text-[#0B2114] silent-luxury-transition">Bakery</Link>
-            <Link href="/ice-cream" className="hover:text-[#0B2114] silent-luxury-transition">Ice Cream</Link>
+            <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Essentials</Link>
+            <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
             <Link href="/minute-clinic" className="hover:text-[#0B2114] silent-luxury-transition">Minute Clinic</Link>
           </div>
           <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
