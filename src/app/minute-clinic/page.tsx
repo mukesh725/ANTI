@@ -1,96 +1,352 @@
 "use client";
 
-import { ProductCard } from "@/modules/retail/grocery/components/ProductCard";
-import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, Sparkles, Shield } from "lucide-react";
+import Link from "next/link";
 
-const MOCK_CLINIC = [
-  {
-    id: "m_1",
-    name: "NAD+ IV Drip Therapy",
-    price: 250.0,
-    imageUrl: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    id: "m_2",
-    name: "Hyperbaric Oxygen Session",
-    price: 150.0,
-    imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    id: "m_3",
-    name: "Advanced Biomarker Panel",
-    price: 499.0,
-    imageUrl: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    id: "m_4",
-    name: "Cryotherapy Session",
-    price: 85.0,
-    imageUrl: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1000&auto=format&fit=crop",
-  }
-];
+// Custom Parallax Image component that drives slow-zoom and vertical parallax
+function ParallaxImage({ 
+  src, 
+  alt, 
+  className = "", 
+  speed = 0.1 
+}: { 
+  src: string; 
+  alt: string; 
+  className?: string; 
+  speed?: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yPercent = speed * 100;
+  const y = useTransform(scrollYProgress, [0, 1], [`-${yPercent}%`, `${yPercent}%`]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.2, 1.02]);
+
+  return (
+    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+      <motion.img
+        src={src}
+        alt={alt}
+        style={{ y, scale }}
+        className="absolute inset-0 w-full h-full object-cover"
+        transition={{ type: "spring", stiffness: 30, damping: 15 }}
+      />
+    </div>
+  );
+}
 
 export default function MinuteClinicPage() {
+  const pageRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="w-full bg-alabaster min-h-screen text-charcoal">
-      <div className="px-4 md:px-8 max-w-[1800px] mx-auto">
-        
-        {/* Header */}
-        <div className="border-b border-charcoal/10 pb-8 pt-16">
-          <h1 className="font-sans text-2xl md:text-3xl font-bold tracking-tight mb-4 uppercase">MINUTE CLINIC</h1>
-          <p className="font-sans text-[11px] md:text-xs text-charcoal/70 max-w-5xl leading-relaxed">
-            In-store cutting-edge clinical therapies and diagnostics. From advanced NAD+ IV drips to comprehensive blood panels, optimize your biology while you shop. Sessions are administered by registered nurses and functional medicine practitioners.
+    <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+      
+      {/* SECTION 1: HERO SECTION */}
+      <section className="relative px-6 md:px-16 pt-12 pb-24 md:pb-32 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          
+          {/* Hero text */}
+          <div className="lg:col-span-7 flex flex-col justify-center pt-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+              <Sparkles className="w-3 h-3" /> Redefining Clinical Care
+            </div>
+            
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
+              Healthcare For The <br/>
+              <span className="italic font-light text-[#0B2114]/80">Way Life Happens.</span>
+            </h1>
+            
+            <p className="font-serif text-lg md:text-2xl text-[#0B2114]/80 italic max-w-xl leading-relaxed mb-6">
+              Professional care. Minimal waiting. Meaningful outcomes.
+            </p>
+            
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
+              AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles, making it easier to access trusted medical support whenever you need it.
+            </p>
+
+            <div className="flex items-center gap-4">
+              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FAF8F5] bg-[#0B2114] px-6 py-3 rounded-full border border-[#0B2114]">
+                Booking Waitlist Only
+              </span>
+              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
+                Opening Winter 2026
+              </span>
+            </div>
+          </div>
+
+          {/* Hero Image */}
+          <div className="lg:col-span-5 w-full">
+            <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
+              <ParallaxImage 
+                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1600" 
+                alt="AIRO Clinic Wellness Environment"
+                className="w-full h-full"
+                speed={0.1}
+              />
+              <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
+              <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
+                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
+                  Diagnostics & Prevention
+                </span>
+                <p className="font-serif text-lg text-[#0B2114] font-medium">
+                  Advanced Biomarker Screenings
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION 2: HEALTHCARE WITHOUT THE FRICTION (Storytelling Block 1) */}
+      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+            
+            {/* Story text */}
+            <div className="lg:col-span-6 order-2 lg:order-1">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+                Access
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+                Healthcare Without <br/>the <span className="italic font-light text-[#FAF8F5]/80">Friction</span>
+              </h2>
+              <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+                Getting quality care shouldn&apos;t require weeks of waiting.
+              </p>
+              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+                AIRO Minute Clinic was created to provide faster access to healthcare services for individuals and families seeking preventive care, everyday medical support, and ongoing wellness guidance.
+              </p>
+              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
+                Our approach combines convenience with clinical excellence, helping people receive care when it matters most.
+              </p>
+            </div>
+
+            {/* Visual element */}
+            <div className="lg:col-span-6 order-1 lg:order-2">
+              <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+                <ParallaxImage 
+                  src="https://images.unsplash.com/photo-1519823551278-64ac92834907?q=80&w=1600" 
+                  alt="Seamless Clinic Experience" 
+                  className="w-full h-full"
+                  speed={0.12}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114]/30 to-transparent" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: DESIGNED AROUND PREVENTION (Storytelling Block 2) */}
+      <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+          
+          {/* Visual element */}
+          <div className="lg:col-span-7">
+            <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
+              <ParallaxImage 
+                src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1600" 
+                alt="Active healthy longevity" 
+                className="w-full h-full"
+                speed={0.08}
+              />
+              <div className="absolute inset-0 bg-[#0B2114]/15" />
+            </div>
+          </div>
+
+          {/* Text block */}
+          <div className="lg:col-span-5 flex flex-col justify-center">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+              Vision
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+              Designed Around <br/><span className="italic font-light text-[#0B2114]/80">Prevention</span>
+            </h2>
+            <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+              The future of healthcare is prevention.
+            </p>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+              Many of today&apos;s most common health conditions can be better managed—or even avoided—through early detection, routine monitoring, and proactive care.
+            </p>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide">
+              AIRO Minute Clinic focuses on helping patients understand their health before symptoms become serious problems.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION 4: EVERYDAY CARE, ELEVATED (Storytelling Block 3) */}
+      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+            
+            {/* Story text */}
+            <div className="lg:col-span-5 flex flex-col justify-center">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+                Clinical Care
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+                Everyday Care, <br/><span className="italic font-light text-[#FAF8F5]/80">Elevated</span>
+              </h2>
+              <p className="font-serif text-lg md:text-xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+                From seasonal illnesses and vaccinations to annual wellness visits and health screenings, our clinic supports your everyday needs.
+              </p>
+              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-8 tracking-wide">
+                Our clinic covers the full spectrum of day-to-day medical needs with a patient-first focus. We ensure you feel understood, treated, and guided toward optimal long-term health.
+              </p>
+              <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 border-l border-[#FAF8F5]/20 pl-6 mb-4 font-light leading-relaxed">
+                &ldquo;Our goal is not simply to treat illness. It&apos;s to help people stay healthy.&rdquo;
+              </p>
+            </div>
+
+            {/* Visual element */}
+            <div className="lg:col-span-7">
+              <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+                <ParallaxImage 
+                  src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1600" 
+                  alt="Everyday health and wellness" 
+                  className="w-full h-full"
+                  speed={0.1}
+                />
+                <div className="absolute inset-0 bg-[#0B2114]/15" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: CONNECTED HEALTHCARE & CONTINUING CARE (Storytelling Blocks 4 & 5) */}
+      <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+          
+          {/* Visual element */}
+          <div className="lg:col-span-6">
+            <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
+              <ParallaxImage 
+                src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1600" 
+                alt="Aesthetic medical diagnostics space" 
+                className="w-full h-full"
+                speed={0.14}
+              />
+              <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
+            </div>
+          </div>
+
+          {/* Text block */}
+          <div className="lg:col-span-6 flex flex-col justify-center">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+              Connectivity
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+              Connected <br/><span className="italic font-light text-[#0B2114]/80">Healthcare</span>
+            </h2>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+              Healthcare works best when information, services, and providers work together. As part of the AIRO ecosystem, the Minute Clinic integrates with pharmacy services, diagnostics, wellness programs, and digital health tools to create a more complete picture of patient health.
+            </p>
+            <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+              A single appointment should be the beginning of a healthier future—not the end of a conversation.
+            </p>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide">
+              Through ongoing monitoring, preventive health programs, advanced diagnostics, and wellness support, AIRO helps patients take a more active role in their long-term health.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION 6: THE NEW STANDARD & BOOKING WAITLIST (Storytelling Block 6) */}
+      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
+        <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+            The Vision
+          </span>
+          
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl">
+            The New Standard for <span className="italic font-light text-[#FAF8F5]/80">Community Healthcare.</span>
+          </h2>
+          
+          <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-8 font-light">
+            Accessible. Preventive. Personalized.
           </p>
-        </div>
+          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-16 tracking-wide">
+            AIRO Minute Clinic is redefining what modern healthcare can look like—bringing together clinical expertise, advanced technology, and a patient-first philosophy to create a better healthcare experience for everyone.
+          </p>
 
-        {/* Toolbar */}
-        <div className="flex justify-between items-center py-4 border-b border-charcoal/10 text-[10px] md:text-xs font-sans uppercase tracking-wider">
-          <div className="flex items-center gap-2 cursor-pointer w-48 md:w-64 border-r border-charcoal/10">
-            <SlidersHorizontal className="w-3 h-3" /> HIDE FILTERS
-          </div>
-          <div className="flex items-center gap-2 cursor-pointer pl-4">
-            SORT BY <ChevronDown className="w-3 h-3" />
-          </div>
-        </div>
+          {/* Premium waitlist form */}
+          <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
+            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">The Clinic Waitlist</h3>
+            <p className="font-sans text-[11px] text-[#FAF8F5]/60 mb-8 uppercase tracking-widest font-medium">
+              Secure priority booking invitation
+            </p>
+            
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
+              <div>
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                  Full Name
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Samuel Henderson"
+                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                />
+              </div>
 
-        {/* Main Layout */}
-        <div className="flex flex-col md:flex-row pt-8 gap-8 pb-32">
-          {/* Sidebar */}
-          <aside className="w-full md:w-64 shrink-0 md:pr-8">
-            <div className="mb-8">
-              <h3 className="font-sans text-[10px] md:text-xs font-bold uppercase mb-4 flex justify-between items-center">
-                Service Type <ChevronUp className="w-3 h-3" />
-              </h3>
-              <ul className="space-y-3 text-[11px] font-sans text-charcoal/80">
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> IV Therapies</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Diagnostic Testing</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Physical Recovery</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Consultations</li>
-              </ul>
+              <div>
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                  Email Address
+                </label>
+                <input 
+                  type="email" 
+                  placeholder="e.g. samuel@longevity.com"
+                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                />
+              </div>
+
+              <div className="pt-4">
+                <button 
+                  type="button"
+                  className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
+                >
+                  Join Clinic Booking Waitlist <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </form>
+            
+            <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FAF8F5]/40 font-semibold">
+              <Shield className="w-3.5 h-3.5" /> HIPAA Compliant & Secure
             </div>
-            <div className="mb-8">
-              <h3 className="font-sans text-[10px] md:text-xs font-bold uppercase mb-4 flex justify-between items-center">
-                Duration <ChevronUp className="w-3 h-3" />
-              </h3>
-              <ul className="space-y-3 text-[11px] font-sans text-charcoal/80">
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> 15 - 30 mins</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> 30 - 60 mins</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> 60+ mins</li>
-              </ul>
-            </div>
-          </aside>
-
-          {/* Product Grid */}
-          <div className="flex-1">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16">
-              {MOCK_CLINIC.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </section>
+
+      {/* MINI FOOTER */}
+      <footer className="bg-[#FAF8F5] py-16 px-6 md:px-16 border-t border-[#0B2114]/10">
+        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#0B2114]">
+            AIRO<span className="opacity-50">.</span>
+          </Link>
+          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
+            <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Grocery</Link>
+            <Link href="/bakery" className="hover:text-[#0B2114] silent-luxury-transition">Bakery</Link>
+            <Link href="/ice-cream" className="hover:text-[#0B2114] silent-luxury-transition">Ice Cream</Link>
+            <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
+          </div>
+          <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
+            © 2026 AIRO Minute Clinic. All Rights Reserved.
+          </span>
+        </div>
+      </footer>
+
     </div>
   );
 }
