@@ -8,9 +8,7 @@ import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/Sm
 
 const navLinks = [
   { href: "/grocery", label: "Grocery" },
-  { href: "/bakery", label: "Bakery" },
-  { href: "/ice-cream", label: "Ice Cream" },
-  { href: "/pharmacy", label: "Pharmacy", divider: true },
+  { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "MinuteClinic" },
 ];
 
@@ -30,7 +28,6 @@ export function GlobalHeader() {
         <div className="hidden md:flex gap-6 items-center">
           {navLinks.map((link) => (
             <div key={link.href} className="flex items-center gap-6">
-              {link.divider && <span className="text-charcoal/20">|</span>}
               <Link href={link.href} className="text-[10px] tracking-widest uppercase font-medium hover:text-charcoal/60 silent-luxury-transition text-charcoal">
                 {link.label}
               </Link>
@@ -98,9 +95,6 @@ export function GlobalHeader() {
               <div className="flex flex-col py-4">
                 {navLinks.map((link, idx) => (
                   <div key={link.href}>
-                    {link.divider && (
-                      <div className="mx-6 my-2 border-t border-charcoal/10" />
-                    )}
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
