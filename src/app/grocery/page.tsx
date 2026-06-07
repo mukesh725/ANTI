@@ -1,110 +1,425 @@
 "use client";
 
-import { ProductCard } from "@/modules/retail/grocery/components/ProductCard";
-import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, Shield, Leaf } from "lucide-react";
+import Link from "next/link";
 
-const MOCK_GROCERY = [
+// Custom Parallax Image component that drives slow-zoom and vertical parallax
+function ParallaxImage({ 
+  src, 
+  alt, 
+  className = "", 
+  speed = 0.1 
+}: { 
+  src: string; 
+  alt: string; 
+  className?: string; 
+  speed?: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yPercent = speed * 100;
+  const y = useTransform(scrollYProgress, [0, 1], [`-${yPercent}%`, `${yPercent}%`]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.2, 1.02]);
+
+  return (
+    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+      <motion.img
+        src={src}
+        alt={alt}
+        style={{ y, scale }}
+        className="absolute inset-0 w-full h-full object-cover"
+        transition={{ type: "spring", stiffness: 30, damping: 15 }}
+      />
+    </div>
+  );
+}
+
+const categories = [
   {
-    id: "g_1",
-    name: "Lakadong Turmeric",
-    price: 38.0,
-    imageUrl: "https://images.unsplash.com/photo-1615486171448-4fd13f1ddbc4?q=80&w=1000&auto=format&fit=crop",
+    name: "Fresh & Organic Produce",
+    desc: "Farm-fresh fruits, vegetables, herbs, microgreens, salads, and cold-pressed juices.",
+    img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=800",
   },
   {
-    id: "g_2",
-    name: "Wild Forest Honey",
-    price: 45.0,
-    imageUrl: "https://images.unsplash.com/photo-1587049352847-4d4b12736173?q=80&w=1000&auto=format&fit=crop",
+    name: "Premium Proteins",
+    desc: "Fresh poultry, seafood, meats, eggs, and plant-based protein alternatives.",
+    img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800",
   },
   {
-    id: "g_3",
-    name: "Himalayan Pink Salt",
-    price: 22.0,
-    imageUrl: "https://images.unsplash.com/photo-1601625463684-2fa643a60f9e?q=80&w=1000&auto=format&fit=crop",
+    name: "Dairy & Alternatives",
+    desc: "Traditional dairy products alongside modern plant-based options designed for diverse lifestyles.",
+    img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=800",
   },
   {
-    id: "g_4",
-    name: "First-Press Olive Oil",
-    price: 65.0,
-    soldOut: true,
-    imageUrl: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=1000&auto=format&fit=crop",
+    name: "Pantry Essentials",
+    desc: "Rice, grains, oils, baking ingredients, cereals, pulses, and everyday kitchen staples.",
+    img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800",
   },
   {
-    id: "g_5",
-    name: "Ceremonial Cacao Paste",
-    price: 45.0,
-    imageUrl: "https://images.unsplash.com/photo-1511381939415-e440c082180e?q=80&w=1000&auto=format&fit=crop",
+    name: "Bakery & Ready-to-Eat",
+    desc: "Freshly baked breads, pastries, sandwiches, wraps, salads, and prepared meals.",
+    img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800",
   },
   {
-    id: "g_6",
-    name: "Blue Lotus Tea",
-    price: 32.0,
-    imageUrl: "https://images.unsplash.com/photo-1576092762791-dd9e2220c4af?q=80&w=1000&auto=format&fit=crop",
+    name: "Frozen Foods",
+    desc: "Convenient premium frozen options without compromising on quality.",
+    img: "https://images.unsplash.com/photo-1547082299-de196ea013d6?q=80&w=800",
+  },
+  {
+    name: "Beverages",
+    desc: "Coffee, tea, juices, hydration products, and functional wellness beverages.",
+    img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=800",
+  },
+  {
+    name: "Snacks & Wellness Foods",
+    desc: "Protein snacks, nuts, dried fruits, chocolates, and healthier alternatives.",
+    img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800",
+  },
+  {
+    name: "Global Foods",
+    desc: "A curated selection of international products inspired by cuisines from around the world.",
+    img: "https://images.unsplash.com/photo-1511381939415-e440c082180e?q=80&w=800",
+  },
+  {
+    name: "Home Essentials",
+    desc: "Thoughtfully selected household and everyday living products.",
+    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800",
   }
 ];
 
-export default function GroceryPage() {
+export default function EssentialsPage() {
+  const pageRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="w-full bg-alabaster min-h-screen text-charcoal">
-      <div className="px-4 md:px-8 max-w-[1800px] mx-auto">
-        
-        {/* Header */}
-        <div className="border-b border-charcoal/10 pb-8 pt-16">
-          <h1 className="font-sans text-2xl md:text-3xl font-bold tracking-tight mb-4 uppercase">GROCERY</h1>
-          <p className="font-sans text-[11px] md:text-xs text-charcoal/70 max-w-5xl leading-relaxed">
-            AIRO Grocery offers organic pantry staples, rare ingredients, fresh foods, and highly curated wellness items. Shop top-selling items from AIRO and leading holistic brands, all crafted with the purest ingredients for everyday nourishment. Free shipping on non-perishable orders over $100.
+    <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+      
+      {/* SECTION 1: HERO SECTION */}
+      <section className="relative px-6 md:px-16 pt-12 pb-24 md:pb-32 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          {/* Hero text */}
+          <div className="lg:col-span-7 flex flex-col justify-center pt-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+              <Leaf className="w-3 h-3 text-[#0B2114]" /> Pure Sourcing
+            </div>
+            
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
+              Fresh. Organic.<br/>
+              <span className="italic font-light text-[#0B2114]/80">Better Living.</span>
+            </h1>
+            
+            <p className="font-serif text-lg md:text-2xl text-[#0B2114]/85 italic max-w-xl leading-relaxed mb-6">
+              More than a grocery store, AIRO Essentials is a curated destination for healthier everyday living.
+            </p>
+            
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
+              From farm-fresh produce and premium proteins to global foods and wellness-focused products, every item is selected with quality, transparency, and nutrition in mind.
+            </p>
+
+            <div className="flex items-center gap-4">
+              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#0B2114] border border-[#0B2114]/20 bg-[#0B2114]/5 px-6 py-3 rounded-full">
+                Delivery Waitlist Open
+              </span>
+              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
+                Online Orders Coming Winter 2026
+              </span>
+            </div>
+          </div>
+
+          {/* Hero Image */}
+          <div className="lg:col-span-5 w-full">
+            <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
+              <ParallaxImage 
+                src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1600" 
+                alt="AIRO Fresh Produce"
+                className="w-full h-full"
+                speed={0.12}
+              />
+              <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
+              <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
+                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
+                  Daily Harvest
+                </span>
+                <p className="font-serif text-lg text-[#0B2114] font-medium">
+                  Organic Heirloom Selection
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION 2: PHILOSOPHY (Storytelling Block) */}
+      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+            
+            {/* Story text */}
+            <div className="lg:col-span-6 order-2 lg:order-1">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+                Philosophy
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+                Health Begins <br/>with <span className="italic font-light text-[#FAF8F5]/80">Everyday Choices</span>
+              </h2>
+              <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+                The food we eat impacts every aspect of our wellbeing.
+              </p>
+              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+                At AIRO Essentials, we believe access to high-quality ingredients should be simple, convenient, and inspiring.
+              </p>
+              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
+                Our approach focuses on sourcing products that support healthier lifestyles while maintaining exceptional standards for quality and freshness.
+              </p>
+            </div>
+
+            {/* Visual element */}
+            <div className="lg:col-span-6 order-1 lg:order-2">
+              <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+                <ParallaxImage 
+                  src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1600" 
+                  alt="Conscious sourcing lifestyle" 
+                  className="w-full h-full"
+                  speed={0.08}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114]/30 to-transparent" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: SOURCING PILLARS (Fresh • Organic • Local) */}
+      <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
+        <div className="text-center mb-16 max-w-xl mx-auto">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+            The Sourcing Sagas
+          </span>
+          <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
+            Fresh • Organic • Local
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          {/* Fresh */}
+          <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
+            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">Fresh</span>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+              Seasonal fruits, vegetables, herbs, and freshly prepared foods selected for quality and taste.
+            </p>
+          </div>
+
+          {/* Organic */}
+          <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
+            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">Organic</span>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+              Carefully sourced organic products that support healthier lifestyles and responsible farming practices.
+            </p>
+          </div>
+
+          {/* Local */}
+          <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
+            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">Local</span>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+              Supporting local producers and bringing communities closer to the foods they consume.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: CATEGORIES SHOWCASE (Explore AIRO Essentials) */}
+      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 w-full">
+        <div className="max-w-[1500px] mx-auto">
+          <div className="text-center mb-20 max-w-2xl mx-auto">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+              The Catalog
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
+              Explore <span className="italic font-light text-[#FAF8F5]/80">AIRO Essentials</span>
+            </h2>
+            <p className="font-sans text-xs text-[#FAF8F5]/60 mt-4 leading-relaxed tracking-wide">
+              Every category is built as a storytelling gateway, housing premium wellness brands and clinical-grade staples.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categories.map((cat, idx) => (
+              <div key={idx} className="group relative overflow-hidden rounded-2xl bg-[#091710] shadow-xl flex flex-col h-[400px]">
+                {/* Slow Zoom Parallax Image */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden">
+                  <img 
+                    src={cat.img} 
+                    alt={cat.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-40 group-hover:opacity-50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent" />
+                </div>
+                
+                {/* Text Content */}
+                <div className="relative z-10 mt-auto p-8 flex flex-col h-full justify-end">
+                  <span className="font-serif text-lg text-[#FAF8F5]/30 group-hover:text-[#FAF8F5]/50 mb-2 block transition-colors">
+                    0{idx + 1}
+                  </span>
+                  <h3 className="font-serif text-2xl text-[#FAF8F5] mb-3 leading-snug">
+                    {cat.name}
+                  </h3>
+                  <p className="font-sans text-xs text-[#FAF8F5]/75 leading-relaxed tracking-wide opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                    {cat.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: WHY AIRO ESSENTIALS (Value Pillars Grid) */}
+      <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          {/* Header left */}
+          <div className="lg:col-span-5">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+              The Standard
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
+              Why <br/><span className="italic font-light text-[#0B2114]/80">AIRO Essentials</span>
+            </h2>
+            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-sm leading-relaxed mt-8 tracking-wide">
+              We vet every supplier, audit every ingredient list, and verify sustainability metrics so you don&apos;t have to.
+            </p>
+          </div>
+
+          {/* Pillars right */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {/* Curated Quality */}
+            <div className="flex flex-col">
+              <span className="font-serif text-2xl text-[#0B2114] mb-3">Curated Quality</span>
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+                Products selected with a focus on freshness, nutrition, and trusted sourcing.
+              </p>
+            </div>
+
+            {/* Wellness First */}
+            <div className="flex flex-col">
+              <span className="font-serif text-2xl text-[#0B2114] mb-3">Wellness First</span>
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+                Every category is designed to support healthier everyday choices.
+              </p>
+            </div>
+
+            {/* Global Selection */}
+            <div className="flex flex-col">
+              <span className="font-serif text-2xl text-[#0B2114] mb-3">Global Selection</span>
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+                Discover premium products and ingredients from around the world.
+              </p>
+            </div>
+
+            {/* Community Focused */}
+            <div className="flex flex-col">
+              <span className="font-serif text-2xl text-[#0B2114] mb-3">Community Focused</span>
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+                Supporting local producers and sustainable sourcing whenever possible.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION 6: CLOSING WAITLIST */}
+      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
+        <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+            Conscious Commerce
+          </span>
+          
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl">
+            A Better Way to Shop <br/>for <span className="italic font-light text-[#FAF8F5]/80">Wellness.</span>
+          </h2>
+          
+          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-4 tracking-wide">
+            AIRO Essentials combines the quality of a premium organic market with the convenience of modern retail.
           </p>
-        </div>
+          <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-16 font-light">
+            Because healthier living starts with what you choose every day.
+          </p>
 
-        {/* Toolbar */}
-        <div className="flex justify-between items-center py-4 border-b border-charcoal/10 text-[10px] md:text-xs font-sans uppercase tracking-wider">
-          <div className="flex items-center gap-2 cursor-pointer w-48 md:w-64 border-r border-charcoal/10">
-            <SlidersHorizontal className="w-3 h-3" /> HIDE FILTERS
-          </div>
-          <div className="flex items-center gap-2 cursor-pointer pl-4">
-            SORT BY <ChevronDown className="w-3 h-3" />
-          </div>
-        </div>
+          {/* Premium waitlist form */}
+          <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
+            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">The Essentials Waitlist</h3>
+            
+            <span className="inline-block border border-[#FAF8F5]/20 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-6">
+              Products & Online Shopping Coming Soon
+            </span>
+            
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
+              <div>
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                  Full Name
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Marcus Aurelius"
+                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                />
+              </div>
 
-        {/* Main Layout */}
-        <div className="flex flex-col md:flex-row pt-8 gap-8 pb-32">
-          {/* Sidebar */}
-          <aside className="w-full md:w-64 shrink-0 md:pr-8">
-            <div className="mb-8">
-              <h3 className="font-sans text-[10px] md:text-xs font-bold uppercase mb-4 flex justify-between items-center">
-                Product Type <ChevronUp className="w-3 h-3" />
-              </h3>
-              <ul className="space-y-3 text-[11px] font-sans text-charcoal/80">
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Pantry Staples</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Oils & Vinegars</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Spices & Seasonings</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Tea & Coffee</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Functional Foods</li>
-              </ul>
+              <div>
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                  Email Address
+                </label>
+                <input 
+                  type="email" 
+                  placeholder="e.g. marcus@philosophy.com"
+                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                />
+              </div>
+
+              <div className="pt-4">
+                <button 
+                  type="button"
+                  className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
+                >
+                  Join Delivery Waitlist <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </form>
+            
+            <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FAF8F5]/40 font-semibold">
+              <Shield className="w-3.5 h-3.5" /> Secure & Private Sourcing
             </div>
-            <div className="mb-8">
-              <h3 className="font-sans text-[10px] md:text-xs font-bold uppercase mb-4 flex justify-between items-center">
-                Brand <ChevronUp className="w-3 h-3" />
-              </h3>
-              <ul className="space-y-3 text-[11px] font-sans text-charcoal/80">
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> AIRO Select</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> AIRO Choice</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Wildcrafted</li>
-              </ul>
-            </div>
-          </aside>
-
-          {/* Product Grid */}
-          <div className="flex-1">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16">
-              {MOCK_GROCERY.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </section>
+
+      {/* MINI FOOTER */}
+      <footer className="bg-[#FAF8F5] py-16 px-6 md:px-16 border-t border-[#0B2114]/10">
+        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#0B2114]">
+            AIRO<span className="opacity-50">.</span>
+          </Link>
+          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
+            <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Essentials</Link>
+            <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
+            <Link href="/minute-clinic" className="hover:text-[#0B2114] silent-luxury-transition">Minute Clinic</Link>
+          </div>
+          <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
+            © 2026 AIRO Essentials. All Rights Reserved.
+          </span>
+        </div>
+      </footer>
+
     </div>
   );
 }
