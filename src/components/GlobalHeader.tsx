@@ -25,7 +25,7 @@ export function GlobalHeader() {
       <img 
         src="/airo-essentials-logo.png" 
         alt="AIRO Essentials" 
-        className="h-12 md:h-16 object-contain"
+        className="h-9 md:h-12 object-contain"
       />
     );
   } else if (pathname === "/pharmacy" || pathname === "/minute-clinic") {
@@ -33,7 +33,7 @@ export function GlobalHeader() {
       <img 
         src="/airo-health-logo.png" 
         alt="AIRO Health" 
-        className="h-12 md:h-16 object-contain"
+        className="h-9 md:h-12 object-contain"
       />
     );
   } else {
