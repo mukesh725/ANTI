@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingBag, Sparkles, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/SmartCartDrawer";
@@ -16,12 +17,43 @@ export function GlobalHeader() {
   const [cartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  let logoNode;
+  if (pathname === "/grocery") {
+    logoNode = (
+      <img 
+        src="/airo-essentials-logo.jpg" 
+        alt="AIRO Essentials" 
+        className="h-8 md:h-10 object-contain"
+      />
+    );
+  } else if (pathname === "/pharmacy" || pathname === "/minute-clinic") {
+    logoNode = (
+      <div className="flex items-center gap-2">
+        <img 
+          src="/airo-health-logo.png" 
+          alt="AIRO Health" 
+          className="h-8 md:h-9 object-contain"
+        />
+        <span className="font-sans text-[13px] md:text-sm font-black tracking-[0.25em] text-black uppercase select-none pt-0.5">
+          HEALTH
+        </span>
+      </div>
+    );
+  } else {
+    logoNode = (
+      <span className="font-serif text-2xl tracking-widest uppercase text-charcoal">
+        AIRO<span className="opacity-50">.</span>
+      </span>
+    );
+  }
 
   return (
     <>
       <nav className="fixed top-0 w-full z-30 px-6 md:px-8 py-5 md:py-6 flex justify-between items-center bg-alabaster/80 backdrop-blur-md border-b border-charcoal/5">
-        <Link href="/" className="font-serif text-2xl tracking-widest uppercase text-charcoal hover:opacity-80 silent-luxury-transition">
-          AIRO<span className="opacity-50">.</span>
+        <Link href="/" className="hover:opacity-80 silent-luxury-transition">
+          {logoNode}
         </Link>
         
         {/* Desktop nav */}
