@@ -23,23 +23,18 @@ export function GlobalHeader() {
   if (pathname === "/grocery") {
     logoNode = (
       <img 
-        src="/airo-essentials-logo.jpg" 
+        src="/airo-essentials-logo.png" 
         alt="AIRO Essentials" 
         className="h-8 md:h-10 object-contain"
       />
     );
   } else if (pathname === "/pharmacy" || pathname === "/minute-clinic") {
     logoNode = (
-      <div className="flex items-center gap-2">
-        <img 
-          src="/airo-health-logo.png" 
-          alt="AIRO Health" 
-          className="h-8 md:h-9 object-contain"
-        />
-        <span className="font-sans text-[13px] md:text-sm font-black tracking-[0.25em] text-black uppercase select-none pt-0.5">
-          HEALTH
-        </span>
-      </div>
+      <img 
+        src="/airo-health-logo.png" 
+        alt="AIRO Health" 
+        className="h-8 md:h-9 object-contain"
+      />
     );
   } else {
     logoNode = (
