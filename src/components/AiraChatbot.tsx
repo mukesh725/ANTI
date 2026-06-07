@@ -16,7 +16,7 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: "welcome",
     sender: "bot",
-    text: "Welcome to AIRO Health. I'm AIRA, your personal health and wellness guide. How can I help you today?",
+    text: "Welcome to AIRO Health. I'm AIRO, your personal health and wellness guide. How can I help you today?",
     chips: [
       "I feel tired all the time",
       "I want to lose weight",
@@ -272,7 +272,7 @@ export function AiraChatbot() {
                   <Bot className="w-5 h-5 text-[#E6DFD5]" />
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg tracking-wide">AIRA</h3>
+                  <h3 className="font-serif text-lg tracking-wide">AIRO</h3>
                   <p className="text-[10px] text-[#FAF8F5]/60 tracking-wider uppercase font-medium">AIRO Health Concierge</p>
                 </div>
               </div>
@@ -304,7 +304,7 @@ export function AiraChatbot() {
                     <div className="flex items-start max-w-[85%] space-x-2">
                       {msg.sender === "bot" && (
                         <div className="w-6 h-6 rounded-full bg-[#0B2114] flex-shrink-0 flex items-center justify-center text-[10px] text-[#FAF8F5] mt-1 font-serif">
-                          A
+                          O
                         </div>
                       )}
                       
@@ -363,7 +363,7 @@ export function AiraChatbot() {
             <div className="border-t border-[#E6DFD5] bg-[#FAF8F5] p-3 space-y-2">
               {/* Disclaimer */}
               <p className="text-[10px] text-center text-gray-500 leading-normal px-2">
-                AIRA provides wellness insights and does not diagnose disease or replace professional medical advice. For emergencies, call 911 immediately.
+                AIRO provides wellness insights and does not diagnose disease or replace professional medical advice. For emergencies, call 911 immediately.
               </p>
 
               {/* Form Input */}
@@ -376,7 +376,7 @@ export function AiraChatbot() {
               >
                 <input
                   type="text"
-                  placeholder="Ask AIRA about health chair, vitamins..."
+                  placeholder="Ask AIRO about health chair, vitamins..."
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
                   className="flex-grow bg-transparent border-none text-sm text-[#0B2114] focus:outline-none placeholder-gray-400 py-1"
