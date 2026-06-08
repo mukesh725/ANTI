@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/SmartCartDrawer";
 
 const navLinks = [
+  { href: "/about", label: "About" },
   { href: "/grocery", label: "Essentials" },
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "MinuteClinic" },

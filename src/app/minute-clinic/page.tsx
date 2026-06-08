@@ -383,11 +383,13 @@ export default function MinuteClinicPage() {
             AIRO<span className="opacity-50">.</span>
           </Link>
           <div className="flex flex-wrap justify-center gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
+            <Link href="/about" className="hover:text-[#0B2114] silent-luxury-transition">About</Link>
             <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Essentials</Link>
             <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
             <Link href="/minute-clinic" className="hover:text-[#0B2114] silent-luxury-transition">Minute Clinic</Link>
             <Link href="/privacy-policy" className="hover:text-[#0B2114] silent-luxury-transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#0B2114] silent-luxury-transition">Terms of Service</Link>
+            <Link href="/press" className="hover:text-[#0B2114] silent-luxury-transition">Press</Link>
           </div>
           <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
             © 2026 AIRO Minute Clinic. All Rights Reserved.

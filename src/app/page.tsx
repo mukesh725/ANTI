@@ -495,11 +495,13 @@ export default function HomePage() {
           <div>
             <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Ecosystem & Legal</h3>
             <ul className="space-y-4 text-sm text-[#FAF8F5]/80 font-medium">
+              <li><Link href="/about" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">About & Leadership</Link></li>
               <li><Link href="/grocery" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Essentials</Link></li>
               <li><Link href="/pharmacy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Pharmacy Portal</Link></li>
               <li><Link href="/minute-clinic" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Minute Clinic</Link></li>
               <li><Link href="/privacy-policy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Privacy Policy</Link></li>
               <li><Link href="/terms" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Terms of Service</Link></li>
+              <li><Link href="/press" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Press & Media Kit</Link></li>
             </ul>
           </div>
  
