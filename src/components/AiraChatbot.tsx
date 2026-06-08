@@ -237,6 +237,36 @@ export function AiraChatbot() {
     setTimeout(() => {
       const response = getAiraResponse(textToSend);
       
+      // Save chatbot lead if user entered an email/phone number
+      const input = textToSend.toLowerCase().trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+      const isLead = emailRegex.test(input) || phoneRegex.test(input) || (input.length > 5 && /\d/.test(input) && (input.includes("@") || input.includes("-") || input.match(/\d/g)!.length >= 7));
+      
+      if (isLead) {
+        try {
+          const existingLeadsStr = localStorage.getItem("airo_leads");
+          const leads = existingLeadsStr ? JSON.parse(existingLeadsStr) : [];
+          
+          const isEmail = emailRegex.test(input);
+          const newLead = {
+            id: Math.random().toString(),
+            name: "Chatbot Visitor",
+            email: isEmail ? textToSend : "Not Provided",
+            phone: !isEmail ? textToSend : "Not Provided",
+            type: "Chatbot Inquiry",
+            message: `Captured contact details during conversation: "${textToSend}"`,
+            source: "Chatbot",
+            status: "Pending",
+            createdAt: new Date().toISOString()
+          };
+          leads.unshift(newLead);
+          localStorage.setItem("airo_leads", JSON.stringify(leads));
+        } catch {
+          console.warn("Could not save chatbot lead");
+        }
+      }
+
       const botMsg: Message = {
         id: Math.random().toString(),
         sender: "bot",

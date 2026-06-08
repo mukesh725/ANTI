@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/grocery", label: "Essentials" },
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "MinuteClinic" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function GlobalHeader() {
