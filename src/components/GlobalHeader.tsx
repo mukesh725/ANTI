@@ -70,7 +70,7 @@ export function GlobalHeader() {
         </Link>
         
         {/* Desktop nav capsule (floating glassmorphism bar) */}
-        <div className="hidden md:flex items-center gap-1 bg-[#0B2114]/90 border border-white/10 px-2 py-1.5 rounded-full backdrop-blur-xl shadow-xl">
+        <div className="hidden md:flex items-center gap-1 bg-[#0B2114]/35 border border-white/20 px-2 py-1.5 rounded-full backdrop-blur-md shadow-xl">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
