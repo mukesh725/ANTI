@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Sparkles, Menu, X } from "lucide-react";
@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/SmartCartDrawer";
 
 const navLinks = [
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/grocery", label: "Essentials" },
   { href: "/pharmacy", label: "Pharmacy" },
@@ -19,7 +20,16 @@ export function GlobalHeader() {
   const [cartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   let logoNode;
   if (pathname === "/grocery") {
@@ -40,7 +50,9 @@ export function GlobalHeader() {
     );
   } else {
     logoNode = (
-      <span className="font-serif text-2xl tracking-widest uppercase text-charcoal">
+      <span className={`font-serif text-2xl tracking-widest uppercase transition-colors duration-300 ${
+        isScrolled ? "text-[#0B2114]" : (pathname === "/" ? "text-[#FAF8F5]" : "text-[#0B2114]")
+      }`}>
         AIRO<span className="opacity-50">.</span>
       </span>
     );
@@ -48,38 +60,71 @@ export function GlobalHeader() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-30 px-6 md:px-8 py-5 md:py-6 flex justify-between items-center bg-alabaster/80 backdrop-blur-md border-b border-charcoal/5">
-        <Link href="/" className="hover:opacity-80 silent-luxury-transition">
+      <nav className={`fixed top-0 w-full z-30 px-6 md:px-8 flex justify-between items-center transition-all duration-300 ${
+        isScrolled 
+          ? "bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#0B2114]/5 py-3 md:py-4 shadow-sm" 
+          : "bg-transparent border-transparent py-5 md:py-6"
+      }`}>
+        <Link href="/" className="hover:opacity-80 transition-opacity duration-300 flex items-center">
           {logoNode}
         </Link>
         
-        {/* Desktop nav */}
-        <div className="hidden md:flex gap-6 items-center">
-          {navLinks.map((link) => (
-            <div key={link.href} className="flex items-center gap-6">
-              <Link href={link.href} className="text-[10px] tracking-widest uppercase font-medium hover:text-charcoal/60 silent-luxury-transition text-charcoal">
+        {/* Desktop nav capsule (floating glassmorphism bar) */}
+        <div className="hidden md:flex items-center gap-1 bg-[#0B2114]/90 border border-white/10 px-2 py-1.5 rounded-full backdrop-blur-xl shadow-xl">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative text-[9px] tracking-widest uppercase font-bold px-4 py-2 rounded-full transition-colors duration-300 ${
+                  isActive ? "text-[#0B2114]" : "text-[#FAF8F5]/80 hover:text-white"
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="activeHeaderPill"
+                    className="absolute inset-0 bg-[#FAF8F5] rounded-full -z-10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
                 {link.label}
               </Link>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-4 md:gap-6">
-          <button className="hidden sm:flex text-[10px] tracking-widest uppercase font-medium items-center gap-2 hover:bg-charcoal/10 silent-luxury-transition text-charcoal bg-charcoal/5 px-4 py-2 rounded-full">
+          <button className={`hidden sm:flex text-[10px] tracking-widest uppercase font-bold items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 border ${
+            isScrolled
+              ? "text-[#FAF8F5] bg-[#0B2114] border-[#0B2114] hover:bg-[#0b2114]/90"
+              : (pathname === "/"
+                  ? "text-[#FAF8F5] bg-white/10 border-white/20 hover:bg-white/20"
+                  : "text-[#0B2114] bg-[#0B2114]/5 border-[#0B2114]/20 hover:bg-[#0B2114]/10")
+          }`}>
             <Sparkles className="w-3 h-3" /> The Collective
           </button>
-          <button onClick={() => setIsCartOpen(true)} className="relative hover:opacity-70 silent-luxury-transition text-charcoal">
+          
+          <button 
+            onClick={() => setIsCartOpen(true)} 
+            className={`relative hover:opacity-70 transition-opacity duration-300 ${
+              isScrolled ? "text-[#0B2114]" : (pathname === "/" ? "text-[#FAF8F5]" : "text-[#0B2114]")
+            }`}
+          >
             <ShoppingBag className="w-5 h-5" />
             {cartItems.length > 0 && (
-              <span className="absolute -top-1 -right-2 bg-charcoal text-alabaster text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-2 bg-[#0B2114] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
                 {cartItems.length}
               </span>
             )}
           </button>
+          
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className="md:hidden p-1 hover:opacity-70 silent-luxury-transition text-charcoal"
+            className={`md:hidden p-1 hover:opacity-75 transition-opacity duration-300 ${
+              isScrolled ? "text-[#0B2114]" : (pathname === "/" ? "text-[#FAF8F5]" : "text-[#0B2114]")
+            }`}
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5" />
