@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Shield } from "lucide-react";
 import Link from "next/link";
@@ -42,6 +42,37 @@ function ParallaxImage({
 
 export default function MinuteClinicPage() {
   const pageRef = useRef<HTMLDivElement>(null);
+  const [waitlistName, setWaitlistName] = useState("");
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistStatus, setWaitlistStatus] = useState<"idle" | "submitting" | "success">("idle");
+
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!waitlistName || !waitlistEmail) return;
+    setWaitlistStatus("submitting");
+    setTimeout(() => {
+      try {
+        const existingLeadsStr = localStorage.getItem("airo_leads");
+        const leads = existingLeadsStr ? JSON.parse(existingLeadsStr) : [];
+        const newLead = {
+          id: Math.random().toString(),
+          name: waitlistName,
+          email: waitlistEmail,
+          phone: "Not Provided",
+          type: "Minute Clinic Booking Waitlist",
+          message: "Subscribed to Minute Clinic booking waitlist",
+          source: "Minute Clinic Form",
+          status: "Pending",
+          createdAt: new Date().toISOString()
+        };
+        leads.unshift(newLead);
+        localStorage.setItem("airo_leads", JSON.stringify(leads));
+      } catch (err) {
+        console.warn("Could not save waitlist lead", err);
+      }
+      setWaitlistStatus("success");
+    }, 1000);
+  };
 
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
@@ -288,38 +319,54 @@ export default function MinuteClinicPage() {
               Secure priority booking invitation
             </p>
             
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
-              <div>
-                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
-                  Full Name
-                </label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Samuel Henderson"
-                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
-                />
+            {waitlistStatus === "success" ? (
+              <div className="bg-[#FAF8F5]/5 border border-[#FAF8F5]/10 rounded-2xl p-6 text-left space-y-2 mt-4">
+                <h4 className="font-serif text-lg text-[#FAF8F5]">Subscription Confirmed</h4>
+                <p className="text-xs text-[#FAF8F5]/60 leading-relaxed">
+                  Thank you. You have successfully joined the AIRO Minute Clinic waitlist. A scheduling coordinator will contact you to arrange your first appointment.
+                </p>
               </div>
+            ) : (
+              <form onSubmit={handleWaitlistSubmit} className="space-y-4 text-left">
+                <div>
+                  <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                    Full Name
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="e.g. Samuel Henderson"
+                    value={waitlistName}
+                    onChange={(e) => setWaitlistName(e.target.value)}
+                    className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
-                  Email Address
-                </label>
-                <input 
-                  type="email" 
-                  placeholder="e.g. samuel@longevity.com"
-                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
-                />
-              </div>
+                <div>
+                  <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                    Email Address
+                  </label>
+                  <input 
+                    type="email" 
+                    required
+                    placeholder="e.g. samuel@longevity.com"
+                    value={waitlistEmail}
+                    onChange={(e) => setWaitlistEmail(e.target.value)}
+                    className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                  />
+                </div>
 
-              <div className="pt-4">
-                <button 
-                  type="button"
-                  className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
-                >
-                  Join Clinic Booking Waitlist <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </form>
+                <div className="pt-4">
+                  <button 
+                    type="submit"
+                    disabled={waitlistStatus === "submitting"}
+                    className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 disabled:opacity-50 silent-luxury-transition flex items-center justify-center gap-2"
+                  >
+                    {waitlistStatus === "submitting" ? "Joining..." : <>Join Clinic Booking Waitlist <ArrowRight className="w-3.5 h-3.5" /></>}
+                  </button>
+                </div>
+              </form>
+            )}
             
             <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FAF8F5]/40 font-semibold">
               <Shield className="w-3.5 h-3.5" /> HIPAA Compliant & Secure
@@ -335,10 +382,12 @@ export default function MinuteClinicPage() {
           <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#0B2114]">
             AIRO<span className="opacity-50">.</span>
           </Link>
-          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
+          <div className="flex flex-wrap justify-center gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
             <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Essentials</Link>
             <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
             <Link href="/minute-clinic" className="hover:text-[#0B2114] silent-luxury-transition">Minute Clinic</Link>
+            <Link href="/privacy-policy" className="hover:text-[#0B2114] silent-luxury-transition">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[#0B2114] silent-luxury-transition">Terms of Service</Link>
           </div>
           <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
             © 2026 AIRO Minute Clinic. All Rights Reserved.

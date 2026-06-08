@@ -94,7 +94,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call AIRO Concierge</h4>
                   <p className="text-sm font-semibold hover:text-[#0B2114]/70 transition-colors">
-                    +1 (800) 555-AIRO
+                    +1 (800) 555-2476
                   </p>
                   <p className="text-xs text-[#0B2114]/60 mt-0.5">Toll-free across North America</p>
                 </div>

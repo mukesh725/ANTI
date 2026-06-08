@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,7 @@ function ParallaxImage({
         alt={alt}
         style={{ y, scale }}
         className="absolute inset-0 w-full h-full object-cover"
-        transition={{ type: "spring", stiffness: 30, damping: 15 }}
+        transition={{ type: "spring", stiffness: 35, damping: 18 }}
       />
     </div>
   );
@@ -87,6 +87,37 @@ const ecosystemCategories = [
 
 export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [waitlistName, setWaitlistName] = useState("");
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistStatus, setWaitlistStatus] = useState<"idle" | "submitting" | "success">("idle");
+
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!waitlistName || !waitlistEmail) return;
+    setWaitlistStatus("submitting");
+    setTimeout(() => {
+      try {
+        const existingLeadsStr = localStorage.getItem("airo_leads");
+        const leads = existingLeadsStr ? JSON.parse(existingLeadsStr) : [];
+        const newLead = {
+          id: Math.random().toString(),
+          name: waitlistName,
+          email: waitlistEmail,
+          phone: "Not Provided",
+          type: "Homepage Waitlist",
+          message: "Subscribed to global website waitlist",
+          source: "Homepage Waitlist Form",
+          status: "Pending",
+          createdAt: new Date().toISOString()
+        };
+        leads.unshift(newLead);
+        localStorage.setItem("airo_leads", JSON.stringify(leads));
+      } catch (err) {
+        console.warn("Could not save waitlist lead", err);
+      }
+      setWaitlistStatus("success");
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#0B2114] overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
@@ -425,44 +456,62 @@ export default function HomePage() {
             <p className="text-sm text-[#FAF8F5]/60 mb-8 max-w-sm leading-relaxed">
               Subscribe to receive clinical updates, seasonal grocery drops, and exclusive invitation status.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-6 max-w-sm">
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full border-b border-[#FAF8F5]/30 pb-3 text-sm focus:outline-none focus:border-[#FAF8F5] bg-transparent placeholder-[#FAF8F5]/30 text-[#FAF8F5] silent-luxury-transition"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="w-full border-b border-[#FAF8F5]/30 pb-3 text-sm focus:outline-none focus:border-[#FAF8F5] bg-transparent placeholder-[#FAF8F5]/30 text-[#FAF8F5] silent-luxury-transition"
-              />
-              <button
-                type="submit"
-                className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition"
-              >
-                Join Waitlist
-              </button>
-            </form>
+            {waitlistStatus === "success" ? (
+              <div className="bg-[#FAF8F5]/5 border border-[#FAF8F5]/10 rounded-2xl p-6 max-w-sm space-y-2">
+                <h4 className="font-serif text-lg text-[#FAF8F5]">Subscription Confirmed</h4>
+                <p className="text-xs text-[#FAF8F5]/60 leading-relaxed">
+                  Thank you. You have successfully joined the AIRO Health waitlist. An invitation coordinator will contact you shortly.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleWaitlistSubmit} className="space-y-6 max-w-sm">
+                <input
+                  type="text"
+                  required
+                  placeholder="Name"
+                  value={waitlistName}
+                  onChange={(e) => setWaitlistName(e.target.value)}
+                  className="w-full border-b border-[#FAF8F5]/30 pb-3 text-sm focus:outline-none focus:border-[#FAF8F5] bg-transparent placeholder-[#FAF8F5]/30 text-[#FAF8F5] silent-luxury-transition"
+                />
+                <input
+                  type="email"
+                  required
+                  placeholder="Email Address"
+                  value={waitlistEmail}
+                  onChange={(e) => setWaitlistEmail(e.target.value)}
+                  className="w-full border-b border-[#FAF8F5]/30 pb-3 text-sm focus:outline-none focus:border-[#FAF8F5] bg-transparent placeholder-[#FAF8F5]/30 text-[#FAF8F5] silent-luxury-transition"
+                />
+                <button
+                  type="submit"
+                  disabled={waitlistStatus === "submitting"}
+                  className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 disabled:opacity-50 silent-luxury-transition"
+                >
+                  {waitlistStatus === "submitting" ? "Submitting..." : "Join Waitlist"}
+                </button>
+              </form>
+            )}
           </div>
-
+ 
           <div>
-            <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Ecosystem Portals</h3>
+            <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Ecosystem & Legal</h3>
             <ul className="space-y-4 text-sm text-[#FAF8F5]/80 font-medium">
               <li><Link href="/grocery" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Essentials</Link></li>
               <li><Link href="/pharmacy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Pharmacy Portal</Link></li>
               <li><Link href="/minute-clinic" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Minute Clinic</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Terms of Service</Link></li>
             </ul>
           </div>
-
+ 
           <div>
             <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Support</h3>
             <ul className="space-y-4 text-sm text-[#FAF8F5]/80 font-medium">
-              <li><a href="mailto:concierge@airo.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">concierge@airo.com</a></li>
-              <li><a href="mailto:clinical@airo.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">clinical@airo.com</a></li>
+              <li><a href="mailto:concierge@airohealth.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">concierge@airohealth.com</a></li>
+              <li><a href="mailto:clinical@airohealth.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">clinical@airohealth.com</a></li>
               <li className="pt-8 text-[#FAF8F5]/30 text-[10px] tracking-widest uppercase">© 2026 AIRO Health.</li>
             </ul>
           </div>
-
+ 
         </div>
       </footer>
     </div>
