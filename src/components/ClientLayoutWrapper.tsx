@@ -118,7 +118,7 @@ export function ClientLayoutWrapper({ children }: { children: React.ReactNode })
       {/* Hide content until loading is done to prevent flash */}
       <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
         <GlobalHeader />
-        <main className={`flex-grow ${pathname === "/" ? "pt-0" : "pt-28"}`}>
+        <main className="flex-grow pt-28">
           {children}
         </main>
         <AiraChatbot />
