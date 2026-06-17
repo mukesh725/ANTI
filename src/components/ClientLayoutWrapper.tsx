@@ -111,6 +111,22 @@ export function ClientLayoutWrapper({ children }: { children: React.ReactNode })
     fetchLocation();
   }, []);
 
+  // Set dynamic favicon based on domain
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = window.location.hostname;
+    const port = window.location.port;
+    const isHealth = host.includes("airohealth") || host.includes("health.airo") || port === "3001";
+    
+    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.href = isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png';
+  }, []);
+
   return (
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}

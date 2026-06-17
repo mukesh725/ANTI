@@ -6,8 +6,15 @@ import { Sparkles, Leaf, Pill } from "lucide-react";
 
 export function Preloader({ onComplete }: { onComplete: () => void }) {
   const [stage, setStage] = useState<"text" | "icons" | "fade">("text");
+  const [isHealthDomain, setIsHealthDomain] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const host = window.location.hostname;
+      const port = window.location.port;
+      setIsHealthDomain(host.includes("airohealth") || host.includes("health.airo") || port === "3001");
+    }
+
     // Stage 1: Text shows for 1.5s
     const textTimer = setTimeout(() => setStage("icons"), 1500);
     // Stage 2: Icons show for 1.5s
@@ -31,18 +38,20 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-alabaster text-charcoal"
         >
-          {/* Text Stage */}
+          {/* Logo Stage */}
           {stage === "text" && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex items-center gap-2"
+              className="flex items-center justify-center"
             >
-              <h1 className="font-serif text-6xl md:text-8xl tracking-widest uppercase">
-                AIRO<span className="opacity-50 text-4xl md:text-6xl align-top">.</span>
-              </h1>
+              <img 
+                src={isHealthDomain ? "/airo-health-favicon.png" : "/airo-essentials-favicon.png"} 
+                alt="AIRO Logo" 
+                className="w-24 h-24 md:w-32 md:h-32 object-contain"
+              />
             </motion.div>
           )}
 
@@ -82,7 +91,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
             animate={{ opacity: 1 }}
             className="absolute bottom-12 font-sans text-xs tracking-[0.3em] uppercase text-charcoal/40"
           >
-            Essentials Loading
+            {isHealthDomain ? "Health Hub Loading" : "Essentials Loading"}
           </motion.div>
         </motion.div>
       )}
