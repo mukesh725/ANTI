@@ -85,18 +85,18 @@ export default function PharmacyPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=80&w=1600" 
-                alt="AIRO Compounding Apothecary"
+                src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=1600" 
+                alt="AIRO Pharmacy Services"
                 className="w-full h-full"
                 speed={0.12}
               />
               <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
               <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
                 <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
-                  Compound Formulation No. 4
+                  Premium Pharmacy Care
                 </span>
                 <p className="font-serif text-lg text-[#0B2114] font-medium">
-                  NAD+ & Liposomal Cellular Defense
+                  Everyday Prescriptions & Clinical Support
                 </p>
               </div>
             </div>
