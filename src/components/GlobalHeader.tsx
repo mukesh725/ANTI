@@ -58,19 +58,23 @@ export function GlobalHeader() {
   let logoNode;
   if (isHealthDomain || pathname === "/pharmacy" || pathname === "/minute-clinic") {
     logoNode = (
-      <img 
-        src="/airo-health-logo.png" 
-        alt="AIRO Health" 
-        className="h-9 md:h-12 object-contain"
-      />
+      <div className={`p-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : ""}`}>
+        <img 
+          src="/airo-health-logo.png" 
+          alt="AIRO Health" 
+          className="h-8 md:h-10 object-contain"
+        />
+      </div>
     );
-  } else if (pathname === "/grocery") {
+  } else if (pathname === "/grocery" || pathname === "/" || pathname === "/contact") {
     logoNode = (
-      <img 
-        src="/airo-essentials-logo.png" 
-        alt="AIRO Essentials" 
-        className="h-9 md:h-12 object-contain"
-      />
+      <div className={`px-2 py-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : ""}`}>
+        <img 
+          src="/airo-essentials-logo.png" 
+          alt="AIRO Essentials" 
+          className="h-8 md:h-10 object-contain"
+        />
+      </div>
     );
   } else {
     logoNode = (
