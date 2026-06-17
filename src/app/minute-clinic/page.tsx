@@ -83,8 +83,8 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1600" 
-                alt="AIRO Clinic Wellness Environment"
+                src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1600" 
+                alt="AIRO Clinic Biomarkers & Diagnostics"
                 className="w-full h-full"
                 speed={0.1}
               />

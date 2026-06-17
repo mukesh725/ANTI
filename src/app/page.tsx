@@ -189,7 +189,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800"
+                  src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800"
                   alt="AIRO Pharmacy Compounding"
                   className="w-full h-full"
                   speed={0.06}
@@ -215,7 +215,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800"
+                  src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800"
                   alt="AIRO Minute Clinic"
                   className="w-full h-full"
                   speed={0.06}
