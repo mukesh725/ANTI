@@ -108,12 +108,12 @@ export default function HomePage() {
         </div>
 
         {/* Hero Content Overlay */}
-        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-32 md:pt-16 mt-8 md:mt-0 w-full">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-6 md:mb-8">
             <Sparkles className="w-3 h-3 text-[#FAF8F5]" /> A Connected Wellness Ecosystem
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FAF8F5] mb-8">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FAF8F5] mb-6 md:mb-8">
             The Future of <br/>
             <span className="italic font-light text-[#FAF8F5]/80">Preventive Healthcare.</span>
           </h1>
@@ -122,20 +122,20 @@ export default function HomePage() {
             An ecosystem uniting nutrition, diagnostics, pharmacy, clinical care, and digital health.
           </p>
           
-          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-12 tracking-wide">
+          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-8 md:mb-12 tracking-wide">
             At AIRO, we believe healthcare shouldn&apos;t be reactive. By integrating clinical precision with daily wellness, we build a connected environment designed to optimize your biology, ensure longevity, and prevent illness before it starts.
           </p>
 
-          <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:items-center w-full sm:w-auto">
             <Link
               href="/grocery"
-              className="bg-[#FAF8F5] text-[#0B2114] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto justify-center bg-[#FAF8F5] text-[#0B2114] px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
               Explore Essentials <ArrowRight className="w-4 h-4 text-[#0B2114]" />
             </Link>
             <Link
               href="/pharmacy"
-              className="border border-[#FAF8F5]/20 text-[#FAF8F5] hover:bg-[#FAF8F5]/5 px-8 py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
+              className="w-full sm:w-auto text-center border border-[#FAF8F5]/20 text-[#FAF8F5] hover:bg-[#FAF8F5]/5 px-8 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
             >
               Join Compounding Waitlist
             </Link>
