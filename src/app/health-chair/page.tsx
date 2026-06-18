@@ -12,21 +12,9 @@ import { GlobalHeader } from "@/components/GlobalHeader";
 
 export default function HealthChairPage() {
   // =========================================================================
-  // SECTION 1: HERO (Rotating Chair & Metrics)
+  // SECTION 1: HERO
   // =========================================================================
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-
-  const img1Opacity = useTransform(heroProgress, [0, 0.25], [1, 0]);
-  const img2Opacity = useTransform(heroProgress, [0.15, 0.4, 0.55], [0, 1, 0]);
-  const img3Opacity = useTransform(heroProgress, [0.45, 0.7, 0.85], [0, 1, 0]);
-  const img4Opacity = useTransform(heroProgress, [0.75, 0.9, 1], [0, 1, 1]);
-
-  const metricsOpacity = useTransform(heroProgress, [0.7, 0.9], [0, 1]);
-  const metricsY = useTransform(heroProgress, [0.7, 0.9], [50, 0]);
+  // Simplified hero since we are using a full background image.
 
   // =========================================================================
   // SECTION 2: HOW IT WORKS
@@ -74,67 +62,61 @@ export default function HealthChairPage() {
       <GlobalHeader />
 
       {/* SECTION 1: HERO */}
-      <section ref={heroRef} className="relative h-[400vh]">
-        <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center overflow-hidden px-6 md:px-16 pt-24 pb-12">
+      <section className="relative w-full h-[100dvh] flex items-center overflow-hidden bg-[#09120F]">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 z-0 bg-center bg-no-repeat bg-cover"
+          style={{ backgroundImage: "url('/chair-hero-bg.png')" }}
+        />
+        {/* Gradient Overlay for Text Readability */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#FAF8F5] via-transparent to-transparent opacity-10" />
+
+        <div className="relative z-10 w-full px-6 md:px-16 flex flex-col md:flex-row items-center justify-between h-full pt-24 pb-12">
           
-          {/* Text Content */}
-          <div className="w-full md:w-1/3 flex flex-col items-center text-center md:items-start md:text-left z-20">
+          {/* Text Content (Left Aligned) */}
+          <div className="w-full md:w-1/2 flex flex-col items-start text-left text-[#FAF8F5]">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[9px] font-bold tracking-[0.25em] uppercase mb-8"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[9px] font-bold tracking-[0.25em] uppercase mb-8"
             >
-              <Cpu className="w-3 h-3 text-[#0B2114]/70" /> Clinical Innovation
+              <Cpu className="w-3 h-3 text-white" /> Clinical Innovation
             </motion.div>
+            
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight leading-none mb-6"
+              className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight leading-none mb-6 text-white"
             >
               The AIRO<br/>
               <span className="italic font-light">Health Scan</span>
             </motion.h1>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-lg md:text-xl font-serif italic text-[#0B2114]/80 mb-6"
+              className="text-lg md:text-xl font-serif italic text-white/80 mb-6"
             >
               A 5-minute health assessment.<br/>A lifetime of health insights.
             </motion.p>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="text-sm md:text-base text-[#0B2114]/60 max-w-md leading-relaxed"
+              className="text-sm md:text-base text-white/60 max-w-md leading-relaxed"
             >
               Capture key health indicators in minutes and establish your personalized health baseline—all within the AIRO ecosystem.
             </motion.p>
-
-            {/* Scroll Indicator */}
-            <motion.div 
-              style={{ opacity: useTransform(heroProgress, [0, 0.1], [1, 0]) }}
-              className="mt-16 flex flex-col items-center md:items-start opacity-50"
-            >
-              <span className="text-[9px] uppercase tracking-widest font-bold mb-2">Scroll to explore</span>
-              <ChevronDown className="w-4 h-4 animate-bounce" />
-            </motion.div>
           </div>
 
-          {/* Chair Images Container */}
-          <div className="w-full md:w-2/3 h-[50vh] md:h-full relative flex items-center justify-center mt-12 md:mt-0">
-            <motion.img style={{ opacity: img1Opacity }} src="/chair-1.jpg" alt="AIRO Health Chair View 1" className="absolute w-full max-w-[800px] h-auto object-contain mix-blend-multiply drop-shadow-2xl" />
-            <motion.img style={{ opacity: img2Opacity }} src="/chair-2.jpg" alt="AIRO Health Chair View 2" className="absolute w-full max-w-[800px] h-auto object-contain mix-blend-multiply drop-shadow-2xl" />
-            <motion.img style={{ opacity: img3Opacity }} src="/chair-3.jpg" alt="AIRO Health Chair View 3" className="absolute w-full max-w-[800px] h-auto object-contain mix-blend-multiply drop-shadow-2xl" />
-            <motion.img style={{ opacity: img4Opacity }} src="/chair-4.jpg" alt="AIRO Health Chair View 4" className="absolute w-full max-w-[800px] h-auto object-contain mix-blend-multiply drop-shadow-2xl" />
-            
-            {/* Floating Metrics */}
-            <motion.div 
-              style={{ opacity: metricsOpacity, y: metricsY }}
-              className="absolute right-0 md:right-10 top-1/2 -translate-y-1/2 flex flex-col gap-3 md:gap-4 z-30"
-            >
+          {/* Floating Metrics (Right Aligned) */}
+          <div className="hidden lg:flex w-full md:w-1/2 justify-end">
+            <div className="flex flex-col gap-4">
               {[
                 { icon: Activity, label: "Blood Pressure" },
                 { icon: Heart, label: "Heart Rate & ECG" },
@@ -143,12 +125,33 @@ export default function HealthChairPage() {
                 { icon: Thermometer, label: "Temperature" },
                 { icon: Scale, label: "Weight & BMI" },
               ].map((metric, i) => (
-                <AnimatedMetric key={i} metric={metric} index={i} progress={heroProgress} />
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
+                  className="flex items-center gap-4 bg-black/20 backdrop-blur-xl px-4 py-3 md:px-6 md:py-4 rounded-2xl shadow-2xl border border-white/10"
+                >
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <metric.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                  </div>
+                  <span className="font-bold text-xs md:text-sm uppercase tracking-widest text-white">{metric.label}</span>
+                </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
-
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-50 text-white z-20"
+        >
+          <span className="text-[9px] uppercase tracking-widest font-bold mb-2">Scroll to explore</span>
+          <ChevronDown className="w-4 h-4 animate-bounce" />
+        </motion.div>
       </section>
 
       {/* SECTION 2: HOW IT WORKS */}
@@ -393,21 +396,7 @@ export default function HealthChairPage() {
 }
 
 // Subcomponents for animations
-function AnimatedMetric({ metric, index, progress }: { metric: { icon: React.ElementType, label: string }, index: number, progress: import("framer-motion").MotionValue<number> }) {
-  const x = useTransform(progress, [0.7 + index * 0.02, 0.9], [-50, 0]);
-  return (
-    <motion.div 
-      initial={{ x: -20 }}
-      style={{ x }}
-      className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 md:px-6 md:py-4 rounded-2xl shadow-lg border border-[#0B2114]/5"
-    >
-      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#0B2114]/5 flex items-center justify-center">
-        <metric.icon className="w-4 h-4 md:w-5 md:h-5 text-[#0B2114]" />
-      </div>
-      <span className="font-bold text-xs md:text-sm uppercase tracking-widest text-[#0B2114]">{metric.label}</span>
-    </motion.div>
-  );
-}
+// AnimatedMetric is no longer needed since it was removed from the Hero
 
 function AnimatedCard({ card, index, progress }: { card: { title: string, desc: string, icon: React.ElementType, z: number }, index: number, progress: import("framer-motion").MotionValue<number> }) {
   const yOffset = useTransform(progress, [0, 0.2 + index * 0.15], [index * 8, index * 60]);
