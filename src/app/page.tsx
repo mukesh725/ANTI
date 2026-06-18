@@ -98,7 +98,7 @@ export default function HomePage() {
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
-            src="/generated/essentials_hero_1781819005661.png" 
+            src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2000" 
             alt="AIRO Connected Wellness"
             className="w-full h-full"
             speed={0.1}
@@ -163,7 +163,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="/generated/grocery_hero_1781818976690.png"
+                  src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=800"
                   alt="AIRO Essentials Market"
                   className="w-full h-full"
                   speed={0.06}
@@ -189,7 +189,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="/generated/pharmacy_hero_1781818986407.png"
+                  src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800"
                   alt="AIRO Pharmacy Compounding"
                   className="w-full h-full"
                   speed={0.06}
@@ -215,7 +215,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="/generated/clinic_hero_1781818996055.png"
+                  src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800"
                   alt="AIRO Minute Clinic"
                   className="w-full h-full"
                   speed={0.06}
@@ -384,7 +384,7 @@ export default function HomePage() {
           ========================================================================= */}
       <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden group">
         <ParallaxImage 
-          src="/renders/pharmacy minute clinic and electronics.png" 
+          src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2000" 
           alt="Luxury holistic wellness lifestyle" 
           className="w-full h-full"
           speed={0.12}
