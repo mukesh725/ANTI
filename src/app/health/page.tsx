@@ -100,8 +100,8 @@ export default function HealthHomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B2114] via-[#0B2114]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-12 w-full flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-8">
             <Activity className="w-3 h-3 text-[#FAF8F5]" /> Clinical Precision
           </div>
           
@@ -114,10 +114,10 @@ export default function HealthHomePage() {
             Clinical-grade prescription care, longevity protocols, minute clinics, and advanced diagnostics.
           </p>
 
-          <div className="flex flex-wrap gap-4 items-center mt-12">
+          <div className="flex flex-wrap justify-center md:justify-start gap-4 items-center mt-12 w-full">
             <Link
               href="/pharmacy"
-              className="bg-[#FAF8F5] text-[#0B2114] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto justify-center bg-[#FAF8F5] text-[#0B2114] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
               Pharmacy Portal <ArrowRight className="w-4 h-4 text-[#0B2114]" />
             </Link>
@@ -143,8 +143,8 @@ export default function HealthHomePage() {
               </div>
             </div>
 
-            <div className="lg:col-span-6 flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+            <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
                 <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> Clinical Innovation
               </div>
 

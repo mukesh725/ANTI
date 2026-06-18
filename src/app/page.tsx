@@ -108,8 +108,8 @@ export default function HomePage() {
         </div>
 
         {/* Hero Content Overlay */}
-        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-32 md:pt-16 mt-8 md:mt-0 w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-6 md:mb-8">
+        <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-32 md:pt-16 mt-8 md:mt-0 w-full flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
             <Sparkles className="w-3 h-3 text-[#FAF8F5]" /> A Connected Wellness Ecosystem
           </div>
           
