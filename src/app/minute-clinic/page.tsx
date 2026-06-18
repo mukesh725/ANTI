@@ -232,8 +232,8 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://plus.unsplash.com/premium_photo-1702598573587-8d0e627cf541?q=80&w=1600" 
-                alt="Aesthetic medical diagnostics space" 
+                src="/clinic-connected.jpg" 
+                alt="AIRO Connected Healthcare Team" 
                 className="w-full h-full"
                 speed={0.14}
               />
