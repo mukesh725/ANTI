@@ -85,7 +85,7 @@ export default function PharmacyPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://plus.unsplash.com/premium_photo-1678490272185-fce90c178ad7?q=80&w=1600" 
+                src="/pharmacy-hero.jpg" 
                 alt="AIRO Pharmacy Services"
                 className="w-full h-full"
                 speed={0.12}
