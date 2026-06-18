@@ -86,9 +86,10 @@ export default function HealthHomePage() {
     <div className="min-h-screen bg-[#FAF8F5] text-[#0B2114] overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
 
       {/* =========================================================================
-          SECTION 1: HERO SECTION
+          SECTION 1: HERO SECTION (FULL-WIDTH BACKGROUND)
           ========================================================================= */}
-      <section ref={heroRef} className="relative h-[85vh] md:h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100dvh] md:min-h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
+        {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
             src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=2000" 

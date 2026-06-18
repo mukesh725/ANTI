@@ -94,7 +94,7 @@ export default function HomePage() {
       {/* =========================================================================
           SECTION 1: HERO SECTION (FULL-WIDTH BACKGROUND)
           ========================================================================= */}
-      <section ref={heroRef} className="relative h-[85vh] md:h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100dvh] md:min-h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
