@@ -56,10 +56,10 @@ export default function HealthChairPage() {
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />
         <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#FAF8F5] via-transparent to-transparent opacity-10" />
 
-        <div className="relative z-10 w-full px-6 md:px-16 flex flex-col md:flex-row items-center justify-between h-full pt-24 pb-12">
+        <div className="relative z-10 w-full px-6 md:px-16 flex flex-col md:flex-row items-center justify-between h-full pt-32 md:pt-24 pb-12">
           
-          {/* Text Content (Left Aligned) */}
-          <div className="w-full md:w-1/2 flex flex-col items-start text-left text-[#FAF8F5]">
+          {/* Text Content (Centered on mobile, Left on desktop) */}
+          <div className="w-full md:w-1/2 flex flex-col items-center text-center md:items-start md:text-left text-[#FAF8F5]">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -191,7 +191,7 @@ export default function HealthChairPage() {
             <p className="text-[#0B2114]/60 max-w-xl mx-auto">See how your raw data transforms into actionable insights.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-20">
+          <div className="flex flex-wrap justify-center gap-6 relative z-20">
             {[
               { title: "Vital Signs", desc: "Real-time, clinical-grade telemetry.", icon: Activity },
               { title: "Health Baseline", desc: "Your unique biological starting point.", icon: ShieldCheck },
@@ -199,7 +199,7 @@ export default function HealthChairPage() {
               { title: "Doctor Review", desc: "Data verified by AIRO clinical professionals.", icon: Stethoscope },
               { title: "AIRO Record", desc: "Your entire health history, securely stored.", icon: FileText },
             ].map((card, i) => (
-              <div key={i} className="bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-start hover:shadow-md transition-shadow duration-300">
+              <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
                 <div className="w-12 h-12 bg-[#0B2114]/5 rounded-xl flex items-center justify-center mb-6">
                   <card.icon className="w-6 h-6 text-[#0B2114]" />
                 </div>
