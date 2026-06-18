@@ -44,19 +44,19 @@ const essentialsCategories = [
     name: "Grocery", 
     desc: "Organic produce, superfoods, and clean pantry essentials.", 
     href: "/grocery", 
-    image: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800"
+    image: "/generated/grocery_hero_1781818976690.png"
   },
   { 
     name: "Bakery", 
     desc: "Artisanal breads, gluten-free options, and fresh pastries.", 
     href: "/bakery", 
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800"
+    image: "/renders/bakery.png"
   },
   { 
     name: "Ice Cream", 
     desc: "Dairy-free, sugar-conscious, and functional frozen treats.", 
     href: "/ice-cream", 
-    image: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=800"
+    image: "/renders/dairy.png"
   }
 ];
 
@@ -68,7 +68,7 @@ export default function EssentialsHomePage() {
       <section className="relative h-[70vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden pt-20">
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
-            src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=2000" 
+            src="/generated/essentials_hero_1781819005661.png" 
             alt="AIRO Essentials Market"
             className="w-full h-full"
             speed={0.1}

@@ -83,7 +83,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1600" 
+                src="/generated/clinic_hero_1781818996055.png" 
                 alt="AIRO Clinic Biomarkers & Diagnostics"
                 className="w-full h-full"
                 speed={0.1}
@@ -152,7 +152,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1600" 
+                src="/renders/pharmacy minute clinic and electronics.png" 
                 alt="Active healthy longevity" 
                 className="w-full h-full"
                 speed={0.08}
@@ -211,7 +211,7 @@ export default function MinuteClinicPage() {
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1600" 
+                  src="/renders/pharmacy-minute clinic,exlectronics.png" 
                   alt="Everyday health and wellness" 
                   className="w-full h-full"
                   speed={0.1}
@@ -232,7 +232,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1600" 
+                src="/renders/leftside.png" 
                 alt="Aesthetic medical diagnostics space" 
                 className="w-full h-full"
                 speed={0.14}
