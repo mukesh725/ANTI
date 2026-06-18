@@ -113,7 +113,7 @@ export default function MinuteClinicPage() {
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
                 Access
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
                 Healthcare Without <br/>the <span className="italic font-light text-[#FAF8F5]/80">Friction</span>
               </h2>
               <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
@@ -193,7 +193,7 @@ export default function MinuteClinicPage() {
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
                 Clinical Care
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
                 Everyday Care, <br/><span className="italic font-light text-[#FAF8F5]/80">Elevated</span>
               </h2>
               <p className="font-serif text-lg md:text-xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">

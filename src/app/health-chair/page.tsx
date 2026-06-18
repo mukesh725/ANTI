@@ -214,7 +214,7 @@ export default function HealthChairPage() {
       {/* SECTION 4: CONNECTED CARE */}
       <section className="bg-[#0B2114] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden">
         <div className="max-w-[1400px] mx-auto text-center">
-          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-24">
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-24 text-[#FAF8F5]">
             Connected To The Entire <span className="italic font-light text-[#FAF8F5]/80">AIRO Ecosystem</span>
           </h2>
 
@@ -284,7 +284,7 @@ export default function HealthChairPage() {
       {/* SECTION 5: PREVENTIVE HEALTH */}
       <section ref={preventRef} className="bg-[#09120F] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden relative">
         <div className="max-w-[1200px] mx-auto text-center relative z-20">
-          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-8">
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-8 text-[#FAF8F5]">
             Know Earlier. <span className="italic font-light text-[#FAF8F5]/80">Act Sooner.</span>
           </h2>
           <p className="text-[#FAF8F5]/60 max-w-xl mx-auto mb-24">

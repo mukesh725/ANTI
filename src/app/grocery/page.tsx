@@ -166,7 +166,7 @@ export default function EssentialsPage() {
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
                 Philosophy
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
                 Health Begins <br/>with <span className="italic font-light text-[#FAF8F5]/80">Everyday Choices</span>
               </h2>
               <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
@@ -242,7 +242,7 @@ export default function EssentialsPage() {
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
               The Catalog
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
+            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-[#FAF8F5]">
               Explore <span className="italic font-light text-[#FAF8F5]/80">AIRO Essentials</span>
             </h2>
             <p className="font-sans text-xs text-[#FAF8F5]/60 mt-4 leading-relaxed tracking-wide">
@@ -343,7 +343,7 @@ export default function EssentialsPage() {
             Conscious Commerce
           </span>
           
-          <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl">
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl text-[#FAF8F5]">
             A Better Way to Shop <br/>for <span className="italic font-light text-[#FAF8F5]/80">Wellness.</span>
           </h2>
           
