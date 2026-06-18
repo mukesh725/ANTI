@@ -267,7 +267,7 @@ export default function HomePage() {
                 <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> Clinical Innovation
               </div>
 
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-[#FAF8F5]">
                 The AIRO <br/><span className="italic font-light text-[#FAF8F5]/80">Health Scan.</span>
               </h2>
 
@@ -420,7 +420,7 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
 
           <div className="col-span-1 md:col-span-2">
-            <h2 className="font-serif text-4xl tracking-[0.2em] uppercase mb-12">AIRO<span className="opacity-50">.</span></h2>
+            <h2 className="font-serif text-4xl tracking-[0.2em] uppercase mb-12 text-[#FAF8F5]">AIRO<span className="opacity-50">.</span></h2>
             <h3 className="font-sans text-xl font-medium mb-4">The Waitlist</h3>
             <p className="text-sm text-[#FAF8F5]/60 mb-8 max-w-sm leading-relaxed">
               Subscribe to receive clinical updates, seasonal grocery drops, and exclusive invitation status.

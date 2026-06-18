@@ -148,7 +148,7 @@ export default function HealthHomePage() {
                 <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> Clinical Innovation
               </div>
 
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-[#FAF8F5]">
                 The AIRO <br/><span className="italic font-light text-[#FAF8F5]/80">Health Scan.</span>
               </h2>
 
@@ -230,7 +230,7 @@ export default function HealthHomePage() {
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
 
           <div className="col-span-1">
-            <h2 className="font-serif text-4xl tracking-[0.2em] uppercase mb-12">AIRO<span className="opacity-50">.</span></h2>
+            <h2 className="font-serif text-4xl tracking-[0.2em] uppercase mb-12 text-[#FAF8F5]">AIRO<span className="opacity-50">.</span></h2>
             <li className="pt-8 text-[#FAF8F5]/30 text-[10px] tracking-widest uppercase list-none">© 2026 AIRO Health.</li>
           </div>
 
