@@ -68,7 +68,7 @@ export default function EssentialsHomePage() {
       <section className="relative h-[70vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden pt-20">
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
-            src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=2000" 
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000" 
             alt="AIRO Essentials Market"
             className="w-full h-full"
             speed={0.1}

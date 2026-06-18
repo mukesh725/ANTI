@@ -85,7 +85,7 @@ export default function PharmacyPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=1600" 
+                src="https://plus.unsplash.com/premium_photo-1678490272185-fce90c178ad7?q=80&w=1600" 
                 alt="AIRO Pharmacy Services"
                 className="w-full h-full"
                 speed={0.12}
@@ -133,7 +133,7 @@ export default function PharmacyPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1600" 
+                  src="https://images.unsplash.com/photo-1775420426722-1f111121b973?q=80&w=1600" 
                   alt="Healthy premium lifestyle wellness" 
                   className="w-full h-full"
                   speed={0.1}
@@ -154,7 +154,7 @@ export default function PharmacyPage() {
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1600" 
+                src="https://images.unsplash.com/photo-1576602975754-efdf313b9342?q=80&w=1600" 
                 alt="Longevity and serene lifestyle" 
                 className="w-full h-full"
                 speed={0.08}
@@ -220,7 +220,7 @@ export default function PharmacyPage() {
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1600" 
+                  src="https://images.unsplash.com/photo-1645755637082-8bfc52079dfb?q=80&w=1600" 
                   alt="Premium wellness compounds apothecary" 
                   className="w-full h-full"
                   speed={0.1}
@@ -241,7 +241,7 @@ export default function PharmacyPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=1600" 
+                src="https://images.unsplash.com/photo-1584543238200-96c253bcd9d4?q=80&w=1600" 
                 alt="Sun filtering through trees - Longevity concept" 
                 className="w-full h-full"
                 speed={0.14}

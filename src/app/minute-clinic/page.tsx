@@ -83,7 +83,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1600" 
+                src="https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=1600" 
                 alt="AIRO Clinic Biomarkers & Diagnostics"
                 className="w-full h-full"
                 speed={0.1}
@@ -152,7 +152,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1600" 
+                src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=1600" 
                 alt="Active healthy longevity" 
                 className="w-full h-full"
                 speed={0.08}
@@ -211,7 +211,7 @@ export default function MinuteClinicPage() {
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1600" 
+                  src="https://images.unsplash.com/photo-1551076826-72190fff02d3?q=80&w=1600" 
                   alt="Everyday health and wellness" 
                   className="w-full h-full"
                   speed={0.1}
@@ -232,7 +232,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1600" 
+                src="https://plus.unsplash.com/premium_photo-1702598573587-8d0e627cf541?q=80&w=1600" 
                 alt="Aesthetic medical diagnostics space" 
                 className="w-full h-full"
                 speed={0.14}

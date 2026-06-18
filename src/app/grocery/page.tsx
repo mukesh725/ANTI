@@ -136,7 +136,7 @@ export default function EssentialsPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1600" 
+                src="https://plus.unsplash.com/premium_photo-1663039978847-63f7484bf701?q=80&w=1600" 
                 alt="AIRO Fresh Produce"
                 className="w-full h-full"
                 speed={0.12}
@@ -184,7 +184,7 @@ export default function EssentialsPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1600" 
+                  src="https://images.unsplash.com/photo-1628102491629-778571d893a3?q=80&w=1600" 
                   alt="Conscious sourcing lifestyle" 
                   className="w-full h-full"
                   speed={0.08}

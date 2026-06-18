@@ -92,7 +92,7 @@ export default function HealthHomePage() {
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
-            src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=2000" 
+            src="https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000" 
             alt="AIRO Connected Wellness"
             className="w-full h-full"
             speed={0.1}
