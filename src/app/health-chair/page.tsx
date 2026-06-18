@@ -50,7 +50,7 @@ export default function HealthChairPage() {
         {/* Background Image */}
         <div 
           className="absolute inset-0 z-0 bg-center bg-no-repeat bg-cover"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1576085898419-d54e840d898f?q=80&w=1600')" }}
+          style={{ backgroundImage: "url('/airo-praana-hero.png')" }}
         />
         {/* Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />
@@ -75,8 +75,8 @@ export default function HealthChairPage() {
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
               className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight leading-none mb-6 text-white"
             >
-              The AIRO<br/>
-              <span className="italic font-light">Health Scan</span>
+              AIRO<br/>
+              <span className="italic font-light">Praana</span>
             </motion.h1>
             
             <motion.p 

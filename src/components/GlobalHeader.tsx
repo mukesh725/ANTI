@@ -13,7 +13,7 @@ const allLinks = [
   { href: "/grocery", label: "Essentials" },
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "MinuteClinic" },
-  { href: "/health-chair", label: "Health Chair" },
+  { href: "/health-chair", label: "AIRO Praana" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -21,7 +21,7 @@ const healthLinks = [
   { href: "/health", label: "Health Home" },
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "Minute Clinic" },
-  { href: "/health-chair", label: "Health Chair" },
+  { href: "/health-chair", label: "AIRO Praana" },
   { href: "/membership", label: "Membership" },
 ];
 

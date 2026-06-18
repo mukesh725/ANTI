@@ -66,7 +66,7 @@ const healthCategories = [
     status: "Coming Soon" 
   },
   { 
-    name: "Health Chair", 
+    name: "AIRO Praana", 
     desc: "Real-time vitals tracking, comprehensive body scans.", 
     href: "/health-chair", 
     status: "Coming Soon" 
