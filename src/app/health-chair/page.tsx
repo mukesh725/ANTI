@@ -50,7 +50,7 @@ export default function HealthChairPage() {
         {/* Background Image */}
         <div 
           className="absolute inset-0 z-0 bg-center bg-no-repeat bg-cover"
-          style={{ backgroundImage: "url('/health-scan-chair.png')" }}
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1576085898419-d54e840d898f?q=80&w=1600')" }}
         />
         {/* Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />

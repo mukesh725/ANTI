@@ -250,14 +250,14 @@ export default function HomePage() {
             
             {/* Chair Image (Prominent Visual Asset) */}
             <div className="lg:col-span-6 flex justify-center">
-              <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center">
-                <img 
-                  src="/health-scan-chair.png" 
-                  alt="AIRO Health Scan Chair" 
-                  className="w-full h-full object-contain hover:scale-105 transition-transform duration-1000"
+              <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
+                <ParallaxImage 
+                  src="https://images.unsplash.com/photo-1576085898419-d54e840d898f?q=80&w=1600" 
+                  alt="AIRO Health Scan Assessment" 
+                  className="w-full h-full"
+                  speed={0.1}
                 />
-                {/* Subtle spotlight backdrop effect */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#09120F_95%)] pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#09120F]/60 to-transparent pointer-events-none" />
               </div>
             </div>
 
