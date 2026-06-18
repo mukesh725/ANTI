@@ -133,8 +133,8 @@ export default function PharmacyPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1775420426722-1f111121b973?q=80&w=1600" 
-                  alt="Healthy premium lifestyle wellness" 
+                  src="/pharmacy-checkout.jpg" 
+                  alt="AIRO Pharmacy Checkout" 
                   className="w-full h-full"
                   speed={0.1}
                 />
