@@ -111,7 +111,7 @@ export default function PharmacyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
             {/* Story text */}
-            <div className="lg:col-span-6 order-2 lg:order-1">
+            <div className="lg:col-span-6 order-2 lg:order-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
                 Philosophy
               </span>
@@ -164,7 +164,7 @@ export default function PharmacyPage() {
           </div>
 
           {/* Text block */}
-          <div className="lg:col-span-5 flex flex-col justify-center">
+          <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
               Ecosystem
             </span>
@@ -191,7 +191,7 @@ export default function PharmacyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
             {/* Story text */}
-            <div className="lg:col-span-5 flex flex-col justify-center">
+            <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
                 Tailored Biology
               </span>
@@ -251,7 +251,7 @@ export default function PharmacyPage() {
           </div>
 
           {/* Text block */}
-          <div className="lg:col-span-6 flex flex-col justify-center">
+          <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
               Proactive Care
             </span>

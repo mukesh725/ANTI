@@ -262,7 +262,7 @@ export default function HomePage() {
             </div>
 
             {/* Assessment Details */}
-            <div className="lg:col-span-6 flex flex-col justify-center">
+            <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
                 <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> Clinical Innovation
               </div>
@@ -326,8 +326,8 @@ export default function HomePage() {
           SECTION 4: ECOSYSTEM CATEGORIES SHOWCASE
           ========================================================================= */}
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-[#0B2114]/10 gap-6">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-[#0B2114]/10 gap-6 items-center text-center md:text-left">
+          <div className="flex flex-col items-center md:items-start">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-4 font-bold">
               The Architecture
             </span>
