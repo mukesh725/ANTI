@@ -189,7 +189,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="https://plus.unsplash.com/premium_photo-1678490272185-fce90c178ad7?q=80&w=800"
+                  src="/pharmacy-hero.jpg"
                   alt="AIRO Pharmacy Compounding"
                   className="w-full h-full"
                   speed={0.06}
@@ -215,7 +215,7 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=800"
+                  src="/clinic-connected.jpg"
                   alt="AIRO Minute Clinic"
                   className="w-full h-full"
                   speed={0.06}
@@ -252,8 +252,8 @@ export default function HomePage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1576085898419-d54e840d898f?q=80&w=1600" 
-                  alt="AIRO Health Scan Assessment" 
+                  src="/airo-praana-hero.png" 
+                  alt="AIRO Praana Assessment" 
                   className="w-full h-full"
                   speed={0.1}
                 />
@@ -268,7 +268,7 @@ export default function HomePage() {
               </div>
 
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-[#FAF8F5]">
-                The AIRO <br/><span className="italic font-light text-[#FAF8F5]/80">Health Scan.</span>
+                AIRO <br/><span className="italic font-light text-[#FAF8F5]/80">Praana</span>
               </h2>
 
               <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl mb-8 font-light leading-relaxed">
