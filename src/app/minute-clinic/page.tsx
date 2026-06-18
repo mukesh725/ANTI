@@ -131,7 +131,7 @@ export default function MinuteClinicPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1519823551278-64ac92834907?q=80&w=1600" 
+                  src="/clinic-section-2-img.png" 
                   alt="Seamless Clinic Experience" 
                   className="w-full h-full"
                   speed={0.12}
