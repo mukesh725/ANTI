@@ -19,28 +19,12 @@ export default function HealthChairPage() {
   // =========================================================================
   // SECTION 2: HOW IT WORKS
   // =========================================================================
-  const stepsRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: stepsProgress } = useScroll({
-    target: stepsRef,
-    offset: ["start start", "end start"]
-  });
-
-  const step1Opacity = useTransform(stepsProgress, [0, 0.2, 0.3], [1, 1, 0.3]);
-  const step2Opacity = useTransform(stepsProgress, [0.3, 0.5, 0.6], [0.3, 1, 0.3]);
-  const step3Opacity = useTransform(stepsProgress, [0.6, 0.8, 1], [0.3, 1, 1]);
-
-  const step1VisualOpacity = useTransform(stepsProgress, [0, 0.2, 0.3], [1, 1, 0]);
-  const step2VisualOpacity = useTransform(stepsProgress, [0.3, 0.5, 0.6], [0, 1, 0]);
-  const step3VisualOpacity = useTransform(stepsProgress, [0.6, 0.8, 1], [0, 1, 1]);
+  // Converted to static grids
 
   // =========================================================================
   // SECTION 3: WHAT YOU GET
   // =========================================================================
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: cardsProgress } = useScroll({
-    target: cardsRef,
-    offset: ["start start", "end start"]
-  });
+  // Converted to static grids
 
   // =========================================================================
   // SECTION 4: CONNECTED CARE
@@ -155,99 +139,73 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 2: HOW IT WORKS */}
-      <section ref={stepsRef} className="relative h-[300vh] bg-white">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 md:px-16 overflow-hidden">
-          
-          <div className="text-center mb-16 z-20">
+      <section className="bg-white py-24 md:py-32 px-6 md:px-16 overflow-hidden">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center mb-16 md:mb-24 z-20 relative">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
               Three Steps. <span className="italic font-light text-[#0B2114]/60">Five Minutes.</span>
             </h2>
           </div>
 
-          <div className="flex flex-col md:flex-row w-full max-w-[1200px] h-[50vh] relative">
-            
-            {/* Visual Center */}
-            <div className="w-full md:w-1/2 h-full relative flex items-center justify-center order-1 md:order-2">
-              <motion.div style={{ opacity: step1VisualOpacity }} className="absolute inset-0 flex items-center justify-center">
-                <div className="w-48 h-48 rounded-full border border-[#0B2114]/20 flex items-center justify-center bg-[#FAF8F5]">
-                  <Activity className="w-12 h-12 text-[#0B2114]/40" />
-                </div>
-              </motion.div>
-              <motion.div style={{ opacity: step2VisualOpacity }} className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-64 h-64 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border border-blue-500/30 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
-                  <div className="absolute inset-8 rounded-full border border-green-500/30 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]" />
-                  <Heart className="w-16 h-16 text-[#0B2114]" />
-                </div>
-              </motion.div>
-              <motion.div style={{ opacity: step3VisualOpacity }} className="absolute inset-0 flex items-center justify-center">
-                <div className="w-64 h-80 bg-white rounded-3xl shadow-2xl border border-[#0B2114]/10 p-6 flex flex-col">
-                  <div className="flex items-center gap-3 mb-6 pb-6 border-b border-[#0B2114]/5">
-                    <div className="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center">
-                      <CheckCircle2 className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold">Health Profile</div>
-                      <div className="text-xs text-[#0B2114]/50">Generated Successfully</div>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="h-4 bg-[#0B2114]/5 rounded w-full" />
-                    <div className="h-4 bg-[#0B2114]/5 rounded w-5/6" />
-                    <div className="h-4 bg-[#0B2114]/5 rounded w-4/6" />
-                  </div>
-                </div>
-              </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative z-20">
+            {/* Step 1 */}
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full border border-[#0B2114]/20 flex items-center justify-center bg-[#FAF8F5] mb-6">
+                <Activity className="w-8 h-8 text-[#0B2114]/60" />
+              </div>
+              <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">01</div>
+              <h3 className="font-bold text-xl uppercase tracking-widest mb-4">Take a Seat</h3>
+              <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">Relax in the AIRO chair as the intuitive sensors automatically activate to begin your assessment.</p>
             </div>
 
-            {/* Text Steps */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center gap-12 order-2 md:order-1 mt-12 md:mt-0">
-              <motion.div style={{ opacity: step1Opacity }} className="flex gap-6 items-start transition-opacity duration-300">
-                <div className="font-serif text-3xl italic text-[#0B2114]/30">01</div>
-                <div>
-                  <h3 className="font-bold text-xl uppercase tracking-widest mb-2">Take a Seat</h3>
-                  <p className="text-[#0B2114]/60 leading-relaxed">Relax in the AIRO chair as the intuitive sensors automatically activate to begin your assessment.</p>
-                </div>
-              </motion.div>
-              <motion.div style={{ opacity: step2Opacity }} className="flex gap-6 items-start transition-opacity duration-300">
-                <div className="font-serif text-3xl italic text-[#0B2114]/30">02</div>
-                <div>
-                  <h3 className="font-bold text-xl uppercase tracking-widest mb-2">Assessment Begins</h3>
-                  <p className="text-[#0B2114]/60 leading-relaxed">Clinical-grade sensors capture your vitals in real-time, analyzing hundreds of data points instantly.</p>
-                </div>
-              </motion.div>
-              <motion.div style={{ opacity: step3Opacity }} className="flex gap-6 items-start transition-opacity duration-300">
-                <div className="font-serif text-3xl italic text-[#0B2114]/30">03</div>
-                <div>
-                  <h3 className="font-bold text-xl uppercase tracking-widest mb-2">Receive Your Profile</h3>
-                  <p className="text-[#0B2114]/60 leading-relaxed">Your secure, comprehensive health report is immediately sent to your AIRO App for review.</p>
-                </div>
-              </motion.div>
+            {/* Step 2 */}
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full border border-blue-500/20 flex items-center justify-center bg-blue-50/50 mb-6">
+                <Heart className="w-8 h-8 text-[#0B2114]/60" />
+              </div>
+              <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">02</div>
+              <h3 className="font-bold text-xl uppercase tracking-widest mb-4">Assessment Begins</h3>
+              <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">Clinical-grade sensors capture your vitals in real-time, analyzing hundreds of data points instantly.</p>
             </div>
 
+            {/* Step 3 */}
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full border border-green-500/20 flex items-center justify-center bg-green-50/50 mb-6">
+                <CheckCircle2 className="w-8 h-8 text-green-600/60" />
+              </div>
+              <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">03</div>
+              <h3 className="font-bold text-xl uppercase tracking-widest mb-4">Receive Profile</h3>
+              <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">Your secure, comprehensive health report is immediately sent to your AIRO App for review.</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* SECTION 3: WHAT YOU GET */}
-      <section ref={cardsRef} className="relative h-[400vh] bg-[#FAF8F5]">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 md:px-16 overflow-hidden">
-          <div className="text-center mb-16 z-20">
+      <section className="bg-[#FAF8F5] py-24 md:py-32 px-6 md:px-16 overflow-hidden">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center mb-16 md:mb-24 relative z-20">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
               More Than <span className="italic font-light text-[#0B2114]/60">Measurements</span>
             </h2>
             <p className="text-[#0B2114]/60 max-w-xl mx-auto">See how your raw data transforms into actionable insights.</p>
           </div>
 
-          <div className="relative w-full max-w-[600px] h-[400px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-20">
             {[
-              { title: "Vital Signs", desc: "Real-time, clinical-grade telemetry.", icon: Activity, z: 50 },
-              { title: "Health Baseline", desc: "Your unique biological starting point.", icon: ShieldCheck, z: 40 },
-              { title: "Trend Tracking", desc: "Monitor changes and improvements over time.", icon: Thermometer, z: 30 },
-              { title: "Doctor Review", desc: "Data verified by AIRO clinical professionals.", icon: Stethoscope, z: 20 },
-              { title: "AIRO Record", desc: "Your entire health history, securely stored.", icon: FileText, z: 10 },
+              { title: "Vital Signs", desc: "Real-time, clinical-grade telemetry.", icon: Activity },
+              { title: "Health Baseline", desc: "Your unique biological starting point.", icon: ShieldCheck },
+              { title: "Trend Tracking", desc: "Monitor changes and improvements over time.", icon: Thermometer },
+              { title: "Doctor Review", desc: "Data verified by AIRO clinical professionals.", icon: Stethoscope },
+              { title: "AIRO Record", desc: "Your entire health history, securely stored.", icon: FileText },
             ].map((card, i) => (
-              <AnimatedCard key={i} card={card} index={i} progress={cardsProgress} />
+              <div key={i} className="bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-start hover:shadow-md transition-shadow duration-300">
+                <div className="w-12 h-12 bg-[#0B2114]/5 rounded-xl flex items-center justify-center mb-6">
+                  <card.icon className="w-6 h-6 text-[#0B2114]" />
+                </div>
+                <h4 className="font-bold text-lg uppercase tracking-widest mb-2">{card.title}</h4>
+                <p className="text-[#0B2114]/60 text-sm leading-relaxed">{card.desc}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -282,7 +240,14 @@ export default function HealthChairPage() {
               { icon: Stethoscope, label: "Doctor Consult" },
               { icon: Pill, label: "Pharmacy" },
             ].map((node, i) => (
-              <AnimatedNode key={i} node={node} index={i} progress={flowProgress} />
+              <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114]">
+                <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
+                  <node.icon className="w-8 h-8 text-[#FAF8F5]" />
+                </div>
+                <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70 w-24 text-center">
+                  {node.label}
+                </span>
+              </div>
             ))}
           </div>
 
@@ -393,58 +358,3 @@ export default function HealthChairPage() {
       </section>
     </div>
   );
-}
-
-// Subcomponents for animations
-// AnimatedMetric is no longer needed since it was removed from the Hero
-
-function AnimatedCard({ card, index, progress }: { card: { title: string, desc: string, icon: React.ElementType, z: number }, index: number, progress: import("framer-motion").MotionValue<number> }) {
-  const yOffset = useTransform(progress, [0, 0.2 + index * 0.15], [index * 8, index * 60]);
-  const scaleOffset = useTransform(progress, [0, 0.2 + index * 0.15], [1 - index * 0.02, 1 - index * 0.05]);
-  const opacityOffset = useTransform(progress, [0, 0.1 + index * 0.1], [1, 1]);
-  const actualOpacity = opacityOffset;
-
-  return (
-    <motion.div
-      style={{ 
-        y: yOffset, 
-        scale: scaleOffset, 
-        opacity: actualOpacity,
-        zIndex: card.z 
-      }}
-      className="absolute top-0 left-0 w-full bg-white border border-[#0B2114]/10 rounded-3xl p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] flex items-center gap-6"
-    >
-      <div className="w-16 h-16 bg-[#0B2114]/5 rounded-2xl flex items-center justify-center shrink-0">
-        <card.icon className="w-8 h-8 text-[#0B2114]" />
-      </div>
-      <div>
-        <h4 className="font-bold text-lg uppercase tracking-widest mb-1">{card.title}</h4>
-        <p className="text-[#0B2114]/60">{card.desc}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-function AnimatedNode({ node, index, progress }: { node: { icon: React.ElementType, label: string }, index: number, progress: import("framer-motion").MotionValue<number> }) {
-  const nodeOpacity = useTransform(progress, [index * 0.2, (index + 1) * 0.2], [0.3, 1]);
-  const nodeScale = useTransform(progress, [index * 0.2, (index + 1) * 0.2], [0.8, 1]);
-  const bgOpacity = useTransform(progress, [index * 0.2, (index + 1) * 0.2], [0, 1]);
-
-  return (
-    <motion.div 
-      style={{ opacity: nodeOpacity, scale: nodeScale }}
-      className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114]"
-    >
-      <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center relative overflow-hidden">
-        <motion.div 
-          style={{ opacity: bgOpacity }}
-          className="absolute inset-0 bg-[#FAF8F5]/10" 
-        />
-        <node.icon className="w-8 h-8 text-[#FAF8F5]" />
-      </div>
-      <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70 w-24 text-center">
-        {node.label}
-      </span>
-    </motion.div>
-  );
-}

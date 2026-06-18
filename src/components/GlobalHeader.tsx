@@ -127,7 +127,7 @@ export function GlobalHeader() {
           <button className={`hidden sm:flex text-[10px] tracking-widest uppercase font-bold items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 border ${
             isScrolled
               ? "text-[#FAF8F5] bg-[#0B2114] border-[#0B2114] hover:bg-[#0b2114]/90"
-              : (pathname === "/" || pathname === "/health"
+              : (["/", "/health", "/health-chair"].includes(pathname)
                   ? "text-[#FAF8F5] bg-white/10 border-white/20 hover:bg-white/20"
                   : "text-[#0B2114] bg-[#0B2114]/5 border-[#0B2114]/20 hover:bg-[#0B2114]/10")
           }`}>
@@ -137,7 +137,7 @@ export function GlobalHeader() {
           <button 
             onClick={() => setIsCartOpen(true)} 
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
-              isScrolled ? "text-[#0B2114]" : (pathname === "/" || pathname === "/health" ? "text-[#FAF8F5]" : "text-[#0B2114]")
+              isScrolled ? "text-[#0B2114]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FAF8F5]" : "text-[#0B2114]")
             }`}
           >
             <ShoppingBag className="w-5 h-5" />
@@ -152,7 +152,7 @@ export function GlobalHeader() {
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className={`md:hidden p-1 hover:opacity-75 transition-opacity duration-300 ${
-              isScrolled ? "text-[#0B2114]" : (pathname === "/" || pathname === "/health" ? "text-[#FAF8F5]" : "text-[#0B2114]")
+              isScrolled ? "text-[#0B2114]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FAF8F5]" : "text-[#0B2114]")
             }`}
             aria-label="Open menu"
           >
