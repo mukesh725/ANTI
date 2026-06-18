@@ -13,6 +13,7 @@ const allLinks = [
   { href: "/grocery", label: "Essentials" },
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "MinuteClinic" },
+  { href: "/health-chair", label: "Health Chair" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -56,7 +57,7 @@ export function GlobalHeader() {
   const navLinks = isHealthDomain ? healthLinks : allLinks;
 
   let logoNode;
-  if (isHealthDomain || pathname === "/pharmacy" || pathname === "/minute-clinic") {
+  if (isHealthDomain || pathname === "/pharmacy" || pathname === "/minute-clinic" || pathname === "/health-chair") {
     logoNode = (
       <div className={`p-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : ""}`}>
         <img 
