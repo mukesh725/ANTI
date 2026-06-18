@@ -37,11 +37,11 @@ export default function HealthChairPage() {
     offset: ["start start", "end start"]
   });
 
-  const step1Opacity = useTransform(stepsProgress, [0, 0.2, 0.3], [0, 1, 0.3]);
+  const step1Opacity = useTransform(stepsProgress, [0, 0.2, 0.3], [1, 1, 0.3]);
   const step2Opacity = useTransform(stepsProgress, [0.3, 0.5, 0.6], [0.3, 1, 0.3]);
   const step3Opacity = useTransform(stepsProgress, [0.6, 0.8, 1], [0.3, 1, 1]);
 
-  const step1VisualOpacity = useTransform(stepsProgress, [0, 0.2, 0.3], [0, 1, 0]);
+  const step1VisualOpacity = useTransform(stepsProgress, [0, 0.2, 0.3], [1, 1, 0]);
   const step2VisualOpacity = useTransform(stepsProgress, [0.3, 0.5, 0.6], [0, 1, 0]);
   const step3VisualOpacity = useTransform(stepsProgress, [0.6, 0.8, 1], [0, 1, 1]);
 
@@ -70,7 +70,7 @@ export default function HealthChairPage() {
   const preventRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="bg-[#FAF8F5] text-[#0B2114] min-h-screen font-sans selection:bg-[#0B2114] selection:text-[#FAF8F5] overflow-x-hidden">
+    <div className="bg-[#FAF8F5] text-[#0B2114] min-h-screen font-sans selection:bg-[#0B2114] selection:text-[#FAF8F5] overflow-clip">
       <GlobalHeader />
 
       {/* SECTION 1: HERO */}
@@ -297,7 +297,7 @@ export default function HealthChairPage() {
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: "0px" }}
                 className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114] py-4"
               >
                 <div className="w-16 h-16 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
@@ -341,7 +341,7 @@ export default function HealthChairPage() {
                 key={i}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: "0px" }}
                 transition={{ delay: indicator.delay, duration: 0.8 }}
                 className="absolute flex items-center gap-3"
                 style={{ top: indicator.top, left: indicator.left }}
@@ -410,10 +410,10 @@ function AnimatedMetric({ metric, index, progress }: { metric: { icon: React.Ele
 }
 
 function AnimatedCard({ card, index, progress }: { card: { title: string, desc: string, icon: React.ElementType, z: number }, index: number, progress: import("framer-motion").MotionValue<number> }) {
-  const yOffset = useTransform(progress, [0, 0.2 + index * 0.15], [0, index * 60]);
-  const scaleOffset = useTransform(progress, [0, 0.2 + index * 0.15], [1, 1 - index * 0.05]);
-  const opacityOffset = useTransform(progress, [0, 0.1 + index * 0.1], [0, 1]);
-  const actualOpacity = index === 0 ? 1 : opacityOffset;
+  const yOffset = useTransform(progress, [0, 0.2 + index * 0.15], [index * 8, index * 60]);
+  const scaleOffset = useTransform(progress, [0, 0.2 + index * 0.15], [1 - index * 0.02, 1 - index * 0.05]);
+  const opacityOffset = useTransform(progress, [0, 0.1 + index * 0.1], [1, 1]);
+  const actualOpacity = opacityOffset;
 
   return (
     <motion.div
