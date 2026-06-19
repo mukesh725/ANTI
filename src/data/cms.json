@@ -1,0 +1,38 @@
+{
+  "theme": {
+    "primary": "#09120F",
+    "secondary": "#FAF8F5",
+    "accent": "#D4AF37"
+  },
+  "pages": {
+    "home": {
+      "title": "AIRO Essentials",
+      "subtitle": "A NEW PARADIGM IN PREMIUM WELLNESS",
+      "sections": {
+        "pharmacy": {
+          "title": "Pharmacy & Compounding",
+          "image": "/pharmacy-hero.jpg"
+        },
+        "clinic": {
+          "title": "Minute Clinic",
+          "image": "/clinic-connected.jpg"
+        },
+        "praana": {
+          "title": "AIRO Praana",
+          "image": "/airo-praana-hero.png"
+        }
+      }
+    },
+    "health": {
+      "title": "AIRO Health",
+      "subtitle": "PREVENTATIVE CARE. REDEFINED.",
+      "sections": {
+        "praana": {
+          "title": "AIRO Praana",
+          "image": "/airo-praana-hero.png",
+          "description": "A 5-minute diagnostic assessment. A lifetime of longevity insights."
+        }
+      }
+    }
+  }
+}
