@@ -17,15 +17,28 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
     setIsSubmitting(true);
 
-    // Simulate concierge processing
-    setTimeout(() => {
-      // 1. Get existing leads
+    try {
+      // 1. Send Email Notification
+      await fetch('/api/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          inquiryType: formData.type,
+          message: formData.message,
+        }),
+      });
+
+      // 2. Save locally for the dashboard (optional fallback)
       const existingLeadsStr = localStorage.getItem("airo_leads");
       let leads = [];
       try {
@@ -34,8 +47,7 @@ export default function ContactPage() {
         leads = [];
       }
 
-      // 2. Add new lead
-      const newLead = {
+      leads.unshift({
         id: Math.random().toString(),
         name: formData.name,
         email: formData.email,
@@ -45,13 +57,10 @@ export default function ContactPage() {
         source: "Contact Form",
         status: "Pending",
         createdAt: new Date().toISOString()
-      };
-
-      leads.unshift(newLead);
+      });
       localStorage.setItem("airo_leads", JSON.stringify(leads));
 
       // 3. Complete submission
-      setIsSubmitting(false);
       setIsSubmitted(true);
       setFormData({
         name: "",
@@ -60,7 +69,14 @@ export default function ContactPage() {
         type: "General Inquiry",
         message: ""
       });
-    }, 1200);
+
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (error) {
+      console.error('Failed to submit form', error);
+      alert('There was an error sending your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const pageContent = cmsData.pages.contact;

@@ -245,10 +245,24 @@ export function AiraChatbot() {
       
       if (isLead) {
         try {
+          const isEmail = emailRegex.test(input);
+
+          // Send email notification
+          fetch('/api/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'chatbot',
+              name: "Chatbot Visitor",
+              email: isEmail ? textToSend : "Not Provided",
+              phone: !isEmail ? textToSend : "Not Provided",
+              message: `Captured contact details during conversation: "${textToSend}"`,
+            }),
+          }).catch(console.error);
+
           const existingLeadsStr = localStorage.getItem("airo_leads");
           const leads = existingLeadsStr ? JSON.parse(existingLeadsStr) : [];
           
-          const isEmail = emailRegex.test(input);
           const newLead = {
             id: Math.random().toString(),
             name: "Chatbot Visitor",
