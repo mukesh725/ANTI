@@ -247,12 +247,15 @@ export function AiraChatbot() {
         try {
           const isEmail = emailRegex.test(input);
 
-          // Send email notification
-          fetch('/api/email', {
+          // Send email notification via Formspree
+          fetch('https://formspree.io/f/xpqegewy', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
             body: JSON.stringify({
-              type: 'chatbot',
+              subject: `New Chatbot Lead Captured!`,
               name: "Chatbot Visitor",
               email: isEmail ? textToSend : "Not Provided",
               phone: !isEmail ? textToSend : "Not Provided",

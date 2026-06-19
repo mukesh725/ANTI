@@ -24,12 +24,15 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      // 1. Send Email Notification
-      const res = await fetch('/api/email', {
+      // 1. Send Email Notification via Formspree
+      const res = await fetch('https://formspree.io/f/xpqegewy', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({
-          type: 'contact',
+          subject: `New Contact Inquiry: ${formData.name}`,
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
@@ -39,7 +42,7 @@ export default function ContactPage() {
       });
 
       if (!res.ok) {
-        throw new Error('Failed to send email API request');
+        throw new Error('Failed to send email API request to Formspree');
       }
 
       // 2. Save locally for the dashboard (optional fallback)
