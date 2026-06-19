@@ -105,6 +105,19 @@ export function LanguageTranslateWidget() {
         .skiptranslate > iframe.goog-te-banner-frame {
           display: none !important;
         }
+        
+        /* Force the native Google Translate element completely off-screen */
+        #google_translate_element,
+        .goog-te-gadget {
+          position: absolute !important;
+          left: -9999px !important;
+          top: -9999px !important;
+          width: 1px !important;
+          height: 1px !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          z-index: -1 !important;
+        }
       `}</style>
     </div>
   );
