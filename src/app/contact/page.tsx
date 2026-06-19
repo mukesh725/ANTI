@@ -25,7 +25,7 @@ export default function ContactPage() {
 
     try {
       // 1. Send Email Notification
-      await fetch('/api/email', {
+      const res = await fetch('/api/email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -37,6 +37,10 @@ export default function ContactPage() {
           message: formData.message,
         }),
       });
+
+      if (!res.ok) {
+        throw new Error('Failed to send email API request');
+      }
 
       // 2. Save locally for the dashboard (optional fallback)
       const existingLeadsStr = localStorage.getItem("airo_leads");
