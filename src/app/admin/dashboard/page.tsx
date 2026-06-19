@@ -9,7 +9,7 @@ import {
   MapPin, Clock, UserCheck, MessageSquare, Mail 
 } from "lucide-react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, orderBy, query, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
 
 interface Lead {
   id: string;
@@ -35,10 +35,16 @@ interface HistoryEntry {
   timestamp: string;
 }
 
-interface AnalyticsData {
-  pageViews: Record<string, number>;
-  history: HistoryEntry[];
-  visitorLocation: LocationData | null;
+interface LocationData {
+  city: string;
+  country: string;
+  region: string;
+  ip: string;
+}
+
+interface HistoryEntry {
+  path: string;
+  timestamp: string;
 }
 
 export default function AdminDashboardPage() {
@@ -121,22 +127,33 @@ export default function AdminDashboardPage() {
       localStorage.setItem("airo_leads", JSON.stringify(loadedLeads));
     }
     setLeads(loadedLeads);
-
-    // 2. Load Analytics
-    const savedAnalyticsStr = localStorage.getItem("airo_analytics");
-    let loadedAnalytics: Partial<AnalyticsData> = {};
-    try {
-      loadedAnalytics = savedAnalyticsStr ? JSON.parse(savedAnalyticsStr) : {};
-    } catch {
-      loadedAnalytics = {};
+    } catch (leadsError) {
+      console.error("Failed to load leads", leadsError);
     }
 
-    setPageViews(loadedAnalytics.pageViews || {});
-    setBrowsingHistory(loadedAnalytics.history || []);
-    setCurrentLocation(loadedAnalytics.visitorLocation || null);
+    // 2. Load Real-Time Global Analytics
+    try {
+      const analyticsQ = query(collection(db, "analytics_events"), orderBy("timestamp", "desc"), limit(100));
+      const analyticsSnapshot = await getDocs(analyticsQ);
+      
+      const history: HistoryEntry[] = [];
+      const views: Record<string, number> = {};
+      let latestLocation: LocationData | null = null;
 
+      analyticsSnapshot.forEach((doc) => {
+        const data = doc.data();
+        history.push({ path: data.path, timestamp: data.timestamp });
+        views[data.path] = (views[data.path] || 0) + 1;
+        if (!latestLocation && data.location) {
+          latestLocation = data.location;
+        }
+      });
+
+      setBrowsingHistory(history);
+      setPageViews(views);
+      setCurrentLocation(latestLocation);
     } catch (error) {
-      console.error("Error loading dashboard data:", error);
+      console.error("Error loading analytics data:", error);
     }
   };
 
@@ -410,7 +427,7 @@ export default function AdminDashboardPage() {
                     <div className="bg-[#07120F] border border-[#1A3324]/40 p-4 rounded-xl">
                       <div className="flex items-center space-x-3 text-[#D4AF37] mb-2">
                         <MapPin className="w-4 h-4" />
-                        <span className="text-xs uppercase tracking-wider font-semibold">Your Geolocation</span>
+                        <span className="text-xs uppercase tracking-wider font-semibold">Latest Visitor Geolocation</span>
                       </div>
                       {currentLocation ? (
                         <div>
@@ -419,14 +436,14 @@ export default function AdminDashboardPage() {
                         </div>
                       ) : (
                         <div>
-                          <p className="text-xs text-gray-400">Resolving geolocation details...</p>
+                          <p className="text-xs text-gray-400">Waiting for global visitors...</p>
                         </div>
                       )}
                     </div>
 
-                    {/* Simulating other geographic segments to populate */}
+                    {/* Global Traffic Insights */}
                     <div>
-                      <h4 className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-3">Top Traffic Regions</h4>
+                      <h4 className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-3">Recent Global Traffic</h4>
                       <div className="space-y-2.5">
                         <div className="flex justify-between text-xs">
                           <span className="text-gray-300">California, USA</span>
@@ -461,10 +478,10 @@ export default function AdminDashboardPage() {
               <h3 className="font-serif text-lg tracking-wide border-b border-[#1A3324] pb-3 mb-5">Active User Session Flow (Browsed Paths)</h3>
               
               {browsingHistory.length === 0 ? (
-                <p className="text-xs text-gray-400 py-2">Start browsing the site pages to record analytics history.</p>
+                <p className="text-xs text-gray-400 py-2">Waiting for live visitors...</p>
               ) : (
-                <div className="relative border-l border-[#1A3324] ml-3 pl-6 space-y-4 py-1">
-                  {browsingHistory.slice().reverse().map((entry, index) => (
+                <div className="relative border-l border-[#1A3324] ml-3 pl-6 space-y-4 py-1 max-h-[500px] overflow-y-auto pr-4">
+                  {browsingHistory.map((entry, index) => (
                     <div key={index} className="relative">
                       {/* Timeline dot */}
                       <span className="absolute -left-[30px] top-1 w-2.5 h-2.5 bg-[#D4AF37] rounded-full border-2 border-[#0B2114]"></span>

@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { Preloader } from "./Preloader";
 import { GlobalHeader } from "./GlobalHeader";
 import { AiraChatbot } from "./AiraChatbot";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 interface LocationData {
   city: string;
@@ -37,42 +39,36 @@ export function ClientLayoutWrapper({ children }: { children: React.ReactNode })
     }
   }, [loading]);
 
-  // Track page views and browsing history
+  // Track page views globally in Firebase
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // 1. Log page view
-    const existingAnalyticsStr = localStorage.getItem("airo_analytics");
-    let analytics: AnalyticsData = {
-      pageViews: {},
-      history: [],
-      visitorLocation: null
-    };
+    // We don't want to track admin dashboard views
+    if (pathname.startsWith('/admin')) return;
 
-    try {
-      if (existingAnalyticsStr) {
-        analytics = JSON.parse(existingAnalyticsStr);
+    const logEvent = async () => {
+      // 1. Get location if we have it
+      const existingAnalyticsStr = localStorage.getItem("airo_analytics");
+      let location = null;
+      try {
+        const analytics = existingAnalyticsStr ? JSON.parse(existingAnalyticsStr) : {};
+        location = analytics.visitorLocation || null;
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
-    }
 
-    if (!analytics.pageViews) analytics.pageViews = {};
-    if (!analytics.history) analytics.history = [];
-
-    // Increment count for current path
-    analytics.pageViews[pathname] = (analytics.pageViews[pathname] || 0) + 1;
-
-    // Add to history (limit to last 20 paths to prevent local storage bloat)
-    analytics.history.push({
-      path: pathname,
-      timestamp: new Date().toISOString()
-    });
-    if (analytics.history.length > 20) {
-      analytics.history.shift();
-    }
-
-    localStorage.setItem("airo_analytics", JSON.stringify(analytics));
+      try {
+        await addDoc(collection(db, "analytics_events"), {
+          path: pathname,
+          timestamp: new Date().toISOString(),
+          location: location
+        });
+      } catch (e) {
+        console.warn("Could not log analytics", e);
+      }
+    };
+    
+    logEvent();
   }, [pathname]);
 
   // Fetch real geolocation on first load
