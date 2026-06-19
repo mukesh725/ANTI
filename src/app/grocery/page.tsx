@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Shield, Leaf } from "lucide-react";
 import Link from "next/link";
+import cmsData from "@/data/cms.json";
 
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
@@ -40,61 +41,13 @@ function ParallaxImage({
   );
 }
 
-const categories = [
-  {
-    name: "Fresh & Organic Produce",
-    desc: "Farm-fresh fruits, vegetables, herbs, microgreens, salads, and cold-pressed juices.",
-    img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=800",
-  },
-  {
-    name: "Premium Proteins",
-    desc: "Fresh poultry, seafood, meats, eggs, and plant-based protein alternatives.",
-    img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800",
-  },
-  {
-    name: "Dairy & Alternatives",
-    desc: "Traditional dairy products alongside modern plant-based options designed for diverse lifestyles.",
-    img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=800",
-  },
-  {
-    name: "Pantry Essentials",
-    desc: "Rice, grains, oils, baking ingredients, cereals, pulses, and everyday kitchen staples.",
-    img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800",
-  },
-  {
-    name: "Bakery & Ready-to-Eat",
-    desc: "Freshly baked breads, pastries, sandwiches, wraps, salads, and prepared meals.",
-    img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800",
-  },
-  {
-    name: "Frozen Foods",
-    desc: "Convenient premium frozen options without compromising on quality.",
-    img: "https://images.unsplash.com/photo-1547082299-de196ea013d6?q=80&w=800",
-  },
-  {
-    name: "Beverages",
-    desc: "Coffee, tea, juices, hydration products, and functional wellness beverages.",
-    img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=800",
-  },
-  {
-    name: "Snacks & Wellness Foods",
-    desc: "Protein snacks, nuts, dried fruits, chocolates, and healthier alternatives.",
-    img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800",
-  },
-  {
-    name: "Global Foods",
-    desc: "A curated selection of international products inspired by cuisines from around the world.",
-    img: "https://images.unsplash.com/photo-1511381939415-e440c082180e?q=80&w=800",
-  },
-  {
-    name: "Home Essentials",
-    desc: "Thoughtfully selected household and everyday living products.",
-    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800",
-  }
-];
+// Categories are now loaded dynamically from cmsData
 
 export default function EssentialsPage() {
   const pageRef = useRef<HTMLDivElement>(null);
+  
+  const pageContent = cmsData.pages.grocery;
+  const { hero, philosophy, categories } = pageContent.sections;
 
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
@@ -110,8 +63,8 @@ export default function EssentialsPage() {
             </div>
             
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
-              Fresh. Organic.<br/>
-              <span className="italic font-light text-[#0B2114]/80">Better Living.</span>
+              {pageContent.title.split('.')[0]}. {pageContent.title.split('.')[1]}.<br/>
+              <span className="italic font-light text-[#0B2114]/80">{pageContent.subtitle}</span>
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-[#0B2114]/85 italic max-w-xl leading-relaxed mb-6">
@@ -119,7 +72,7 @@ export default function EssentialsPage() {
             </p>
             
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
-              From farm-fresh produce and premium proteins to global foods and wellness-focused products, every item is selected with quality, transparency, and nutrition in mind.
+              {hero.description}
             </p>
 
             <div className="flex items-center gap-4">
@@ -136,7 +89,7 @@ export default function EssentialsPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://plus.unsplash.com/premium_photo-1663039978847-63f7484bf701?q=80&w=1600" 
+                src={hero.image} 
                 alt="AIRO Fresh Produce"
                 className="w-full h-full"
                 speed={0.12}
@@ -144,10 +97,10 @@ export default function EssentialsPage() {
               <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
               <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
                 <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
-                  Daily Harvest
+                  {hero.title}
                 </span>
                 <p className="font-serif text-lg text-[#0B2114] font-medium">
-                  Organic Heirloom Selection
+                  {hero.description.split('.')[0]}
                 </p>
               </div>
             </div>
@@ -167,16 +120,16 @@ export default function EssentialsPage() {
                 Philosophy
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                Health Begins <br/>with <span className="italic font-light text-[#FAF8F5]/80">Everyday Choices</span>
+                {philosophy.title.split('with')[0]}<br/>with <span className="italic font-light text-[#FAF8F5]/80">{philosophy.title.split('with')[1]}</span>
               </h2>
               <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-                The food we eat impacts every aspect of our wellbeing.
+                {philosophy.description.split('.')[0]}.
               </p>
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-                At AIRO Essentials, we believe access to high-quality ingredients should be simple, convenient, and inspiring.
+                {philosophy.description.split('.')[1]}.
               </p>
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
-                Our approach focuses on sourcing products that support healthier lifestyles while maintaining exceptional standards for quality and freshness.
+                {philosophy.description.split('.').slice(2).join('.')}
               </p>
             </div>
 
@@ -184,7 +137,7 @@ export default function EssentialsPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1628102491629-778571d893a3?q=80&w=1600" 
+                  src={philosophy.image} 
                   alt="Conscious sourcing lifestyle" 
                   className="w-full h-full"
                   speed={0.08}
@@ -250,32 +203,38 @@ export default function EssentialsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.map((cat, idx) => (
-              <div key={idx} className="group relative overflow-hidden rounded-2xl bg-[#091710] shadow-xl flex flex-col h-[400px]">
-                {/* Slow Zoom Parallax Image */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden">
-                  <img 
-                    src={cat.img} 
-                    alt={cat.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-40 group-hover:opacity-50"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 relative z-20">
+            {categories.map((category, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.8 }}
+                className="group relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/10] bg-[#1A3324]"
+              >
+                <div className="absolute inset-0 overflow-hidden">
+                  <motion.img 
+                    src={category.image}
+                    alt={category.title}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
                 </div>
-                
-                {/* Text Content */}
-                <div className="relative z-10 mt-auto p-8 flex flex-col h-full justify-end">
-                  <span className="font-serif text-lg text-[#FAF8F5]/30 group-hover:text-[#FAF8F5]/50 mb-2 block transition-colors">
-                    0{idx + 1}
-                  </span>
-                  <h3 className="font-serif text-2xl text-[#FAF8F5] mb-3 leading-snug">
-                    {cat.name}
-                  </h3>
-                  <p className="font-sans text-xs text-[#FAF8F5]/75 leading-relaxed tracking-wide opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out">
-                    {cat.desc}
-                  </p>
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end h-full">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#D4AF37] mb-2 block">
+                      Category {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="font-serif text-2xl md:text-3xl text-[#FAF8F5] mb-3">
+                      {category.title}
+                    </h3>
+                    <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 leading-relaxed tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 max-w-sm">
+                      {category.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

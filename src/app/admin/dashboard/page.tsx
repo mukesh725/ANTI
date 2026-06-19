@@ -854,48 +854,212 @@ export default function AdminDashboardPage() {
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {Object.entries(pageData.sections as Record<string, any>).map(([sectionKey, sectionData]: [string, any]) => (
                           <div key={sectionKey} className="bg-[#07120F] border border-[#1A3324]/40 rounded-xl p-4">
-                            <div className="mb-3">
-                              <label className="text-[10px] text-gray-500 font-mono block mb-1">Section: {sectionKey}</label>
-                              <input 
-                                type="text" 
-                                value={sectionData.title}
-                                onChange={(e) => setCmsData({
-                                  ...cmsData, 
-                                  pages: {
-                                    ...cmsData.pages, 
-                                    [pageKey]: { 
-                                      ...pageData, 
-                                      sections: {
-                                        ...pageData.sections,
-                                        [sectionKey]: { ...sectionData, title: e.target.value }
-                                      } 
-                                    }
-                                  }
-                                })}
-                                className="w-full bg-transparent border-b border-[#1A3324] px-0 py-1 text-sm font-serif text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] mb-3"
-                              />
+                            <div className="mb-4">
+                              <label className="text-[10px] text-gray-500 font-mono block mb-1 uppercase tracking-widest border-b border-[#1A3324] pb-2">Section: {sectionKey}</label>
                             </div>
-                            <div>
-                              <label className="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block mb-1">Image URL</label>
-                              <input 
-                                type="text" 
-                                value={sectionData.image}
-                                onChange={(e) => setCmsData({
-                                  ...cmsData, 
-                                  pages: {
-                                    ...cmsData.pages, 
-                                    [pageKey]: { 
-                                      ...pageData, 
-                                      sections: {
-                                        ...pageData.sections,
-                                        [sectionKey]: { ...sectionData, image: e.target.value }
-                                      } 
-                                    }
-                                  }
-                                })}
-                                className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs font-mono text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
-                              />
-                            </div>
+                            
+                            {Array.isArray(sectionData) ? (
+                              <div className="space-y-6">
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                {sectionData.map((item: any, idx: number) => (
+                                  <div key={idx} className="pl-4 border-l-2 border-[#1A3324] space-y-3">
+                                    <label className="text-[9px] text-[#D4AF37] font-bold block">ITEM {idx + 1}</label>
+                                    {item.title !== undefined && (
+                                      <input 
+                                        type="text" 
+                                        value={item.title}
+                                        placeholder="Title"
+                                        onChange={(e) => {
+                                          const newArray = [...sectionData];
+                                          newArray[idx] = { ...item, title: e.target.value };
+                                          setCmsData({
+                                            ...cmsData, 
+                                            pages: {
+                                              ...cmsData.pages, 
+                                              [pageKey]: { ...pageData, sections: { ...pageData.sections, [sectionKey]: newArray } }
+                                            }
+                                          });
+                                        }}
+                                        className="w-full bg-transparent border-b border-[#1A3324] px-0 py-1 text-sm font-serif text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                      />
+                                    )}
+                                    {item.description !== undefined && (
+                                      <textarea 
+                                        value={item.description}
+                                        placeholder="Description"
+                                        onChange={(e) => {
+                                          const newArray = [...sectionData];
+                                          newArray[idx] = { ...item, description: e.target.value };
+                                          setCmsData({
+                                            ...cmsData, 
+                                            pages: {
+                                              ...cmsData.pages, 
+                                              [pageKey]: { ...pageData, sections: { ...pageData.sections, [sectionKey]: newArray } }
+                                            }
+                                          });
+                                        }}
+                                        className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] min-h-[60px]"
+                                      />
+                                    )}
+                                    {item.image !== undefined && (
+                                      <input 
+                                        type="text" 
+                                        value={item.image}
+                                        placeholder="Image URL"
+                                        onChange={(e) => {
+                                          const newArray = [...sectionData];
+                                          newArray[idx] = { ...item, image: e.target.value };
+                                          setCmsData({
+                                            ...cmsData, 
+                                            pages: {
+                                              ...cmsData.pages, 
+                                              [pageKey]: { ...pageData, sections: { ...pageData.sections, [sectionKey]: newArray } }
+                                            }
+                                          });
+                                        }}
+                                        className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs font-mono text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                      />
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="space-y-3">
+                                {sectionData.title !== undefined && (
+                                  <input 
+                                    type="text" 
+                                    value={sectionData.title}
+                                    placeholder="Section Title"
+                                    onChange={(e) => setCmsData({
+                                      ...cmsData, 
+                                      pages: {
+                                        ...cmsData.pages, 
+                                        [pageKey]: { 
+                                          ...pageData, 
+                                          sections: {
+                                            ...pageData.sections,
+                                            [sectionKey]: { ...sectionData, title: e.target.value }
+                                          } 
+                                        }
+                                      }
+                                    })}
+                                    className="w-full bg-transparent border-b border-[#1A3324] px-0 py-1 text-sm font-serif text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                  />
+                                )}
+                                {sectionData.description !== undefined && (
+                                  <textarea 
+                                    value={sectionData.description}
+                                    placeholder="Description"
+                                    onChange={(e) => setCmsData({
+                                      ...cmsData, 
+                                      pages: {
+                                        ...cmsData.pages, 
+                                        [pageKey]: { 
+                                          ...pageData, 
+                                          sections: {
+                                            ...pageData.sections,
+                                            [sectionKey]: { ...sectionData, description: e.target.value }
+                                          } 
+                                        }
+                                      }
+                                    })}
+                                    className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] min-h-[60px]"
+                                  />
+                                )}
+                                {sectionData.image !== undefined && (
+                                  <div>
+                                    <label className="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block mb-1 mt-2">Image URL</label>
+                                    <input 
+                                      type="text" 
+                                      value={sectionData.image}
+                                      onChange={(e) => setCmsData({
+                                        ...cmsData, 
+                                        pages: {
+                                          ...cmsData.pages, 
+                                          [pageKey]: { 
+                                            ...pageData, 
+                                            sections: {
+                                              ...pageData.sections,
+                                              [sectionKey]: { ...sectionData, image: e.target.value }
+                                            } 
+                                          }
+                                        }
+                                      })}
+                                      className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs font-mono text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                    />
+                                  </div>
+                                )}
+                                {sectionData.phone !== undefined && (
+                                  <div>
+                                    <label className="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block mb-1 mt-2">Phone Number</label>
+                                    <input 
+                                      type="text" 
+                                      value={sectionData.phone}
+                                      onChange={(e) => setCmsData({
+                                        ...cmsData, 
+                                        pages: {
+                                          ...cmsData.pages, 
+                                          [pageKey]: { 
+                                            ...pageData, 
+                                            sections: {
+                                              ...pageData.sections,
+                                              [sectionKey]: { ...sectionData, phone: e.target.value }
+                                            } 
+                                          }
+                                        }
+                                      })}
+                                      className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                    />
+                                  </div>
+                                )}
+                                {sectionData.email !== undefined && (
+                                  <div>
+                                    <label className="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block mb-1 mt-2">Email Address</label>
+                                    <input 
+                                      type="email" 
+                                      value={sectionData.email}
+                                      onChange={(e) => setCmsData({
+                                        ...cmsData, 
+                                        pages: {
+                                          ...cmsData.pages, 
+                                          [pageKey]: { 
+                                            ...pageData, 
+                                            sections: {
+                                              ...pageData.sections,
+                                              [sectionKey]: { ...sectionData, email: e.target.value }
+                                            } 
+                                          }
+                                        }
+                                      })}
+                                      className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                    />
+                                  </div>
+                                )}
+                                {sectionData.address !== undefined && (
+                                  <div>
+                                    <label className="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block mb-1 mt-2">Physical Address</label>
+                                    <input 
+                                      type="text" 
+                                      value={sectionData.address}
+                                      onChange={(e) => setCmsData({
+                                        ...cmsData, 
+                                        pages: {
+                                          ...cmsData.pages, 
+                                          [pageKey]: { 
+                                            ...pageData, 
+                                            sections: {
+                                              ...pageData.sections,
+                                              [sectionKey]: { ...sectionData, address: e.target.value }
+                                            } 
+                                          }
+                                        }
+                                      })}
+                                      className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>

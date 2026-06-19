@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Shield } from "lucide-react";
 import Link from "next/link";
+import cmsData from "@/data/cms.json";
 
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
@@ -43,6 +44,9 @@ function ParallaxImage({
 export default function MinuteClinicPage() {
   const pageRef = useRef<HTMLDivElement>(null);
 
+  const pageContent = cmsData.pages.minuteClinic;
+  const { hero, friction, prevention } = pageContent.sections;
+
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
       
@@ -57,8 +61,8 @@ export default function MinuteClinicPage() {
             </div>
             
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
-              Healthcare For The <br/>
-              <span className="italic font-light text-[#0B2114]/80">Way Life Happens.</span>
+              {pageContent.title}<br/>
+              <span className="italic font-light text-[#0B2114]/80">{pageContent.subtitle}</span>
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-[#0B2114]/80 italic max-w-xl leading-relaxed mb-6">
@@ -83,7 +87,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=1600" 
+                src={hero.image} 
                 alt="AIRO Clinic Biomarkers & Diagnostics"
                 className="w-full h-full"
                 speed={0.1}
@@ -91,10 +95,10 @@ export default function MinuteClinicPage() {
               <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
               <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
                 <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
-                  Diagnostics & Prevention
+                  {hero.title}
                 </span>
                 <p className="font-serif text-lg text-[#0B2114] font-medium">
-                  Advanced Biomarker Screenings
+                  {hero.description}
                 </p>
               </div>
             </div>
@@ -114,16 +118,13 @@ export default function MinuteClinicPage() {
                 Access
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                Healthcare Without <br/>the <span className="italic font-light text-[#FAF8F5]/80">Friction</span>
+                {friction.title.split('the')[0]}<br/>the <span className="italic font-light text-[#FAF8F5]/80">{friction.title.split('the')[1]}</span>
               </h2>
               <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-                Getting quality care shouldn&apos;t require weeks of waiting.
+                {friction.description.split('.')[0]}.
               </p>
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-                AIRO Minute Clinic was created to provide faster access to healthcare services for individuals and families seeking preventive care, everyday medical support, and ongoing wellness guidance.
-              </p>
-              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
-                Our approach combines convenience with clinical excellence, helping people receive care when it matters most.
+                {friction.description.split('.').slice(1).join('.')}
               </p>
             </div>
 
@@ -131,7 +132,7 @@ export default function MinuteClinicPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1600" 
+                  src={friction.image} 
                   alt="Seamless Clinic Experience" 
                   className="w-full h-full"
                   speed={0.12}
@@ -152,7 +153,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=1600" 
+                src={prevention.image} 
                 alt="Active healthy longevity" 
                 className="w-full h-full"
                 speed={0.08}
@@ -167,16 +168,13 @@ export default function MinuteClinicPage() {
               Vision
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              Designed Around <br/><span className="italic font-light text-[#0B2114]/80">Prevention</span>
+              {prevention.title.split('Around')[0]}Around <br/><span className="italic font-light text-[#0B2114]/80">{prevention.title.split('Around')[1]}</span>
             </h2>
             <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-              The future of healthcare is prevention.
+              {prevention.description.split('.')[0]}.
             </p>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-              Many of today&apos;s most common health conditions can be better managed—or even avoided—through early detection, routine monitoring, and proactive care.
-            </p>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide">
-              AIRO Minute Clinic focuses on helping patients understand their health before symptoms become serious problems.
+              {prevention.description.split('.').slice(1).join('.')}
             </p>
           </div>
 

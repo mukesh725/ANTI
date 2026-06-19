@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Shield } from "lucide-react";
 import Link from "next/link";
+import cmsData from "@/data/cms.json";
 
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
@@ -44,6 +45,9 @@ function ParallaxImage({
 
 export default function PharmacyPage() {
   const pageRef = useRef<HTMLDivElement>(null);
+  
+  const pageContent = cmsData.pages.pharmacy;
+  const { hero, compounding, everyday } = pageContent.sections;
 
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
@@ -59,8 +63,8 @@ export default function PharmacyPage() {
             </div>
             
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
-              Modern Pharmacy.<br/>
-              <span className="italic font-light text-[#0B2114]/80">Personalized Wellness.</span>
+              {pageContent.title.split('.')[0]}.<br/>
+              <span className="italic font-light text-[#0B2114]/80">{pageContent.subtitle}</span>
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-[#0B2114]/80 italic max-w-xl leading-relaxed mb-6">
@@ -85,7 +89,7 @@ export default function PharmacyPage() {
           <div className="lg:col-span-5 w-full">
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
-                src="/pharmacy-hero.jpg" 
+                src={hero.image} 
                 alt="AIRO Pharmacy Services"
                 className="w-full h-full"
                 speed={0.12}
@@ -93,10 +97,10 @@ export default function PharmacyPage() {
               <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
               <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
                 <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
-                  Premium Pharmacy Care
+                  {hero.title}
                 </span>
                 <p className="font-serif text-lg text-[#0B2114] font-medium">
-                  Everyday Prescriptions & Clinical Support
+                  {hero.description}
                 </p>
               </div>
             </div>
@@ -196,13 +200,13 @@ export default function PharmacyPage() {
                 Tailored Biology
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                Personalized Care <br/><span className="italic font-light text-[#FAF8F5]/80">Starts Here</span>
+                {compounding.title.split(',')[0]}<br/><span className="italic font-light text-[#FAF8F5]/80">{compounding.title.split(',')[1]}</span>
               </h2>
-              <p className="font-serif text-lg md:text-xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-                No two people are alike. Your medications, wellness needs, and health goals deserve a more personalized approach.
+              <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+                {compounding.description.split('.')[0]}.
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-8 tracking-wide">
-                Through pharmacist consultations, wellness guidance, and customized compounding solutions, AIRO helps create healthcare experiences built around individual needs rather than one-size-fits-all solutions.
+              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
+                {compounding.description.split('.').slice(1).join('.')}
               </p>
 
               {/* Compounding teaser box */}
@@ -220,7 +224,7 @@ export default function PharmacyPage() {
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1645755637082-8bfc52079dfb?q=80&w=1600" 
+                  src={compounding.image} 
                   alt="Premium wellness compounds apothecary" 
                   className="w-full h-full"
                   speed={0.1}
@@ -241,8 +245,8 @@ export default function PharmacyPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1584543238200-96c253bcd9d4?q=80&w=1600" 
-                alt="Sun filtering through trees - Longevity concept" 
+                src={everyday.image} 
+                alt="Everyday wellness concept" 
                 className="w-full h-full"
                 speed={0.14}
               />
@@ -256,16 +260,13 @@ export default function PharmacyPage() {
               Proactive Care
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              Wellness Meets <br/><span className="italic font-light text-[#0B2114]/80">Science</span>
+              {everyday.title.split(' ')[0]} <br/><span className="italic font-light text-[#0B2114]/80">{everyday.title.split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-              The future of healthcare isn&apos;t reactive. It&apos;s proactive.
+              {everyday.description.split('.')[0]}.
             </p>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-              From vitamins and nutritional support to advanced health monitoring and preventive care solutions, AIRO Pharmacy helps individuals make informed decisions before health concerns become problems.
-            </p>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide font-medium">
-              Because lasting wellness begins long before symptoms appear.
+              {everyday.description.split('.').slice(1).join('.')}
             </p>
           </div>
 

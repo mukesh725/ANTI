@@ -9,6 +9,7 @@ import {
   ChevronDown, CheckCircle2 
 } from "lucide-react";
 import { GlobalHeader } from "@/components/GlobalHeader";
+import cmsData from "@/data/cms.json";
 
 export default function HealthChairPage() {
   // =========================================================================
@@ -41,6 +42,9 @@ export default function HealthChairPage() {
   // =========================================================================
   const preventRef = useRef<HTMLDivElement>(null);
 
+  const pageContent = cmsData.pages.healthChair;
+  const { hero, assessment, insights } = pageContent.sections;
+
   return (
     <div className="bg-[#FAF8F5] text-[#0B2114] min-h-screen font-sans selection:bg-[#0B2114] selection:text-[#FAF8F5] overflow-clip">
       <GlobalHeader />
@@ -50,7 +54,7 @@ export default function HealthChairPage() {
         {/* Background Image */}
         <div 
           className="absolute inset-0 z-0 bg-center bg-no-repeat bg-cover"
-          style={{ backgroundImage: "url('/airo-praana-hero.png')" }}
+          style={{ backgroundImage: `url('${hero.image}')` }}
         />
         {/* Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />
@@ -75,8 +79,8 @@ export default function HealthChairPage() {
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
               className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight leading-none mb-6 text-white"
             >
-              AIRO<br/>
-              <span className="italic font-light">Praana</span>
+              {pageContent.title.split(' ')[0]}<br/>
+              <span className="italic font-light">{pageContent.title.split(' ')[1]}</span>
             </motion.h1>
             
             <motion.p 
@@ -85,7 +89,7 @@ export default function HealthChairPage() {
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="text-lg md:text-xl font-serif italic text-white/80 mb-6"
             >
-              A 5-minute health assessment.<br/>A lifetime of health insights.
+              {pageContent.subtitle.split('.')[0]}.<br/>{pageContent.subtitle.split('.').slice(1).join('.')}
             </motion.p>
             
             <motion.p 
@@ -94,7 +98,7 @@ export default function HealthChairPage() {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               className="text-sm md:text-base text-white/60 max-w-md leading-relaxed"
             >
-              Capture key health indicators in minutes and establish your personalized health baseline—all within the AIRO ecosystem.
+              {hero.description}
             </motion.p>
           </div>
 
@@ -143,7 +147,7 @@ export default function HealthChairPage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16 md:mb-24 z-20 relative">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
-              Three Steps. <span className="italic font-light text-[#0B2114]/60">Five Minutes.</span>
+              {assessment.title.split('.')[0]}. <span className="italic font-light text-[#0B2114]/60">{assessment.title.split('.').slice(1).join('.')}</span>
             </h2>
           </div>
 
@@ -186,9 +190,9 @@ export default function HealthChairPage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16 md:mb-24 relative z-20">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
-              More Than <span className="italic font-light text-[#0B2114]/60">Measurements</span>
+              {insights.title.split(' ')[0]} {insights.title.split(' ')[1]} <span className="italic font-light text-[#0B2114]/60">{insights.title.split(' ').slice(2).join(' ')}</span>
             </h2>
-            <p className="text-[#0B2114]/60 max-w-xl mx-auto">See how your raw data transforms into actionable insights.</p>
+            <p className="text-[#0B2114]/60 max-w-xl mx-auto">{insights.description.split('.')[0]}.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 relative z-20">

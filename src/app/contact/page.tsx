@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, Check, Send, Sparkles } from "lucide-react";
+import cmsData from "@/data/cms.json";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -62,6 +63,9 @@ export default function ContactPage() {
     }, 1200);
   };
 
+  const pageContent = cmsData.pages.contact;
+  const { details } = pageContent.sections;
+
   return (
     <div className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
       
@@ -94,7 +98,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call AIRO Concierge</h4>
                   <p className="text-sm font-semibold hover:text-[#0B2114]/70 transition-colors">
-                    +1 (800) 555-AIRO
+                    {details.phone}
                   </p>
                   <p className="text-xs text-[#0B2114]/60 mt-0.5">Toll-free across North America</p>
                 </div>
@@ -107,7 +111,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Email Inquiry</h4>
                   <p className="text-sm font-semibold hover:text-[#0B2114]/70 transition-colors">
-                    concierge@airohealth.com
+                    {details.email}
                   </p>
                   <p className="text-xs text-[#0B2114]/60 mt-0.5">Our response standard is within 3 business hours</p>
                 </div>
@@ -120,7 +124,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Flagship Location</h4>
                   <p className="text-sm font-semibold">
-                    9601 Wilshire Blvd, Beverly Hills, CA 90210
+                    {details.address}
                   </p>
                   <p className="text-xs text-[#0B2114]/60 mt-0.5">Integrated clinic, laboratory, and pharmacy center</p>
                 </div>
