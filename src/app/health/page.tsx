@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
+import cmsData from "@/data/cms.json";
 
 // Custom Parallax Image component for smooth, luxury page scroll animations
 function ParallaxImage({ 
@@ -79,7 +80,8 @@ const healthCategories = [
   }
 ];
 
-export default function HealthHomePage() {
+export default function HealthPage() {
+  const healthData = cmsData.pages.health;
   const heroRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -101,13 +103,13 @@ export default function HealthHomePage() {
         </div>
 
         <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-12 w-full flex flex-col items-center text-center md:items-start md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-8">
-            <Activity className="w-3 h-3 text-[#FAF8F5]" /> Clinical Precision
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
+            <Activity className="w-3 h-3 text-[#FAF8F5]" /> {healthData.subtitle || "PREVENTATIVE CARE. REDEFINED."}
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FAF8F5] mb-8">
-            AIRO <br/>
-            <span className="italic font-light text-[#FAF8F5]/80">Health.</span>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FAF8F5] mb-6 md:mb-8">
+            {healthData.title.split(' ')[0] || "AIRO"} <br/>
+            <span className="italic font-light text-[#FAF8F5]/80">{healthData.title.split(' ').slice(1).join(' ') || "Health"}</span>
           </h1>
           
           <p className="font-serif text-lg md:text-2xl text-[#FAF8F5]/95 italic max-w-2xl leading-relaxed mb-6">
@@ -135,8 +137,8 @@ export default function HealthHomePage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src="/airo-praana-hero.png" 
-                  alt="AIRO Praana Assessment" 
+                  src={healthData.sections.praana.image} 
+                  alt={healthData.sections.praana.title} 
                   className="w-full h-full"
                   speed={0.1}
                 />
@@ -150,11 +152,12 @@ export default function HealthHomePage() {
               </div>
 
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-[#FAF8F5]">
-                AIRO <br/><span className="italic font-light text-[#FAF8F5]/80">Praana</span>
+                {healthData.sections.praana.title.split(' ')[0] || "AIRO"} <br/>
+                <span className="italic font-light text-[#FAF8F5]/80">{healthData.sections.praana.title.split(' ').slice(1).join(' ') || "Praana"}</span>
               </h2>
 
               <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl mb-8 font-light leading-relaxed">
-                A 5-minute diagnostic assessment. A lifetime of longevity insights.
+                {healthData.sections.praana.description || "A 5-minute diagnostic assessment. A lifetime of longevity insights."}
               </p>
 
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-10 tracking-wide">

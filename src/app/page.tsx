@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
+import cmsData from "@/data/cms.json";
 
 // Custom Parallax Image component for smooth, luxury page scroll animations
 function ParallaxImage({ 
@@ -86,6 +87,7 @@ const ecosystemCategories = [
 ];
 
 export default function HomePage() {
+  const homeData = cmsData.pages.home;
   const heroRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -110,12 +112,12 @@ export default function HomePage() {
         {/* Hero Content Overlay */}
         <div className="relative z-10 max-w-[1000px] text-[#FAF8F5] pt-32 md:pt-16 mt-8 md:mt-0 w-full flex flex-col items-center text-center md:items-start md:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
-            <Sparkles className="w-3 h-3 text-[#FAF8F5]" /> A Connected Wellness Ecosystem
+            <Sparkles className="w-3 h-3 text-[#FAF8F5]" /> {homeData.subtitle || "A Connected Wellness Ecosystem"}
           </div>
           
           <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FAF8F5] mb-6 md:mb-8">
-            The Future of <br/>
-            <span className="italic font-light text-[#FAF8F5]/80">Preventive Healthcare.</span>
+            {homeData.title.split(' ')[0] || "The Future of"} <br/>
+            <span className="italic font-light text-[#FAF8F5]/80">{homeData.title.split(' ').slice(1).join(' ') || "Preventive Healthcare."}</span>
           </h1>
           
           <p className="font-serif text-lg md:text-2xl text-[#FAF8F5]/95 italic max-w-2xl leading-relaxed mb-6">
@@ -189,8 +191,8 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="/pharmacy-hero.jpg"
-                  alt="AIRO Pharmacy Compounding"
+                  src={homeData.sections.pharmacy.image}
+                  alt={homeData.sections.pharmacy.title}
                   className="w-full h-full"
                   speed={0.06}
                 />
@@ -215,8 +217,8 @@ export default function HomePage() {
             <div className="flex flex-col group h-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
                 <ParallaxImage 
-                  src="/clinic-connected.jpg"
-                  alt="AIRO Minute Clinic"
+                  src={homeData.sections.clinic.image}
+                  alt={homeData.sections.clinic.title}
                   className="w-full h-full"
                   speed={0.06}
                 />
@@ -252,8 +254,8 @@ export default function HomePage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src="/airo-praana-hero.png" 
-                  alt="AIRO Praana Assessment" 
+                  src={homeData.sections.praana.image} 
+                  alt={homeData.sections.praana.title} 
                   className="w-full h-full"
                   speed={0.1}
                 />
@@ -268,7 +270,8 @@ export default function HomePage() {
               </div>
 
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-[#FAF8F5]">
-                AIRO <br/><span className="italic font-light text-[#FAF8F5]/80">Praana</span>
+                {homeData.sections.praana.title.split(' ')[0]} <br/>
+                <span className="italic font-light text-[#FAF8F5]/80">{homeData.sections.praana.title.split(' ').slice(1).join(' ')}</span>
               </h2>
 
               <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl mb-8 font-light leading-relaxed">

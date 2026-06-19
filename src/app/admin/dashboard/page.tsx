@@ -42,7 +42,10 @@ interface AnalyticsData {
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<"analytics" | "leads">("analytics");
+  const [activeTab, setActiveTab] = useState<"analytics" | "leads" | "cms">("analytics");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [cmsData, setCmsData] = useState<any>(null);
+  const [cmsLoading, setCmsLoading] = useState(false);
   
   // Leads states
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -132,6 +135,27 @@ export default function AdminDashboardPage() {
     setPageViews(loadedAnalytics.pageViews || {});
     setBrowsingHistory(loadedAnalytics.history || []);
     setCurrentLocation(loadedAnalytics.visitorLocation || null);
+
+    // 3. Load CMS Data
+    fetch("/api/cms")
+      .then(res => res.json())
+      .then(data => setCmsData(data))
+      .catch(console.error);
+  };
+
+  const handleSaveCms = async () => {
+    setCmsLoading(true);
+    try {
+      await fetch("/api/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cmsData),
+      });
+      alert("Website content & theme updated successfully!");
+    } catch {
+      alert("Failed to save CMS data.");
+    }
+    setCmsLoading(false);
   };
 
   // Auth Operations
@@ -279,6 +303,18 @@ export default function AdminDashboardPage() {
                   {leads.filter(l => l.status === "Pending").length}
                 </span>
               )}
+            </button>
+
+            <button
+              onClick={() => setActiveTab("cms")}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-150 relative ${
+                activeTab === "cms"
+                  ? "bg-[#FAF8F5] text-[#0B2114] shadow-md"
+                  : "text-[#FAF8F5]/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              <Eye className="w-4 h-4" />
+              <span>Content Manager</span>
             </button>
           </nav>
         </div>
@@ -701,6 +737,178 @@ export default function AdminDashboardPage() {
                 )}
               </div>
             </div>
+          </motion.div>
+        )}
+
+        {/* Tab 3: Content Management System */}
+        {activeTab === "cms" && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+          >
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+              <div>
+                <h1 className="font-serif text-3xl tracking-wide mb-1">Content Manager</h1>
+                <p className="text-xs text-gray-400 uppercase tracking-widest font-medium">Update website content and theme</p>
+              </div>
+              <button
+                onClick={handleSaveCms}
+                disabled={cmsLoading}
+                className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B2114] text-xs font-semibold uppercase tracking-wider px-6 py-2.5 rounded-xl flex items-center space-x-2 transition-all shadow-md active:scale-95 disabled:opacity-50"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>{cmsLoading ? "Saving..." : "Publish Changes"}</span>
+              </button>
+            </div>
+
+            {cmsData ? (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Global Theme */}
+                <div className="lg:col-span-4 space-y-6">
+                  <div className="bg-[#0B2114] border border-[#1A3324] rounded-2xl p-6 shadow-lg">
+                    <h3 className="font-serif text-lg tracking-wide border-b border-[#1A3324] pb-3 mb-5">Global Theme</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-2">Primary Dark Color</label>
+                        <div className="flex items-center space-x-3">
+                          <input 
+                            type="color" 
+                            value={cmsData.theme.primary} 
+                            onChange={(e) => setCmsData({...cmsData, theme: {...cmsData.theme, primary: e.target.value}})}
+                            className="w-8 h-8 rounded cursor-pointer bg-transparent border-0 p-0"
+                          />
+                          <input 
+                            type="text" 
+                            value={cmsData.theme.primary}
+                            onChange={(e) => setCmsData({...cmsData, theme: {...cmsData.theme, primary: e.target.value}})}
+                            className="bg-[#07120F] border border-[#1A3324] rounded-md px-3 py-1.5 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-2">Secondary Light Color</label>
+                        <div className="flex items-center space-x-3">
+                          <input 
+                            type="color" 
+                            value={cmsData.theme.secondary} 
+                            onChange={(e) => setCmsData({...cmsData, theme: {...cmsData.theme, secondary: e.target.value}})}
+                            className="w-8 h-8 rounded cursor-pointer bg-transparent border-0 p-0"
+                          />
+                          <input 
+                            type="text" 
+                            value={cmsData.theme.secondary}
+                            onChange={(e) => setCmsData({...cmsData, theme: {...cmsData.theme, secondary: e.target.value}})}
+                            className="bg-[#07120F] border border-[#1A3324] rounded-md px-3 py-1.5 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pages Content */}
+                <div className="lg:col-span-8 space-y-6">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {Object.entries(cmsData.pages as Record<string, any>).map(([pageKey, pageData]: [string, any]) => (
+                    <div key={pageKey} className="bg-[#0B2114] border border-[#1A3324] rounded-2xl p-6 shadow-lg">
+                      <h3 className="font-serif text-lg tracking-wide border-b border-[#1A3324] pb-3 mb-5 capitalize">{pageKey} Page</h3>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-2">Hero Title</label>
+                          <input 
+                            type="text" 
+                            value={pageData.title}
+                            onChange={(e) => setCmsData({
+                              ...cmsData, 
+                              pages: {
+                                ...cmsData.pages, 
+                                [pageKey]: { ...pageData, title: e.target.value }
+                              }
+                            })}
+                            className="w-full bg-[#07120F] border border-[#1A3324] rounded-xl px-4 py-2.5 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                          />
+                        </div>
+                        {pageData.subtitle && (
+                          <div>
+                            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block mb-2">Hero Subtitle</label>
+                            <input 
+                              type="text" 
+                              value={pageData.subtitle}
+                              onChange={(e) => setCmsData({
+                                ...cmsData, 
+                                pages: {
+                                  ...cmsData.pages, 
+                                  [pageKey]: { ...pageData, subtitle: e.target.value }
+                                }
+                              })}
+                              className="w-full bg-[#07120F] border border-[#1A3324] rounded-xl px-4 py-2.5 text-xs text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-4">
+                        <h4 className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold border-t border-[#1A3324]/50 pt-4 mb-3">Sections & Media</h4>
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {Object.entries(pageData.sections as Record<string, any>).map(([sectionKey, sectionData]: [string, any]) => (
+                          <div key={sectionKey} className="bg-[#07120F] border border-[#1A3324]/40 rounded-xl p-4">
+                            <div className="mb-3">
+                              <label className="text-[10px] text-gray-500 font-mono block mb-1">Section: {sectionKey}</label>
+                              <input 
+                                type="text" 
+                                value={sectionData.title}
+                                onChange={(e) => setCmsData({
+                                  ...cmsData, 
+                                  pages: {
+                                    ...cmsData.pages, 
+                                    [pageKey]: { 
+                                      ...pageData, 
+                                      sections: {
+                                        ...pageData.sections,
+                                        [sectionKey]: { ...sectionData, title: e.target.value }
+                                      } 
+                                    }
+                                  }
+                                })}
+                                className="w-full bg-transparent border-b border-[#1A3324] px-0 py-1 text-sm font-serif text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] mb-3"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block mb-1">Image URL</label>
+                              <input 
+                                type="text" 
+                                value={sectionData.image}
+                                onChange={(e) => setCmsData({
+                                  ...cmsData, 
+                                  pages: {
+                                    ...cmsData.pages, 
+                                    [pageKey]: { 
+                                      ...pageData, 
+                                      sections: {
+                                        ...pageData.sections,
+                                        [sectionKey]: { ...sectionData, image: e.target.value }
+                                      } 
+                                    }
+                                  }
+                                })}
+                                className="w-full bg-[#0B2114] border border-[#1A3324] rounded-lg px-3 py-2 text-xs font-mono text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-20 text-gray-500 text-xs">
+                Loading Content Management System...
+              </div>
+            )}
           </motion.div>
         )}
       </main>
