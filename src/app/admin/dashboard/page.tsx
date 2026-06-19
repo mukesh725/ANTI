@@ -8,6 +8,8 @@ import {
   Search, Filter, Download, Trash2, CheckCircle2, 
   MapPin, Clock, UserCheck, MessageSquare, Mail 
 } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, orderBy, query, deleteDoc, doc } from "firebase/firestore";
 
 interface Lead {
   id: string;
@@ -69,35 +71,35 @@ export default function AdminDashboardPage() {
     }
   }, [router]);
 
-  const loadDashboardData = () => {
-    // 1. Load Leads
-    const savedLeadsStr = localStorage.getItem("airo_leads");
-    let loadedLeads: Lead[] = [];
+  const loadDashboardData = async () => {
+    // 1. Load Leads from Firebase
     try {
-      loadedLeads = savedLeadsStr ? JSON.parse(savedLeadsStr) : [];
-    } catch {
-      loadedLeads = [];
-    }
-    
-    // Add default mock leads if database is completely empty to look professional
-    if (loadedLeads.length === 0) {
-      loadedLeads = [
-        {
-          id: "mock-1",
-          name: "Alexander Mercer",
-          email: "alex.mercer@gmail.com",
-          phone: "+1 (310) 555-8291",
-          type: "Health Chair assessment",
-          message: "Requesting a walk-in health chair assessment for metabolic tracking.",
-          source: "Contact Form",
-          status: "Contacted",
-          createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
-        },
-        {
-          id: "mock-2",
-          name: "Genevieve Thorne",
-          email: "g.thorne@outlook.com",
-          phone: "Not Provided",
+      const q = query(collection(db, "leads"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      let loadedLeads: Lead[] = [];
+      querySnapshot.forEach((doc) => {
+        loadedLeads.push({ id: doc.id, ...doc.data() } as Lead);
+      });
+      
+      // Add default mock leads if database is completely empty to look professional
+      if (loadedLeads.length === 0) {
+        loadedLeads = [
+          {
+            id: "mock-1",
+            name: "Alexander Mercer",
+            email: "alex.mercer@gmail.com",
+            phone: "+1 (310) 555-8291",
+            type: "Health Chair assessment",
+            message: "Requesting a walk-in health chair assessment for metabolic tracking.",
+            source: "Contact Form",
+            status: "Contacted",
+            createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+          },
+          {
+            id: "mock-2",
+            name: "Genevieve Thorne",
+            email: "g.thorne@outlook.com",
+            phone: "Not Provided",
           type: "Pharmacy & Compounding",
           message: "Captured contact details during conversation: \"Interested in NAD+ Regen compound therapies.\"",
           source: "Chatbot",
@@ -133,6 +135,9 @@ export default function AdminDashboardPage() {
     setBrowsingHistory(loadedAnalytics.history || []);
     setCurrentLocation(loadedAnalytics.visitorLocation || null);
 
+    } catch (error) {
+      console.error("Error loading dashboard data:", error);
+    }
   };
 
   // Auth Operations
@@ -150,18 +155,24 @@ export default function AdminDashboardPage() {
       return l;
     });
     setLeads(updated);
-    localStorage.setItem("airo_leads", JSON.stringify(updated));
     if (selectedLead && selectedLead.id === leadId) {
       setSelectedLead({ ...selectedLead, status: selectedLead.status === "Pending" ? "Contacted" : "Pending" });
     }
   };
 
-  const handleDeleteLead = (leadId: string) => {
-    if (confirm("Are you sure you want to delete this lead record?")) {
-      const updated = leads.filter(l => l.id !== leadId);
-      setLeads(updated);
-      localStorage.setItem("airo_leads", JSON.stringify(updated));
-      setSelectedLead(null);
+  const handleDeleteLead = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this lead?")) {
+      try {
+        if (!id.startsWith("mock-")) {
+          await deleteDoc(doc(db, "leads", id));
+        }
+        const updatedLeads = leads.filter(l => l.id !== id);
+        setLeads(updatedLeads);
+        if (selectedLead?.id === id) setSelectedLead(null);
+      } catch (err) {
+        console.error("Error deleting lead:", err);
+        alert("Failed to delete lead from database.");
+      }
     }
   };
 

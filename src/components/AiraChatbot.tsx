@@ -3,6 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot, RefreshCw, AlertTriangle } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 interface Message {
   id: string;
@@ -234,7 +236,7 @@ export function AiraChatbot() {
     setIsTyping(true);
 
     // Simulate concierge response delay
-    setTimeout(() => {
+    setTimeout(async () => {
       const response = getAiraResponse(textToSend);
       
       // Save chatbot lead if user entered an email/phone number
@@ -263,22 +265,21 @@ export function AiraChatbot() {
             }),
           }).catch(console.error);
 
-          const existingLeadsStr = localStorage.getItem("airo_leads");
-          const leads = existingLeadsStr ? JSON.parse(existingLeadsStr) : [];
-          
-          const newLead = {
-            id: Math.random().toString(),
-            name: "Chatbot Visitor",
-            email: isEmail ? textToSend : "Not Provided",
-            phone: !isEmail ? textToSend : "Not Provided",
-            type: "Chatbot Inquiry",
-            message: `Captured contact details during conversation: "${textToSend}"`,
-            source: "Chatbot",
-            status: "Pending",
-            createdAt: new Date().toISOString()
-          };
-          leads.unshift(newLead);
-          localStorage.setItem("airo_leads", JSON.stringify(leads));
+          // Save globally to Firebase Dashboard
+          try {
+            await addDoc(collection(db, "leads"), {
+              name: "Chatbot Visitor",
+              email: isEmail ? textToSend : "Not Provided",
+              phone: !isEmail ? textToSend : "Not Provided",
+              type: "Chatbot Inquiry",
+              message: `Captured contact details during conversation: "${textToSend}"`,
+              source: "AI Assistant",
+              status: "New",
+              createdAt: new Date().toISOString()
+            });
+          } catch (dbError) {
+            console.error("Failed to save lead to database:", dbError);
+          }
         } catch {
           console.warn("Could not save chatbot lead");
         }

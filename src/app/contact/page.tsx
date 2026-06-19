@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, Check, Send, Sparkles } from "lucide-react";
 import cmsData from "@/data/cms.json";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -45,27 +47,22 @@ export default function ContactPage() {
         throw new Error('Failed to send email API request to Formspree');
       }
 
-      // 2. Save locally for the dashboard (optional fallback)
-      const existingLeadsStr = localStorage.getItem("airo_leads");
-      let leads = [];
+      // 2. Save globally to Firebase Dashboard
       try {
-        leads = existingLeadsStr ? JSON.parse(existingLeadsStr) : [];
-      } catch {
-        leads = [];
+        await addDoc(collection(db, "leads"), {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || "Not Provided",
+          type: formData.type,
+          message: formData.message,
+          source: "Contact Form",
+          status: "Pending",
+          createdAt: new Date().toISOString()
+        });
+      } catch (dbError) {
+        console.error("Failed to save to database:", dbError);
+        // Continue anyway since email was sent successfully
       }
-
-      leads.unshift({
-        id: Math.random().toString(),
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || "Not Provided",
-        type: formData.type,
-        message: formData.message,
-        source: "Contact Form",
-        status: "Pending",
-        createdAt: new Date().toISOString()
-      });
-      localStorage.setItem("airo_leads", JSON.stringify(leads));
 
       // 3. Complete submission
       setIsSubmitted(true);
