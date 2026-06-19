@@ -38,14 +38,23 @@ export function LanguageTranslateWidget() {
     const lang = e.target.value;
     setSelectedLang(lang);
     
-    // Find the hidden Google Translate select element
-    const googleSelectElement = document.querySelector(".goog-te-combo") as HTMLSelectElement;
+    // 1. Set the Google Translate cookie manually
+    document.cookie = `googtrans=/en/${lang}; path=/`;
+    document.cookie = `googtrans=/en/${lang}; domain=${window.location.hostname}; path=/`;
     
+    // 2. Try to trigger the hidden native Google select
+    const googleSelectElement = document.querySelector(".goog-te-combo") as HTMLSelectElement;
     if (googleSelectElement) {
       googleSelectElement.value = lang;
-      // Dispatch a change event so the Google Translate script notices the change
-      googleSelectElement.dispatchEvent(new Event("change"));
+      // Must use bubbles: true for Google's event listeners to catch it
+      googleSelectElement.dispatchEvent(new Event("change", { bubbles: true }));
     }
+
+    // 3. Force a reload to guarantee translation applies using the cookie
+    // This is the most reliable fallback if the DOM event is missed
+    setTimeout(() => {
+      window.location.reload();
+    }, 150);
   };
 
   return (
@@ -57,7 +66,7 @@ export function LanguageTranslateWidget() {
       <div id="google_translate_element" style={{ display: "none" }}></div>
       <Script 
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
 
       {/* Our Custom, Beautiful UI */}
