@@ -1075,6 +1075,20 @@ export default function AdminDashboardPage() {
             )}
           </motion.div>
         )}
+
+        {/* Floating Save Button for CMS */}
+        {activeTab === "cms" && (
+          <div className="fixed bottom-8 right-8 z-50">
+            <button
+              onClick={handleSaveCms}
+              disabled={cmsLoading}
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#0B2114] text-sm font-bold uppercase tracking-wider px-8 py-4 rounded-full flex items-center space-x-3 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.3)] active:scale-95 disabled:opacity-50"
+            >
+              <CheckCircle2 className="w-5 h-5" />
+              <span>{cmsLoading ? "Saving..." : "Publish to Website"}</span>
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );
