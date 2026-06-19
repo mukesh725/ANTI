@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ShoppingBag, Sparkles, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/SmartCartDrawer";
+import { LanguageTranslateWidget } from "./LanguageTranslateWidget";
 
 const allLinks = [
   { href: "/", label: "Home" },
@@ -124,6 +125,9 @@ export function GlobalHeader() {
         </div>
 
         <div className="flex items-center gap-4 md:gap-6">
+          <div className="hidden lg:block">
+            <LanguageTranslateWidget />
+          </div>
           <button className={`hidden sm:flex text-[10px] tracking-widest uppercase font-bold items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 border ${
             isScrolled
               ? "text-[#FAF8F5] bg-[#0B2114] border-[#0B2114] hover:bg-[#0b2114]/90"

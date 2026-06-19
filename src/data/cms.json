@@ -7,14 +7,14 @@
   "pages": {
     "home": {
       "title": "AIRO Essentials",
-      "subtitle": "A NEW PARADIGM IN PREMIUM WELLNESS",
+      "subtitle": "YOUR COMPLETE HEALTH & WELLNESS PARTNER",
       "sections": {
         "pharmacy": {
-          "title": "Pharmacy & Compounding",
+          "title": "Pharmacy & Medicines",
           "image": "/pharmacy-hero.jpg"
         },
         "clinic": {
-          "title": "Minute Clinic",
+          "title": "Quick Checkups",
           "image": "/clinic-connected.jpg"
         },
         "praana": {
@@ -25,149 +25,149 @@
     },
     "health": {
       "title": "AIRO Health",
-      "subtitle": "PREVENTATIVE CARE. REDEFINED.",
+      "subtitle": "PREVENTING ILLNESS. PROMOTING HEALTH.",
       "sections": {
         "praana": {
           "title": "AIRO Praana",
           "image": "/airo-praana-hero.png",
-          "description": "A 5-minute diagnostic assessment. A lifetime of longevity insights."
+          "description": "Just sit for 5 minutes and know your body better. A simple checkup for a long, healthy life."
         }
       }
     },
     "grocery": {
       "title": "Fresh. Organic.",
-      "subtitle": "Better Living.",
+      "subtitle": "Better Everyday Eating.",
       "sections": {
         "hero": {
           "title": "Daily Harvest",
-          "description": "Organic Heirloom Selection",
+          "description": "Handpicked Fresh Groceries for Your Family",
           "image": "https://plus.unsplash.com/premium_photo-1663039978847-63f7484bf701?q=80&w=1600"
         },
         "philosophy": {
-          "title": "Health Begins with Everyday Choices",
-          "description": "The food we eat impacts every aspect of our wellbeing. At AIRO Essentials, we believe access to high-quality ingredients should be simple, convenient, and inspiring. Our approach focuses on sourcing products that support healthier lifestyles while maintaining exceptional standards for quality and freshness.",
+          "title": "Good Health Starts with Good Food",
+          "description": "What we eat decides how we feel. At AIRO Essentials, we believe you deserve the freshest, highest-quality groceries without any hassle. We carefully source the best local and organic products so you can feed your family with love and confidence.",
           "image": "https://images.unsplash.com/photo-1628102491629-778571d893a3?q=80&w=1600"
         },
         "categories": [
           {
-            "title": "Fresh & Organic Produce",
-            "description": "Farm-fresh fruits, vegetables, herbs, microgreens, salads, and cold-pressed juices.",
+            "title": "Fresh Fruits & Vegetables",
+            "description": "Farm-fresh greens, seasonal fruits, and daily essential vegetables.",
             "image": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=800"
           },
           {
-            "title": "Premium Proteins",
-            "description": "Fresh poultry, seafood, meats, eggs, and plant-based protein alternatives.",
+            "title": "Quality Meats & Eggs",
+            "description": "Fresh, clean poultry, seafood, meats, and protein options.",
             "image": "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800"
           },
           {
-            "title": "Dairy & Alternatives",
-            "description": "Traditional dairy products alongside modern plant-based options designed for diverse lifestyles.",
+            "title": "Milk & Dairy",
+            "description": "Pure milk, curd, paneer, and plant-based alternatives for everyday use.",
             "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=800"
           },
           {
-            "title": "Pantry Essentials",
-            "description": "Rice, grains, oils, baking ingredients, cereals, pulses, and everyday kitchen staples.",
+            "title": "Dal, Rice & Spices",
+            "description": "Premium quality rice, grains, cooking oils, and authentic Indian spices.",
             "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800"
           },
           {
-            "title": "Bakery & Ready-to-Eat",
-            "description": "Freshly baked breads, pastries, sandwiches, wraps, salads, and prepared meals.",
+            "title": "Bakery & Breads",
+            "description": "Freshly baked rotis, breads, biscuits, and quick meals.",
             "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800"
           },
           {
             "title": "Frozen Foods",
-            "description": "Convenient premium frozen options without compromising on quality.",
+            "description": "Easy to cook premium frozen meals and snacks for busy days.",
             "image": "https://images.unsplash.com/photo-1547082299-de196ea013d6?q=80&w=800"
           },
           {
-            "title": "Beverages",
-            "description": "Coffee, tea, juices, hydration products, and functional wellness beverages.",
+            "title": "Tea, Coffee & Drinks",
+            "description": "Morning tea, filter coffee, healthy juices, and refreshing drinks.",
             "image": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=800"
           },
           {
-            "title": "Snacks & Wellness Foods",
-            "description": "Protein snacks, nuts, dried fruits, chocolates, and healthier alternatives.",
+            "title": "Healthy Snacks",
+            "description": "Dry fruits, nuts, protein bars, and guilt-free munchies.",
             "image": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800"
           },
           {
             "title": "Global Foods",
-            "description": "A curated selection of international products inspired by cuisines from around the world.",
+            "description": "Special imported foods, sauces, and ingredients for global cooking.",
             "image": "https://images.unsplash.com/photo-1511381939415-e440c082180e?q=80&w=800"
           },
           {
-            "title": "Home Essentials",
-            "description": "Thoughtfully selected household and everyday living products.",
+            "title": "Home Care Essentials",
+            "description": "Cleaning supplies, toiletries, and daily household needs.",
             "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800"
           }
         ]
       }
     },
     "minuteClinic": {
-      "title": "Healthcare For The",
-      "subtitle": "Way Life Happens.",
+      "title": "Easy Checkups For",
+      "subtitle": "Your Busy Life.",
       "sections": {
         "hero": {
-          "title": "Diagnostics & Prevention",
-          "description": "Advanced Biomarker Screenings",
+          "title": "Quick Health Check",
+          "description": "Simple tests to keep you healthy and strong",
           "image": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=1600"
         },
         "friction": {
-          "title": "Healthcare Without the Friction",
-          "description": "Getting quality care shouldn't require weeks of waiting. AIRO Minute Clinic was created to provide faster access to healthcare services for individuals and families seeking preventive care, everyday medical support, and ongoing wellness guidance.",
+          "title": "Healthcare Without the Wait",
+          "description": "Seeing a doctor shouldn't take hours of waiting. AIRO Minute Clinic is made to give you and your family quick, friendly medical care right when you need it most. Just walk in and get treated.",
           "image": "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1600"
         },
         "prevention": {
-          "title": "Designed Around Prevention",
-          "description": "We go beyond treating symptoms to understand the broader picture of your health. Through biomarker testing, preventative screenings, and targeted lifestyle interventions, we help patients identify potential issues before they become chronic conditions.",
+          "title": "Stop Illness Before It Starts",
+          "description": "We don't just treat you when you are sick. We help you stay healthy. With our simple blood tests and health screenings, we find small problems before they become big medical bills.",
           "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600"
         }
       }
     },
     "pharmacy": {
-      "title": "Modern Pharmacy.",
-      "subtitle": "Personalized Wellness.",
+      "title": "Your Trusted Pharmacy.",
+      "subtitle": "Care You Can Count On.",
       "sections": {
         "hero": {
-          "title": "Premium Pharmacy Care",
-          "description": "Everyday Prescriptions & Clinical Support",
+          "title": "Complete Medicine Care",
+          "description": "Genuine Medicines & Friendly Advice",
           "image": "/pharmacy-hero.jpg"
         },
         "compounding": {
-          "title": "Precision Care, Tailored For You",
-          "description": "Not every patient\u2019s needs are met by off-the-shelf medications. AIRO Compounding offers customized formulations\u2014from tailored dosages and hormone therapies to specialized dermatological preparations\u2014designed precisely for your unique biology.",
+          "title": "Special Medicines Just For You",
+          "description": "Sometimes normal tablets don't work for everyone. AIRO Pharmacy makes special mixed medicines, custom skin creams, and proper dosages exactly the way your doctor ordered.",
           "image": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?q=80&w=1600"
         },
         "everyday": {
-          "title": "Seamless Everyday Prescriptions",
-          "description": "Managing your daily medications should be effortless. With AIRO Pharmacy, you get streamlined prescription management, transparent access to pharmacists, and coordinated care that aligns perfectly with your overall health journey.",
+          "title": "Easy Medicine Refills",
+          "description": "Taking daily medicines should be simple. With AIRO Pharmacy, you get genuine medicines on time, clear advice from expert pharmacists, and total peace of mind for your family's health.",
           "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=1600"
         }
       }
     },
     "healthChair": {
-      "title": "Precision Longevity.",
-      "subtitle": "In Five Minutes.",
+      "title": "Know Your Body.",
+      "subtitle": "In Just 5 Minutes.",
       "sections": {
         "hero": {
           "title": "AIRO Praana",
-          "description": "Comprehensive Vitals Assessment",
+          "description": "Your Complete Body Checkup Seat",
           "image": "/airo-praana-hero.png"
         },
         "assessment": {
-          "title": "The Ultimate 5-Minute Assessment",
-          "description": "The AIRO Praana chair delivers a comprehensive look at your cardiovascular, respiratory, and metabolic health without an invasive procedure. Sit back, relax, and let non-contact sensors analyze your core vitality metrics in real-time.",
+          "title": "The Magic 5-Minute Checkup",
+          "description": "The AIRO Praana chair checks your heart, breathing, and general health without any needles or touching. Just sit back, relax, and let the smart sensors read your body's health in real-time.",
           "image": "https://images.unsplash.com/photo-1505587043598-a6da2ce15aa5?q=80&w=1600"
         },
         "insights": {
-          "title": "Actionable Biomarker Insights",
-          "description": "Knowledge is only power when you can act on it. AIRO Praana translates complex physiological data into clear, personalized protocols for fitness, recovery, and nutrition.",
+          "title": "Easy To Understand Results",
+          "description": "We don't give you confusing doctor reports. AIRO Praana gives you simple, clear advice on what to eat, how to exercise, and how to live a longer, healthier life.",
           "image": "https://plus.unsplash.com/premium_photo-1681995449767-17ed4fb8b0d4?q=80&w=1600"
         }
       }
     },
     "contact": {
       "title": "Get In Touch",
-      "subtitle": "We're here to help",
+      "subtitle": "We're here to help you",
       "sections": {
         "details": {
           "title": "Contact Details",
