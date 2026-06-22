@@ -7,6 +7,7 @@ import { GlobalHeader } from "./GlobalHeader";
 import { AiraChatbot } from "./AiraChatbot";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { CmsProvider, CmsDataType } from "@/context/CmsContext";
 
 interface LocationData {
   city: string;
@@ -26,7 +27,13 @@ interface AnalyticsData {
   visitorLocation: LocationData | null;
 }
 
-export function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
+export function ClientLayoutWrapper({ 
+  children,
+  cmsData
+}: { 
+  children: React.ReactNode;
+  cmsData: CmsDataType;
+}) {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
 
@@ -127,15 +134,16 @@ export function ClientLayoutWrapper({ children }: { children: React.ReactNode })
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
       
-      {/* Hide content until loading is done to prevent flash */}
-      <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-        <GlobalHeader />
-        <main className={`flex-grow ${pathname === '/' || pathname === '/health' ? '' : 'pt-28'}`}>
-          {children}
-        </main>
-        <AiraChatbot />
-      </div>
+      <CmsProvider initialData={cmsData}>
+        {/* Hide content until loading is done to prevent flash */}
+        <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+          <GlobalHeader />
+          <main className={`flex-grow ${pathname === '/' || pathname === '/health' ? '' : 'pt-28'}`}>
+            {children}
+          </main>
+          <AiraChatbot />
+        </div>
+      </CmsProvider>
     </>
   );
 }
-

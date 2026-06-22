@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClientLayoutWrapper } from "@/components/ClientLayoutWrapper";
+import { getCmsData } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: {
@@ -29,15 +30,17 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cmsData = await getCmsData();
+
   return (
     <html lang="en" className="bg-alabaster">
       <body className="antialiased bg-alabaster text-charcoal min-h-screen flex flex-col">
-        <ClientLayoutWrapper>
+        <ClientLayoutWrapper cmsData={cmsData}>
           {children}
         </ClientLayoutWrapper>
       </body>

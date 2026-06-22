@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, Check, Send, Sparkles } from "lucide-react";
-import cmsData from "@/data/cms.json";
+import { useCms } from "@/context/CmsContext";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 export default function ContactPage() {
+  const cmsData = useCms();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",

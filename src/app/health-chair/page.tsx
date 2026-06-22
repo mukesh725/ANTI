@@ -9,9 +9,11 @@ import {
   ChevronDown, CheckCircle2 
 } from "lucide-react";
 import { GlobalHeader } from "@/components/GlobalHeader";
-import cmsData from "@/data/cms.json";
+import { useCms } from "@/context/CmsContext";
 
 export default function HealthChairPage() {
+  const cmsData = useCms();
+
   // =========================================================================
   // SECTION 1: HERO
   // =========================================================================

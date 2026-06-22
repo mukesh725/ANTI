@@ -6,10 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Users, Eye, Database, LogOut, 
   Search, Trash2, CheckCircle2, 
-  Clock, Mail, Zap, BrainCircuit, Activity, Globe
+  Clock, Mail, Zap, BrainCircuit, Activity, Globe, Settings2, LayoutDashboard
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
+import { CmsEditor } from "@/components/CmsEditor";
 
 interface LocationData {
   city: string;
@@ -92,6 +93,9 @@ export default function AdminDashboardPage() {
   // Filtering
   const [searchTerm, setSearchTerm] = useState("");
   const filterType: string = "All"; // Static for now as we removed the UI for it
+  
+  // Tabs
+  const [activeTab, setActiveTab] = useState<"intelligence" | "cms">("intelligence");
   
   // Analytics
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
@@ -265,6 +269,31 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </div>
+
+          {/* TAB NAVIGATION */}
+          <div className="hidden md:flex bg-[#07120F] border border-[#1A3324] rounded-full p-1 absolute left-1/2 -translate-x-1/2">
+            <button
+              onClick={() => setActiveTab("intelligence")}
+              className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
+                activeTab === "intelligence" 
+                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" /> Intelligence & Leads
+            </button>
+            <button
+              onClick={() => setActiveTab("cms")}
+              className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
+                activeTab === "cms" 
+                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <Settings2 className="w-3.5 h-3.5" /> Content Management
+            </button>
+          </div>
+
           <button 
             onClick={handleLogout}
             className="text-gray-400 hover:text-white flex items-center space-x-2 text-xs uppercase tracking-widest transition-colors"
@@ -275,9 +304,11 @@ export default function AdminDashboardPage() {
         </div>
       </nav>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-8 pb-32">
+      <main className={`max-w-[1600px] mx-auto px-6 py-8 pb-32 ${activeTab === 'cms' ? 'h-[calc(100vh-80px)]' : ''}`}>
         
-        {/* ROW 1: MISSION CONTROL METRICS */}
+        {activeTab === "intelligence" ? (
+          <>
+            {/* ROW 1: MISSION CONTROL METRICS */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 relative z-10">
           <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <div className="flex justify-between items-start mb-4">
@@ -481,6 +512,10 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
+        </>
+        ) : (
+          <CmsEditor />
+        )}
       </main>
 
       {/* Expanded Lead Modal */}

@@ -1,0 +1,177 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Save, CheckCircle2, AlertTriangle, FileText, ImageIcon, Settings2 } from "lucide-react";
+import { useCms } from "@/context/CmsContext";
+import { CmsDataType } from "@/context/CmsContext";
+
+export function CmsEditor() {
+  const initialData = useCms();
+  const [formData, setFormData] = useState<CmsDataType>(initialData);
+  const [activeCategory, setActiveCategory] = useState<keyof CmsDataType["pages"]>("home");
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">("idle");
+
+  // Keep state in sync if initialData changes globally
+  useEffect(() => {
+    setFormData(initialData);
+  }, [initialData]);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveStatus("idle");
+    try {
+      const res = await fetch("/api/cms/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setSaveStatus("success");
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      } else {
+        setSaveStatus("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setSaveStatus("error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const updateField = (path: string[], value: string) => {
+    setFormData(prev => {
+      const next = { ...prev };
+      let current: any = next;
+      for (let i = 0; i < path.length - 1; i++) {
+        current = current[path[i]];
+      }
+      current[path[path.length - 1]] = value;
+      return next;
+    });
+  };
+
+  const renderFields = (obj: any, currentPath: string[] = []) => {
+    return Object.entries(obj).map(([key, value]) => {
+      const fullPath = [...currentPath, key];
+      const isImage = key.toLowerCase().includes("image") || key.toLowerCase().includes("src");
+
+      if (typeof value === "string") {
+        return (
+          <div key={fullPath.join(".")} className="mb-6">
+            <label className="flex items-center gap-2 text-[10px] text-[#D4AF37] uppercase tracking-widest font-bold mb-2">
+              {isImage ? <ImageIcon className="w-3 h-3" /> : <FileText className="w-3 h-3" />}
+              {key}
+            </label>
+            {value.length > 80 && !isImage ? (
+              <textarea
+                value={value}
+                onChange={(e) => updateField(fullPath, e.target.value)}
+                className="w-full bg-[#07120F] border border-[#1A3324] rounded-xl px-4 py-3 text-sm text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all resize-y min-h-[100px]"
+              />
+            ) : (
+              <input
+                type="text"
+                value={value}
+                onChange={(e) => updateField(fullPath, e.target.value)}
+                className="w-full bg-[#07120F] border border-[#1A3324] rounded-xl px-4 py-3 text-sm text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all"
+              />
+            )}
+          </div>
+        );
+      } else if (typeof value === "object" && value !== null) {
+        return (
+          <div key={fullPath.join(".")} className="mb-8 p-6 bg-white/5 border border-white/5 rounded-2xl">
+            <h4 className="text-sm font-serif text-white mb-6 flex items-center gap-2 border-b border-white/10 pb-3">
+              <Settings2 className="w-4 h-4 text-emerald-400" />
+              {key.toUpperCase()}
+            </h4>
+            <div className="pl-2">
+              {renderFields(value, fullPath)}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    });
+  };
+
+  const categories = Object.keys(formData.pages) as Array<keyof CmsDataType["pages"]>;
+
+  return (
+    <div className="flex flex-col h-full bg-[#0B2114]/80 backdrop-blur-xl border border-[#1A3324] rounded-2xl shadow-2xl overflow-hidden">
+      {/* CMS Header */}
+      <div className="p-6 border-b border-[#1A3324] bg-gradient-to-b from-white/5 to-transparent flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
+        <div>
+          <h2 className="font-serif text-2xl tracking-wide flex items-center gap-3">
+            <Settings2 className="w-6 h-6 text-[#D4AF37]" />
+            Live Content Editor
+          </h2>
+          <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest">Global CMS Override Protocol</p>
+        </div>
+        
+        <button
+          onClick={handleSave}
+          disabled={isSaving}
+          className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold transition-all shadow-lg ${
+            saveStatus === "success" 
+              ? "bg-emerald-500 text-[#0B2114]" 
+              : "bg-[#D4AF37] hover:bg-[#B8962E] text-[#0B2114]"
+          } disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          {isSaving ? (
+            <div className="w-4 h-4 border-2 border-[#0B2114]/30 border-t-[#0B2114] rounded-full animate-spin" />
+          ) : saveStatus === "success" ? (
+            <CheckCircle2 className="w-4 h-4" />
+          ) : (
+            <Save className="w-4 h-4" />
+          )}
+          <span>{isSaving ? "Deploying..." : saveStatus === "success" ? "Live!" : "Deploy Changes"}</span>
+        </button>
+      </div>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar Nav */}
+        <div className="w-64 border-r border-[#1A3324] p-4 overflow-y-auto bg-[#07120F]/50 custom-scrollbar">
+          <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-4 px-3">Site Pages</div>
+          <ul className="space-y-1">
+            {categories.map((cat) => (
+              <li key={cat}>
+                <button
+                  onClick={() => setActiveCategory(cat)}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
+                    activeCategory === cat
+                      ? "bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 font-bold"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+                  }`}
+                >
+                  {cat}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Editor Area */}
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-gradient-to-br from-transparent to-[#07120F]/50">
+          {saveStatus === "error" && (
+            <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl flex items-center gap-3 text-sm">
+              <AlertTriangle className="w-5 h-5" />
+              Failed to deploy changes. Please check permissions and connection.
+            </div>
+          )}
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-8 pb-4 border-b border-[#1A3324]">
+              <h3 className="font-serif text-3xl text-white capitalize">{activeCategory} Page</h3>
+              <p className="text-gray-400 text-sm mt-2">Edit the text and media content for the {activeCategory} section. Changes will reflect instantly across all global edges upon deployment.</p>
+            </div>
+            {renderFields(formData.pages[activeCategory], ["pages", activeCategory as string])}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

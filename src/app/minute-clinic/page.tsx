@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Shield } from "lucide-react";
 import Link from "next/link";
-import cmsData from "@/data/cms.json";
+import { useCms } from "@/context/CmsContext";
 
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
@@ -42,6 +42,8 @@ function ParallaxImage({
 }
 
 export default function MinuteClinicPage() {
+  const cmsData = useCms();
+
   const pageRef = useRef<HTMLDivElement>(null);
 
   const pageContent = cmsData.pages.minuteClinic;

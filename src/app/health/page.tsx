@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
-import cmsData from "@/data/cms.json";
+import { useCms } from "@/context/CmsContext";
 
 // Custom Parallax Image component for smooth, luxury page scroll animations
 function ParallaxImage({ 
@@ -81,6 +81,8 @@ const healthCategories = [
 ];
 
 export default function HealthPage() {
+  const cmsData = useCms();
+
   const healthData = cmsData.pages.health;
   const heroRef = useRef<HTMLDivElement>(null);
 
