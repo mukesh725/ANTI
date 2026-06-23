@@ -26,7 +26,7 @@ function ShopContent() {
   }, [searchParams]);
 
   // Extract categories for tabs
-  const categories = ["All", ...cmsData.pages.grocery.sections.categories.map((c: { title: string }) => c.title)];
+  const categories = ["All", ...(cmsData.pages.grocery.sections.categories || []).map((c: { title: string }) => c.title)];
 
   const filteredProducts = activeCategory === "All" 
     ? products 

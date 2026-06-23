@@ -206,7 +206,7 @@ export default function EssentialsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 relative z-20">
-            {cmsData.pages.grocery.sections.categories.map((category, index) => (
+            {(cmsData.pages.grocery.sections.categories || []).map((category, index) => (
               <Link 
                 href={`/grocery/shop?category=${encodeURIComponent(category.title)}`}
                 key={index}

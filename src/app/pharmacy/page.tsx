@@ -291,7 +291,7 @@ export default function PharmacyPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 relative z-20">
-            {cmsData.pages.pharmacy.sections.categories.map((category, index) => (
+            {(cmsData.pages.pharmacy.sections.categories || []).map((category, index) => (
               <Link 
                 href={`/pharmacy/shop?category=${encodeURIComponent(category.title)}`}
                 key={index}
