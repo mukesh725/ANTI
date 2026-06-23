@@ -125,7 +125,14 @@
     },
     "health": {
       "title": "Welcome to AIRO Health Hub",
-      "subtitle": "INTEGRATED CLINICAL & LONGEVITY CARE"
+      "subtitle": "INTEGRATED CLINICAL & LONGEVITY CARE",
+      "sections": {
+        "praana": {
+          "title": "AIRO Praana",
+          "image": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000",
+          "description": "A 5-minute diagnostic assessment. A lifetime of longevity insights."
+        }
+      }
     },
     "pharmacy": {
       "title": "Your Trusted Pharmacy.",
