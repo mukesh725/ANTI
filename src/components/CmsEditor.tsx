@@ -136,9 +136,9 @@ export function CmsEditor() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar Nav */}
         <div className="w-64 border-r border-[#1A3324] p-4 overflow-y-auto bg-[#07120F]/50 custom-scrollbar">
-          <div className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-4 px-3">Site Pages</div>
-          <ul className="space-y-1">
-            {categories.map((cat) => (
+          <div className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold mb-3 px-3">AIRO Essentials</div>
+          <ul className="space-y-1 mb-8">
+            {categories.filter(c => ["home", "grocery", "contact"].includes(c)).map((cat) => (
               <li key={cat}>
                 <button
                   onClick={() => setActiveCategory(cat)}
@@ -148,7 +148,25 @@ export function CmsEditor() {
                       : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
                   }`}
                 >
-                  {cat}
+                  {cat === "home" ? "Essentials Home" : cat}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold mb-3 px-3">AIRO Health Hub</div>
+          <ul className="space-y-1">
+            {categories.filter(c => !["home", "grocery", "contact"].includes(c)).map((cat) => (
+              <li key={cat}>
+                <button
+                  onClick={() => setActiveCategory(cat)}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
+                    activeCategory === cat
+                      ? "bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 font-bold"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+                  }`}
+                >
+                  {cat === "health" ? "Health Home" : cat}
                 </button>
               </li>
             ))}

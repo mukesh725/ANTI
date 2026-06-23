@@ -123,6 +123,10 @@
         }
       }
     },
+    "health": {
+      "title": "Welcome to AIRO Health Hub",
+      "subtitle": "INTEGRATED CLINICAL & LONGEVITY CARE"
+    },
     "pharmacy": {
       "title": "Your Trusted Pharmacy.",
       "subtitle": "Care You Can Count On.",
