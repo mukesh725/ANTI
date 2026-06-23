@@ -49,7 +49,7 @@ export default function EssentialsPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   
   const pageContent = cmsData.pages.grocery;
-  const { hero, philosophy, categories } = pageContent.sections;
+  const { hero, philosophy } = pageContent.sections;
 
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
@@ -190,7 +190,7 @@ export default function EssentialsPage() {
         </div>
       </section>
 
-      {/* SECTION 4: CATEGORIES SHOWCASE (Explore AIRO Essentials) */}
+      {/* SECTION 4: EXPLORE CATEGORIES */}
       <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 w-full">
         <div className="max-w-[1500px] mx-auto">
           <div className="text-center mb-20 max-w-2xl mx-auto">
@@ -206,38 +206,46 @@ export default function EssentialsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 relative z-20">
-            {categories.map((category, index) => (
-              <motion.div 
+            {cmsData.pages.grocery.sections.categories.map((category, index) => (
+              <Link 
+                href={`/grocery/shop?category=${encodeURIComponent(category.title)}`}
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.8 }}
-                className="group relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[16/10] bg-[#1A3324]"
               >
-                <div className="absolute inset-0 overflow-hidden">
-                  <motion.img 
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] aspect-[4/3] md:aspect-[16/9] cursor-pointer"
+                >
+                  <img 
                     src={category.image}
                     alt={category.title}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end h-full">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <span className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#D4AF37] mb-2 block">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-80" />
+                  
+                  <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-start">
+                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#D4AF37] mb-3">
                       Category {String(index + 1).padStart(2, '0')}
                     </span>
-                    <h3 className="font-serif text-2xl md:text-3xl text-[#FAF8F5] mb-3">
-                      {category.title}
-                    </h3>
-                    <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 leading-relaxed tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 max-w-sm">
+                    <h3 className="font-serif text-3xl md:text-4xl text-[#FAF8F5] mb-2">{category.title}</h3>
+                    <p className="font-sans text-xs text-[#FAF8F5]/70 max-w-sm leading-relaxed tracking-wide opacity-0 transform translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
                       {category.description}
                     </p>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             ))}
+          </div>
+
+          <div className="mt-16 flex justify-center z-20 relative">
+            <Link 
+              href="/grocery/shop"
+              className="bg-[#D4AF37] text-[#0B2114] text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-[#FAF8F5] transition-colors duration-300 shadow-lg flex items-center gap-3"
+            >
+              Shop All Essentials <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>

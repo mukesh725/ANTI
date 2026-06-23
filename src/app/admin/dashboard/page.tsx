@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Users, Eye, Database, LogOut, 
   Search, Trash2, CheckCircle2, 
-  Clock, Mail, Zap, BrainCircuit, Activity, Globe, Settings2, LayoutDashboard
+  Clock, Mail, Zap, BrainCircuit, Activity, Globe, LayoutDashboard
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
 import { CmsEditor } from "@/components/CmsEditor";
+import { EcomManager } from "@/components/EcomManager";
+import { ShoppingBag } from "lucide-react";
 
 interface LocationData {
   city: string;
@@ -95,7 +97,7 @@ export default function AdminDashboardPage() {
   const filterType: string = "All"; // Static for now as we removed the UI for it
   
   // Tabs
-  const [activeTab, setActiveTab] = useState<"intelligence" | "cms">("intelligence");
+  const [activeTab, setActiveTab] = useState<"intelligence" | "cms" | "ecom">("intelligence");
   
   // Analytics
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
@@ -262,17 +264,18 @@ export default function AdminDashboardPage() {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1A3324] to-[#0B2114] border border-[#234531] flex items-center justify-center shadow-lg">
                 <Activity className="w-5 h-5 text-[#D4AF37]" />
               </div>
-            <div>
-              <h1 className="font-serif text-xl tracking-wider font-semibold">AIRO Command Center</h1>
-              <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-emerald-400 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>System Online • Global Tracking Active</span>
+              <div>
+                <h1 className="font-serif text-xl tracking-wider font-semibold">AIRO Command Center</h1>
+                <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-emerald-400 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>System Online • Global Tracking Active</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* TAB NAVIGATION */}
-          <div className="flex bg-[#07120F] border border-[#1A3324] rounded-full p-1 absolute left-1/2 -translate-x-1/2 bottom-[-20px] md:bottom-auto md:top-1/2 md:-translate-y-1/2">
+          <div className="flex bg-[#07120F] border border-[#1A3324] rounded-full p-1 mt-4 md:mt-0 order-3 md:order-2">
             <button
               onClick={() => setActiveTab("intelligence")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
@@ -281,7 +284,7 @@ export default function AdminDashboardPage() {
                   : "text-gray-400 hover:text-white"
               }`}
             >
-              <LayoutDashboard className="w-3.5 h-3.5" /> Intelligence & Leads
+              <BrainCircuit className="w-3.5 h-3.5" /> Intelligence
             </button>
             <button
               onClick={() => setActiveTab("cms")}
@@ -291,11 +294,21 @@ export default function AdminDashboardPage() {
                   : "text-gray-400 hover:text-white"
               }`}
             >
-              <Settings2 className="w-3.5 h-3.5" /> Content Management
+              <LayoutDashboard className="w-3.5 h-3.5" /> CMS
+            </button>
+            <button
+              onClick={() => setActiveTab("ecom")}
+              className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
+                activeTab === "ecom" 
+                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <ShoppingBag className="w-3.5 h-3.5" /> E-Commerce
             </button>
           </div>
 
-          <div className="w-full md:w-auto flex justify-end">
+          <div className="w-full md:w-auto flex justify-end order-2 md:order-3 mt-4 md:mt-0">
             <button 
               onClick={handleLogout}
               className="text-gray-400 hover:text-white flex items-center space-x-2 text-xs uppercase tracking-widest transition-colors"
@@ -516,8 +529,10 @@ export default function AdminDashboardPage() {
           </div>
         </div>
         </>
-        ) : (
+        ) : activeTab === "cms" ? (
           <CmsEditor />
+        ) : (
+          <EcomManager />
         )}
       </main>
 

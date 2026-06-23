@@ -1,21 +1,15 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight, Stethoscope } from "lucide-react";
+import { X, ArrowRight, Stethoscope, Trash2, Plus, Minus } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import Link from "next/link";
+import Image from "next/image";
 
-export interface CartItem {
-  name: string;
-  price: number;
-  imageUrl: string;
-}
+export function SmartCartDrawer() {
+  const { items: cartItems, isCartOpen: isOpen, setIsCartOpen, removeItem, addItem, updateQuantity } = useCart();
 
-interface SmartCartDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  cartItems: CartItem[];
-}
-
-export function SmartCartDrawer({ isOpen, onClose, cartItems }: SmartCartDrawerProps) {
+  const onClose = () => setIsCartOpen(false);
   // Simple suggestion logic based on cart items
   const hasTurmeric = cartItems.some((item) => item.name.toLowerCase().includes("turmeric"));
   const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
@@ -57,16 +51,33 @@ export function SmartCartDrawer({ isOpen, onClose, cartItems }: SmartCartDrawerP
                   Your cart is exquisitely empty.
                 </p>
               ) : (
-                cartItems.map((item, idx) => (
-                  <div key={idx} className="flex gap-4 items-center">
-                    <div className="w-16 h-20 bg-charcoal/5 rounded-sm overflow-hidden flex-shrink-0">
-                      <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover mix-blend-multiply" />
+                cartItems.map((item) => (
+                  <div key={item.id} className="flex gap-4 items-center">
+                    <div className="w-16 h-20 bg-charcoal/5 rounded-sm overflow-hidden flex-shrink-0 relative">
+                      <Image src={item.imageUrl} alt={item.name} fill className="object-cover mix-blend-multiply" />
                     </div>
                     <div className="flex-grow">
                       <h4 className="font-serif text-lg">{item.name}</h4>
-                      <p className="text-xs tracking-widest text-charcoal/50 uppercase mt-1">1 x ${item.price.toFixed(2)}</p>
+                      <div className="flex items-center gap-3 mt-2">
+                        <div className="flex items-center gap-2 bg-charcoal/5 rounded-full px-2 py-0.5">
+                          <button onClick={() => {
+                            if (item.quantity > 1) {
+                              updateQuantity(item.id, item.quantity - 1);
+                            } else {
+                              removeItem(item.id);
+                            }
+                          }} className="p-1 hover:text-charcoal/50"><Minus className="w-3 h-3" /></button>
+                          <span className="text-xs font-medium w-4 text-center">{item.quantity}</span>
+                          <button onClick={() => addItem(item)} className="p-1 hover:text-charcoal/50"><Plus className="w-3 h-3" /></button>
+                        </div>
+                        <p className="text-xs tracking-widest text-charcoal/50 uppercase">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </p>
+                      </div>
                     </div>
-                    <p className="font-sans">${item.price.toFixed(2)}</p>
+                    <button onClick={() => removeItem(item.id)} className="p-2 text-red-500/50 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-colors">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 ))
               )}
@@ -94,9 +105,9 @@ export function SmartCartDrawer({ isOpen, onClose, cartItems }: SmartCartDrawerP
                 <span className="font-sans text-sm tracking-widest uppercase text-alabaster/70">Subtotal</span>
                 <span className="font-serif text-2xl">${subtotal.toFixed(2)}</span>
               </div>
-              <button className="w-full py-4 bg-alabaster text-charcoal tracking-widest uppercase text-sm font-medium flex justify-center items-center gap-2 hover:bg-alabaster/90 silent-luxury-transition">
+              <Link href="/ecommerce/checkout" onClick={onClose} className="w-full py-4 bg-alabaster text-charcoal tracking-widest uppercase text-sm font-medium flex justify-center items-center gap-2 hover:bg-alabaster/90 silent-luxury-transition">
                 Checkout <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </motion.div>
         </>

@@ -141,7 +141,29 @@
           "title": "Easy Medicine Refills",
           "description": "Taking daily medicines should be simple. With AIRO Pharmacy, you get genuine medicines on time, clear advice from expert pharmacists, and total peace of mind for your family's health.",
           "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=1600"
-        }
+        },
+        "categories": [
+          {
+            "title": "Supplements",
+            "description": "High-quality vitamins and daily supplements.",
+            "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800"
+          },
+          {
+            "title": "Prescriptions",
+            "description": "Fulfill your doctor's prescriptions securely.",
+            "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=800"
+          },
+          {
+            "title": "Personal Care",
+            "description": "Everyday health and hygiene essentials.",
+            "image": "https://images.unsplash.com/photo-1607613009820-a29f4bb81905?q=80&w=800"
+          },
+          {
+            "title": "First Aid",
+            "description": "Emergency supplies for your home kit.",
+            "image": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?q=80&w=800"
+          }
+        ]
       }
     },
     "healthChair": {

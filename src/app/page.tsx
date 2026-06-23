@@ -46,13 +46,13 @@ const ecosystemCategories = [
     name: "Essentials", 
     desc: "Organic produce, daily nutrition, and wellness-focused retail.", 
     href: "/grocery", 
-    status: "Coming Soon" 
+    status: "Shop Now" 
   },
   { 
     name: "Pharmacy", 
     desc: "Clinical-grade prescription care, longevity protocols, and supplements.", 
     href: "/pharmacy", 
-    status: "Coming Soon" 
+    status: "Shop Now" 
   },
   { 
     name: "Minute Clinic", 

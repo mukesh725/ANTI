@@ -8,6 +8,8 @@ import { AiraChatbot } from "./AiraChatbot";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { CmsProvider, CmsDataType } from "@/context/CmsContext";
+import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 
 interface LocationData {
   city: string;
@@ -134,16 +136,20 @@ export function ClientLayoutWrapper({
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
       
-      <CmsProvider initialData={cmsData}>
-        {/* Hide content until loading is done to prevent flash */}
-        <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-          <GlobalHeader />
-          <main className={`flex-grow ${pathname === '/' || pathname === '/health' ? '' : 'pt-28'}`}>
-            {children}
-          </main>
-          <AiraChatbot />
-        </div>
-      </CmsProvider>
+      <AuthProvider>
+        <CartProvider>
+          <CmsProvider initialData={cmsData}>
+            {/* Hide content until loading is done to prevent flash */}
+            <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+              <GlobalHeader />
+              <main className={`flex-grow ${pathname === '/' || pathname === '/health' ? '' : 'pt-28'}`}>
+                {children}
+              </main>
+              <AiraChatbot />
+            </div>
+          </CmsProvider>
+        </CartProvider>
+      </AuthProvider>
     </>
   );
 }

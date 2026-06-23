@@ -24,7 +24,7 @@ export function CmsEditor() {
       const res = await fetch("/api/cms/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData as Record<string, unknown>),
       });
 
       if (res.ok) {
@@ -44,16 +44,17 @@ export function CmsEditor() {
   const updateField = (path: string[], value: string) => {
     setFormData(prev => {
       const next = { ...prev };
-      let current: any = next;
+      let current: Record<string, unknown> = next as unknown as Record<string, unknown>;
       for (let i = 0; i < path.length - 1; i++) {
-        current = current[path[i]];
+        current = current[path[i]] as Record<string, unknown>;
       }
       current[path[path.length - 1]] = value;
       return next;
     });
   };
 
-  const renderFields = (obj: any, currentPath: string[] = []) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const renderFields = (obj: any, currentPath: string[] = []): any => {
     return Object.entries(obj).map(([key, value]) => {
       const fullPath = [...currentPath, key];
       const isImage = key.toLowerCase().includes("image") || key.toLowerCase().includes("src");

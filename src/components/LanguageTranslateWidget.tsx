@@ -50,11 +50,7 @@ export function LanguageTranslateWidget() {
       googleSelectElement.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
-    // 3. Force a reload to guarantee translation applies using the cookie
-    // This is the most reliable fallback if the DOM event is missed
-    setTimeout(() => {
-      window.location.reload();
-    }, 150);
+    // We do not force a reload here, as Google Translate should handle the DOM mutation natively.
   };
 
   return (
@@ -63,7 +59,7 @@ export function LanguageTranslateWidget() {
         This is the container where Google will inject its ugly iframe and UI. 
         We hide it entirely using CSS below, and use our own custom UI instead.
       */}
-      <div id="google_translate_element" style={{ display: "none" }}></div>
+      <div id="google_translate_element" style={{ position: "absolute", left: "-9999px", opacity: 0, zIndex: -1 }}></div>
       <Script 
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
         strategy="afterInteractive"
@@ -95,7 +91,10 @@ export function LanguageTranslateWidget() {
         /* Hide the top banner */
         .goog-te-banner-frame.skiptranslate, 
         .goog-te-banner-frame {
-            display: none !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            left: -9999px !important;
         } 
         /* Prevent body from shifting down when Google tries to show the banner */
         body {
@@ -104,7 +103,8 @@ export function LanguageTranslateWidget() {
         /* Hide the Google tooltips that appear when hovering over translated text */
         #goog-gt-tt, 
         .goog-te-balloon-frame {
-          display: none !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
         }
         .goog-text-highlight {
           background-color: transparent !important;
@@ -112,7 +112,8 @@ export function LanguageTranslateWidget() {
         }
         /* Hide the main widget container */
         .skiptranslate > iframe.goog-te-banner-frame {
-          display: none !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
         }
         
         /* Force the native Google Translate element completely off-screen */

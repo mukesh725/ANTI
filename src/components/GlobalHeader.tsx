@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Sparkles, Menu, X } from "lucide-react";
+import { ShoppingBag, Sparkles, Menu, X, User as UserIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SmartCartDrawer, CartItem } from "@/modules/retail/shared/components/SmartCartDrawer";
+import { SmartCartDrawer } from "@/modules/retail/shared/components/SmartCartDrawer";
 import { LanguageTranslateWidget } from "./LanguageTranslateWidget";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 const allLinks = [
   { href: "/", label: "Home" },
@@ -27,8 +29,8 @@ const healthLinks = [
 ];
 
 export function GlobalHeader() {
-  const [cartItems] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { items: cartItems, setIsCartOpen } = useCart();
+  const { user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
@@ -138,6 +140,16 @@ export function GlobalHeader() {
             <Sparkles className="w-3 h-3" /> The Collective
           </button>
           
+          
+          <Link 
+            href={user ? "/ecommerce/account" : "/ecommerce/login"}
+            className={`relative hover:opacity-70 transition-opacity duration-300 ${
+              isScrolled ? "text-[#0B2114]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FAF8F5]" : "text-[#0B2114]")
+            }`}
+          >
+            <UserIcon className="w-5 h-5" />
+          </Link>
+
           <button 
             onClick={() => setIsCartOpen(true)} 
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
@@ -147,7 +159,7 @@ export function GlobalHeader() {
             <ShoppingBag className="w-5 h-5" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-2 bg-[#0B2114] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
-                {cartItems.length}
+                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
               </span>
             )}
           </button>
@@ -230,11 +242,7 @@ export function GlobalHeader() {
         )}
       </AnimatePresence>
 
-      <SmartCartDrawer 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
-        cartItems={cartItems} 
-      />
+      <SmartCartDrawer />
     </>
   );
 }

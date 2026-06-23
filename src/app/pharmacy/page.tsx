@@ -45,7 +45,7 @@ function ParallaxImage({
 
 export default function PharmacyPage() {
   const cmsData = useCms();
-
+  
   const pageRef = useRef<HTMLDivElement>(null);
   
   const pageContent = cmsData.pages.pharmacy;
@@ -272,6 +272,66 @@ export default function PharmacyPage() {
             </p>
           </div>
 
+        </div>
+      </section>
+
+      {/* SECTION 5.5: EXPLORE CATEGORIES */}
+      <section className="bg-[#FAF8F5] text-[#0B2114] py-24 md:py-36 px-6 md:px-16 w-full relative">
+        <div className="max-w-[1500px] mx-auto">
+          <div className="text-center mb-20 max-w-2xl mx-auto">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+              The Catalog
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-[#0B2114]">
+              Explore <span className="italic font-light text-[#0B2114]/80">AIRO Pharmacy</span>
+            </h2>
+            <p className="font-sans text-xs text-[#0B2114]/60 mt-4 leading-relaxed tracking-wide">
+              Every category is built as a targeted pathway to clinical-grade care and longevity protocols.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 relative z-20">
+            {cmsData.pages.pharmacy.sections.categories.map((category, index) => (
+              <Link 
+                href={`/pharmacy/shop?category=${encodeURIComponent(category.title)}`}
+                key={index}
+              >
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] aspect-[4/3] md:aspect-[16/9] cursor-pointer"
+                >
+                  <img 
+                    src={category.image}
+                    alt={category.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-80" />
+                  
+                  <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-start">
+                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#D4AF37] mb-3">
+                      Category {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="font-serif text-3xl md:text-4xl text-[#FAF8F5] mb-2">{category.title}</h3>
+                    <p className="font-sans text-xs text-[#FAF8F5]/70 max-w-sm leading-relaxed tracking-wide opacity-0 transform translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                      {category.description}
+                    </p>
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-16 flex justify-center z-20 relative">
+            <Link 
+              href="/pharmacy/shop"
+              className="bg-[#0B2114] text-[#FAF8F5] text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-[#D4AF37] hover:text-[#0B2114] transition-colors duration-300 shadow-lg flex items-center gap-3"
+            >
+              Shop All Pharmacy <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
