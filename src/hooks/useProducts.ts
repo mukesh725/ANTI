@@ -10,6 +10,20 @@ export interface Product {
   storeType: "grocery" | "pharmacy";
   image: string;
   description: string;
+  // Advanced fields
+  tagline?: string;
+  discount?: number;
+  stock?: number;
+  sku?: string;
+  weight?: number; // in grams
+  ingredients?: string; // stored as line-break separated
+  benefits?: string; // stored as line-break separated
+  isActive?: boolean;
+  isFeatured?: boolean;
+  isComingSoon?: boolean;
+  badge?: string;
+  themeColor?: string;
+  sortPosition?: number;
 }
 
 export function useProducts(storeType: "grocery" | "pharmacy") {
