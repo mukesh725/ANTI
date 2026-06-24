@@ -93,15 +93,15 @@ function ShopContent() {
                   key={product.id}
                   className="group relative overflow-hidden rounded-2xl bg-white border border-[#0B2114]/10 shadow-sm flex flex-col"
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden bg-[#FAF8F5]">
+                  <Link href={`/${product.storeType}/shop/${product.id}`} className="relative aspect-[4/5] overflow-hidden bg-[#FAF8F5] block">
                     <motion.img 
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 mix-blend-multiply"
                     />
-                  </div>
+                  </Link>
                   <div className="flex-1 p-6 flex flex-col justify-between z-10 bg-white">
-                    <div>
+                    <Link href={`/${product.storeType}/shop/${product.id}`} className="block hover:opacity-80 transition-opacity">
                       <span className="text-[8px] uppercase tracking-widest font-bold text-[#D4AF37] mb-2 block">
                         {product.category}
                       </span>
@@ -109,11 +109,15 @@ function ShopContent() {
                       <p className="font-sans text-xs text-[#0B2114]/70 leading-relaxed tracking-wide mb-4 line-clamp-2">
                         {product.description}
                       </p>
-                    </div>
+                    </Link>
                     <div className="flex items-center justify-between mt-auto border-t border-[#0B2114]/10 pt-4">
                       <span className="font-sans font-medium text-[#D4AF37]">${product.price.toFixed(2)}</span>
                       <button 
-                        onClick={() => addItem({ id: product.id, name: product.name, price: product.price, imageUrl: product.image })}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addItem({ id: product.id, name: product.name, price: product.price, imageUrl: product.image });
+                        }}
                         className="text-[9px] uppercase tracking-widest font-bold bg-[#0B2114]/5 hover:bg-[#0B2114]/10 text-[#0B2114] px-4 py-2 rounded-full transition-colors flex items-center gap-2"
                       >
                         <ShoppingBag className="w-3 h-3" /> Add
