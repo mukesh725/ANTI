@@ -139,8 +139,8 @@ export default function HealthPage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src={healthData.sections.praana.image} 
-                  alt={healthData.sections.praana.title} 
+                  src={healthData.sections?.praana?.image || "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000"} 
+                  alt={healthData.sections?.praana?.title || "AIRO Praana"} 
                   className="w-full h-full"
                   speed={0.1}
                 />
@@ -153,13 +153,13 @@ export default function HealthPage() {
                 <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> Clinical Innovation
               </div>
 
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-[#FAF8F5]">
-                {healthData.sections.praana.title.split(' ')[0] || "AIRO"} <br/>
-                <span className="italic font-light text-[#FAF8F5]/80">{healthData.sections.praana.title.split(' ').slice(1).join(' ') || "Praana"}</span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#D4AF37] mb-6 leading-tight">
+                {(healthData.sections?.praana?.title?.split(' ')[0]) || "AIRO"} <br/>
+                <span className="italic font-light text-[#FAF8F5]/80">{(healthData.sections?.praana?.title?.split(' ').slice(1).join(' ')) || "Praana"}</span>
               </h2>
 
               <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl mb-8 font-light leading-relaxed">
-                {healthData.sections.praana.description || "A 5-minute diagnostic assessment. A lifetime of longevity insights."}
+                {healthData.sections?.praana?.description || "A 5-minute diagnostic assessment. A lifetime of longevity insights."}
               </p>
 
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
