@@ -5,7 +5,7 @@ import { ShoppingBag } from "lucide-react";
 
 interface ProductProps {
   id: string;
-  storeType: string;
+  storeType?: string;
   name: string;
   price: number;
   origin?: string;
@@ -21,7 +21,7 @@ export function ProductCard({
 }) {
   return (
     <div className="group relative flex flex-col">
-      <Link href={`/${product.storeType}/shop/${product.id}`} className="block relative aspect-[4/5] w-full overflow-hidden bg-[#F5F5F7] mb-4 flex items-center justify-center">
+      <Link href={`/${product.storeType || 'grocery'}/shop/${product.id}`} className="block relative aspect-[4/5] w-full overflow-hidden bg-[#F5F5F7] mb-4 flex items-center justify-center">
         <img
           src={product.imageUrl}
           alt={product.name}
@@ -48,7 +48,7 @@ export function ProductCard({
       </Link>
 
       {/* Product Meta */}
-      <Link href={`/${product.storeType}/shop/${product.id}`} className="flex flex-col items-center text-center px-2">
+      <Link href={`/${product.storeType || 'grocery'}/shop/${product.id}`} className="flex flex-col items-center text-center px-2">
         <h3 className="font-sans text-[11px] md:text-xs text-charcoal mb-1 tracking-wide">
           {product.name}
         </h3>

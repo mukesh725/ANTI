@@ -12,7 +12,7 @@ import { useCart } from "@/context/CartContext";
 export default function ProductDetailPage() {
   const { id } = useParams();
   const router = useRouter();
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -69,14 +69,7 @@ export default function ProductDetailPage() {
   }
 
   const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      quantity,
-      image: product.image,
-      storeType: product.storeType
-    });
+    addItem({ id: product.id, name: product.name, price: product.price, imageUrl: product.image, quantity });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
