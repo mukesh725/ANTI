@@ -66,12 +66,12 @@ const analyzeLead = (lead: Lead) => {
     glow = "shadow-[0_0_15px_rgba(239,68,68,0.5)]";
   } else if (score >= 70) {
     priority = "High Intent";
-    color = "bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20";
+    color = "bg-[#D4AF37]/10 text-emerald-600 border-[#D4AF37]/20";
     barColor = "bg-[#D4AF37]";
     glow = "shadow-[0_0_15px_rgba(212,175,55,0.4)]";
   } else if (score < 55) {
     priority = "Exploring / Low";
-    color = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+    color = "bg-emerald-500/10 text-emerald-600 border-emerald-500/20";
     barColor = "bg-emerald-500";
     glow = "shadow-[0_0_15px_rgba(16,185,129,0.2)]";
   }
@@ -251,24 +251,24 @@ export default function AdminDashboardPage() {
   const conversionRate = ((leads.length / uniqueVisitors) * 100).toFixed(1);
 
   return (
-    <div className="min-h-screen bg-[#07120F] text-[#FAF8F5] font-sans selection:bg-[#D4AF37] selection:text-[#0B2114]">
+    <div className="min-h-screen bg-[#F4F7F6] text-gray-800 font-sans selection:bg-[#D4AF37] selection:text-gray-800">
       
       {/* Glow Effects */}
       <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Top Header Navigation */}
-      <nav className="sticky top-0 z-50 bg-[#07120F]/80 backdrop-blur-xl border-b border-[#1A3324]">
+      <nav className="sticky top-0 z-50 bg-[#F4F7F6]/80 backdrop-blur-xl border-b border-emerald-100">
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 relative">
           <div className="flex items-center space-x-4 w-full md:w-auto justify-between md:justify-start">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1A3324] to-[#0B2114] border border-[#234531] flex items-center justify-center shadow-lg">
-                <Activity className="w-5 h-5 text-[#D4AF37]" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 flex items-center justify-center shadow-lg">
+                <Activity className="w-5 h-5 text-emerald-600" />
               </div>
               <div>
-                <h1 className="font-serif text-xl tracking-wider font-semibold">AIRO Command Center</h1>
-                <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-emerald-400 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <h1 className="font-sans font-medium text-xl tracking-wider font-semibold">AIRO Command Center</h1>
+                <div className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-emerald-600 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span>System Online • Global Tracking Active</span>
                 </div>
               </div>
@@ -276,13 +276,13 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* TAB NAVIGATION */}
-          <div className="flex bg-[#07120F] border border-[#1A3324] rounded-full p-1 mt-4 md:mt-0 order-3 md:order-2">
+          <div className="flex bg-[#F4F7F6] border border-emerald-100 rounded-full p-1 mt-4 md:mt-0 order-3 md:order-2">
             <button
               onClick={() => setActiveTab("intelligence")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "intelligence" 
-                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  : "text-gray-500 hover:text-gray-900"
               }`}
             >
               <BrainCircuit className="w-3.5 h-3.5" /> Intelligence
@@ -291,8 +291,8 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("cms")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "cms" 
-                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  : "text-gray-500 hover:text-gray-900"
               }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5" /> CMS
@@ -301,8 +301,8 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("ecom")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "ecom" 
-                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  : "text-gray-500 hover:text-gray-900"
               }`}
             >
               <ShoppingBag className="w-3.5 h-3.5" /> E-Commerce
@@ -311,8 +311,8 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("products")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "products" 
-                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                  : "text-gray-400 hover:text-white"
+                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  : "text-gray-500 hover:text-gray-900"
               }`}
             >
               <Package className="w-3.5 h-3.5" /> Products
@@ -322,7 +322,7 @@ export default function AdminDashboardPage() {
           <div className="w-full md:w-auto flex justify-end order-2 md:order-3 mt-4 md:mt-0">
             <button 
               onClick={handleLogout}
-              className="text-gray-400 hover:text-white flex items-center space-x-2 text-xs uppercase tracking-widest transition-colors"
+              className="text-gray-500 hover:text-gray-900 flex items-center space-x-2 text-xs uppercase tracking-widest transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden md:inline">Terminate Session</span>
@@ -337,46 +337,46 @@ export default function AdminDashboardPage() {
           <>
             {/* ROW 1: MISSION CONTROL METRICS */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 relative z-10">
-          <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+          <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-md">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-2.5 bg-[#07120F] rounded-lg border border-[#1A3324]">
-                <Activity className="w-5 h-5 text-emerald-400" />
+              <div className="p-2.5 bg-[#F4F7F6] rounded-lg border border-emerald-100">
+                <Activity className="w-5 h-5 text-emerald-600" />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded">Live</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 bg-emerald-500/10 px-2 py-1 rounded">Live</span>
             </div>
-            <p className="text-sm text-gray-400 font-medium mb-1">Active Visitors</p>
-            <p className="text-4xl font-serif text-white">{(Math.random() * 4 + 1).toFixed(0)}</p>
+            <p className="text-sm text-gray-500 font-medium mb-1">Active Visitors</p>
+            <p className="text-4xl font-sans font-medium text-gray-900">{(Math.random() * 4 + 1).toFixed(0)}</p>
           </div>
 
-          <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-xl">
+          <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-sm">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-2.5 bg-[#07120F] rounded-lg border border-[#1A3324]">
-                <Eye className="w-5 h-5 text-[#D4AF37]" />
+              <div className="p-2.5 bg-[#F4F7F6] rounded-lg border border-emerald-100">
+                <Eye className="w-5 h-5 text-emerald-600" />
               </div>
             </div>
-            <p className="text-sm text-gray-400 font-medium mb-1">Total Network Views</p>
-            <p className="text-4xl font-serif text-white">{totalPageViews.toLocaleString()}</p>
+            <p className="text-sm text-gray-500 font-medium mb-1">Total Network Views</p>
+            <p className="text-4xl font-sans font-medium text-gray-900">{totalPageViews.toLocaleString()}</p>
           </div>
 
-          <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-xl">
+          <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-sm">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-2.5 bg-[#07120F] rounded-lg border border-[#1A3324]">
-                <Users className="w-5 h-5 text-[#D4AF37]" />
+              <div className="p-2.5 bg-[#F4F7F6] rounded-lg border border-emerald-100">
+                <Users className="w-5 h-5 text-emerald-600" />
               </div>
             </div>
-            <p className="text-sm text-gray-400 font-medium mb-1">Unique Global IPs</p>
-            <p className="text-4xl font-serif text-white">{uniqueVisitors.toLocaleString()}</p>
+            <p className="text-sm text-gray-500 font-medium mb-1">Unique Global IPs</p>
+            <p className="text-4xl font-sans font-medium text-gray-900">{uniqueVisitors.toLocaleString()}</p>
           </div>
 
-          <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-sm relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent pointer-events-none" />
             <div className="flex justify-between items-start mb-4 relative z-10">
-              <div className="p-2.5 bg-[#07120F] rounded-lg border border-[#1A3324]">
-                <Database className="w-5 h-5 text-[#D4AF37]" />
+              <div className="p-2.5 bg-[#F4F7F6] rounded-lg border border-emerald-100">
+                <Database className="w-5 h-5 text-emerald-600" />
               </div>
             </div>
-            <p className="text-sm text-gray-400 font-medium mb-1">Lead Conversion Rate</p>
-            <p className="text-4xl font-serif text-[#D4AF37]">{conversionRate}%</p>
+            <p className="text-sm text-gray-500 font-medium mb-1">Lead Conversion Rate</p>
+            <p className="text-4xl font-sans font-medium text-emerald-600">{conversionRate}%</p>
           </div>
         </div>
 
@@ -386,19 +386,19 @@ export default function AdminDashboardPage() {
           {/* LEFT COL: Traffic & Stream */}
           <div className="xl:col-span-4 space-y-8">
             
-            <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-2xl relative">
-              <div className="flex items-center space-x-3 mb-6 border-b border-[#1A3324] pb-4">
-                <Globe className="w-5 h-5 text-[#D4AF37]" />
-                <h3 className="font-serif text-lg tracking-wide">Global Traffic Hotspots</h3>
+            <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-md relative">
+              <div className="flex items-center space-x-3 mb-6 border-b border-emerald-100 pb-4">
+                <Globe className="w-5 h-5 text-emerald-600" />
+                <h3 className="font-sans font-medium text-lg tracking-wide">Global Traffic Hotspots</h3>
               </div>
               <div className="space-y-5">
                 {topRegions.map((region, idx) => (
                   <div key={idx}>
                     <div className="flex justify-between text-xs mb-2">
-                      <span className="text-gray-300 font-medium">{region.name}</span>
-                      <span className="font-mono text-[#D4AF37]">{region.percentage}%</span>
+                      <span className="text-gray-600 font-medium">{region.name}</span>
+                      <span className="font-mono text-emerald-600">{region.percentage}%</span>
                     </div>
-                    <div className="w-full bg-[#07120F] h-1.5 rounded-full overflow-hidden border border-[#1A3324]">
+                    <div className="w-full bg-[#F4F7F6] h-1.5 rounded-full overflow-hidden border border-emerald-100">
                       <motion.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${region.percentage}%` }}
@@ -411,23 +411,23 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="bg-[#0B2114]/60 backdrop-blur-md border border-[#1A3324] rounded-2xl p-6 shadow-2xl">
-              <div className="flex items-center space-x-3 mb-6 border-b border-[#1A3324] pb-4">
-                <Zap className="w-5 h-5 text-[#D4AF37]" />
-                <h3 className="font-serif text-lg tracking-wide">Live Event Stream</h3>
+            <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-md">
+              <div className="flex items-center space-x-3 mb-6 border-b border-emerald-100 pb-4">
+                <Zap className="w-5 h-5 text-emerald-600" />
+                <h3 className="font-sans font-medium text-lg tracking-wide">Live Event Stream</h3>
               </div>
-              <div className="relative border-l border-[#1A3324] ml-3 pl-6 space-y-5 py-1 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="relative border-l border-emerald-100 ml-3 pl-6 space-y-5 py-1 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
                 {browsingHistory.length === 0 ? (
                   <p className="text-xs text-gray-500 italic">Awaiting global signals...</p>
                 ) : (
                   browsingHistory.map((entry, idx) => (
                     <div key={idx} className="relative">
-                      <span className="absolute -left-[30px] top-1.5 w-2 h-2 bg-[#D4AF37] rounded-full border border-[#0B2114] shadow-[0_0_8px_#D4AF37]"></span>
+                      <span className="absolute -left-[30px] top-1.5 w-2 h-2 bg-[#D4AF37] rounded-full border border-gray-200 shadow-[0_0_8px_#D4AF37]"></span>
                       <div className="flex flex-col space-y-1">
-                        <span className="font-mono text-xs text-[#FAF8F5]">
+                        <span className="font-mono text-xs text-gray-800">
                           {entry.path}
                         </span>
-                        <div className="flex items-center space-x-2 text-[10px] text-gray-400">
+                        <div className="flex items-center space-x-2 text-[10px] text-gray-500">
                           <span>{new Date(entry.timestamp).toLocaleTimeString()}</span>
                           {entry.location?.city && (
                             <>
@@ -446,26 +446,26 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* RIGHT COL: AI Lead Intelligence */}
-          <div className="xl:col-span-8 bg-[#0B2114]/80 backdrop-blur-xl border border-[#1A3324] rounded-2xl shadow-2xl flex flex-col h-full overflow-hidden">
-            <div className="p-6 border-b border-[#1A3324] bg-gradient-to-b from-white/5 to-transparent">
+          <div className="xl:col-span-8 bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl shadow-md flex flex-col h-full overflow-hidden">
+            <div className="p-6 border-b border-emerald-100 bg-gradient-to-b from-white/5 to-transparent">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                 <div className="flex items-center space-x-3">
-                  <BrainCircuit className="w-6 h-6 text-[#D4AF37]" />
+                  <BrainCircuit className="w-6 h-6 text-emerald-600" />
                   <div>
-                    <h2 className="font-serif text-2xl tracking-wide">AI Lead Intelligence</h2>
-                    <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest">Heuristic Intent Analysis & Scoring</p>
+                    <h2 className="font-sans font-medium text-2xl tracking-wide">AI Lead Intelligence</h2>
+                    <p className="text-xs text-gray-500 mt-1 uppercase tracking-widest">Heuristic Intent Analysis & Scoring</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 w-full md:w-auto">
                   <div className="relative flex-grow">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                     <input
                       type="text"
                       placeholder="Search neural DB..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full md:w-64 bg-[#07120F] border border-[#1A3324] rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-[#D4AF37]/50 text-[#FAF8F5] transition-colors"
+                      className="w-full md:w-64 bg-[#F4F7F6] border border-emerald-100 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-[#D4AF37]/50 text-gray-800 transition-colors"
                     />
                   </div>
                 </div>
@@ -486,11 +486,11 @@ export default function AdminDashboardPage() {
                     <motion.div 
                       layout
                       key={lead.id}
-                      className={`relative overflow-hidden rounded-xl border border-[#1A3324] bg-[#07120F]/80 p-5 cursor-pointer transition-all hover:-translate-y-1 hover:border-[#D4AF37]/30 ${ai.glow}`}
+                      className={`relative overflow-hidden rounded-xl border border-emerald-100 bg-[#F4F7F6]/80 p-5 cursor-pointer transition-all hover:-translate-y-1 hover:border-[#D4AF37]/30 ${ai.glow}`}
                       onClick={() => setSelectedLead(lead)}
                     >
                       {/* Intent Progress Bar Background */}
-                      <div className="absolute bottom-0 left-0 h-1 bg-[#1A3324] w-full">
+                      <div className="absolute bottom-0 left-0 h-1 bg-emerald-50 w-full">
                         <div className={`h-full ${ai.barColor}`} style={{ width: `${ai.score}%` }} />
                       </div>
 
@@ -504,7 +504,7 @@ export default function AdminDashboardPage() {
                               {ai.priority} ({ai.score}%)
                             </span>
                           </div>
-                          <div className="flex flex-col space-y-1 text-xs text-gray-400 font-mono">
+                          <div className="flex flex-col space-y-1 text-xs text-gray-500 font-mono">
                             <span className="flex items-center space-x-2"><Mail className="w-3 h-3"/> <span>{lead.email}</span></span>
                             {lead.phone !== "Not Provided" && <span className="flex items-center space-x-2"><Clock className="w-3 h-3"/> <span>{lead.phone}</span></span>}
                           </div>
@@ -512,19 +512,19 @@ export default function AdminDashboardPage() {
 
                         {/* Message & AI Insight */}
                         <div className="flex-1 bg-white/5 rounded-lg p-3 border border-white/5">
-                          <div className="flex items-center space-x-2 mb-2 text-[#D4AF37]">
+                          <div className="flex items-center space-x-2 mb-2 text-emerald-600">
                             <BrainCircuit className="w-3 h-3" />
                             <span className="text-[10px] uppercase font-bold tracking-widest">AI Insight</span>
                           </div>
-                          <p className="text-xs text-gray-300 italic">&quot;{ai.insight}&quot;</p>
+                          <p className="text-xs text-gray-600 italic">&quot;{ai.insight}&quot;</p>
                           
                           <div className="mt-3 pt-3 border-t border-white/5 flex justify-between items-end">
                             <div>
                               <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Inquiry Route</p>
-                              <p className="text-xs text-white">{lead.type}</p>
+                              <p className="text-xs text-gray-900">{lead.type}</p>
                             </div>
                             <div className="text-right">
-                              <span className={`text-[10px] uppercase font-bold tracking-widest ${lead.status === 'Pending' ? 'text-yellow-400' : 'text-emerald-400'}`}>
+                              <span className={`text-[10px] uppercase font-bold tracking-widest ${lead.status === 'Pending' ? 'text-yellow-400' : 'text-emerald-600'}`}>
                                 {lead.status}
                               </span>
                             </div>
@@ -556,7 +556,7 @@ export default function AdminDashboardPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm"
             onClick={() => setSelectedLead(null)}
           >
             <motion.div 
@@ -564,19 +564,19 @@ export default function AdminDashboardPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#0B2114] border border-[#D4AF37]/30 rounded-2xl p-8 max-w-2xl w-full shadow-[0_0_50px_rgba(212,175,55,0.15)] relative overflow-hidden"
+              className="bg-white border border-[#D4AF37]/30 rounded-2xl p-8 max-w-2xl w-full shadow-lg relative overflow-hidden"
             >
               {/* Decorative top bar based on AI score */}
               <div className={`absolute top-0 left-0 w-full h-2 ${analyzeLead(selectedLead).barColor}`} />
 
               <div className="flex justify-between items-start mb-6 pt-2">
                 <div>
-                  <h2 className="font-serif text-3xl mb-1">{selectedLead.name}</h2>
-                  <p className="text-sm text-[#D4AF37] font-mono">{selectedLead.email}</p>
+                  <h2 className="font-sans font-medium text-3xl mb-1">{selectedLead.name}</h2>
+                  <p className="text-sm text-emerald-600 font-mono">{selectedLead.email}</p>
                 </div>
                 <button 
                   onClick={() => setSelectedLead(null)}
-                  className="text-gray-400 hover:text-white bg-[#07120F] p-2 rounded-lg border border-[#1A3324]"
+                  className="text-gray-500 hover:text-gray-900 bg-[#F4F7F6] p-2 rounded-lg border border-emerald-100"
                 >
                   Close
                 </button>
@@ -598,20 +598,20 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div className="bg-[#07120F] border border-[#1A3324] rounded-xl p-4 relative">
-                  <div className="absolute top-3 right-3 text-[#D4AF37]/20">
+                <div className="bg-[#F4F7F6] border border-emerald-100 rounded-xl p-4 relative">
+                  <div className="absolute top-3 right-3 text-emerald-600/20">
                     <BrainCircuit className="w-12 h-12" />
                   </div>
-                  <label className="text-[10px] text-[#D4AF37] uppercase tracking-widest font-bold block mb-2 relative z-10">AI Diagnostic Report</label>
-                  <p className="text-sm italic text-gray-300 relative z-10">
+                  <label className="text-[10px] text-emerald-600 uppercase tracking-widest font-bold block mb-2 relative z-10">AI Diagnostic Report</label>
+                  <p className="text-sm italic text-gray-600 relative z-10">
                     {analyzeLead(selectedLead).insight}
                   </p>
-                  <div className="mt-4 pt-4 border-t border-[#1A3324] relative z-10">
+                  <div className="mt-4 pt-4 border-t border-emerald-100 relative z-10">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] text-gray-400 uppercase font-semibold">Intent Confidence</span>
+                      <span className="text-[10px] text-gray-500 uppercase font-semibold">Intent Confidence</span>
                       <span className="text-xs font-mono font-bold">{analyzeLead(selectedLead).score}%</span>
                     </div>
-                    <div className="w-full bg-[#1A3324] h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-emerald-50 h-1.5 rounded-full overflow-hidden">
                       <div className={`h-full ${analyzeLead(selectedLead).barColor}`} style={{ width: `${analyzeLead(selectedLead).score}%` }} />
                     </div>
                   </div>
@@ -620,12 +620,12 @@ export default function AdminDashboardPage() {
 
               <div>
                 <label className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold block mb-2">Raw Message Content</label>
-                <div className="bg-[#07120F] p-4 rounded-xl border border-[#1A3324] text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
+                <div className="bg-[#F4F7F6] p-4 rounded-xl border border-emerald-100 text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
                   {selectedLead.message}
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mt-8 pt-6 border-t border-[#1A3324]">
+              <div className="flex justify-between items-center mt-8 pt-6 border-t border-emerald-100">
                 <button
                   onClick={() => handleDeleteLead(selectedLead.id)}
                   className="text-red-400 hover:text-red-300 text-xs uppercase tracking-wider font-semibold flex items-center space-x-2 px-4 py-2 hover:bg-red-400/10 rounded-lg transition-colors"
@@ -637,8 +637,8 @@ export default function AdminDashboardPage() {
                   onClick={() => handleToggleStatus(selectedLead.id)}
                   className={`px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold flex items-center space-x-2 transition-all ${
                     selectedLead.status === 'Pending' 
-                    ? 'bg-[#D4AF37] hover:bg-[#B8962E] text-[#0B2114]' 
-                    : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/50'
+                    ? 'bg-[#D4AF37] hover:bg-[#B8962E] text-gray-800' 
+                    : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-600 border border-emerald-500/50'
                   }`}
                 >
                   <CheckCircle2 className="w-4 h-4" />

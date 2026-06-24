@@ -112,15 +112,15 @@ export function ProductManager() {
     : (cmsData?.pages?.pharmacy?.sections?.categories || []).map((c: { title: string }) => c.title);
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-sm border border-[#0B2114]/5">
+    <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-200/5">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h2 className="text-2xl font-serif text-[#0B2114] mb-1">Products</h2>
-          <p className="text-sm text-[#0B2114]/60 font-sans tracking-wide">Manage your e-commerce catalog</p>
+          <h2 className="text-2xl font-sans font-medium text-gray-800 mb-1">Products</h2>
+          <p className="text-sm text-gray-800/60 font-sans tracking-wide">Manage your e-commerce catalog</p>
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="bg-[#0B2114] text-[#FAF8F5] px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:bg-[#0B2114]/90 transition-colors"
+          className="bg-white text-gray-800 px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:bg-white/90 transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Product
         </button>
@@ -128,13 +128,13 @@ export function ProductManager() {
 
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[#0B2114]/40" />
+          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-800/40" />
           <input 
             type="text" 
             placeholder="Search products..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[#FAF8F5] rounded-xl text-sm border-none focus:ring-2 focus:ring-[#D4AF37]/50"
+            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl text-sm border-none focus:ring-2 focus:ring-emerald-200"
           />
         </div>
         <div className="flex gap-2">
@@ -144,8 +144,8 @@ export function ProductManager() {
               onClick={() => setFilterStore(type)}
               className={`px-4 py-2 rounded-xl text-xs uppercase tracking-widest font-bold transition-all ${
                 filterStore === type 
-                  ? "bg-[#0B2114] text-[#FAF8F5]" 
-                  : "bg-[#FAF8F5] text-[#0B2114]/60 hover:bg-[#0B2114]/10"
+                  ? "bg-white text-gray-800" 
+                  : "bg-white text-gray-800/60 hover:bg-white/10"
               }`}
             >
               {type}
@@ -158,38 +158,38 @@ export function ProductManager() {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-[#0B2114]/10">
-              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-[#0B2114]/50 font-bold">Product</th>
-              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-[#0B2114]/50 font-bold">Store</th>
-              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-[#0B2114]/50 font-bold">Category</th>
-              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-[#0B2114]/50 font-bold">Price</th>
-              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-[#0B2114]/50 font-bold text-right">Actions</th>
+            <tr className="border-b border-gray-200/10">
+              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-gray-800/50 font-bold">Product</th>
+              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-gray-800/50 font-bold">Store</th>
+              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-gray-800/50 font-bold">Category</th>
+              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-gray-800/50 font-bold">Price</th>
+              <th className="py-4 px-4 text-[10px] uppercase tracking-widest text-gray-800/50 font-bold text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="py-12 text-center text-sm text-[#0B2114]/50">Loading products...</td>
+                <td colSpan={5} className="py-12 text-center text-sm text-gray-800/50">Loading products...</td>
               </tr>
             ) : filteredProducts.length === 0 ? (
               <tr>
-                <td colSpan={5} className="py-12 text-center text-sm text-[#0B2114]/50">No products found.</td>
+                <td colSpan={5} className="py-12 text-center text-sm text-gray-800/50">No products found.</td>
               </tr>
             ) : (
               filteredProducts.map(product => (
-                <tr key={product.id} className="border-b border-[#0B2114]/5 hover:bg-[#FAF8F5]/50 transition-colors">
+                <tr key={product.id} className="border-b border-gray-200/5 hover:bg-white/50 transition-colors">
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#FAF8F5] overflow-hidden flex-shrink-0 flex items-center justify-center border border-[#0B2114]/5">
+                      <div className="w-12 h-12 rounded-lg bg-white overflow-hidden flex-shrink-0 flex items-center justify-center border border-gray-200/5">
                         {product.image ? (
                           <img src={product.image} alt={product.name} className="w-full h-full object-cover mix-blend-multiply" />
                         ) : (
-                          <ImageIcon className="w-4 h-4 text-[#0B2114]/20" />
+                          <ImageIcon className="w-4 h-4 text-gray-800/20" />
                         )}
                       </div>
                       <div>
-                        <div className="font-medium text-[#0B2114] text-sm">{product.name}</div>
-                        <div className="text-xs text-[#0B2114]/50 line-clamp-1 max-w-[200px]">{product.description}</div>
+                        <div className="font-medium text-gray-800 text-sm">{product.name}</div>
+                        <div className="text-xs text-gray-800/50 line-clamp-1 max-w-[200px]">{product.description}</div>
                       </div>
                     </div>
                   </td>
@@ -200,13 +200,13 @@ export function ProductManager() {
                       {product.storeType}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-sm text-[#0B2114]/70">{product.category}</td>
-                  <td className="py-4 px-4 text-sm font-medium text-[#D4AF37]">${Number(product.price).toFixed(2)}</td>
+                  <td className="py-4 px-4 text-sm text-gray-800/70">{product.category}</td>
+                  <td className="py-4 px-4 text-sm font-medium text-emerald-600">${Number(product.price).toFixed(2)}</td>
                   <td className="py-4 px-4">
                     <div className="flex justify-end gap-2">
                       <button 
                         onClick={() => handleOpenModal(product)}
-                        className="p-2 text-[#0B2114]/40 hover:text-[#0B2114] hover:bg-[#0B2114]/5 rounded-lg transition-colors"
+                        className="p-2 text-gray-800/40 hover:text-gray-800 hover:bg-white/5 rounded-lg transition-colors"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
@@ -227,35 +227,35 @@ export function ProductManager() {
 
       {/* Add/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B2114]/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-md relative">
             <button 
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 p-2 bg-[#FAF8F5] rounded-full hover:bg-gray-100 transition-colors"
+              className="absolute top-6 right-6 p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
             >
-              <X className="w-4 h-4 text-[#0B2114]" />
+              <X className="w-4 h-4 text-gray-800" />
             </button>
             
             <div className="p-8">
-              <h3 className="text-2xl font-serif text-[#0B2114] mb-6">
+              <h3 className="text-2xl font-sans font-medium text-gray-800 mb-6">
                 {editingProduct ? "Edit Product" : "Add New Product"}
               </h3>
               
               <form onSubmit={handleSaveProduct} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest text-[#0B2114]/60 font-bold block">Product Name</label>
+                    <label className="text-xs uppercase tracking-widest text-gray-800/60 font-bold block">Product Name</label>
                     <input 
                       required
                       type="text" 
                       value={formData.name}
                       onChange={e => setFormData({...formData, name: e.target.value})}
-                      className="w-full bg-[#FAF8F5] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#D4AF37]/50"
+                      className="w-full bg-white text-gray-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-200"
                       placeholder="e.g. Organic Avocados"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest text-[#0B2114]/60 font-bold block">Price ($)</label>
+                    <label className="text-xs uppercase tracking-widest text-gray-800/60 font-bold block">Price ($)</label>
                     <input 
                       required
                       type="number" 
@@ -263,17 +263,17 @@ export function ProductManager() {
                       min="0"
                       value={formData.price}
                       onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})}
-                      className="w-full bg-[#FAF8F5] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#D4AF37]/50"
+                      className="w-full bg-white text-gray-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-200"
                       placeholder="e.g. 4.99"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest text-[#0B2114]/60 font-bold block">Store Type</label>
+                    <label className="text-xs uppercase tracking-widest text-gray-800/60 font-bold block">Store Type</label>
                     <select 
                       value={formData.storeType}
                       onChange={e => setFormData({...formData, storeType: e.target.value as "grocery" | "pharmacy", category: ""})}
-                      className="w-full bg-[#FAF8F5] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#D4AF37]/50"
+                      className="w-full bg-white text-gray-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-200"
                     >
                       <option value="grocery">AIRO Essentials (Grocery)</option>
                       <option value="pharmacy">AIRO Health Hub (Pharmacy)</option>
@@ -281,12 +281,12 @@ export function ProductManager() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest text-[#0B2114]/60 font-bold block">Category</label>
+                    <label className="text-xs uppercase tracking-widest text-gray-800/60 font-bold block">Category</label>
                     <select 
                       required
                       value={formData.category}
                       onChange={e => setFormData({...formData, category: e.target.value})}
-                      className="w-full bg-[#FAF8F5] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#D4AF37]/50"
+                      className="w-full bg-white text-gray-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-200"
                     >
                       <option value="" disabled>Select a category</option>
                       {formCategories.map((cat: string) => (
@@ -297,45 +297,45 @@ export function ProductManager() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-[#0B2114]/60 font-bold block">Image URL</label>
+                  <label className="text-xs uppercase tracking-widest text-gray-800/60 font-bold block">Image URL</label>
                   <input 
                     required
                     type="url" 
                     value={formData.image}
                     onChange={e => setFormData({...formData, image: e.target.value})}
-                    className="w-full bg-[#FAF8F5] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#D4AF37]/50"
+                    className="w-full bg-white text-gray-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-200"
                     placeholder="https://example.com/image.jpg"
                   />
                   {formData.image && (
-                    <div className="mt-2 w-24 h-24 rounded-xl border border-[#0B2114]/10 overflow-hidden bg-[#FAF8F5]">
+                    <div className="mt-2 w-24 h-24 rounded-xl border border-gray-200/10 overflow-hidden bg-white">
                       <img src={formData.image} alt="Preview" className="w-full h-full object-cover mix-blend-multiply" />
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-[#0B2114]/60 font-bold block">Description</label>
+                  <label className="text-xs uppercase tracking-widest text-gray-800/60 font-bold block">Description</label>
                   <textarea 
                     required
                     rows={3}
                     value={formData.description}
                     onChange={e => setFormData({...formData, description: e.target.value})}
-                    className="w-full bg-[#FAF8F5] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#D4AF37]/50 resize-none"
+                    className="w-full bg-white text-gray-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-200 resize-none"
                     placeholder="Short description of the product..."
                   />
                 </div>
 
-                <div className="pt-6 border-t border-[#0B2114]/5 flex justify-end gap-4">
+                <div className="pt-6 border-t border-gray-200/5 flex justify-end gap-4">
                   <button 
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-6 py-3 rounded-full text-xs uppercase tracking-widest font-bold text-[#0B2114]/60 hover:bg-[#FAF8F5] transition-colors"
+                    className="px-6 py-3 rounded-full text-xs uppercase tracking-widest font-bold text-gray-800/60 hover:bg-white transition-colors"
                   >
                     Cancel
                   </button>
                   <button 
                     type="submit"
-                    className="bg-[#0B2114] text-[#FAF8F5] px-8 py-3 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-[#0B2114]/90 transition-colors shadow-lg"
+                    className="bg-white text-gray-800 px-8 py-3 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-white/90 transition-colors shadow-lg"
                   >
                     {editingProduct ? "Save Changes" : "Add Product"}
                   </button>

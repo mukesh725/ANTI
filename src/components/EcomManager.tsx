@@ -54,49 +54,49 @@ export function EcomManager() {
   };
 
   if (loading) {
-    return <div className="text-center py-20 text-[#0B2114]/50">Loading e-commerce data...</div>;
+    return <div className="text-center py-20 text-gray-800/50">Loading e-commerce data...</div>;
   }
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="font-serif text-3xl mb-2 text-[#0B2114]">E-Commerce Operations</h2>
-          <p className="text-sm text-[#0B2114]/60">Manage incoming orders and fulfillments.</p>
+          <h2 className="font-sans font-medium text-3xl mb-2 text-gray-800">E-Commerce Operations</h2>
+          <p className="text-sm text-gray-800/60">Manage incoming orders and fulfillments.</p>
         </div>
-        <button onClick={fetchOrders} className="text-xs uppercase tracking-widest font-bold text-[#0B2114] bg-[#0B2114]/5 px-4 py-2 rounded-lg hover:bg-[#0B2114]/10 transition-colors">
+        <button onClick={fetchOrders} className="text-xs uppercase tracking-widest font-bold text-gray-800 bg-white/5 px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">
           Refresh
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-2xl border border-[#0B2114]/5 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-gray-200/5 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl"><Package className="w-5 h-5" /></div>
-            <h3 className="font-serif text-xl">Total Orders</h3>
+            <h3 className="font-sans font-medium text-xl">Total Orders</h3>
           </div>
           <p className="text-4xl font-light">{orders.length}</p>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-[#0B2114]/5 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-gray-200/5 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-yellow-50 text-yellow-600 rounded-xl"><Clock className="w-5 h-5" /></div>
-            <h3 className="font-serif text-xl">Processing</h3>
+            <h3 className="font-sans font-medium text-xl">Processing</h3>
           </div>
           <p className="text-4xl font-light">{orders.filter(o => o.status === "Processing").length}</p>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-[#0B2114]/5 shadow-sm">
+        <div className="bg-white p-6 rounded-2xl border border-gray-200/5 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             <div className="p-3 bg-green-50 text-green-600 rounded-xl"><CheckCircle2 className="w-5 h-5" /></div>
-            <h3 className="font-serif text-xl">Completed</h3>
+            <h3 className="font-sans font-medium text-xl">Completed</h3>
           </div>
           <p className="text-4xl font-light">{orders.filter(o => o.status === "Shipped" || o.status === "Delivered").length}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#0B2114]/5 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-200/5 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-[#FAF8F5] text-[10px] uppercase tracking-widest text-[#0B2114]/60">
+            <thead className="bg-white text-[10px] uppercase tracking-widest text-gray-800/60">
               <tr>
                 <th className="px-6 py-4 font-bold">Order ID</th>
                 <th className="px-6 py-4 font-bold">Date</th>
@@ -108,12 +108,12 @@ export function EcomManager() {
             </thead>
             <tbody className="divide-y divide-[#0B2114]/5">
               {orders.map((order) => (
-                <tr key={order.id} className="hover:bg-[#FAF8F5]/50 transition-colors">
+                <tr key={order.id} className="hover:bg-white/50 transition-colors">
                   <td className="px-6 py-4 font-mono text-xs">{order.id.slice(0, 8)}</td>
                   <td className="px-6 py-4 text-sm">{order.createdAt.toLocaleDateString()}</td>
                   <td className="px-6 py-4 text-sm">
                     <p className="font-medium">{order.shippingDetails?.firstName} {order.shippingDetails?.lastName}</p>
-                    <p className="text-xs text-[#0B2114]/50">{order.customerEmail}</p>
+                    <p className="text-xs text-gray-800/50">{order.customerEmail}</p>
                   </td>
                   <td className="px-6 py-4 font-medium">${order.total?.toFixed(2)}</td>
                   <td className="px-6 py-4">
@@ -130,7 +130,7 @@ export function EcomManager() {
                     <select 
                       value={order.status || "Processing"}
                       onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                      className="text-xs bg-[#FAF8F5] border border-[#0B2114]/10 rounded px-2 py-1 focus:outline-none focus:border-[#0B2114]"
+                      className="text-xs bg-white border border-gray-200/10 rounded px-2 py-1 focus:outline-none focus:border-gray-200"
                     >
                       <option value="Processing">Processing</option>
                       <option value="Shipped">Shipped</option>
@@ -142,7 +142,7 @@ export function EcomManager() {
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-sm text-[#0B2114]/50">
+                  <td colSpan={6} className="px-6 py-8 text-center text-sm text-gray-800/50">
                     No orders found.
                   </td>
                 </tr>

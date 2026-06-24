@@ -62,7 +62,7 @@ export function CmsEditor() {
       if (typeof value === "string") {
         return (
           <div key={fullPath.join(".")} className="mb-6">
-            <label className="flex items-center gap-2 text-[10px] text-[#D4AF37] uppercase tracking-widest font-bold mb-2">
+            <label className="flex items-center gap-2 text-[10px] text-emerald-600 uppercase tracking-widest font-bold mb-2">
               {isImage ? <ImageIcon className="w-3 h-3" /> : <FileText className="w-3 h-3" />}
               {key}
             </label>
@@ -70,14 +70,14 @@ export function CmsEditor() {
               <textarea
                 value={value}
                 onChange={(e) => updateField(fullPath, e.target.value)}
-                className="w-full bg-[#07120F] border border-[#1A3324] rounded-xl px-4 py-3 text-sm text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all resize-y min-h-[100px]"
+                className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-emerald-200 transition-all resize-y min-h-[100px]"
               />
             ) : (
               <input
                 type="text"
                 value={value}
                 onChange={(e) => updateField(fullPath, e.target.value)}
-                className="w-full bg-[#07120F] border border-[#1A3324] rounded-xl px-4 py-3 text-sm text-[#FAF8F5] focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all"
+                className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-emerald-200 transition-all"
               />
             )}
           </div>
@@ -85,8 +85,8 @@ export function CmsEditor() {
       } else if (typeof value === "object" && value !== null) {
         return (
           <div key={fullPath.join(".")} className="mb-8 p-6 bg-white/5 border border-white/5 rounded-2xl">
-            <h4 className="text-sm font-serif text-white mb-6 flex items-center gap-2 border-b border-white/10 pb-3">
-              <Settings2 className="w-4 h-4 text-emerald-400" />
+            <h4 className="text-sm font-sans font-medium text-gray-900 mb-6 flex items-center gap-2 border-b border-white/10 pb-3">
+              <Settings2 className="w-4 h-4 text-emerald-600" />
               {key.toUpperCase()}
             </h4>
             <div className="pl-2">
@@ -102,15 +102,15 @@ export function CmsEditor() {
   const categories = Object.keys(formData.pages) as Array<keyof CmsDataType["pages"]>;
 
   return (
-    <div className="flex flex-col h-full bg-[#0B2114]/80 backdrop-blur-xl border border-[#1A3324] rounded-2xl shadow-2xl overflow-hidden">
+    <div className="flex flex-col h-full bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl shadow-md overflow-hidden">
       {/* CMS Header */}
-      <div className="p-6 border-b border-[#1A3324] bg-gradient-to-b from-white/5 to-transparent flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
+      <div className="p-6 border-b border-emerald-100 bg-gradient-to-b from-white/5 to-transparent flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
         <div>
-          <h2 className="font-serif text-2xl tracking-wide flex items-center gap-3">
-            <Settings2 className="w-6 h-6 text-[#D4AF37]" />
+          <h2 className="font-sans font-medium text-2xl tracking-wide flex items-center gap-3">
+            <Settings2 className="w-6 h-6 text-emerald-600" />
             Live Content Editor
           </h2>
-          <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest">Global CMS Override Protocol</p>
+          <p className="text-xs text-gray-500 mt-1 uppercase tracking-widest">Global CMS Override Protocol</p>
         </div>
         
         <button
@@ -118,12 +118,12 @@ export function CmsEditor() {
           disabled={isSaving}
           className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold transition-all shadow-lg ${
             saveStatus === "success" 
-              ? "bg-emerald-500 text-[#0B2114]" 
-              : "bg-[#D4AF37] hover:bg-[#B8962E] text-[#0B2114]"
+              ? "bg-emerald-500 text-gray-800" 
+              : "bg-[#D4AF37] hover:bg-[#B8962E] text-gray-800"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           {isSaving ? (
-            <div className="w-4 h-4 border-2 border-[#0B2114]/30 border-t-[#0B2114] rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-gray-200/30 border-t-[#0B2114] rounded-full animate-spin" />
           ) : saveStatus === "success" ? (
             <CheckCircle2 className="w-4 h-4" />
           ) : (
@@ -135,8 +135,8 @@ export function CmsEditor() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar Nav */}
-        <div className="w-64 border-r border-[#1A3324] p-4 overflow-y-auto bg-[#07120F]/50 custom-scrollbar">
-          <div className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold mb-3 px-3">AIRO Essentials</div>
+        <div className="w-64 border-r border-emerald-100 p-4 overflow-y-auto bg-[#F4F7F6]/50 custom-scrollbar">
+          <div className="text-[10px] uppercase tracking-widest text-emerald-600 font-bold mb-3 px-3">AIRO Essentials</div>
           <ul className="space-y-1 mb-8">
             {categories.filter(c => ["home", "grocery", "contact"].includes(c)).map((cat) => (
               <li key={cat}>
@@ -144,8 +144,8 @@ export function CmsEditor() {
                   onClick={() => setActiveCategory(cat)}
                   className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
                     activeCategory === cat
-                      ? "bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 font-bold"
-                      : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+                      ? "bg-[#D4AF37]/10 text-emerald-600 border border-[#D4AF37]/20 font-bold"
+                      : "text-gray-500 hover:bg-white/5 hover:text-gray-900 border border-transparent"
                   }`}
                 >
                   {cat === "home" ? "Essentials Home" : cat}
@@ -154,7 +154,7 @@ export function CmsEditor() {
             ))}
           </ul>
 
-          <div className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold mb-3 px-3">AIRO Health Hub</div>
+          <div className="text-[10px] uppercase tracking-widest text-emerald-600 font-bold mb-3 px-3">AIRO Health Hub</div>
           <ul className="space-y-1">
             {categories.filter(c => !["home", "grocery", "contact"].includes(c)).map((cat) => (
               <li key={cat}>
@@ -162,8 +162,8 @@ export function CmsEditor() {
                   onClick={() => setActiveCategory(cat)}
                   className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
                     activeCategory === cat
-                      ? "bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 font-bold"
-                      : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+                      ? "bg-[#D4AF37]/10 text-emerald-600 border border-[#D4AF37]/20 font-bold"
+                      : "text-gray-500 hover:bg-white/5 hover:text-gray-900 border border-transparent"
                   }`}
                 >
                   {cat === "health" ? "Health Home" : cat}
@@ -183,9 +183,9 @@ export function CmsEditor() {
           )}
           
           <div className="max-w-4xl mx-auto">
-            <div className="mb-8 pb-4 border-b border-[#1A3324]">
-              <h3 className="font-serif text-3xl text-white capitalize">{activeCategory} Page</h3>
-              <p className="text-gray-400 text-sm mt-2">Edit the text and media content for the {activeCategory} section. Changes will reflect instantly across all global edges upon deployment.</p>
+            <div className="mb-8 pb-4 border-b border-emerald-100">
+              <h3 className="font-sans font-medium text-3xl text-gray-900 capitalize">{activeCategory} Page</h3>
+              <p className="text-gray-500 text-sm mt-2">Edit the text and media content for the {activeCategory} section. Changes will reflect instantly across all global edges upon deployment.</p>
             </div>
             {renderFields(formData.pages[activeCategory], ["pages", activeCategory as string])}
           </div>
