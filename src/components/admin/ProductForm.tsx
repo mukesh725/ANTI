@@ -112,7 +112,7 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
                   <select 
                     value={formData.storeType}
                     onChange={e => {
-                      updateField('storeType', e.target.value);
+                      updateField('storeType', e.target.value as "grocery" | "pharmacy");
                       updateField('category', '');
                     }}
                     className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
