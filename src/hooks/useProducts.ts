@@ -7,18 +7,19 @@ export interface Product {
   name: string;
   price: number;
   category: string;
+  storeType: "grocery" | "pharmacy";
   image: string;
   description: string;
 }
 
-export function useProducts(category: string) {
+export function useProducts(storeType: "grocery" | "pharmacy") {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const q = query(collection(db, "products"), where("category", "==", category));
+        const q = query(collection(db, "products"), where("storeType", "==", storeType));
         const querySnapshot = await getDocs(q);
         const fetchedProducts = querySnapshot.docs.map(doc => ({
           id: doc.id,
@@ -26,13 +27,13 @@ export function useProducts(category: string) {
         } as Product));
         setProducts(fetchedProducts);
       } catch (error) {
-        console.error(`Failed to fetch ${category} products:`, error);
+        console.error(`Failed to fetch ${storeType} products:`, error);
       } finally {
         setLoading(false);
       }
     }
     fetchProducts();
-  }, [category]);
+  }, [storeType]);
 
   return { products, loading };
 }

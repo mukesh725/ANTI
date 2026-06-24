@@ -12,7 +12,8 @@ import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
 import { CmsEditor } from "@/components/CmsEditor";
 import { EcomManager } from "@/components/EcomManager";
-import { ShoppingBag } from "lucide-react";
+import { ProductManager } from "@/components/admin/ProductManager";
+import { ShoppingBag, Package } from "lucide-react";
 
 interface LocationData {
   city: string;
@@ -97,7 +98,7 @@ export default function AdminDashboardPage() {
   const filterType: string = "All"; // Static for now as we removed the UI for it
   
   // Tabs
-  const [activeTab, setActiveTab] = useState<"intelligence" | "cms" | "ecom">("intelligence");
+  const [activeTab, setActiveTab] = useState<"intelligence" | "cms" | "ecom" | "products">("intelligence");
   
   // Analytics
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
@@ -305,6 +306,16 @@ export default function AdminDashboardPage() {
               }`}
             >
               <ShoppingBag className="w-3.5 h-3.5" /> E-Commerce
+            </button>
+            <button 
+              onClick={() => setActiveTab("products")}
+              className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
+                activeTab === "products" 
+                  ? "bg-[#D4AF37] text-[#0B2114] shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <Package className="w-3.5 h-3.5" /> Products
             </button>
           </div>
 
@@ -531,6 +542,8 @@ export default function AdminDashboardPage() {
         </>
         ) : activeTab === "cms" ? (
           <CmsEditor />
+        ) : activeTab === "products" ? (
+          <ProductManager />
         ) : (
           <EcomManager />
         )}
