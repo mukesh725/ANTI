@@ -25,6 +25,32 @@ export default function PharmacyProductDetailPage() {
     async function fetchProduct() {
       if (!id) return;
       try {
+        if (id === "mock-health-1") {
+          setProduct({
+            id: "mock-health-1",
+            name: "Advanced Ashwagandha Extract",
+            price: 34.00,
+            category: "Supplements",
+            storeType: "pharmacy",
+            image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80",
+            description: "Clinically formulated KSM-66 Ashwagandha for deep stress relief, lowered cortisol levels, and improved sleep quality.",
+            tagline: "Adaptogenic Stress Support",
+            discount: 0,
+            stock: 120,
+            sku: "ASH-KSM66-01",
+            weight: 60,
+            ingredients: "KSM-66 Ashwagandha Root Extract (600mg)\nOrganic Black Pepper Extract (5mg for absorption)",
+            benefits: "Lowers Cortisol & Stress\nImproves Sleep Quality\nBoosts cognitive function",
+            isActive: true,
+            isFeatured: true,
+            isComingSoon: false,
+            badge: "Clinically Proven",
+            themeColor: "#8e6e53",
+            sortPosition: 1
+          } as Product);
+          return;
+        }
+
         const docRef = doc(db, "products", id as string);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {

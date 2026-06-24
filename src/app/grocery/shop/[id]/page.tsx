@@ -25,6 +25,32 @@ export default function ProductDetailPage() {
     async function fetchProduct() {
       if (!id) return;
       try {
+        if (id === "mock-essentials-1") {
+          setProduct({
+            id: "mock-essentials-1",
+            name: "Organic Matcha Green Tea",
+            price: 24.99,
+            category: "Wellness",
+            storeType: "grocery",
+            image: "https://images.unsplash.com/photo-1582793988951-9aed550c6ea2?auto=format&fit=crop&q=80",
+            description: "Premium ceremonial grade matcha sourced directly from Uji, Japan. Rich in antioxidants and perfect for daily energy without the jittery crash.",
+            tagline: "Your daily calm energy",
+            discount: 0,
+            stock: 50,
+            sku: "MTC-ORG-01",
+            weight: 100,
+            ingredients: "100% Ceremonial Grade Matcha Green Tea Powder\nL-Theanine\nNaturally Occurring Caffeine",
+            benefits: "Boosts Metabolism naturally\nEnhances focus and clarity\nRich in Catechins (EGCG)",
+            isActive: true,
+            isFeatured: true,
+            isComingSoon: false,
+            badge: "Best Seller",
+            themeColor: "#5b8c5a",
+            sortPosition: 1
+          } as Product);
+          return;
+        }
+
         const docRef = doc(db, "products", id as string);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
