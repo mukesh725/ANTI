@@ -30,18 +30,18 @@ export default function HealthChairPage() {
   const preventRef = useRef<HTMLDivElement>(null);
 
   const pageContent = cmsData.pages.healthChair;
-  const { hero, assessment, insights } = pageContent.sections;
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pc = pageContent as any;
+  const { assessment, insights } = pc.sections;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sections = pageContent.sections as any;
+  const sections = pc.sections;
   const connectedEcosystem = sections.connectedEcosystem;
   const preventiveSection = sections.preventiveSection;
   const finalCta = sections.finalCta;
 
   // Parse metrics from comma-separated string
-  const metricLabels = (hero.metrics || "Blood Pressure, Heart Rate & ECG, SpO₂, Respiratory Rate, Temperature, Weight & BMI")
+  const metricLabels = (pc.metrics || "Blood Pressure, Heart Rate & ECG, SpO₂, Respiratory Rate, Temperature, Weight & BMI")
     .split(',')
     .map((s: string) => s.trim());
 
@@ -101,7 +101,7 @@ export default function HealthChairPage() {
         {/* Background Image */}
         <div 
           className="absolute inset-0 z-0 bg-center bg-no-repeat bg-cover"
-          style={{ backgroundImage: `url('${hero.image}')` }}
+          style={{ backgroundImage: `url('${pc.heroImage || "/chair-hero.jpg"}')` }}
         />
         {/* Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />
@@ -145,7 +145,7 @@ export default function HealthChairPage() {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               className="text-sm md:text-base text-white/60 max-w-md leading-relaxed"
             >
-              {hero.description}
+              {pc.description}
             </motion.p>
           </div>
 

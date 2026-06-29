@@ -451,11 +451,6 @@
     "healthChair": {
       "title": "Know Your Body.",
       "subtitle": "In Just 5 Minutes.",
-      "heroBadge": "Clinical Innovation",
-      "sections": {
-        "hero": {
-          "title": "AIRO Praana",
-          "description": "Your Complete Body Checkup Seat",
       "heroBadge": "Proactive Longevity",
       "heroImage": "/chair-hero.jpg",
       "description": "The AIRO 5-Minute Health Chair offers a frictionless, clinical-grade metabolic assessment. Sit down, scan your biometrics, and receive actionable insights into your health span instantly.",
