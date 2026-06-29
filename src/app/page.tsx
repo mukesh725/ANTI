@@ -426,8 +426,19 @@ export default function HomePage() {
             <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Support</h3>
             <ul className="space-y-4 text-sm text-[#FAF8F5]/80 font-medium">
               <li><a href="mailto:concierge@airo.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">concierge@airo.com</a></li>
-              <li><a href="mailto:clinical@airo.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">clinical@airo.com</a></li>
+              <li><a href="mailto:grievance@airo.com" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">grievance@airo.com</a></li>
+              <li className="pt-2 text-[#FAF8F5]/50 text-xs">Lic. No. 10026047000000</li>
               <li className="pt-8 text-[#FAF8F5]/30 text-[10px] tracking-widest uppercase">{footerData?.copyright || "© 2026 AIRO Health."}</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-sans text-xs font-bold mb-8 text-[#FAF8F5]/40 tracking-widest uppercase">Legal</h3>
+            <ul className="space-y-4 text-sm text-[#FAF8F5]/80 font-medium">
+              <li><Link href="/privacy-policy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Terms of Service</Link></li>
+              <li><Link href="/refund-policy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Refund Policy</Link></li>
+              <li><Link href="/shipping-policy" className="hover:text-[#FAF8F5]/50 silent-luxury-transition">Shipping Policy</Link></li>
             </ul>
           </div>
 

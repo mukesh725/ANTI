@@ -10,6 +10,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { CmsProvider, CmsDataType } from "@/context/CmsContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
+import { CookieBanner } from "./CookieBanner";
 
 interface LocationData {
   city: string;
@@ -146,6 +147,7 @@ export function ClientLayoutWrapper({
                 {children}
               </main>
               <AiraChatbot />
+              <CookieBanner />
             </div>
           </CmsProvider>
         </CartProvider>

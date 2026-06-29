@@ -1,121 +1,103 @@
 "use client";
 
 import Link from "next/link";
-import { AlertCircle } from "lucide-react";
+import { FileText, Scale, AlertTriangle, ShieldCheck } from "lucide-react";
+import { GlobalHeader } from "@/components/GlobalHeader";
 
-export default function TermsOfServicePage() {
+export default function TermsPage() {
   return (
     <div className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+      <GlobalHeader />
       
       {/* Header Banner */}
-      <section className="relative px-6 md:px-12 pt-20 pb-12 md:py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
+      <section className="relative px-6 md:px-12 pt-40 pb-12 md:py-48 max-w-7xl mx-auto flex flex-col items-center text-center">
         <span className="text-[10px] tracking-[0.25em] uppercase text-[#0B2114]/60 mb-4 font-semibold block">
-          Legal Agreement
+          Legal & Compliance
         </span>
         <h1 className="font-serif text-4xl md:text-6xl text-[#0B2114] max-w-4xl tracking-tight leading-tight mb-6">
-          Terms of Service & Clinical Disclaimers
+          Terms of Service
         </h1>
         <p className="text-[#0B2114]/75 text-sm md:text-base max-w-2xl leading-relaxed">
-          Please review the following terms carefully before using any AIRO Health platforms, diagnostics systems, clinical services, or premium retail resources.
+          These Terms of Service govern your use of AIRO Health, AIRO Essentials, and the Minute Clinic. By accessing our platform, you agree to comply with these terms, governed by the laws of India.
         </p>
       </section>
 
-      {/* Critical Medical Disclaimer Banner */}
-      <section className="px-6 md:px-12 pb-16 max-w-4xl mx-auto">
-        <div className="bg-amber-50 border border-amber-200 text-amber-950 p-6 rounded-2xl flex items-start space-x-4 shadow-sm">
-          <AlertCircle className="w-6 h-6 text-amber-700 flex-shrink-0 mt-0.5" />
-          <div className="space-y-2">
-            <h4 className="font-serif text-lg font-semibold text-amber-900">Important Medical Disclaimer</h4>
-            <p className="text-xs leading-relaxed text-amber-900/90">
-              The content, assessments, and diagnostic metrics generated on this website or by the AIRO Health Chair are for informational and educational purposes only. They are not a substitute for professional clinical advice, diagnosis, or treatment. Always consult with a qualified medical practitioner before starting any medication, compounding program, weight management protocol, or IV therapy.
-            </p>
-          </div>
+      {/* Compliance Overview Grid */}
+      <section className="px-6 md:px-12 pb-16 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white border border-[#E6DFD5] p-6 rounded-2xl shadow-sm space-y-3">
+          <Scale className="w-5 h-5 text-[#0B2114]" />
+          <h4 className="font-serif text-lg font-medium">Indian Jurisdiction</h4>
+          <p className="text-xs text-[#0B2114]/70 leading-relaxed">
+            All services, transactions, and disputes are strictly governed by the laws of India, subject exclusively to the courts in Hyderabad, Telangana.
+          </p>
+        </div>
+        <div className="bg-white border border-[#E6DFD5] p-6 rounded-2xl shadow-sm space-y-3">
+          <ShieldCheck className="w-5 h-5 text-[#0B2114]" />
+          <h4 className="font-serif text-lg font-medium">E-Commerce Compliance</h4>
+          <p className="text-xs text-[#0B2114]/70 leading-relaxed">
+            We fully comply with the Consumer Protection (E-Commerce) Rules 2020, ensuring transparent pricing, authentic products, and robust grievance redressal.
+          </p>
+        </div>
+        <div className="bg-white border border-[#E6DFD5] p-6 rounded-2xl shadow-sm space-y-3">
+          <AlertTriangle className="w-5 h-5 text-[#0B2114]" />
+          <h4 className="font-serif text-lg font-medium">Medical Disclaimer</h4>
+          <p className="text-xs text-[#0B2114]/70 leading-relaxed">
+            AIRO Health Chair assessments and Minute Clinic telehealth consults do not replace emergency medical care. In an emergency, dial 112 immediately.
+          </p>
         </div>
       </section>
 
-      {/* Detailed Terms Content */}
-      <section className="px-6 md:px-12 pb-24 max-w-4xl mx-auto font-sans text-sm leading-relaxed text-[#0B2114]/85 space-y-8">
+      {/* Detailed Legal Text */}
+      <section className="px-6 md:px-12 pb-24 max-w-4xl mx-auto font-sans text-sm leading-relaxed text-[#0B2114]/85 space-y-12">
         
-        <div className="space-y-3">
-          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide">1. Practitioner Assessment Requirement</h2>
+        <div className="space-y-4">
+          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide border-b border-[#E6DFD5] pb-2">1. Use of Platform & Eligibility</h2>
           <p>
-            Certain services within the AIRO Health ecosystem—including custom compounded prescriptions, targeted hormone therapies, weight loss programs (such as GLP-1 therapy), and advanced IV infusions—strictly require a prior diagnostic evaluation and physical assessment by a licensed AIRO Minute Clinic practitioner or partner physician.
-          </p>
-          <p>
-            Submission of inquiries, questionnaire responses, or chatbot logs does not guarantee enrollment in a clinical program or access to prescribed medications. All medical decisions remain at the discretion of the evaluating clinical team.
+            By registering on the AIRO platform, you represent that you are at least 18 years of age and competent to enter into a legally binding contract under the Indian Contract Act, 1872. 
           </p>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide">2. Permitted Use of Site Materials</h2>
+        <div className="space-y-4">
+          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide border-b border-[#E6DFD5] pb-2">2. E-Commerce (AIRO Essentials & Pharmacy)</h2>
           <p>
-            All text, diagrams, layout designs, branding, and images rendered on the AIRO website are the intellectual property of AIRO Health. You may view and print resources for personal, non-commercial purposes only. Any unauthorized reproduction, scraping, or distribution of our proprietary content is strictly prohibited.
+            When purchasing products via AIRO Essentials or the AIRO Pharmacy:
+          </p>
+          <ul className="list-disc pl-5 space-y-2 text-sm text-[#0B2114]/85">
+            <li><strong>Pricing:</strong> All prices displayed are inclusive of GST. Delivery charges, if applicable, are clearly stated at checkout.</li>
+            <li><strong>FSSAI Compliance:</strong> Food items and organic groceries sold are sourced from FSSAI registered/licensed vendors. Nutritional facts and expiry dates are strictly monitored.</li>
+            <li><strong>Prescription Drugs:</strong> Schedule H and H1 drugs through the AIRO Pharmacy require a valid prescription from a registered medical practitioner, per the Drugs and Cosmetics Act, 1940.</li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide border-b border-[#E6DFD5] pb-2">3. Minute Clinic & Telemedicine Guidelines</h2>
+          <p>
+            AIRO&#39;s telehealth services and &quot;Minute Clinic&quot; operate in accordance with the Telemedicine Practice Guidelines issued by the Ministry of Health and Family Welfare (MoHFW) and NITI Aayog.
+          </p>
+          <p>
+            <strong>Crucial Disclaimer:</strong> The AIRO Health Chair provides preliminary metabolic assessments and wellness insights. It is <strong>NOT</strong> a substitute for clinical diagnostics or emergency medical care. Our Registered Medical Practitioners (RMPs) exercise their independent clinical judgment during consultations.
           </p>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide">3. Accounts and Communication Consent</h2>
+        <div className="space-y-4">
+          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide border-b border-[#E6DFD5] pb-2">4. Cancellations & Returns</h2>
           <p>
-            By submitting your name, email address, or phone number on our waitlist or contact forms, you consent to receive scheduling notifications, appointment reminders, and administrative updates from our wellness concierge desk. You can unsubscribe from these alerts at any time by following the instructions inside our communications.
+            AIRO maintains a transparent returns policy governed by the Consumer Protection (E-Commerce) Rules 2020. 
+            For full details on non-returnable items (e.g., compounded medicines, perishable foods), refund timelines, and cancellation procedures, please read our dedicated <Link href="/refund-policy" className="underline font-medium text-emerald-700 hover:text-emerald-900">Refund Policy</Link> and <Link href="/shipping-policy" className="underline font-medium text-emerald-700 hover:text-emerald-900">Shipping Policy</Link>.
           </p>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="font-serif text-2xl text-[#0B2114] tracking-wide">4. Limitation of Liability</h2>
-          <p>
-            AIRO Health and its associates (including founder Kumar Swamy Maruri, clinicians, pharmacists, and software engineers) shall not be held liable for any direct or indirect consequences arising from the use of, or inability to use, our online services, diagnostics chair telemetry, or retail products. You agree to use these tools at your own discretion.
+        <div className="space-y-4 bg-[#0B2114] text-[#FAF8F5] p-6 rounded-2xl">
+          <h2 className="font-serif text-xl tracking-wide flex items-center gap-2">
+            <FileText className="w-5 h-5 text-[#D4AF37]" />
+            5. Governing Law & Dispute Resolution
+          </h2>
+          <p className="text-[#FAF8F5]/80 text-sm">
+            These Terms of Service are governed by and construed in accordance with the laws of the Republic of India. Any disputes arising out of or related to these terms, the website, or services provided shall be subject to the exclusive jurisdiction of the courts located in <strong>Hyderabad, Telangana, India</strong>.
           </p>
         </div>
 
       </section>
-
-      {/* Global Footer */}
-      <footer className="bg-[#0B2114] text-[#FAF8F5] py-16 px-6 md:px-12 border-t border-[#1A3324]">
-        <div className="max-w-7xl mx-auto space-y-12">
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <span className="font-serif text-2xl tracking-widest uppercase text-[#FAF8F5]">AIRO.</span>
-              <p className="text-xs text-[#FAF8F5]/60 leading-relaxed">
-                An integrated longevity ecosystem combining nutrition, diagnostics, clinical care, and personalized pharmacy solutions.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider text-[#D4AF37] font-semibold mb-4">Support & Care</h4>
-              <ul className="space-y-2 text-xs text-[#FAF8F5]/70">
-                <li>Concierge: <a href="mailto:concierge@airohealth.com" className="hover:text-white transition-colors">concierge@airohealth.com</a></li>
-                <li>Clinical Team: <a href="mailto:clinical@airohealth.com" className="hover:text-white transition-colors">clinical@airohealth.com</a></li>
-                <li>Phone: <a href="tel:+18005552476" className="hover:text-white transition-colors">+1 (800) 555-2476</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider text-[#D4AF37] font-semibold mb-4">Ecosystem</h4>
-              <ul className="space-y-2 text-xs text-[#FAF8F5]/70">
-                <li><Link href="/grocery" className="hover:text-white transition-colors">AIRO Essentials</Link></li>
-                <li><Link href="/pharmacy" className="hover:text-white transition-colors">AIRO Pharmacy</Link></li>
-                <li><Link href="/minute-clinic" className="hover:text-white transition-colors">Minute Clinic</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider text-[#D4AF37] font-semibold mb-4">Legal & Press</h4>
-              <ul className="space-y-2 text-xs text-[#FAF8F5]/70">
-                <li><Link href="/about" className="hover:text-white transition-colors">About & Leadership</Link></li>
-                <li><Link href="/press" className="hover:text-white transition-colors">Press & Investor Kit</Link></li>
-                <li><Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors font-medium">Terms of Service</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-[#1A3324] pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] text-[#FAF8F5]/40">
-            <span>&copy; 2026 AIRO Health. All rights reserved.</span>
-            <span className="text-center max-w-lg leading-relaxed md:text-right">
-              Healthcare programs and compounding therapies are subject to practitioner evaluation. All contents are informational and not medical advice.
-            </span>
-          </div>
-
-        </div>
-      </footer>
 
     </div>
   );
