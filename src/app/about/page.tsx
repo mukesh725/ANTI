@@ -2,21 +2,39 @@
 
 import { Sparkles, Shield, Heart, Compass } from "lucide-react";
 import Link from "next/link";
+import { useCms } from "@/context/CmsContext";
 
 export default function AboutPage() {
+  const cmsData = useCms();
+  
+  // Cast to any to avoid TS errors until types are updated if needed
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pageContent = (cmsData.pages as any).about;
+
+  if (!pageContent) return null;
+
+  const { hero, trustFramework, metrics, leadership } = pageContent;
+
+  const iconMap: Record<string, typeof Shield> = {
+    "Clinical Rigor": Shield,
+    "Compounding Purity": Sparkles,
+    "Sourcing Integrity": Heart,
+    "HIPAA Data Sovereignty": Compass,
+  };
+
   return (
     <div className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
       
       {/* Hero Section */}
       <section className="relative px-6 md:px-12 pt-20 pb-16 md:py-32 max-w-7xl mx-auto flex flex-col items-center text-center">
         <span className="text-[10px] tracking-[0.25em] uppercase text-[#0B2114]/60 mb-4 font-semibold block">
-          Our Foundation & Philosophy
+          {hero.label}
         </span>
         <h1 className="font-serif text-4xl md:text-7xl text-[#0B2114] max-w-5xl tracking-tight leading-none mb-8">
-          The Paradigm Shift in Modern Longevity
+          {hero.title}
         </h1>
         <p className="text-[#0B2114]/75 text-sm md:text-lg max-w-3xl leading-relaxed">
-          AIRO was founded to change a broken paradigm: moving from reactive disease treatment to proactive, personalized health optimization. We combine advanced diagnostics, sterile compounding pharmacy services, physical clinic networks, and organic lifestyle retail under one connected, secure ecosystem.
+          {hero.description}
         </p>
       </section>
 
@@ -24,65 +42,33 @@ export default function AboutPage() {
       <section className="px-6 md:px-12 py-16 md:py-24 bg-[#F5EFEB] border-t border-b border-[#E6DFD5]">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
-            <span className="text-[9px] tracking-[0.3em] uppercase text-[#0B2114]/50 font-bold">Clinical Standards</span>
-            <h2 className="font-serif text-3xl md:text-5xl tracking-tight">The Pillars of AIRO Trust</h2>
+            <span className="text-[9px] tracking-[0.3em] uppercase text-[#0B2114]/50 font-bold">{trustFramework.label}</span>
+            <h2 className="font-serif text-3xl md:text-5xl tracking-tight">{trustFramework.title}</h2>
             <p className="text-xs md:text-sm text-[#0B2114]/70 leading-relaxed">
-              We understand that choosing a health partner is a deeply personal decision. That is why the AIRO ecosystem operates with absolute transparency, strict compliance, and clinical supervision at every level.
+              {trustFramework.description}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white border border-[#E6DFD5] p-8 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
-              <div>
-                <Shield className="w-8 h-8 text-[#0B2114] mb-4" />
-                <h4 className="font-serif text-xl mb-2">Clinical Rigor</h4>
-                <p className="text-xs text-[#0B2114]/70 leading-relaxed">
-                  Every metabolic assessment, biomarker scan, and compounding dosage program is reviewed and approved by board-certified clinical practitioners. We do not prescribe based on trends—only verified lab findings.
-                </p>
-              </div>
-              <div className="text-[9px] tracking-wider uppercase font-bold text-[#0B2114]/40 pt-4 border-t border-[#FAF8F5]">
-                MD-Vetted Protocols
-              </div>
-            </div>
-
-            <div className="bg-white border border-[#E6DFD5] p-8 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
-              <div>
-                <Sparkles className="w-8 h-8 text-[#D4AF37] mb-4" />
-                <h4 className="font-serif text-xl mb-2">Compounding Purity</h4>
-                <p className="text-xs text-[#0B2114]/70 leading-relaxed">
-                  Our associated compounding apothecaries formulate customized medicine inside sterile cleanrooms that strictly comply with USP &lt;795&gt; (non-sterile) and USP &lt;797&gt; (sterile compounding) standards.
-                </p>
-              </div>
-              <div className="text-[9px] tracking-wider uppercase font-bold text-[#0B2114]/40 pt-4 border-t border-[#FAF8F5]">
-                USP Compliant Apothecary
-              </div>
-            </div>
-
-            <div className="bg-white border border-[#E6DFD5] p-8 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
-              <div>
-                <Heart className="w-8 h-8 text-[#0B2114] mb-4" />
-                <h4 className="font-serif text-xl mb-2">Sourcing Integrity</h4>
-                <p className="text-xs text-[#0B2114]/70 leading-relaxed">
-                  AIRO Essentials partners exclusively with farmers and suppliers certified under USDA organic guidelines. Every grocery batch, cold-pressed juice, and dietary staple is audited for heavy metals and pesticides.
-                </p>
-              </div>
-              <div className="text-[9px] tracking-wider uppercase font-bold text-[#0B2114]/40 pt-4 border-t border-[#FAF8F5]">
-                100% Pesticide Screened
-              </div>
-            </div>
-
-            <div className="bg-white border border-[#E6DFD5] p-8 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
-              <div>
-                <Compass className="w-8 h-8 text-[#0B2114] mb-4" />
-                <h4 className="font-serif text-xl mb-2">HIPAA Data Sovereignty</h4>
-                <p className="text-xs text-[#0B2114]/70 leading-relaxed">
-                  Your biometric telemetry, contact details, and clinical profiles are double-encrypted in transit and at rest. We enforce strict access control policies and never share or lease files with marketing entities.
-                </p>
-              </div>
-              <div className="text-[9px] tracking-wider uppercase font-bold text-[#0B2114]/40 pt-4 border-t border-[#FAF8F5]">
-                AES-256 Encryption
-              </div>
-            </div>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {trustFramework.pillars.map((pillar: any, index: number) => {
+              const IconComp = iconMap[pillar.title] || Shield;
+              const iconColor = pillar.title === "Compounding Purity" ? "text-[#D4AF37]" : "text-[#0B2114]";
+              return (
+                <div key={index} className="bg-white border border-[#E6DFD5] p-8 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
+                  <div>
+                    <IconComp className={`w-8 h-8 ${iconColor} mb-4`} />
+                    <h4 className="font-serif text-xl mb-2">{pillar.title}</h4>
+                    <p className="text-xs text-[#0B2114]/70 leading-relaxed">
+                      {pillar.description}
+                    </p>
+                  </div>
+                  <div className="text-[9px] tracking-wider uppercase font-bold text-[#0B2114]/40 pt-4 border-t border-[#FAF8F5]">
+                    {pillar.badge}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -92,43 +78,31 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 space-y-6">
             <span className="text-[10px] tracking-[0.25em] uppercase text-[#0B2114]/60 font-semibold block">
-              Evidence-Based Methodology
+              {metrics.label}
             </span>
             <h2 className="font-serif text-3xl md:text-5xl tracking-tight leading-tight">
-              Decisions Powered by Real Telemetry
+              {metrics.title}
             </h2>
             <p className="text-sm text-[#0B2114]/80 leading-relaxed">
-              We reject the guesswork. AIRO was engineered to marry modern biometric tracking with traditional medical oversight. Through the 5-Minute Health Chair and targeted diagnostic biomarkers, we build a continuous closed loop of your body&apos;s data.
+              {metrics.description1}
             </p>
             <p className="text-sm text-[#0B2114]/80 leading-relaxed">
-              This data allows our clinical network to formulate precise intervention plans—whether that means compounding personalized vitamins to address immediate cellular deficiencies, adjusting clinical care pathways, or recommending specific organic dietary essentials.
+              {metrics.description2}
             </p>
           </div>
 
           <div className="lg:col-span-7 grid grid-cols-2 gap-4">
-            <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl text-center space-y-2">
-              <span className="font-serif text-4xl md:text-5xl text-[#0B2114] font-medium block">100%</span>
-              <span className="text-[9px] tracking-widest uppercase font-bold text-[#0B2114]/60 block">HIPAA Compliant Pipelines</span>
-              <p className="text-[10px] text-[#0B2114]/50 leading-relaxed pt-2">All electronic health records are isolated and securely archived.</p>
-            </div>
-            
-            <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl text-center space-y-2">
-              <span className="font-serif text-4xl md:text-5xl text-[#D4AF37] font-medium block">Zero</span>
-              <span className="text-[9px] tracking-widest uppercase font-bold text-[#0B2114]/60 block">Synthetic Additives</span>
-              <p className="text-[10px] text-[#0B2114]/50 leading-relaxed pt-2">Compounded pharmacy preparations are clean, avoiding generic fillers.</p>
-            </div>
-
-            <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl text-center space-y-2">
-              <span className="font-serif text-4xl md:text-5xl text-[#0B2114] font-medium block">15+</span>
-              <span className="text-[9px] tracking-widest uppercase font-bold text-[#0B2114]/60 block">Board-Certified Advisors</span>
-              <p className="text-[10px] text-[#0B2114]/50 leading-relaxed pt-2">Medical professionals overseeing software algorithms and clinical care.</p>
-            </div>
-
-            <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl text-center space-y-2">
-              <span className="font-serif text-4xl md:text-5xl text-[#0B2114] font-medium block">USDA</span>
-              <span className="text-[9px] tracking-widest uppercase font-bold text-[#0B2114]/60 block">Organic Partners</span>
-              <p className="text-[10px] text-[#0B2114]/50 leading-relaxed pt-2">100% of organic grocery retail is audited at local farms.</p>
-            </div>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {metrics.stats.map((stat: any, index: number) => {
+              const valueColor = stat.value === "Zero" ? "text-[#D4AF37]" : "text-[#0B2114]";
+              return (
+                <div key={index} className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl text-center space-y-2">
+                  <span className={`font-serif text-4xl md:text-5xl ${valueColor} font-medium block`}>{stat.value}</span>
+                  <span className="text-[9px] tracking-widest uppercase font-bold text-[#0B2114]/60 block">{stat.label}</span>
+                  <p className="text-[10px] text-[#0B2114]/50 leading-relaxed pt-2">{stat.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -140,23 +114,23 @@ export default function AboutPage() {
           {/* Text block */}
           <div className="lg:col-span-6 space-y-6">
             <span className="text-[10px] tracking-[0.25em] uppercase text-[#0B2114]/60 font-semibold block">
-              Founder & Chief Visionary
+              {leadership.label}
             </span>
             <h2 className="font-serif text-3xl md:text-5xl tracking-tight leading-tight">
-              Kumar Swamy Maruri
+              {leadership.name}
             </h2>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
-              Founder & Chief Executive Officer, AIRO Ecosystem
+              {leadership.role}
             </h4>
             <div className="h-0.5 w-16 bg-[#D4AF37]"></div>
             <p className="text-sm text-[#0B2114]/85 leading-relaxed">
-              Founded by **Kumar Swamy Maruri**, AIRO was born from a personal mission: to dismantle the reactive cycle of emergency medicine and replace it with a technology-driven longevity architecture. Witnessing how standard healthcare systems wait until cellular decline manifests as chronic illness, he sought to engineer a solution.
+              {leadership.bio1}
             </p>
             <p className="text-sm text-[#0B2114]/85 leading-relaxed">
-              Kumar Swamy Maruri designed AIRO as a completely integrated ecosystem. By closing the gap between biometric diagnostic scanners (the 5-Minute Health Chair), custom compound formulations, clinical Concierge networks, and pure nutritional sourcing (AIRO Essentials), he has created a unified ecosystem for longevity.
+              {leadership.bio2}
             </p>
             <p className="text-xs font-semibold italic text-[#0B2114]/70">
-              &ldquo;Healthcare should not be an emergency intervention; it must be an ongoing, evidence-based optimization of cellular energy and metabolic vitality.&rdquo; &mdash; Kumar Swamy Maruri
+              {leadership.quote}
             </p>
           </div>
 
@@ -166,17 +140,17 @@ export default function AboutPage() {
             <div>
               <span className="font-serif text-lg tracking-widest text-[#D4AF37]">AIRO.</span>
               <h3 className="font-serif text-3xl mt-6 tracking-wide max-w-sm">
-                Kumar Swamy Maruri
+                {leadership.name}
               </h3>
               <p className="text-xs text-[#FAF8F5]/60 mt-1 uppercase tracking-widest">Founder, AIRO Ecosystem</p>
             </div>
             
             <div className="border-t border-[#FAF8F5]/10 pt-6 space-y-4">
               <p className="text-xs text-[#FAF8F5]/80 leading-relaxed">
-                Under Kumar Swamy Maruri&apos;s leadership, AIRO maintains standard-setting cleanrooms, collaborates with leading metabolic researchers, and ensures absolute transparency, encryption, and quality compliance across all lines of care.
+                {leadership.cardDescription}
               </p>
               <div className="text-[10px] tracking-widest uppercase font-semibold text-[#D4AF37]">
-                EST. 2026 &bull; LONGEVITY ARCHITECTURE
+                {leadership.cardBadge}
               </div>
             </div>
           </div>
@@ -184,7 +158,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Global Footer */}
+      {/* Global Footer (Hardcoded as it is on other pages unless CMS footer is globally accessible) */}
       <footer className="bg-[#0B2114] text-[#FAF8F5] py-16 px-6 md:px-12 border-t border-[#1A3324]">
         <div className="max-w-7xl mx-auto space-y-12">
           

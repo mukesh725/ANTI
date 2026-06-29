@@ -456,12 +456,13 @@
         "hero": {
           "title": "AIRO Praana",
           "description": "Your Complete Body Checkup Seat",
-          "image": "/airo-praana-hero.png",
-          "metrics": "Blood Pressure, Heart Rate & ECG, SpO₂, Respiratory Rate, Temperature, Weight & BMI"
-        },
+      "heroBadge": "Proactive Longevity",
+      "heroImage": "/chair-hero.jpg",
+      "description": "The AIRO 5-Minute Health Chair offers a frictionless, clinical-grade metabolic assessment. Sit down, scan your biometrics, and receive actionable insights into your health span instantly.",
+      "metrics": "Blood Pressure, Heart Rate & ECG, SpO₂, Respiratory Rate, Temperature, Weight & BMI",
+      "sections": {
         "assessment": {
-          "title": "The Magic 5-Minute Checkup",
-          "description": "The AIRO Praana chair checks your heart, breathing, and general health without any needles or touching. Just sit back, relax, and let the smart sensors read your body's health in real-time.",
+          "title": "How The Assessment Works.",
           "steps": [
             {
               "title": "Take a Seat",
@@ -478,9 +479,8 @@
           ]
         },
         "insights": {
-          "title": "Easy To Understand Results",
-          "description": "We don't give you confusing doctor reports. AIRO Praana gives you simple, clear advice on what to eat, how to exercise, and how to live a longer, healthier life.",
-          "image": "https://plus.unsplash.com/premium_photo-1681995449767-17ed4fb8b0d4?q=80&w=1600",
+          "title": "Actionable Insights You Can Trust",
+          "description": "Our clinical infrastructure processes your scan into a personalized, immediately actionable profile.",
           "cards": [
             {
               "title": "Vital Signs",
@@ -514,10 +514,82 @@
         },
         "finalCta": {
           "title": "Your Health Journey Starts Here.",
+          "image": "/chair-4.jpg",
           "buttonText": "Book Your AIRO Health Scan",
-          "buttonLink": "/minute-clinic",
-          "image": "/chair-4.jpg"
+          "buttonLink": "/minute-clinic"
         }
+      }
+    },
+    "about": {
+      "hero": {
+        "label": "Our Foundation & Philosophy",
+        "title": "The Paradigm Shift in Modern Longevity",
+        "description": "AIRO was founded to change a broken paradigm: moving from reactive disease treatment to proactive, personalized health optimization. We combine advanced diagnostics, sterile compounding pharmacy services, physical clinic networks, and organic lifestyle retail under one connected, secure ecosystem."
+      },
+      "trustFramework": {
+        "label": "Clinical Standards",
+        "title": "The Pillars of AIRO Trust",
+        "description": "We understand that choosing a health partner is a deeply personal decision. That is why the AIRO ecosystem operates with absolute transparency, strict compliance, and clinical supervision at every level.",
+        "pillars": [
+          {
+            "title": "Clinical Rigor",
+            "description": "Every metabolic assessment, biomarker scan, and compounding dosage program is reviewed and approved by board-certified clinical practitioners. We do not prescribe based on trends—only verified lab findings.",
+            "badge": "MD-Vetted Protocols"
+          },
+          {
+            "title": "Compounding Purity",
+            "description": "Our associated compounding apothecaries formulate customized medicine inside sterile cleanrooms that strictly comply with USP <795> (non-sterile) and USP <797> (sterile compounding) standards.",
+            "badge": "USP Compliant Apothecary"
+          },
+          {
+            "title": "Sourcing Integrity",
+            "description": "AIRO Essentials partners exclusively with farmers and suppliers certified under USDA organic guidelines. Every grocery batch, cold-pressed juice, and dietary staple is audited for heavy metals and pesticides.",
+            "badge": "100% Pesticide Screened"
+          },
+          {
+            "title": "HIPAA Data Sovereignty",
+            "description": "Your biometric telemetry, contact details, and clinical profiles are double-encrypted in transit and at rest. We enforce strict access control policies and never share or lease files with marketing entities.",
+            "badge": "AES-256 Encryption"
+          }
+        ]
+      },
+      "metrics": {
+        "label": "Evidence-Based Methodology",
+        "title": "Decisions Powered by Real Telemetry",
+        "description1": "We reject the guesswork. AIRO was engineered to marry modern biometric tracking with traditional medical oversight. Through the 5-Minute Health Chair and targeted diagnostic biomarkers, we build a continuous closed loop of your body's data.",
+        "description2": "This data allows our clinical network to formulate precise intervention plans—whether that means compounding personalized vitamins to address immediate cellular deficiencies, adjusting clinical care pathways, or recommending specific organic dietary essentials.",
+        "stats": [
+          {
+            "value": "100%",
+            "label": "HIPAA Compliant Pipelines",
+            "description": "All electronic health records are isolated and securely archived."
+          },
+          {
+            "value": "Zero",
+            "label": "Synthetic Additives",
+            "description": "Compounded pharmacy preparations are clean, avoiding generic fillers."
+          },
+          {
+            "value": "15+",
+            "label": "Board-Certified Advisors",
+            "description": "Medical professionals overseeing software algorithms and clinical care."
+          },
+          {
+            "value": "USDA",
+            "label": "Organic Partners",
+            "description": "100% of organic grocery retail is audited at local farms."
+          }
+        ]
+      },
+      "leadership": {
+        "label": "Founder & Chief Visionary",
+        "name": "Kumar Swamy Maruri",
+        "role": "Founder & Chief Executive Officer, AIRO Ecosystem",
+        "bio1": "Founded by **Kumar Swamy Maruri**, AIRO was born from a personal mission: to dismantle the reactive cycle of emergency medicine and replace it with a technology-driven longevity architecture. Witnessing how standard healthcare systems wait until cellular decline manifests as chronic illness, he sought to engineer a solution.",
+        "bio2": "Kumar Swamy Maruri designed AIRO as a completely integrated ecosystem. By closing the gap between biometric diagnostic scanners (the 5-Minute Health Chair), custom compound formulations, clinical Concierge networks, and pure nutritional sourcing (AIRO Essentials), he has created a unified ecosystem for longevity.",
+        "quote": "\"Healthcare should not be an emergency intervention; it must be an ongoing, evidence-based optimization of cellular energy and metabolic vitality.\" — Kumar Swamy Maruri",
+        "cardDescription": "Under Kumar Swamy Maruri's leadership, AIRO maintains standard-setting cleanrooms, collaborates with leading metabolic researchers, and ensures absolute transparency, encryption, and quality compliance across all lines of care.",
+        "cardBadge": "EST. 2026 • LONGEVITY ARCHITECTURE"
       }
     },
     "contact": {

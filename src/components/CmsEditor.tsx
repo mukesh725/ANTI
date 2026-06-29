@@ -138,7 +138,7 @@ export function CmsEditor() {
         <div className="w-64 border-r border-emerald-100 p-4 overflow-y-auto bg-[#F4F7F6]/50 custom-scrollbar">
           <div className="text-[10px] uppercase tracking-widest text-emerald-600 font-bold mb-3 px-3">AIRO Essentials</div>
           <ul className="space-y-1 mb-8">
-            {categories.filter(c => ["home", "grocery", "contact"].includes(c)).map((cat) => (
+            {categories.filter(c => ["home", "grocery", "pharmacy"].includes(c as string)).map((cat) => (
               <li key={cat}>
                 <button
                   onClick={() => setActiveCategory(cat)}
@@ -156,7 +156,7 @@ export function CmsEditor() {
 
           <div className="text-[10px] uppercase tracking-widest text-emerald-600 font-bold mb-3 px-3">AIRO Health Hub</div>
           <ul className="space-y-1">
-            {categories.filter(c => !["home", "grocery", "contact"].includes(c)).map((cat) => (
+            {categories.filter(c => !["home", "grocery", "pharmacy"].includes(c as string)).map((cat) => (
               <li key={cat}>
                 <button
                   onClick={() => setActiveCategory(cat)}
