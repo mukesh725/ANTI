@@ -11,6 +11,7 @@ export function CmsEditor() {
   const [activeCategory, setActiveCategory] = useState<keyof CmsDataType["pages"]>("home");
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">("idle");
+  const [uploadingState, setUploadingState] = useState<Record<string, boolean>>({});
 
   // Keep state in sync if initialData changes globally
   useEffect(() => {
@@ -53,6 +54,34 @@ export function CmsEditor() {
     });
   };
 
+  const handleImageUpload = async (path: string[], file: File) => {
+    const pathKey = path.join(".");
+    setUploadingState(prev => ({ ...prev, [pathKey]: true }));
+    
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      
+      const res = await fetch("/api/cms/upload", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.url) {
+        updateField(path, data.url);
+      } else {
+        alert("Failed to upload image: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to upload image");
+    } finally {
+      setUploadingState(prev => ({ ...prev, [pathKey]: false }));
+    }
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderFields = (obj: any, currentPath: string[] = []): any => {
     return Object.entries(obj).map(([key, value]) => {
@@ -72,6 +101,29 @@ export function CmsEditor() {
                 onChange={(e) => updateField(fullPath, e.target.value)}
                 className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-emerald-200 transition-all resize-y min-h-[100px]"
               />
+            ) : isImage ? (
+              <div className="flex items-center gap-4">
+                <input
+                  type="text"
+                  value={value}
+                  onChange={(e) => updateField(fullPath, e.target.value)}
+                  className="flex-1 bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-emerald-200 transition-all"
+                />
+                <label className="relative cursor-pointer bg-emerald-600 text-white px-4 py-3 rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors shrink-0">
+                  {uploadingState[fullPath.join(".")] ? "Uploading..." : "Upload"}
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                    disabled={uploadingState[fullPath.join(".")]}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleImageUpload(fullPath, e.target.files[0]);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
             ) : (
               <input
                 type="text"
