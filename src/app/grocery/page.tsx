@@ -51,6 +51,15 @@ export default function EssentialsPage() {
   const pageContent = cmsData.pages.grocery;
   const { hero, philosophy } = pageContent.sections;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pc = pageContent as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sections = pageContent.sections as any;
+  const sourcingPillars = sections.sourcingPillars;
+  const catalogSection = sections.catalogSection;
+  const whySection = sections.whySection;
+  const closingSection = sections.closingSection;
+
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
       
@@ -61,7 +70,7 @@ export default function EssentialsPage() {
           {/* Hero text */}
           <div className="lg:col-span-7 flex flex-col justify-center pt-8 items-center text-center lg:items-start lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
-              <Leaf className="w-3 h-3 text-[#0B2114]" /> Pure Sourcing
+              <Leaf className="w-3 h-3 text-[#0B2114]" /> {pc.heroBadge || "Pure Sourcing"}
             </div>
             
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
@@ -70,7 +79,7 @@ export default function EssentialsPage() {
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-[#0B2114]/85 italic max-w-xl leading-relaxed mb-6">
-              More than a grocery store, AIRO Essentials is a curated destination for healthier everyday living.
+              {pc.heroTagline || "More than a grocery store, AIRO Essentials is a curated destination for healthier everyday living."}
             </p>
             
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
@@ -79,10 +88,10 @@ export default function EssentialsPage() {
 
             <div className="flex items-center gap-4">
               <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#0B2114] border border-[#0B2114]/20 bg-[#0B2114]/5 px-6 py-3 rounded-full">
-                Delivery Waitlist Open
+                {pc.heroButtonText || "Delivery Waitlist Open"}
               </span>
               <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
-                Online Orders Coming Winter 2026
+                {pc.heroButtonLabel || "Online Orders Coming Winter 2026"}
               </span>
             </div>
           </div>
@@ -119,7 +128,7 @@ export default function EssentialsPage() {
             {/* Story text */}
             <div className="lg:col-span-6 order-2 lg:order-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-                Philosophy
+                {philosophy.sectionLabel || "Philosophy"}
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
                 {philosophy.title.split('with')[0]}<br/>with <span className="italic font-light text-[#FAF8F5]/80">{philosophy.title.split('with')[1]}</span>
@@ -156,35 +165,35 @@ export default function EssentialsPage() {
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
         <div className="text-center mb-16 max-w-xl mx-auto">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-            The Sourcing Sagas
+            {sourcingPillars?.sectionLabel || "The Sourcing Sagas"}
           </span>
           <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
-            Fresh • Organic • Local
+            {sourcingPillars?.sectionTitle || "Fresh • Organic • Local"}
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Fresh */}
           <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
-            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">Fresh</span>
+            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">{sourcingPillars?.fresh?.title || "Fresh"}</span>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-              Seasonal fruits, vegetables, herbs, and freshly prepared foods selected for quality and taste.
+              {sourcingPillars?.fresh?.description || "Seasonal fruits, vegetables, herbs, and freshly prepared foods selected for quality and taste."}
             </p>
           </div>
 
           {/* Organic */}
           <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
-            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">Organic</span>
+            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">{sourcingPillars?.organic?.title || "Organic"}</span>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-              Carefully sourced organic products that support healthier lifestyles and responsible farming practices.
+              {sourcingPillars?.organic?.description || "Carefully sourced organic products that support healthier lifestyles and responsible farming practices."}
             </p>
           </div>
 
           {/* Local */}
           <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
-            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">Local</span>
+            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">{sourcingPillars?.local?.title || "Local"}</span>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-              Supporting local producers and bringing communities closer to the foods they consume.
+              {sourcingPillars?.local?.description || "Supporting local producers and bringing communities closer to the foods they consume."}
             </p>
           </div>
         </div>
@@ -195,13 +204,13 @@ export default function EssentialsPage() {
         <div className="max-w-[1500px] mx-auto">
           <div className="text-center mb-20 max-w-2xl mx-auto">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-              The Catalog
+              {catalogSection?.sectionLabel || "The Catalog"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-[#FAF8F5]">
-              Explore <span className="italic font-light text-[#FAF8F5]/80">AIRO Essentials</span>
+              {(catalogSection?.sectionTitle || "Explore AIRO Essentials").split(' ')[0]} <span className="italic font-light text-[#FAF8F5]/80">{(catalogSection?.sectionTitle || "Explore AIRO Essentials").split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="font-sans text-xs text-[#FAF8F5]/60 mt-4 leading-relaxed tracking-wide">
-              Every category is built as a storytelling gateway, housing premium wellness brands and clinical-grade staples.
+              {catalogSection?.sectionDescription || "Every category is built as a storytelling gateway, housing premium wellness brands and clinical-grade staples."}
             </p>
           </div>
 
@@ -241,10 +250,10 @@ export default function EssentialsPage() {
 
           <div className="mt-16 flex justify-center z-20 relative">
             <Link 
-              href="/grocery/shop"
+              href={catalogSection?.shopAllButtonLink || "/grocery/shop"}
               className="bg-[#D4AF37] text-[#0B2114] text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-[#FAF8F5] transition-colors duration-300 shadow-lg flex items-center gap-3"
             >
-              Shop All Essentials <ArrowRight className="w-4 h-4" />
+              {catalogSection?.shopAllButtonText || "Shop All Essentials"} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -257,49 +266,31 @@ export default function EssentialsPage() {
           {/* Header left */}
           <div className="lg:col-span-5 flex flex-col items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-              The Standard
+              {whySection?.sectionLabel || "The Standard"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
-              Why <br/><span className="italic font-light text-[#0B2114]/80">AIRO Essentials</span>
+              {(whySection?.sectionTitle || "Why AIRO Essentials").split(' ')[0]} <br/><span className="italic font-light text-[#0B2114]/80">{(whySection?.sectionTitle || "Why AIRO Essentials").split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-sm leading-relaxed mt-8 tracking-wide">
-              We vet every supplier, audit every ingredient list, and verify sustainability metrics so you don&apos;t have to.
+              {whySection?.sectionDescription || "We vet every supplier, audit every ingredient list, and verify sustainability metrics so you don't have to."}
             </p>
           </div>
 
           {/* Pillars right */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {/* Curated Quality */}
-            <div className="flex flex-col">
-              <span className="font-serif text-2xl text-[#0B2114] mb-3">Curated Quality</span>
-              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-                Products selected with a focus on freshness, nutrition, and trusted sourcing.
-              </p>
-            </div>
-
-            {/* Wellness First */}
-            <div className="flex flex-col">
-              <span className="font-serif text-2xl text-[#0B2114] mb-3">Wellness First</span>
-              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-                Every category is designed to support healthier everyday choices.
-              </p>
-            </div>
-
-            {/* Global Selection */}
-            <div className="flex flex-col">
-              <span className="font-serif text-2xl text-[#0B2114] mb-3">Global Selection</span>
-              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-                Discover premium products and ingredients from around the world.
-              </p>
-            </div>
-
-            {/* Community Focused */}
-            <div className="flex flex-col">
-              <span className="font-serif text-2xl text-[#0B2114] mb-3">Community Focused</span>
-              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
-                Supporting local producers and sustainable sourcing whenever possible.
-              </p>
-            </div>
+            {(whySection?.pillars || [
+              { title: "Curated Quality", description: "Products selected with a focus on freshness, nutrition, and trusted sourcing." },
+              { title: "Wellness First", description: "Every category is designed to support healthier everyday choices." },
+              { title: "Global Selection", description: "Discover premium products and ingredients from around the world." },
+              { title: "Community Focused", description: "Supporting local producers and sustainable sourcing whenever possible." }
+            ]).map((pillar: { title: string; description: string }, i: number) => (
+              <div key={i} className="flex flex-col">
+                <span className="font-serif text-2xl text-[#0B2114] mb-3">{pillar.title}</span>
+                <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+                  {pillar.description}
+                </p>
+              </div>
+            ))}
           </div>
 
         </div>
@@ -309,26 +300,26 @@ export default function EssentialsPage() {
       <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
         <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-            Conscious Commerce
+            {closingSection?.sectionLabel || "Conscious Commerce"}
           </span>
           
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl text-[#FAF8F5]">
-            A Better Way to Shop <br/>for <span className="italic font-light text-[#FAF8F5]/80">Wellness.</span>
+            {(closingSection?.sectionTitle || "A Better Way to Shop for Wellness.").split('for')[0]}for <br/><span className="italic font-light text-[#FAF8F5]/80">{(closingSection?.sectionTitle || "A Better Way to Shop for Wellness.").split('for').slice(1).join('for')}</span>
           </h2>
           
           <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-4 tracking-wide">
-            AIRO Essentials combines the quality of a premium organic market with the convenience of modern retail.
+            {closingSection?.sectionDescription || "AIRO Essentials combines the quality of a premium organic market with the convenience of modern retail."}
           </p>
           <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-16 font-light">
-            Because healthier living starts with what you choose every day.
+            {closingSection?.sectionTagline || "Because healthier living starts with what you choose every day."}
           </p>
 
           {/* Premium waitlist form */}
           <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
-            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">The Essentials Waitlist</h3>
+            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">{closingSection?.waitlistTitle || "The Essentials Waitlist"}</h3>
             
             <span className="inline-block border border-[#FAF8F5]/20 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-6">
-              Products & Online Shopping Coming Soon
+              {closingSection?.waitlistBadge || "Products & Online Shopping Coming Soon"}
             </span>
             
             <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
@@ -359,7 +350,7 @@ export default function EssentialsPage() {
                   type="button"
                   className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
                 >
-                  Join Delivery Waitlist <ArrowRight className="w-3.5 h-3.5" />
+                  {closingSection?.waitlistButtonText || "Join Delivery Waitlist"} <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </form>

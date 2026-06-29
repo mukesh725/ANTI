@@ -15,21 +15,6 @@ export default function HealthChairPage() {
   const cmsData = useCms();
 
   // =========================================================================
-  // SECTION 1: HERO
-  // =========================================================================
-  // Simplified hero since we are using a full background image.
-
-  // =========================================================================
-  // SECTION 2: HOW IT WORKS
-  // =========================================================================
-  // Converted to static grids
-
-  // =========================================================================
-  // SECTION 3: WHAT YOU GET
-  // =========================================================================
-  // Converted to static grids
-
-  // =========================================================================
   // SECTION 4: CONNECTED CARE
   // =========================================================================
   const flowRef = useRef<HTMLDivElement>(null);
@@ -46,6 +31,66 @@ export default function HealthChairPage() {
 
   const pageContent = cmsData.pages.healthChair;
   const { hero, assessment, insights } = pageContent.sections;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pc = pageContent as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sections = pageContent.sections as any;
+  const connectedEcosystem = sections.connectedEcosystem;
+  const preventiveSection = sections.preventiveSection;
+  const finalCta = sections.finalCta;
+
+  // Parse metrics from comma-separated string
+  const metricLabels = (hero.metrics || "Blood Pressure, Heart Rate & ECG, SpO₂, Respiratory Rate, Temperature, Weight & BMI")
+    .split(',')
+    .map((s: string) => s.trim());
+
+  // Map metric labels to icons
+  const metricIconMap: Record<string, typeof Activity> = {
+    "Blood Pressure": Activity,
+    "Heart Rate & ECG": Heart,
+    "SpO₂": Wind,
+    "Respiratory Rate": Activity,
+    "Temperature": Thermometer,
+    "Weight & BMI": Scale,
+  };
+
+  // Parse assessment steps
+  const assessmentSteps = assessment.steps || [
+    { title: "Take a Seat", description: "Relax in the AIRO chair as the intuitive sensors automatically activate to begin your assessment." },
+    { title: "Assessment Begins", description: "Clinical-grade sensors capture your vitals in real-time, analyzing hundreds of data points instantly." },
+    { title: "Receive Profile", description: "Your secure, comprehensive health report is immediately sent to your AIRO App for review." }
+  ];
+
+  // Parse insight cards
+  const insightCards = insights.cards || [
+    { title: "Vital Signs", description: "Real-time, clinical-grade telemetry." },
+    { title: "Health Baseline", description: "Your unique biological starting point." },
+    { title: "Trend Tracking", description: "Monitor changes and improvements over time." },
+    { title: "Doctor Review", description: "Data verified by AIRO clinical professionals." },
+    { title: "AIRO Record", description: "Your entire health history, securely stored." }
+  ];
+
+  const cardIconMap: Record<string, typeof Activity> = {
+    "Vital Signs": Activity,
+    "Health Baseline": ShieldCheck,
+    "Trend Tracking": Thermometer,
+    "Doctor Review": Stethoscope,
+    "AIRO Record": FileText,
+  };
+
+  // Parse connected ecosystem nodes
+  const connectedNodeLabels = (connectedEcosystem?.nodes || "Health Scan, AIRO App, Minute Clinic, Doctor Consult, Pharmacy")
+    .split(',')
+    .map((s: string) => s.trim());
+
+  const nodeIconMap: Record<string, typeof Activity> = {
+    "Health Scan": Activity,
+    "AIRO App": Smartphone,
+    "Minute Clinic": ShieldCheck,
+    "Doctor Consult": Stethoscope,
+    "Pharmacy": Pill,
+  };
 
   return (
     <div className="bg-[#FAF8F5] text-[#0B2114] min-h-screen font-sans selection:bg-[#0B2114] selection:text-[#FAF8F5] overflow-clip">
@@ -72,7 +117,7 @@ export default function HealthChairPage() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[9px] font-bold tracking-[0.25em] uppercase mb-8"
             >
-              <Cpu className="w-3 h-3 text-white" /> Clinical Innovation
+              <Cpu className="w-3 h-3 text-white" /> {pc.heroBadge || "Clinical Innovation"}
             </motion.div>
             
             <motion.h1 
@@ -107,27 +152,23 @@ export default function HealthChairPage() {
           {/* Floating Metrics (Right Aligned) */}
           <div className="hidden lg:flex w-full md:w-1/2 justify-end">
             <div className="flex flex-col gap-4">
-              {[
-                { icon: Activity, label: "Blood Pressure" },
-                { icon: Heart, label: "Heart Rate & ECG" },
-                { icon: Wind, label: "SpO₂" },
-                { icon: Activity, label: "Respiratory Rate" },
-                { icon: Thermometer, label: "Temperature" },
-                { icon: Scale, label: "Weight & BMI" },
-              ].map((metric, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
-                  className="flex items-center gap-4 bg-black/20 backdrop-blur-xl px-4 py-3 md:px-6 md:py-4 rounded-2xl shadow-2xl border border-white/10"
-                >
-                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <metric.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
-                  </div>
-                  <span className="font-bold text-xs md:text-sm uppercase tracking-widest text-white">{metric.label}</span>
-                </motion.div>
-              ))}
+              {metricLabels.map((label: string, i: number) => {
+                const IconComp = metricIconMap[label] || Activity;
+                return (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
+                    className="flex items-center gap-4 bg-black/20 backdrop-blur-xl px-4 py-3 md:px-6 md:py-4 rounded-2xl shadow-2xl border border-white/10"
+                  >
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center">
+                      <IconComp className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                    </div>
+                    <span className="font-bold text-xs md:text-sm uppercase tracking-widest text-white">{label}</span>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -154,35 +195,26 @@ export default function HealthChairPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative z-20">
-            {/* Step 1 */}
-            <div className="flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full border border-[#0B2114]/20 flex items-center justify-center bg-[#FAF8F5] mb-6">
-                <Activity className="w-8 h-8 text-[#0B2114]/60" />
-              </div>
-              <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">01</div>
-              <h3 className="font-bold text-xl uppercase tracking-widest mb-4">Take a Seat</h3>
-              <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">Relax in the AIRO chair as the intuitive sensors automatically activate to begin your assessment.</p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full border border-blue-500/20 flex items-center justify-center bg-blue-50/50 mb-6">
-                <Heart className="w-8 h-8 text-[#0B2114]/60" />
-              </div>
-              <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">02</div>
-              <h3 className="font-bold text-xl uppercase tracking-widest mb-4">Assessment Begins</h3>
-              <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">Clinical-grade sensors capture your vitals in real-time, analyzing hundreds of data points instantly.</p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full border border-green-500/20 flex items-center justify-center bg-green-50/50 mb-6">
-                <CheckCircle2 className="w-8 h-8 text-green-600/60" />
-              </div>
-              <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">03</div>
-              <h3 className="font-bold text-xl uppercase tracking-widest mb-4">Receive Profile</h3>
-              <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">Your secure, comprehensive health report is immediately sent to your AIRO App for review.</p>
-            </div>
+            {assessmentSteps.map((step: { title: string; description: string }, i: number) => {
+              const stepIcons = [Activity, Heart, CheckCircle2];
+              const stepColors = [
+                "border-[#0B2114]/20 bg-[#FAF8F5]",
+                "border-blue-500/20 bg-blue-50/50",
+                "border-green-500/20 bg-green-50/50"
+              ];
+              const StepIcon = stepIcons[i] || Activity;
+              const iconColor = i === 2 ? "text-green-600/60" : "text-[#0B2114]/60";
+              return (
+                <div key={i} className="flex flex-col items-center">
+                  <div className={`w-24 h-24 rounded-full border ${stepColors[i]} flex items-center justify-center mb-6`}>
+                    <StepIcon className={`w-8 h-8 ${iconColor}`} />
+                  </div>
+                  <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">0{i + 1}</div>
+                  <h3 className="font-bold text-xl uppercase tracking-widest mb-4">{step.title}</h3>
+                  <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">{step.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -198,21 +230,18 @@ export default function HealthChairPage() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 relative z-20">
-            {[
-              { title: "Vital Signs", desc: "Real-time, clinical-grade telemetry.", icon: Activity },
-              { title: "Health Baseline", desc: "Your unique biological starting point.", icon: ShieldCheck },
-              { title: "Trend Tracking", desc: "Monitor changes and improvements over time.", icon: Thermometer },
-              { title: "Doctor Review", desc: "Data verified by AIRO clinical professionals.", icon: Stethoscope },
-              { title: "AIRO Record", desc: "Your entire health history, securely stored.", icon: FileText },
-            ].map((card, i) => (
-              <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
-                <div className="w-12 h-12 bg-[#0B2114]/5 rounded-xl flex items-center justify-center mb-6">
-                  <card.icon className="w-6 h-6 text-[#0B2114]" />
+            {insightCards.map((card: { title: string; description: string }, i: number) => {
+              const CardIcon = cardIconMap[card.title] || Activity;
+              return (
+                <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-[#0B2114]/5 rounded-xl flex items-center justify-center mb-6">
+                    <CardIcon className="w-6 h-6 text-[#0B2114]" />
+                  </div>
+                  <h4 className="font-bold text-lg uppercase tracking-widest mb-2">{card.title}</h4>
+                  <p className="text-[#0B2114]/60 text-sm leading-relaxed">{card.description}</p>
                 </div>
-                <h4 className="font-bold text-lg uppercase tracking-widest mb-2">{card.title}</h4>
-                <p className="text-[#0B2114]/60 text-sm leading-relaxed">{card.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -221,7 +250,7 @@ export default function HealthChairPage() {
       <section className="bg-[#0B2114] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden">
         <div className="max-w-[1400px] mx-auto text-center">
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-24 text-[#FAF8F5]">
-            Connected To The Entire <span className="italic font-light text-[#FAF8F5]/80">AIRO Ecosystem</span>
+            {(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[0]}Entire <span className="italic font-light text-[#FAF8F5]/80">{(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[1]}</span>
           </h2>
 
           <div ref={flowRef} className="relative max-w-[1000px] mx-auto hidden md:flex items-center justify-between">
@@ -239,49 +268,43 @@ export default function HealthChairPage() {
               />
             </svg>
 
-            {[
-              { icon: Activity, label: "Health Scan" },
-              { icon: Smartphone, label: "AIRO App" },
-              { icon: ShieldCheck, label: "Minute Clinic" },
-              { icon: Stethoscope, label: "Doctor Consult" },
-              { icon: Pill, label: "Pharmacy" },
-            ].map((node, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114]">
-                <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
-                  <node.icon className="w-8 h-8 text-[#FAF8F5]" />
+            {connectedNodeLabels.map((label: string, i: number) => {
+              const NodeIcon = nodeIconMap[label] || Activity;
+              return (
+                <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114]">
+                  <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
+                    <NodeIcon className="w-8 h-8 text-[#FAF8F5]" />
+                  </div>
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70 w-24 text-center">
+                    {label}
+                  </span>
                 </div>
-                <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70 w-24 text-center">
-                  {node.label}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Mobile view of flow */}
           <div className="md:hidden flex flex-col gap-8 relative items-center">
             <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-[#FAF8F5]/10 -translate-x-1/2 z-0" />
-            {[
-              { icon: Activity, label: "Health Scan" },
-              { icon: Smartphone, label: "AIRO App" },
-              { icon: ShieldCheck, label: "Minute Clinic" },
-              { icon: Stethoscope, label: "Doctor Consult" },
-              { icon: Pill, label: "Pharmacy" },
-            ].map((node, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "0px" }}
-                className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114] py-4"
-              >
-                <div className="w-16 h-16 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
-                  <node.icon className="w-6 h-6 text-[#FAF8F5]" />
-                </div>
-                <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70">
-                  {node.label}
-                </span>
-              </motion.div>
-            ))}
+            {connectedNodeLabels.map((label: string, i: number) => {
+              const NodeIcon = nodeIconMap[label] || Activity;
+              return (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "0px" }}
+                  className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114] py-4"
+                >
+                  <div className="w-16 h-16 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
+                    <NodeIcon className="w-6 h-6 text-[#FAF8F5]" />
+                  </div>
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70">
+                    {label}
+                  </span>
+                </motion.div>
+              );
+            })}
           </div>
 
         </div>
@@ -291,10 +314,10 @@ export default function HealthChairPage() {
       <section ref={preventRef} className="bg-[#09120F] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden relative">
         <div className="max-w-[1200px] mx-auto text-center relative z-20">
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-8 text-[#FAF8F5]">
-            Know Earlier. <span className="italic font-light text-[#FAF8F5]/80">Act Sooner.</span>
+            {(preventiveSection?.title || "Know Earlier. Act Sooner.").split('.')[0]}. <span className="italic font-light text-[#FAF8F5]/80">{(preventiveSection?.title || "Know Earlier. Act Sooner.").split('.').slice(1).join('.')}</span>
           </h2>
           <p className="text-[#FAF8F5]/60 max-w-xl mx-auto mb-24">
-            People shouldn&apos;t feel they&apos;re using a machine. They should feel they&apos;re gaining unprecedented visibility into their own health.
+            {preventiveSection?.description || "People shouldn't feel they're using a machine. They should feel they're gaining unprecedented visibility into their own health."}
           </p>
 
           <div className="relative w-full max-w-[400px] mx-auto h-[600px] flex items-center justify-center">
@@ -345,20 +368,20 @@ export default function HealthChairPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            src="/chair-4.jpg" 
+            src={finalCta?.image || "/chair-4.jpg"} 
             alt="AIRO Health Chair" 
             className="max-w-[400px] w-full h-auto object-contain mix-blend-multiply mb-12" 
           />
           
           <h2 className="font-serif text-5xl md:text-7xl tracking-tight mb-12">
-            Your Health Journey <span className="italic font-light">Starts Here.</span>
+            {(finalCta?.title || "Your Health Journey Starts Here.").split('Journey')[0]}Journey <span className="italic font-light">{(finalCta?.title || "Your Health Journey Starts Here.").split('Journey')[1]}</span>
           </h2>
           
           <Link 
-            href="/minute-clinic" 
+            href={finalCta?.buttonLink || "/minute-clinic"} 
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#0B2114] text-[#FAF8F5] text-[10px] tracking-widest uppercase font-bold hover:bg-[#1A3324] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
           >
-            Book Your AIRO Health Scan
+            {finalCta?.buttonText || "Book Your AIRO Health Scan"}
           </Link>
         </div>
       </section>

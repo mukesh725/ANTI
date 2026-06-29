@@ -8,35 +8,188 @@
     "home": {
       "title": "AIRO Essentials",
       "subtitle": "YOUR COMPLETE HEALTH & WELLNESS PARTNER",
-      "sections": {
-        "pharmacy": {
-          "title": "Pharmacy & Medicines",
-          "image": "/pharmacy-hero.jpg"
+      "tagline": "An ecosystem uniting nutrition, diagnostics, pharmacy, clinical care, and digital health.",
+      "description": "At AIRO, we believe healthcare shouldn't be reactive. By integrating clinical precision with daily wellness, we build a connected environment designed to optimize your biology, ensure longevity, and prevent illness before it starts.",
+      "heroImage": "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000",
+      "buttons": {
+        "primary": {
+          "text": "Explore Essentials",
+          "link": "/grocery"
         },
-        "clinic": {
-          "title": "Quick Checkups",
-          "image": "/clinic-connected.jpg"
+        "secondary": {
+          "text": "Join Compounding Waitlist",
+          "link": "/pharmacy"
+        }
+      },
+      "sections": {
+        "pillars": {
+          "sectionLabel": "The Foundations",
+          "sectionTitle": "Unified Care. Three Pillars.",
+          "essentials": {
+            "title": "AIRO Essentials",
+            "subtitle": "Fresh • Organic • Local • Wellness Retail",
+            "description": "A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out.",
+            "image": "https://plus.unsplash.com/premium_photo-1663039978847-63f7484bf701?q=80&w=800",
+            "buttonText": "Browse Essentials",
+            "buttonLink": "/grocery"
+          },
+          "pharmacy": {
+            "title": "AIRO Pharmacy",
+            "subtitle": "Prescriptions • Supplements • Custom Compounding",
+            "description": "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers.",
+            "image": "/pharmacy-hero.jpg",
+            "buttonText": "Visit Pharmacy Portal",
+            "buttonLink": "/pharmacy"
+          },
+          "clinic": {
+            "title": "AIRO Minute Clinic",
+            "subtitle": "Preventive Care • Walk-In Clinics • Screenings",
+            "description": "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times.",
+            "image": "/clinic-connected.jpg",
+            "buttonText": "View Clinic Services",
+            "buttonLink": "/minute-clinic"
+          }
         },
         "praana": {
           "title": "AIRO Praana",
-          "image": "/airo-praana-hero.png"
+          "image": "/airo-praana-hero.png",
+          "sectionLabel": "Clinical Innovation",
+          "tagline": "A 5-minute diagnostic assessment. A lifetime of longevity insights.",
+          "description": "Step into the future of diagnostics. The AIRO Smart Assessment Chair captures a comprehensive suite of key physiological indicators in just minutes, establishing a detailed baseline for your personalized care plan.",
+          "metrics": "Blood Pressure, Heart Rate & ECG, Blood Oxygen (SpO2), Respiratory Rate, Body Temperature, Weight & BMI",
+          "connectedCareTitle": "CONNECTED CARE",
+          "connectedCareText": "Your insights don't stop at the device. Results integrate instantly with your secure health profile, shared automatically with your providers. If needed, the ecosystem connects you directly to a healthcare professional for real-time clinical consultations."
+        },
+        "ecosystemCategories": [
+          {
+            "name": "Essentials",
+            "description": "Organic produce, daily nutrition, and wellness-focused retail.",
+            "link": "/grocery",
+            "status": "Shop Now"
+          },
+          {
+            "name": "Pharmacy",
+            "description": "Clinical-grade prescription care, longevity protocols, and supplements.",
+            "link": "/pharmacy",
+            "status": "Shop Now"
+          },
+          {
+            "name": "Minute Clinic",
+            "description": "Walk-in care, vaccinations, and everyday healthcare consultations.",
+            "link": "/minute-clinic",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Diagnostics",
+            "description": "Comprehensive biomarker testing, genetic scans, and routine screenings.",
+            "link": "/minute-clinic",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Compounding Pharmacy",
+            "description": "Custom-made dosages, allergen-free formulations, and bespoke wellness tinctures.",
+            "link": "/pharmacy",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "IV Therapy",
+            "description": "Targeted cellular hydration, NAD+ drips, and immediate nutrient infusion.",
+            "link": "/minute-clinic",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Digital Health",
+            "description": "Real-time vitals tracking, virtual consultations, and connected records.",
+            "link": "/",
+            "status": "Coming Soon"
+          }
+        ],
+        "lifestyleBanner": {
+          "title": "Sourced for Longevity, Engineered for Purity.",
+          "subtitle": "radical integration",
+          "image": "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2000"
+        },
+        "manifesto": {
+          "sectionLabel": "The Manifesto",
+          "text": "paradigm shift in modern longevity. We integrate organic nutrition, precise diagnostic scanning, personalized therapeutics, and virtual clinical guidance into a seamless health architecture. Welcome to the new standard of living well."
+        },
+        "footer": {
+          "waitlistTitle": "The Waitlist",
+          "waitlistDescription": "Subscribe to receive clinical updates, seasonal grocery drops, and exclusive invitation status.",
+          "copyright": "© 2026 AIRO Health."
         }
       }
     },
     "health": {
-      "title": "AIRO Health",
-      "subtitle": "PREVENTING ILLNESS. PROMOTING HEALTH.",
+      "title": "Welcome to AIRO Health Hub",
+      "subtitle": "INTEGRATED CLINICAL & LONGEVITY CARE",
+      "tagline": "Clinical-grade prescription care, longevity protocols, minute clinics, and advanced diagnostics.",
+      "heroImage": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000",
+      "buttons": {
+        "primary": {
+          "text": "Pharmacy Portal",
+          "link": "/pharmacy"
+        }
+      },
       "sections": {
         "praana": {
           "title": "AIRO Praana",
-          "image": "/airo-praana-hero.png",
-          "description": "Just sit for 5 minutes and know your body better. A simple checkup for a long, healthy life."
-        }
+          "image": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000",
+          "description": "A 5-minute diagnostic assessment. A lifetime of longevity insights.",
+          "sectionLabel": "Clinical Innovation",
+          "bodyText": "Step into the future of diagnostics. The AIRO Smart Assessment Chair captures a comprehensive suite of key physiological indicators in just minutes, establishing a detailed baseline for your personalized care plan.",
+          "buttonText": "Learn More",
+          "buttonLink": "/health-chair"
+        },
+        "clinicalCategories": [
+          {
+            "name": "Pharmacy",
+            "description": "Clinical-grade prescription care, longevity protocols, and supplements.",
+            "link": "/pharmacy",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Minute Clinic",
+            "description": "Walk-in care, vaccinations, and everyday healthcare consultations.",
+            "link": "/minute-clinic",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Diagnostics",
+            "description": "Comprehensive biomarker testing, genetic scans, and routine screenings.",
+            "link": "/minute-clinic",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Compounding Pharmacy",
+            "description": "Custom-made dosages, allergen-free formulations, and bespoke wellness tinctures.",
+            "link": "/pharmacy",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "AIRO Praana",
+            "description": "Real-time vitals tracking, comprehensive body scans.",
+            "link": "/health-chair",
+            "status": "Coming Soon"
+          },
+          {
+            "name": "Membership",
+            "description": "Premium access to all health services and priority booking.",
+            "link": "/membership",
+            "status": "Coming Soon"
+          }
+        ],
+        "clinicalSectionLabel": "The Clinic",
+        "clinicalSectionTitle": "Clinical Services"
       }
     },
     "grocery": {
       "title": "Fresh. Organic.",
       "subtitle": "Better Everyday Eating.",
+      "heroTagline": "More than a grocery store, AIRO Essentials is a curated destination for healthier everyday living.",
+      "heroBadge": "Pure Sourcing",
+      "heroButtonText": "Delivery Waitlist Open",
+      "heroButtonLabel": "Online Orders Coming Winter 2026",
       "sections": {
         "hero": {
           "title": "Daily Harvest",
@@ -46,7 +199,63 @@
         "philosophy": {
           "title": "Good Health Starts with Good Food",
           "description": "What we eat decides how we feel. At AIRO Essentials, we believe you deserve the freshest, highest-quality groceries without any hassle. We carefully source the best local and organic products so you can feed your family with love and confidence.",
-          "image": "https://images.unsplash.com/photo-1628102491629-778571d893a3?q=80&w=1600"
+          "image": "https://images.unsplash.com/photo-1628102491629-778571d893a3?q=80&w=1600",
+          "sectionLabel": "Philosophy"
+        },
+        "sourcingPillars": {
+          "sectionLabel": "The Sourcing Sagas",
+          "sectionTitle": "Fresh • Organic • Local",
+          "fresh": {
+            "title": "Fresh",
+            "description": "Seasonal fruits, vegetables, herbs, and freshly prepared foods selected for quality and taste."
+          },
+          "organic": {
+            "title": "Organic",
+            "description": "Carefully sourced organic products that support healthier lifestyles and responsible farming practices."
+          },
+          "local": {
+            "title": "Local",
+            "description": "Supporting local producers and bringing communities closer to the foods they consume."
+          }
+        },
+        "catalogSection": {
+          "sectionLabel": "The Catalog",
+          "sectionTitle": "Explore AIRO Essentials",
+          "sectionDescription": "Every category is built as a storytelling gateway, housing premium wellness brands and clinical-grade staples.",
+          "shopAllButtonText": "Shop All Essentials",
+          "shopAllButtonLink": "/grocery/shop"
+        },
+        "whySection": {
+          "sectionLabel": "The Standard",
+          "sectionTitle": "Why AIRO Essentials",
+          "sectionDescription": "We vet every supplier, audit every ingredient list, and verify sustainability metrics so you don't have to.",
+          "pillars": [
+            {
+              "title": "Curated Quality",
+              "description": "Products selected with a focus on freshness, nutrition, and trusted sourcing."
+            },
+            {
+              "title": "Wellness First",
+              "description": "Every category is designed to support healthier everyday choices."
+            },
+            {
+              "title": "Global Selection",
+              "description": "Discover premium products and ingredients from around the world."
+            },
+            {
+              "title": "Community Focused",
+              "description": "Supporting local producers and sustainable sourcing whenever possible."
+            }
+          ]
+        },
+        "closingSection": {
+          "sectionLabel": "Conscious Commerce",
+          "sectionTitle": "A Better Way to Shop for Wellness.",
+          "sectionDescription": "AIRO Essentials combines the quality of a premium organic market with the convenience of modern retail.",
+          "sectionTagline": "Because healthier living starts with what you choose every day.",
+          "waitlistTitle": "The Essentials Waitlist",
+          "waitlistBadge": "Products & Online Shopping Coming Soon",
+          "waitlistButtonText": "Join Delivery Waitlist"
         },
         "categories": [
           {
@@ -105,6 +314,11 @@
     "minuteClinic": {
       "title": "Easy Checkups For",
       "subtitle": "Your Busy Life.",
+      "heroBadge": "Redefining Clinical Care",
+      "heroTagline": "Professional care. Minimal waiting. Meaningful outcomes.",
+      "heroDescription": "AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles, making it easier to access trusted medical support whenever you need it.",
+      "heroButtonText": "Booking Waitlist Only",
+      "heroButtonLabel": "Opening Winter 2026",
       "sections": {
         "hero": {
           "title": "Quick Health Check",
@@ -114,44 +328,101 @@
         "friction": {
           "title": "Healthcare Without the Wait",
           "description": "Seeing a doctor shouldn't take hours of waiting. AIRO Minute Clinic is made to give you and your family quick, friendly medical care right when you need it most. Just walk in and get treated.",
-          "image": "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1600"
+          "image": "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1600",
+          "sectionLabel": "Access"
         },
         "prevention": {
           "title": "Stop Illness Before It Starts",
           "description": "We don't just treat you when you are sick. We help you stay healthy. With our simple blood tests and health screenings, we find small problems before they become big medical bills.",
-          "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600"
-        }
-      }
-    },
-    "health": {
-      "title": "Welcome to AIRO Health Hub",
-      "subtitle": "INTEGRATED CLINICAL & LONGEVITY CARE",
-      "sections": {
-        "praana": {
-          "title": "AIRO Praana",
-          "image": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000",
-          "description": "A 5-minute diagnostic assessment. A lifetime of longevity insights."
+          "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600",
+          "sectionLabel": "Vision"
+        },
+        "everydayCare": {
+          "sectionLabel": "Clinical Care",
+          "title": "Everyday Care, Elevated",
+          "tagline": "From seasonal illnesses and vaccinations to annual wellness visits and health screenings, our clinic supports your everyday needs.",
+          "description": "Our clinic covers the full spectrum of day-to-day medical needs with a patient-first focus. We ensure you feel understood, treated, and guided toward optimal long-term health.",
+          "quote": "Our goal is not simply to treat illness. It's to help people stay healthy.",
+          "image": "https://images.unsplash.com/photo-1551076826-72190fff02d3?q=80&w=1600"
+        },
+        "connectedCare": {
+          "sectionLabel": "Connectivity",
+          "title": "Connected Healthcare",
+          "description": "Healthcare works best when information, services, and providers work together. As part of the AIRO ecosystem, the Minute Clinic integrates with pharmacy services, diagnostics, wellness programs, and digital health tools to create a more complete picture of patient health.",
+          "tagline": "A single appointment should be the beginning of a healthier future—not the end of a conversation.",
+          "bodyText": "Through ongoing monitoring, preventive health programs, advanced diagnostics, and wellness support, AIRO helps patients take a more active role in their long-term health.",
+          "image": "/clinic-connected.jpg"
+        },
+        "visionSection": {
+          "sectionLabel": "The Vision",
+          "title": "The New Standard for Community Healthcare.",
+          "tagline": "Accessible. Preventive. Personalized.",
+          "description": "AIRO Minute Clinic is redefining what modern healthcare can look like—bringing together clinical expertise, advanced technology, and a patient-first philosophy to create a better healthcare experience for everyone.",
+          "waitlistTitle": "The Clinic Waitlist",
+          "waitlistSubtitle": "Secure priority booking invitation",
+          "waitlistButtonText": "Join Clinic Booking Waitlist"
         }
       }
     },
     "pharmacy": {
       "title": "Your Trusted Pharmacy.",
       "subtitle": "Care You Can Count On.",
+      "heroBadge": "Coming Soon to the Collective",
+      "heroTagline": "Healthcare is evolving. Your pharmacy should too.",
+      "heroDescription": "AIRO Pharmacy combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health.",
+      "heroButtonText": "Compounding Portal Closed",
+      "heroButtonLabel": "Opening Winter 2026",
       "sections": {
         "hero": {
           "title": "Complete Medicine Care",
           "description": "Genuine Medicines & Friendly Advice",
           "image": "/pharmacy-hero.jpg"
         },
+        "philosophy": {
+          "sectionLabel": "Philosophy",
+          "title": "A Different Kind of Pharmacy",
+          "tagline": "Most pharmacies focus on transactions. We focus on people.",
+          "description": "At AIRO Pharmacy, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better.",
+          "bodyText": "Whether you're managing a chronic condition, optimizing daily wellness, or exploring preventive healthcare solutions, our team is here to support your journey.",
+          "image": "/pharmacy-checkout.jpg"
+        },
+        "ecosystem": {
+          "sectionLabel": "Ecosystem",
+          "title": "Healthcare Beyond Prescriptions",
+          "tagline": "Today's health challenges require more than medication alone.",
+          "description": "That's why AIRO Pharmacy is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments.",
+          "closingLine": "Because better outcomes happen when healthcare works together.",
+          "image": "https://images.unsplash.com/photo-1576602975754-efdf313b9342?q=80&w=1600"
+        },
         "compounding": {
           "title": "Special Medicines Just For You",
           "description": "Sometimes normal tablets don't work for everyone. AIRO Pharmacy makes special mixed medicines, custom skin creams, and proper dosages exactly the way your doctor ordered.",
-          "image": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?q=80&w=1600"
+          "image": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?q=80&w=1600",
+          "sectionLabel": "Tailored Biology",
+          "previewBadge": "COMPLETED APOTHECARY PREVIEW",
+          "previewText": "Compounding allows us to design allergen-free alternatives, tailor dosages to the microgram, and merge multiple supplements into a single daily biological protocol."
         },
         "everyday": {
           "title": "Easy Medicine Refills",
           "description": "Taking daily medicines should be simple. With AIRO Pharmacy, you get genuine medicines on time, clear advice from expert pharmacists, and total peace of mind for your family's health.",
-          "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=1600"
+          "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=1600",
+          "sectionLabel": "Proactive Care"
+        },
+        "catalogSection": {
+          "sectionLabel": "The Catalog",
+          "sectionTitle": "Explore AIRO Pharmacy",
+          "sectionDescription": "Every category is built as a targeted pathway to clinical-grade care and longevity protocols.",
+          "shopAllButtonText": "Shop All Pharmacy",
+          "shopAllButtonLink": "/pharmacy/shop"
+        },
+        "closingSection": {
+          "sectionLabel": "Join The Future",
+          "sectionTitle": "Trusted. Accessible. Connected.",
+          "sectionDescription": "At AIRO Pharmacy, we believe healthcare should feel simpler, more human, and more accessible.",
+          "sectionTagline": "A place where expert care, innovative solutions, and everyday wellness come together.",
+          "waitlistTitle": "The Compounding Waitlist",
+          "waitlistSubtitle": "Secure priority consultation access",
+          "waitlistButtonText": "Request Compounding Invitation"
         },
         "categories": [
           {
@@ -180,21 +451,72 @@
     "healthChair": {
       "title": "Know Your Body.",
       "subtitle": "In Just 5 Minutes.",
+      "heroBadge": "Clinical Innovation",
       "sections": {
         "hero": {
           "title": "AIRO Praana",
           "description": "Your Complete Body Checkup Seat",
-          "image": "/airo-praana-hero.png"
+          "image": "/airo-praana-hero.png",
+          "metrics": "Blood Pressure, Heart Rate & ECG, SpO₂, Respiratory Rate, Temperature, Weight & BMI"
         },
         "assessment": {
           "title": "The Magic 5-Minute Checkup",
           "description": "The AIRO Praana chair checks your heart, breathing, and general health without any needles or touching. Just sit back, relax, and let the smart sensors read your body's health in real-time.",
-          "image": "https://images.unsplash.com/photo-1505587043598-a6da2ce15aa5?q=80&w=1600"
+          "steps": [
+            {
+              "title": "Take a Seat",
+              "description": "Relax in the AIRO chair as the intuitive sensors automatically activate to begin your assessment."
+            },
+            {
+              "title": "Assessment Begins",
+              "description": "Clinical-grade sensors capture your vitals in real-time, analyzing hundreds of data points instantly."
+            },
+            {
+              "title": "Receive Profile",
+              "description": "Your secure, comprehensive health report is immediately sent to your AIRO App for review."
+            }
+          ]
         },
         "insights": {
           "title": "Easy To Understand Results",
           "description": "We don't give you confusing doctor reports. AIRO Praana gives you simple, clear advice on what to eat, how to exercise, and how to live a longer, healthier life.",
-          "image": "https://plus.unsplash.com/premium_photo-1681995449767-17ed4fb8b0d4?q=80&w=1600"
+          "image": "https://plus.unsplash.com/premium_photo-1681995449767-17ed4fb8b0d4?q=80&w=1600",
+          "cards": [
+            {
+              "title": "Vital Signs",
+              "description": "Real-time, clinical-grade telemetry."
+            },
+            {
+              "title": "Health Baseline",
+              "description": "Your unique biological starting point."
+            },
+            {
+              "title": "Trend Tracking",
+              "description": "Monitor changes and improvements over time."
+            },
+            {
+              "title": "Doctor Review",
+              "description": "Data verified by AIRO clinical professionals."
+            },
+            {
+              "title": "AIRO Record",
+              "description": "Your entire health history, securely stored."
+            }
+          ]
+        },
+        "connectedEcosystem": {
+          "title": "Connected To The Entire AIRO Ecosystem",
+          "nodes": "Health Scan, AIRO App, Minute Clinic, Doctor Consult, Pharmacy"
+        },
+        "preventiveSection": {
+          "title": "Know Earlier. Act Sooner.",
+          "description": "People shouldn't feel they're using a machine. They should feel they're gaining unprecedented visibility into their own health."
+        },
+        "finalCta": {
+          "title": "Your Health Journey Starts Here.",
+          "buttonText": "Book Your AIRO Health Scan",
+          "buttonLink": "/minute-clinic",
+          "image": "/chair-4.jpg"
         }
       }
     },

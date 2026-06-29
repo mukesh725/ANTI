@@ -51,6 +51,15 @@ export default function PharmacyPage() {
   const pageContent = cmsData.pages.pharmacy;
   const { hero, compounding, everyday } = pageContent.sections;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pc = pageContent as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sections = pageContent.sections as any;
+  const philosophySection = sections.philosophy;
+  const ecosystemSection = sections.ecosystem;
+  const catalogSection = sections.catalogSection;
+  const closingSection = sections.closingSection;
+
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
       
@@ -61,7 +70,7 @@ export default function PharmacyPage() {
           {/* Hero text */}
           <div className="lg:col-span-7 flex flex-col justify-center pt-8 items-center text-center lg:items-start lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
-              <Sparkles className="w-3 h-3" /> Coming Soon to the Collective
+              <Sparkles className="w-3 h-3" /> {pc.heroBadge || "Coming Soon to the Collective"}
             </div>
             
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
@@ -70,19 +79,19 @@ export default function PharmacyPage() {
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-[#0B2114]/80 italic max-w-xl leading-relaxed mb-6">
-              Healthcare is evolving. Your pharmacy should too.
+              {pc.heroTagline || "Healthcare is evolving. Your pharmacy should too."}
             </p>
             
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
-              AIRO Pharmacy combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health.
+              {pc.heroDescription || "AIRO Pharmacy combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health."}
             </p>
 
             <div className="flex items-center gap-4">
               <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#0B2114] border border-[#0B2114]/20 bg-[#0B2114]/5 px-6 py-3 rounded-full">
-                Compounding Portal Closed
+                {pc.heroButtonText || "Compounding Portal Closed"}
               </span>
               <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
-                Opening Winter 2026
+                {pc.heroButtonLabel || "Opening Winter 2026"}
               </span>
             </div>
           </div>
@@ -119,19 +128,19 @@ export default function PharmacyPage() {
             {/* Story text */}
             <div className="lg:col-span-6 order-2 lg:order-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-                Philosophy
+                {philosophySection?.sectionLabel || "Philosophy"}
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                A Different Kind <br/>of <span className="italic font-light text-[#FAF8F5]/80">Pharmacy</span>
+                {(philosophySection?.title || "A Different Kind of Pharmacy").split('Kind')[0]}Kind <br/>of <span className="italic font-light text-[#FAF8F5]/80">{(philosophySection?.title || "A Different Kind of Pharmacy").split('of').slice(1).join('of')}</span>
               </h2>
               <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-                Most pharmacies focus on transactions. We focus on people.
+                {philosophySection?.tagline || "Most pharmacies focus on transactions. We focus on people."}
               </p>
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-                At AIRO Pharmacy, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better.
+                {philosophySection?.description || "At AIRO Pharmacy, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better."}
               </p>
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
-                Whether you&apos;re managing a chronic condition, optimizing daily wellness, or exploring preventive healthcare solutions, our team is here to support your journey.
+                {philosophySection?.bodyText || "Whether you're managing a chronic condition, optimizing daily wellness, or exploring preventive healthcare solutions, our team is here to support your journey."}
               </p>
             </div>
 
@@ -139,7 +148,7 @@ export default function PharmacyPage() {
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="/pharmacy-checkout.jpg" 
+                  src={philosophySection?.image || "/pharmacy-checkout.jpg"} 
                   alt="AIRO Pharmacy Checkout" 
                   className="w-full h-full"
                   speed={0.1}
@@ -160,7 +169,7 @@ export default function PharmacyPage() {
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="https://images.unsplash.com/photo-1576602975754-efdf313b9342?q=80&w=1600" 
+                src={ecosystemSection?.image || "https://images.unsplash.com/photo-1576602975754-efdf313b9342?q=80&w=1600"} 
                 alt="Longevity and serene lifestyle" 
                 className="w-full h-full"
                 speed={0.08}
@@ -172,19 +181,19 @@ export default function PharmacyPage() {
           {/* Text block */}
           <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-              Ecosystem
+              {ecosystemSection?.sectionLabel || "Ecosystem"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              Healthcare Beyond <br/><span className="italic font-light text-[#0B2114]/80">Prescriptions</span>
+              {(ecosystemSection?.title || "Healthcare Beyond Prescriptions").split('Beyond')[0]}Beyond <br/><span className="italic font-light text-[#0B2114]/80">{(ecosystemSection?.title || "Healthcare Beyond Prescriptions").split('Beyond')[1]}</span>
             </h2>
             <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-              Today&apos;s health challenges require more than medication alone.
+              {ecosystemSection?.tagline || "Today's health challenges require more than medication alone."}
             </p>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-              That&apos;s why AIRO Pharmacy is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments.
+              {ecosystemSection?.description || "That's why AIRO Pharmacy is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments."}
             </p>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide font-medium italic">
-              Because better outcomes happen when healthcare works together.
+              {ecosystemSection?.closingLine || "Because better outcomes happen when healthcare works together."}
             </p>
           </div>
 
@@ -199,7 +208,7 @@ export default function PharmacyPage() {
             {/* Story text */}
             <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-                Tailored Biology
+                {compounding.sectionLabel || "Tailored Biology"}
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
                 {compounding.title.split(',')[0]}<br/><span className="italic font-light text-[#FAF8F5]/80">{compounding.title.split(',')[1]}</span>
@@ -214,10 +223,10 @@ export default function PharmacyPage() {
               {/* Compounding teaser box */}
               <div className="border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-6 rounded-2xl max-w-md backdrop-blur-sm">
                 <span className="inline-block bg-[#FAF8F5] text-[#0B2114] text-[8px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-3">
-                  COMPLETED APOTHECARY PREVIEW
+                  {compounding.previewBadge || "COMPLETED APOTHECARY PREVIEW"}
                 </span>
                 <p className="font-sans text-[11px] text-[#FAF8F5]/80 leading-relaxed">
-                  Compounding allows us to design allergen-free alternatives, tailor dosages to the microgram, and merge multiple supplements into a single daily biological protocol.
+                  {compounding.previewText || "Compounding allows us to design allergen-free alternatives, tailor dosages to the microgram, and merge multiple supplements into a single daily biological protocol."}
                 </p>
               </div>
             </div>
@@ -259,7 +268,7 @@ export default function PharmacyPage() {
           {/* Text block */}
           <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-              Proactive Care
+              {everyday.sectionLabel || "Proactive Care"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
               {everyday.title.split(' ')[0]} <br/><span className="italic font-light text-[#0B2114]/80">{everyday.title.split(' ').slice(1).join(' ')}</span>
@@ -280,13 +289,13 @@ export default function PharmacyPage() {
         <div className="max-w-[1500px] mx-auto">
           <div className="text-center mb-20 max-w-2xl mx-auto">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-              The Catalog
+              {catalogSection?.sectionLabel || "The Catalog"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-[#0B2114]">
-              Explore <span className="italic font-light text-[#0B2114]/80">AIRO Pharmacy</span>
+              {(catalogSection?.sectionTitle || "Explore AIRO Pharmacy").split(' ')[0]} <span className="italic font-light text-[#0B2114]/80">{(catalogSection?.sectionTitle || "Explore AIRO Pharmacy").split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="font-sans text-xs text-[#0B2114]/60 mt-4 leading-relaxed tracking-wide">
-              Every category is built as a targeted pathway to clinical-grade care and longevity protocols.
+              {catalogSection?.sectionDescription || "Every category is built as a targeted pathway to clinical-grade care and longevity protocols."}
             </p>
           </div>
 
@@ -326,10 +335,10 @@ export default function PharmacyPage() {
 
           <div className="mt-16 flex justify-center z-20 relative">
             <Link 
-              href="/pharmacy/shop"
+              href={catalogSection?.shopAllButtonLink || "/pharmacy/shop"}
               className="bg-[#0B2114] text-[#FAF8F5] text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-[#D4AF37] hover:text-[#0B2114] transition-colors duration-300 shadow-lg flex items-center gap-3"
             >
-              Shop All Pharmacy <ArrowRight className="w-4 h-4" />
+              {catalogSection?.shopAllButtonText || "Shop All Pharmacy"} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -339,25 +348,25 @@ export default function PharmacyPage() {
       <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
         <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-            Join The Future
+            {closingSection?.sectionLabel || "Join The Future"}
           </span>
           
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl">
-            Trusted. Accessible. <span className="italic font-light text-[#FAF8F5]/80">Connected.</span>
+            {(closingSection?.sectionTitle || "Trusted. Accessible. Connected.").split('.')[0]}. {(closingSection?.sectionTitle || "Trusted. Accessible. Connected.").split('.')[1]}. <span className="italic font-light text-[#FAF8F5]/80">{(closingSection?.sectionTitle || "Trusted. Accessible. Connected.").split('.').slice(2).join('.')}</span>
           </h2>
           
           <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-4 tracking-wide">
-            At AIRO Pharmacy, we believe healthcare should feel simpler, more human, and more accessible.
+            {closingSection?.sectionDescription || "At AIRO Pharmacy, we believe healthcare should feel simpler, more human, and more accessible."}
           </p>
           <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-16 font-light">
-            A place where expert care, innovative solutions, and everyday wellness come together.
+            {closingSection?.sectionTagline || "A place where expert care, innovative solutions, and everyday wellness come together."}
           </p>
 
           {/* Premium waitlist form */}
           <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
-            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">The Compounding Waitlist</h3>
+            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">{closingSection?.waitlistTitle || "The Compounding Waitlist"}</h3>
             <p className="font-sans text-[11px] text-[#FAF8F5]/60 mb-8 uppercase tracking-widest font-medium">
-              Secure priority consultation access
+              {closingSection?.waitlistSubtitle || "Secure priority consultation access"}
             </p>
             
             <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
@@ -388,7 +397,7 @@ export default function PharmacyPage() {
                   type="button"
                   className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
                 >
-                  Request Compounding Invitation <ArrowRight className="w-3.5 h-3.5" />
+                  {closingSection?.waitlistButtonText || "Request Compounding Invitation"} <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </form>

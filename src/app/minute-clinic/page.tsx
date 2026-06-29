@@ -49,6 +49,14 @@ export default function MinuteClinicPage() {
   const pageContent = cmsData.pages.minuteClinic;
   const { hero, friction, prevention } = pageContent.sections;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pc = pageContent as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sections = pageContent.sections as any;
+  const everydayCare = sections.everydayCare;
+  const connectedCare = sections.connectedCare;
+  const visionSection = sections.visionSection;
+
   return (
     <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
       
@@ -59,7 +67,7 @@ export default function MinuteClinicPage() {
           {/* Hero text */}
           <div className="lg:col-span-7 flex flex-col justify-center pt-8 items-center text-center lg:items-start lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
-              <Sparkles className="w-3 h-3" /> Redefining Clinical Care
+              <Sparkles className="w-3 h-3" /> {pc.heroBadge || "Redefining Clinical Care"}
             </div>
             
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
@@ -68,19 +76,19 @@ export default function MinuteClinicPage() {
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-[#0B2114]/80 italic max-w-xl leading-relaxed mb-6">
-              Professional care. Minimal waiting. Meaningful outcomes.
+              {pc.heroTagline || "Professional care. Minimal waiting. Meaningful outcomes."}
             </p>
             
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
-              AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles, making it easier to access trusted medical support whenever you need it.
+              {pc.heroDescription || "AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles, making it easier to access trusted medical support whenever you need it."}
             </p>
 
             <div className="flex items-center gap-4">
               <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FAF8F5] bg-[#0B2114] px-6 py-3 rounded-full border border-[#0B2114]">
-                Booking Waitlist Only
+                {pc.heroButtonText || "Booking Waitlist Only"}
               </span>
               <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
-                Opening Winter 2026
+                {pc.heroButtonLabel || "Opening Winter 2026"}
               </span>
             </div>
           </div>
@@ -117,7 +125,7 @@ export default function MinuteClinicPage() {
             {/* Story text */}
             <div className="lg:col-span-6 order-2 lg:order-1 flex flex-col items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-                Access
+                {friction.sectionLabel || "Access"}
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
                 {friction.title.split('the')[0]}<br/>the <span className="italic font-light text-[#FAF8F5]/80">{friction.title.split('the')[1]}</span>
@@ -167,10 +175,10 @@ export default function MinuteClinicPage() {
           {/* Text block */}
           <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-              Vision
+              {prevention.sectionLabel || "Vision"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              {prevention.title.split('Around')[0]}Around <br/><span className="italic font-light text-[#0B2114]/80">{prevention.title.split('Around')[1]}</span>
+              {prevention.title.split('Before')[0]}Before <br/><span className="italic font-light text-[#0B2114]/80">{prevention.title.split('Before')[1] || "It Starts"}</span>
             </h2>
             <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
               {prevention.description.split('.')[0]}.
@@ -191,19 +199,19 @@ export default function MinuteClinicPage() {
             {/* Story text */}
             <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
               <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-                Clinical Care
+                {everydayCare?.sectionLabel || "Clinical Care"}
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                Everyday Care, <br/><span className="italic font-light text-[#FAF8F5]/80">Elevated</span>
+                {(everydayCare?.title || "Everyday Care, Elevated").split(',')[0]}, <br/><span className="italic font-light text-[#FAF8F5]/80">{(everydayCare?.title || "Everyday Care, Elevated").split(',').slice(1).join(',')}</span>
               </h2>
               <p className="font-serif text-lg md:text-xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-                From seasonal illnesses and vaccinations to annual wellness visits and health screenings, our clinic supports your everyday needs.
+                {everydayCare?.tagline || "From seasonal illnesses and vaccinations to annual wellness visits and health screenings, our clinic supports your everyday needs."}
               </p>
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-8 tracking-wide">
-                Our clinic covers the full spectrum of day-to-day medical needs with a patient-first focus. We ensure you feel understood, treated, and guided toward optimal long-term health.
+                {everydayCare?.description || "Our clinic covers the full spectrum of day-to-day medical needs with a patient-first focus. We ensure you feel understood, treated, and guided toward optimal long-term health."}
               </p>
               <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 border-l border-[#FAF8F5]/20 pl-6 mb-4 font-light leading-relaxed">
-                &ldquo;Our goal is not simply to treat illness. It&apos;s to help people stay healthy.&rdquo;
+                &ldquo;{everydayCare?.quote || "Our goal is not simply to treat illness. It's to help people stay healthy."}&rdquo;
               </p>
             </div>
 
@@ -211,7 +219,7 @@ export default function MinuteClinicPage() {
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
-                  src="https://images.unsplash.com/photo-1551076826-72190fff02d3?q=80&w=1600" 
+                  src={everydayCare?.image || "https://images.unsplash.com/photo-1551076826-72190fff02d3?q=80&w=1600"} 
                   alt="Everyday health and wellness" 
                   className="w-full h-full"
                   speed={0.1}
@@ -232,7 +240,7 @@ export default function MinuteClinicPage() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[3/4] md:aspect-[4/3] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg">
               <ParallaxImage 
-                src="/clinic-connected.jpg" 
+                src={connectedCare?.image || "/clinic-connected.jpg"} 
                 alt="AIRO Connected Healthcare Team" 
                 className="w-full h-full"
                 speed={0.14}
@@ -244,19 +252,19 @@ export default function MinuteClinicPage() {
           {/* Text block */}
           <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
-              Connectivity
+              {connectedCare?.sectionLabel || "Connectivity"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              Connected <br/><span className="italic font-light text-[#0B2114]/80">Healthcare</span>
+              {(connectedCare?.title || "Connected Healthcare").split(' ')[0]} <br/><span className="italic font-light text-[#0B2114]/80">{(connectedCare?.title || "Connected Healthcare").split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-              Healthcare works best when information, services, and providers work together. As part of the AIRO ecosystem, the Minute Clinic integrates with pharmacy services, diagnostics, wellness programs, and digital health tools to create a more complete picture of patient health.
+              {connectedCare?.description || "Healthcare works best when information, services, and providers work together. As part of the AIRO ecosystem, the Minute Clinic integrates with pharmacy services, diagnostics, wellness programs, and digital health tools to create a more complete picture of patient health."}
             </p>
             <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
-              A single appointment should be the beginning of a healthier future—not the end of a conversation.
+              {connectedCare?.tagline || "A single appointment should be the beginning of a healthier future—not the end of a conversation."}
             </p>
             <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide">
-              Through ongoing monitoring, preventive health programs, advanced diagnostics, and wellness support, AIRO helps patients take a more active role in their long-term health.
+              {connectedCare?.bodyText || "Through ongoing monitoring, preventive health programs, advanced diagnostics, and wellness support, AIRO helps patients take a more active role in their long-term health."}
             </p>
           </div>
 
@@ -267,25 +275,25 @@ export default function MinuteClinicPage() {
       <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
         <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
-            The Vision
+            {visionSection?.sectionLabel || "The Vision"}
           </span>
           
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl">
-            The New Standard for <span className="italic font-light text-[#FAF8F5]/80">Community Healthcare.</span>
+            {(visionSection?.title || "The New Standard for Community Healthcare.").split('for')[0]}for <span className="italic font-light text-[#FAF8F5]/80">{(visionSection?.title || "The New Standard for Community Healthcare.").split('for').slice(1).join('for')}</span>
           </h2>
           
           <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-8 font-light">
-            Accessible. Preventive. Personalized.
+            {visionSection?.tagline || "Accessible. Preventive. Personalized."}
           </p>
           <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-16 tracking-wide">
-            AIRO Minute Clinic is redefining what modern healthcare can look like—bringing together clinical expertise, advanced technology, and a patient-first philosophy to create a better healthcare experience for everyone.
+            {visionSection?.description || "AIRO Minute Clinic is redefining what modern healthcare can look like—bringing together clinical expertise, advanced technology, and a patient-first philosophy to create a better healthcare experience for everyone."}
           </p>
 
           {/* Premium waitlist form */}
           <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
-            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">The Clinic Waitlist</h3>
+            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">{visionSection?.waitlistTitle || "The Clinic Waitlist"}</h3>
             <p className="font-sans text-[11px] text-[#FAF8F5]/60 mb-8 uppercase tracking-widest font-medium">
-              Secure priority booking invitation
+              {visionSection?.waitlistSubtitle || "Secure priority booking invitation"}
             </p>
             
             <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
@@ -316,7 +324,7 @@ export default function MinuteClinicPage() {
                   type="button"
                   className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
                 >
-                  Join Clinic Booking Waitlist <ArrowRight className="w-3.5 h-3.5" />
+                  {visionSection?.waitlistButtonText || "Join Clinic Booking Waitlist"} <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </form>

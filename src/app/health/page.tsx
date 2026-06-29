@@ -41,50 +41,17 @@ function ParallaxImage({
   );
 }
 
-const healthCategories = [
-  { 
-    name: "Pharmacy", 
-    desc: "Clinical-grade prescription care, longevity protocols, and supplements.", 
-    href: "/pharmacy", 
-    status: "Coming Soon" 
-  },
-  { 
-    name: "Minute Clinic", 
-    desc: "Walk-in care, vaccinations, and everyday healthcare consultations.", 
-    href: "/minute-clinic", 
-    status: "Coming Soon" 
-  },
-  { 
-    name: "Diagnostics", 
-    desc: "Comprehensive biomarker testing, genetic scans, and routine screenings.", 
-    href: "/minute-clinic", 
-    status: "Coming Soon" 
-  },
-  { 
-    name: "Compounding Pharmacy", 
-    desc: "Custom-made dosages, allergen-free formulations, and bespoke wellness tinctures.", 
-    href: "/pharmacy", 
-    status: "Coming Soon" 
-  },
-  { 
-    name: "AIRO Praana", 
-    desc: "Real-time vitals tracking, comprehensive body scans.", 
-    href: "/health-chair", 
-    status: "Coming Soon" 
-  },
-  { 
-    name: "Membership", 
-    desc: "Premium access to all health services and priority booking.", 
-    href: "/membership", 
-    status: "Coming Soon" 
-  }
-];
-
 export default function HealthPage() {
   const cmsData = useCms();
 
   const healthData = cmsData.pages.health;
   const heroRef = useRef<HTMLDivElement>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const hd = healthData as any;
+  const praana = hd.sections?.praana;
+  const clinicalCategories = hd.sections?.clinicalCategories || [];
+  const buttons = hd.buttons;
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#0B2114] overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
@@ -96,7 +63,7 @@ export default function HealthPage() {
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
-            src="https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000" 
+            src={hd.heroImage || "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000"} 
             alt="AIRO Connected Wellness"
             className="w-full h-full"
             speed={0.1}
@@ -115,15 +82,15 @@ export default function HealthPage() {
           </h1>
           
           <p className="font-serif text-lg md:text-2xl text-[#FAF8F5]/95 italic max-w-2xl leading-relaxed mb-6">
-            Clinical-grade prescription care, longevity protocols, minute clinics, and advanced diagnostics.
+            {hd.tagline || "Clinical-grade prescription care, longevity protocols, minute clinics, and advanced diagnostics."}
           </p>
 
           <div className="flex flex-wrap justify-center md:justify-start gap-4 items-center mt-12 w-full">
             <Link
-              href="/pharmacy"
+              href={buttons?.primary?.link || "/pharmacy"}
               className="w-full sm:w-auto justify-center bg-[#FAF8F5] text-[#0B2114] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
-              Pharmacy Portal <ArrowRight className="w-4 h-4 text-[#0B2114]" />
+              {buttons?.primary?.text || "Pharmacy Portal"} <ArrowRight className="w-4 h-4 text-[#0B2114]" />
             </Link>
           </div>
         </div>
@@ -139,8 +106,8 @@ export default function HealthPage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src={healthData.sections?.praana?.image || "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000"} 
-                  alt={healthData.sections?.praana?.title || "AIRO Praana"} 
+                  src={praana?.image || "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000"} 
+                  alt={praana?.title || "AIRO Praana"} 
                   className="w-full h-full"
                   speed={0.1}
                 />
@@ -150,27 +117,27 @@ export default function HealthPage() {
 
             <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
-                <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> Clinical Innovation
+                <Cpu className="w-3 h-3 text-[#FAF8F5]/70" /> {praana?.sectionLabel || "Clinical Innovation"}
               </div>
 
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#D4AF37] mb-6 leading-tight">
-                {(healthData.sections?.praana?.title?.split(' ')[0]) || "AIRO"} <br/>
-                <span className="italic font-light text-[#FAF8F5]/80">{(healthData.sections?.praana?.title?.split(' ').slice(1).join(' ')) || "Praana"}</span>
+                {(praana?.title?.split(' ')[0]) || "AIRO"} <br/>
+                <span className="italic font-light text-[#FAF8F5]/80">{(praana?.title?.split(' ').slice(1).join(' ')) || "Praana"}</span>
               </h2>
 
               <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl mb-8 font-light leading-relaxed">
-                {healthData.sections?.praana?.description || "A 5-minute diagnostic assessment. A lifetime of longevity insights."}
+                {praana?.description || "A 5-minute diagnostic assessment. A lifetime of longevity insights."}
               </p>
 
               <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
-                Step into the future of diagnostics. The AIRO Smart Assessment Chair captures a comprehensive suite of key physiological indicators in just minutes, establishing a detailed baseline for your personalized care plan.
+                {praana?.bodyText || "Step into the future of diagnostics. The AIRO Smart Assessment Chair captures a comprehensive suite of key physiological indicators in just minutes, establishing a detailed baseline for your personalized care plan."}
               </p>
 
               <Link 
-                href="/health-chair" 
+                href={praana?.buttonLink || "/health-chair"} 
                 className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#FAF8F5] hover:text-[#FAF8F5]/60 silent-luxury-transition"
               >
-                Learn More <ArrowRight className="w-3.5 h-3.5" />
+                {praana?.buttonText || "Learn More"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
 
             </div>
@@ -186,19 +153,19 @@ export default function HealthPage() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-[#0B2114]/10 gap-6">
           <div>
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-4 font-bold">
-              The Clinic
+              {hd.sections?.clinicalSectionLabel || "The Clinic"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight">
-              Clinical <span className="italic font-light text-[#0B2114]/80">Services</span>
+              {(hd.sections?.clinicalSectionTitle || "Clinical Services").split(' ')[0]} <span className="italic font-light text-[#0B2114]/80">{(hd.sections?.clinicalSectionTitle || "Clinical Services").split(' ').slice(1).join(' ')}</span>
             </h2>
           </div>
         </div>
 
         <div className="flex flex-col divide-y divide-[#0B2114]/10">
-          {healthCategories.map((cat, idx) => (
+          {clinicalCategories.map((cat: { name: string; description: string; link: string; status: string }, idx: number) => (
             <Link 
               key={idx} 
-              href={cat.href}
+              href={cat.link || "/"}
               className="group py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:px-4 silent-luxury-transition"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 flex-1">
@@ -211,13 +178,13 @@ export default function HealthPage() {
                 </span>
 
                 <span className="font-sans text-xs md:text-sm text-[#0B2114]/60 group-hover:text-[#0B2114]/80 silent-luxury-transition max-w-xl">
-                  {cat.desc}
+                  {cat.description}
                 </span>
               </div>
 
               <div className="flex items-center gap-4 shrink-0">
                 <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/40 border border-[#0B2114]/10 px-4 py-1.5 rounded-full">
-                  {cat.status}
+                  {cat.status || "Coming Soon"}
                 </span>
                 <div className="w-8 h-8 rounded-full border border-[#0B2114]/10 flex items-center justify-center text-[#0B2114] group-hover:border-[#0B2114] group-hover:bg-[#0B2114]/5 silent-luxury-transition">
                   <ArrowRight className="w-3.5 h-3.5" />
