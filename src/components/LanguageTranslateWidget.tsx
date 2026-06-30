@@ -66,8 +66,8 @@ export function LanguageTranslateWidget() {
       />
 
       {/* Our Custom, Beautiful UI */}
-      <div className="relative flex items-center bg-[#597467]/80 border border-[#7C9A8E] rounded-full overflow-hidden hover:border-[#E6AFA3]/50 transition-colors">
-        <div className="pl-3 pr-1 text-[#E6AFA3] pointer-events-none flex items-center">
+      <div className="relative flex items-center bg-[#0B2114]/80 border border-[#1A3324] rounded-full overflow-hidden hover:border-[#D4AF37]/50 transition-colors">
+        <div className="pl-3 pr-1 text-[#D4AF37] pointer-events-none flex items-center">
           <Globe className="w-3.5 h-3.5" />
         </div>
         <select
@@ -81,7 +81,7 @@ export function LanguageTranslateWidget() {
         </select>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L4 4L7 1" stroke="#E6AFA3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M1 1L4 4L7 1" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
       </div>

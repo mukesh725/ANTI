@@ -36,10 +36,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#07120F] flex items-center justify-center px-4 font-sans selection:bg-[#FAF8F5] selection:text-[#597467]">
+    <div className="w-full min-h-screen bg-[#07120F] flex items-center justify-center px-4 font-sans selection:bg-[#FAF8F5] selection:text-[#0B2114]">
       
       {/* Login Card */}
-      <div className="w-full max-w-md bg-[#597467] border border-[#7C9A8E] rounded-3xl p-8 md:p-10 shadow-2xl relative">
+      <div className="w-full max-w-md bg-[#0B2114] border border-[#1A3324] rounded-3xl p-8 md:p-10 shadow-2xl relative">
         
         {/* Soft light effects */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#FAF8F5]/5 rounded-full blur-2xl transform translate-x-1/4 -translate-y-1/4"></div>
@@ -74,7 +74,7 @@ export default function AdminLoginPage() {
               placeholder="e.g. admin"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-[#FAF8F5]/5 border border-[#7C9A8E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/20 transition-all"
+              className="w-full bg-[#FAF8F5]/5 border border-[#1A3324] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/20 transition-all"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function AdminLoginPage() {
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#FAF8F5]/5 border border-[#7C9A8E] rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/20 transition-all"
+                className="w-full bg-[#FAF8F5]/5 border border-[#1A3324] rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/20 transition-all"
               />
               <button
                 type="button"
@@ -104,10 +104,10 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#FAF8F5] hover:bg-[#FAF8F5]/90 text-[#597467] rounded-xl py-3.5 px-6 font-semibold text-sm flex items-center justify-center space-x-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50"
+            className="w-full bg-[#FAF8F5] hover:bg-[#FAF8F5]/90 text-[#0B2114] rounded-xl py-3.5 px-6 font-semibold text-sm flex items-center justify-center space-x-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50"
           >
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-[#597467]/20 border-t-[#597467] rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-2 border-[#0B2114]/20 border-t-[#0B2114] rounded-full animate-spin"></div>
             ) : (
               <span>Access Dashboard</span>
             )}

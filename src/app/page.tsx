@@ -69,7 +69,7 @@ export default function HomePage() {
   const homeDescription = (homeData as any)?.description;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#597467] overflow-x-hidden selection:bg-[#597467] selection:text-[#FAF8F5]">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#0B2114] overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
 
       {/* =========================================================================
           SECTION 1: HERO SECTION (FULL-WIDTH BACKGROUND)
@@ -84,7 +84,7 @@ export default function HomePage() {
             speed={0.1}
           />
           {/* Elegant dark gradient mask for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#597467] via-[#597467]/75 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B2114] via-[#0B2114]/75 to-transparent" />
         </div>
 
         {/* Hero Content Overlay */}
@@ -109,9 +109,9 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center w-full sm:w-auto">
             <Link
               href={buttons?.primary?.link || "/grocery"}
-              className="w-full sm:w-auto justify-center bg-[#FAF8F5] text-[#597467] px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto justify-center bg-[#FAF8F5] text-[#0B2114] px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
-              {buttons?.primary?.text || "Explore Essentials"} <ArrowRight className="w-4 h-4 text-[#597467]" />
+              {buttons?.primary?.text || "Explore Essentials"} <ArrowRight className="w-4 h-4 text-[#0B2114]" />
             </Link>
             <Link
               href={buttons?.secondary?.link || "/pharmacy"}
@@ -126,14 +126,14 @@ export default function HomePage() {
       {/* =========================================================================
           SECTION 2: THREE EQUAL PILLARS
           ========================================================================= */}
-      <section className="bg-white border-y border-[#597467]/10 py-24 md:py-36 px-6 md:px-16 w-full">
+      <section className="bg-white border-y border-[#0B2114]/10 py-24 md:py-36 px-6 md:px-16 w-full">
         <div className="max-w-[1500px] mx-auto">
           <div className="text-center mb-20 max-w-2xl mx-auto">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#597467]/50 block mb-6 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
               {pillars?.sectionLabel || "The Foundations"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
-              {(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.')[0]}. <span className="italic font-light text-[#597467]/80">{(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.').slice(1).join('.')}</span>
+              {(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.')[0]}. <span className="italic font-light text-[#0B2114]/80">{(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.').slice(1).join('.')}</span>
             </h2>
           </div>
 
@@ -148,18 +148,18 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#597467]/5 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-[#0B2114]/5 mix-blend-multiply" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#597467] mb-3">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
-              <p className="font-sans text-[11px] uppercase tracking-widest text-[#597467]/50 font-bold mb-4">
+              <h3 className="font-serif text-2xl md:text-3xl text-[#0B2114] mb-3">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
+              <p className="font-sans text-[11px] uppercase tracking-widest text-[#0B2114]/50 font-bold mb-4">
                 {pillars?.essentials?.subtitle || "Fresh • Organic • Local • Wellness Retail"}
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#597467]/70 leading-relaxed mb-6 flex-grow">
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed mb-6 flex-grow">
                 {pillars?.essentials?.description || "A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out."}
               </p>
               <Link 
                 href={pillars?.essentials?.buttonLink || "/grocery"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#597467] hover:text-[#597467]/60 silent-luxury-transition"
+                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#0B2114] hover:text-[#0B2114]/60 silent-luxury-transition"
               >
                 {pillars?.essentials?.buttonText || "Browse Essentials"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -174,18 +174,18 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#597467]/5 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-[#0B2114]/5 mix-blend-multiply" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#597467] mb-3">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
-              <p className="font-sans text-[11px] uppercase tracking-widest text-[#597467]/50 font-bold mb-4">
+              <h3 className="font-serif text-2xl md:text-3xl text-[#0B2114] mb-3">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
+              <p className="font-sans text-[11px] uppercase tracking-widest text-[#0B2114]/50 font-bold mb-4">
                 {pillars?.pharmacy?.subtitle || "Prescriptions • Supplements • Custom Compounding"}
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#597467]/70 leading-relaxed mb-6 flex-grow">
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed mb-6 flex-grow">
                 {pillars?.pharmacy?.description || "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers."}
               </p>
               <Link 
                 href={pillars?.pharmacy?.buttonLink || "/pharmacy"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#597467] hover:text-[#597467]/60 silent-luxury-transition"
+                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#0B2114] hover:text-[#0B2114]/60 silent-luxury-transition"
               >
                 {pillars?.pharmacy?.buttonText || "Visit Pharmacy Portal"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -200,18 +200,18 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#597467]/5 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-[#0B2114]/5 mix-blend-multiply" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#597467] mb-3">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
-              <p className="font-sans text-[11px] uppercase tracking-widest text-[#597467]/50 font-bold mb-4">
+              <h3 className="font-serif text-2xl md:text-3xl text-[#0B2114] mb-3">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
+              <p className="font-sans text-[11px] uppercase tracking-widest text-[#0B2114]/50 font-bold mb-4">
                 {pillars?.clinic?.subtitle || "Preventive Care • Walk-In Clinics • Screenings"}
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#597467]/70 leading-relaxed mb-6 flex-grow">
+              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed mb-6 flex-grow">
                 {pillars?.clinic?.description || "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times."}
               </p>
               <Link 
                 href={pillars?.clinic?.buttonLink || "/minute-clinic"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#597467] hover:text-[#597467]/60 silent-luxury-transition"
+                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#0B2114] hover:text-[#0B2114]/60 silent-luxury-transition"
               >
                 {pillars?.clinic?.buttonText || "View Clinic Services"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -294,21 +294,21 @@ export default function HomePage() {
           SECTION 4: ECOSYSTEM CATEGORIES SHOWCASE
           ========================================================================= */}
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-[#597467]/10 gap-6 items-center text-center md:text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-[#0B2114]/10 gap-6 items-center text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#597467]/50 block mb-4 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-4 font-bold">
               The Architecture
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight">
-              Ecosystem <span className="italic font-light text-[#597467]/80">Gateways</span>
+              Ecosystem <span className="italic font-light text-[#0B2114]/80">Gateways</span>
             </h2>
           </div>
-          <p className="font-sans text-xs text-[#597467]/60 max-w-sm leading-relaxed">
+          <p className="font-sans text-xs text-[#0B2114]/60 max-w-sm leading-relaxed">
             Discover the gateways that form the AIRO platform—where premium retail meets clinical precision.
           </p>
         </div>
 
-        <div className="flex flex-col divide-y divide-[#597467]/10">
+        <div className="flex flex-col divide-y divide-[#0B2114]/10">
           {ecosystemCategories.map((cat: { name: string; description: string; link: string; status: string }, idx: number) => (
             <Link 
               key={idx} 
@@ -317,27 +317,27 @@ export default function HomePage() {
             >
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 flex-1">
                 {/* Index tag */}
-                <span className="font-serif text-lg md:text-xl text-[#597467]/30 group-hover:text-[#597467] silent-luxury-transition">
+                <span className="font-serif text-lg md:text-xl text-[#0B2114]/30 group-hover:text-[#0B2114] silent-luxury-transition">
                   0{idx + 1}
                 </span>
                 
                 {/* Category Name */}
-                <span className="font-serif text-2xl md:text-3xl text-[#597467] font-medium tracking-tight w-64">
+                <span className="font-serif text-2xl md:text-3xl text-[#0B2114] font-medium tracking-tight w-64">
                   {cat.name}
                 </span>
 
                 {/* Category Description */}
-                <span className="font-sans text-xs md:text-sm text-[#597467]/60 group-hover:text-[#597467]/80 silent-luxury-transition max-w-xl">
+                <span className="font-sans text-xs md:text-sm text-[#0B2114]/60 group-hover:text-[#0B2114]/80 silent-luxury-transition max-w-xl">
                   {cat.description}
                 </span>
               </div>
 
               {/* Status / Link action */}
               <div className="flex items-center gap-4 shrink-0">
-                <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#597467]/40 border border-[#597467]/10 px-4 py-1.5 rounded-full">
+                <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/40 border border-[#0B2114]/10 px-4 py-1.5 rounded-full">
                   {cat.status || "Coming Soon"}
                 </span>
-                <div className="w-8 h-8 rounded-full border border-[#597467]/10 flex items-center justify-center text-[#597467] group-hover:border-[#597467] group-hover:bg-[#597467]/5 silent-luxury-transition">
+                <div className="w-8 h-8 rounded-full border border-[#0B2114]/10 flex items-center justify-center text-[#0B2114] group-hover:border-[#0B2114] group-hover:bg-[#0B2114]/5 silent-luxury-transition">
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -357,7 +357,7 @@ export default function HomePage() {
           className="w-full h-full"
           speed={0.12}
         />
-        <div className="absolute inset-0 bg-[#597467]/15" />
+        <div className="absolute inset-0 bg-[#0B2114]/15" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 pointer-events-none">
           <h2 className="font-serif text-4xl md:text-6xl text-[#FAF8F5] tracking-tight mb-4 drop-shadow-lg">
             {(lifestyleBanner?.title || "Sourced for Longevity, Engineered for Purity.").split(',')[0]}, <br/><span className="italic font-light">{(lifestyleBanner?.title || "Sourced for Longevity, Engineered for Purity.").split(',').slice(1).join(',')}</span>
@@ -372,11 +372,11 @@ export default function HomePage() {
           SECTION 6: MANIFESTO (TEXT BLOCK)
           ========================================================================= */}
       <section className="py-24 md:py-36 px-8 max-w-[1200px] mx-auto text-center">
-        <h3 className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#597467]/40 mb-8">
+        <h3 className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#0B2114]/40 mb-8">
           {manifesto?.sectionLabel || "The Manifesto"}
         </h3>
-        <p className="font-serif text-2xl md:text-4xl leading-[1.6] text-[#597467] mb-12 max-w-4xl mx-auto">
-          <span className="float-left text-7xl md:text-9xl leading-none pr-4 font-normal text-[#597467]/20">A</span>
+        <p className="font-serif text-2xl md:text-4xl leading-[1.6] text-[#0B2114] mb-12 max-w-4xl mx-auto">
+          <span className="float-left text-7xl md:text-9xl leading-none pr-4 font-normal text-[#0B2114]/20">A</span>
           {manifesto?.text || "paradigm shift in modern longevity. We integrate organic nutrition, precise diagnostic scanning, personalized therapeutics, and virtual clinical guidance into a seamless health architecture. Welcome to the new standard of living well."}
         </p>
       </section>
@@ -384,7 +384,7 @@ export default function HomePage() {
       {/* =========================================================================
           SECTION 7: FOOTER
           ========================================================================= */}
-      <footer className="border-t border-[#597467]/10 py-24 px-8 md:px-16 bg-[#597467] text-[#FAF8F5] rounded-t-[3rem] w-full">
+      <footer className="border-t border-[#0B2114]/10 py-24 px-8 md:px-16 bg-[#0B2114] text-[#FAF8F5] rounded-t-[3rem] w-full">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
 
           <div className="col-span-1 md:col-span-2">
@@ -406,7 +406,7 @@ export default function HomePage() {
               />
               <button
                 type="submit"
-                className="w-full bg-[#FAF8F5] text-[#597467] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition"
+                className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition"
               >
                 Join Waitlist
               </button>
