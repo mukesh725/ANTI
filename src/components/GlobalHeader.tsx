@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Sparkles, Menu, X, User as UserIcon } from "lucide-react";
+import { Menu, X, User as UserIcon, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer } from "@/modules/retail/shared/components/SmartCartDrawer";
 import { LanguageTranslateWidget } from "./LanguageTranslateWidget";
@@ -97,9 +97,11 @@ export function GlobalHeader() {
           ? "bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#1C1C1E]/5 py-3 md:py-4 shadow-sm" 
           : "bg-transparent border-transparent py-5 md:py-6"
       }`}>
-        <Link href={isHealthDomain ? "/health" : "/"} className="hover:opacity-80 transition-opacity duration-300 flex items-center">
-          {logoNode}
-        </Link>
+        <div className="flex-1 flex justify-start">
+          <Link href={isHealthDomain ? "/health" : "/"} className="hover:opacity-80 transition-opacity duration-300 flex items-center w-fit">
+            {logoNode}
+          </Link>
+        </div>
         
         {/* Desktop nav capsule (floating glassmorphism bar) */}
         <div className="hidden md:flex items-center gap-1 bg-[#1C1C1E]/50 border border-[#FFFFFF]/20 px-1.5 py-1.5 rounded-full backdrop-blur-xl shadow-2xl">
@@ -126,19 +128,10 @@ export function GlobalHeader() {
           })}
         </div>
 
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center justify-end gap-4 md:gap-6 flex-1">
           <div className="hidden lg:block">
             <LanguageTranslateWidget />
           </div>
-          <button className={`hidden sm:flex text-[10px] tracking-widest uppercase font-bold items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 border ${
-            isScrolled
-              ? "text-[#FFFFFF] bg-[#1C1C1E] border-[#1C1C1E] hover:bg-[#1C1C1E]/90"
-              : (["/", "/health", "/health-chair"].includes(pathname)
-                  ? "text-[#FFFFFF] bg-white/10 border-white/20 hover:bg-white/20"
-                  : "text-[#1C1C1E] bg-[#1C1C1E]/5 border-[#1C1C1E]/20 hover:bg-[#1C1C1E]/10")
-          }`}>
-            <Sparkles className="w-3 h-3" /> Membership
-          </button>
           
           
           <Link 
@@ -231,12 +224,7 @@ export function GlobalHeader() {
                 ))}
               </div>
 
-              {/* Footer CTA */}
-              <div className="mt-auto p-6 border-t border-[#1C1C1E]/10">
-                <Link href="/membership" className="w-full flex items-center justify-center gap-2 text-[10px] tracking-widest uppercase font-medium text-[#1C1C1E] bg-[#1C1C1E]/5 px-4 py-3 rounded-full hover:bg-[#1C1C1E]/10 transition-colors duration-300">
-                  <Sparkles className="w-3 h-3" /> Membership
-                </Link>
-              </div>
+
             </motion.div>
           </>
         )}
