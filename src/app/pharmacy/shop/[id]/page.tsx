@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { Product } from "@/hooks/useProducts";
+import { Product, useProducts } from "@/hooks/useProducts";
+import { ProductCard } from "@/modules/retail/grocery/components/ProductCard";
 import { GlobalHeader } from "@/components/GlobalHeader";
 import { ArrowLeft, Plus, Minus, Check } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -13,6 +14,7 @@ export default function PharmacyProductDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const { addItem } = useCart();
+  const { products: allProducts } = useProducts("pharmacy");
   
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -105,6 +107,8 @@ export default function PharmacyProductDetailPage() {
   
   // Create a very subtle background from the theme color if it exists, otherwise fallback to standard #F0EAE1
   const themeBg = product.themeColor ? `${product.themeColor}15` : '#F0EAE1';
+
+  const recommendedProducts = allProducts.filter(p => p.id !== product.id).slice(0, 4);
 
   return (
     <main className="min-h-screen bg-[#FFFFFF]">
@@ -270,6 +274,39 @@ export default function PharmacyProductDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* A+ CONTENT SECTIONS */}
+      {product.aPlusContent && product.aPlusContent.length > 0 && (
+        <div className="w-full">
+          {product.aPlusContent.map((block, idx) => (
+            <div key={idx} className={`w-full py-24 md:py-32 ${idx % 2 === 0 ? 'bg-[#F9F9FB]' : 'bg-white'}`}>
+              <div className="max-w-[1200px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+                <div className={`aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl ${idx % 2 !== 0 ? 'md:order-last' : ''}`}>
+                  <img src={block.imageUrl} alt={block.title || "Product feature"} className="w-full h-full object-cover" />
+                </div>
+                <div className="flex flex-col justify-center">
+                  {block.title && <h2 className="font-serif text-3xl md:text-5xl tracking-tight text-[#1C1C1E] mb-6">{block.title}</h2>}
+                  {block.description && <p className="font-sans text-[#1C1C1E]/70 leading-relaxed text-lg font-light">{block.description}</p>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* RECOMMENDED PRODUCTS */}
+      {recommendedProducts.length > 0 && (
+        <div className="w-full bg-[#1C1C1E]/[0.02] py-24 border-t border-[#1C1C1E]/10">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-8">
+            <h2 className="text-3xl font-serif text-[#1C1C1E] mb-12 text-center tracking-tight">You Might Also Like</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {recommendedProducts.map(rec => (
+                <ProductCard key={rec.id} product={{ ...rec, imageUrl: rec.image }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

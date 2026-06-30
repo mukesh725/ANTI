@@ -24,6 +24,7 @@ export interface Product {
   badge?: string;
   themeColor?: string;
   sortPosition?: number;
+  aPlusContent?: { imageUrl: string; title?: string; description?: string }[];
 }
 
 export function useProducts(storeType: "grocery" | "pharmacy") {
@@ -59,7 +60,19 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           isComingSoon: false,
           badge: "Best Seller",
           themeColor: "#5b8c5a",
-          sortPosition: 1
+          sortPosition: 1,
+          aPlusContent: [
+            {
+              imageUrl: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80",
+              title: "Antioxidant Powerhouse",
+              description: "Packed with EGCG, our ceremonial grade matcha provides steady, calm energy without the midday crash."
+            },
+            {
+              imageUrl: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80",
+              title: "Sourced from Uji, Japan",
+              description: "Shade-grown for 20 days before harvest to maximize chlorophyll and L-theanine levels."
+            }
+          ]
         };
 
         const MOCK_PHARMACY: Product = {
@@ -82,7 +95,19 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           isComingSoon: false,
           badge: "Clinically Proven",
           themeColor: "#8e6e53",
-          sortPosition: 1
+          sortPosition: 1,
+          aPlusContent: [
+            {
+              imageUrl: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80",
+              title: "Clinically Studied KSM-66",
+              description: "The most extensively researched ashwagandha extract on the market, proven to significantly lower cortisol levels."
+            },
+            {
+              imageUrl: "https://images.unsplash.com/photo-1611078709540-54d6fc922e9e?auto=format&fit=crop&q=80",
+              title: "Deep, Restorative Sleep",
+              description: "By regulating your body's stress response, Ashwagandha promotes deeper REM sleep and better morning recovery."
+            }
+          ]
         };
 
         const mockProduct = storeType === "grocery" ? MOCK_GROCERY : MOCK_PHARMACY;

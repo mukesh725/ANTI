@@ -34,6 +34,7 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
     badge: initialData?.badge || "",
     themeColor: initialData?.themeColor || "",
     sortPosition: initialData?.sortPosition || 0,
+    aPlusContent: initialData?.aPlusContent || [],
   });
 
   const [saving, setSaving] = useState(false);
@@ -52,6 +53,30 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
   const updateField = <K extends keyof typeof formData>(field: K, value: typeof formData[K]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  const addAPlusBlock = () => {
+    setFormData(prev => ({
+      ...prev,
+      aPlusContent: [...(prev.aPlusContent || []), { imageUrl: "", title: "", description: "" }]
+    }));
+  };
+
+  const removeAPlusBlock = (index: number) => {
+    setFormData(prev => {
+      const newBlocks = [...(prev.aPlusContent || [])];
+      newBlocks.splice(index, 1);
+      return { ...prev, aPlusContent: newBlocks };
+    });
+  };
+
+  const updateAPlusBlock = (index: number, field: "imageUrl" | "title" | "description", value: string) => {
+    setFormData(prev => {
+      const newBlocks = [...(prev.aPlusContent || [])];
+      newBlocks[index] = { ...newBlocks[index], [field]: value };
+      return { ...prev, aPlusContent: newBlocks };
+    });
+  };
+
 
   return (
     <div className="bg-[#F8F9FA] min-h-screen -m-8 p-8">
@@ -305,6 +330,81 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
                 />
                 <p className="text-[10px] text-gray-400 mt-2">One per line.</p>
               </div>
+            </div>
+          </section>
+
+          {/* A+ CONTENT */}
+          <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+            <div className="flex justify-between items-center mb-1">
+              <h2 className="text-base font-semibold text-gray-900">A+ Content (Rich Media)</h2>
+              <button type="button" onClick={addAPlusBlock} className="text-xs bg-gray-900 text-white px-3 py-1.5 rounded-md font-medium hover:bg-gray-800 transition-colors">
+                + Add A+ Block
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mb-6">Create rich marketing sections similar to Amazon A+ content below the main product details.</p>
+
+            <div className="space-y-6">
+              {(formData.aPlusContent || []).length === 0 ? (
+                <div className="border border-dashed border-gray-300 rounded-xl p-10 flex flex-col items-center justify-center text-center bg-gray-50/50">
+                  <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
+                    <LayoutGrid className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-1">No A+ content yet</h3>
+                  <p className="text-xs text-gray-500 mb-4">Add rich images and text blocks to help sell your product.</p>
+                  <button type="button" onClick={addAPlusBlock} className="text-xs bg-gray-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors">
+                    + Add first block
+                  </button>
+                </div>
+              ) : (
+                (formData.aPlusContent || []).map((block, index) => (
+                  <div key={index} className="border border-gray-200 rounded-xl p-5 bg-gray-50 relative">
+                    <button 
+                      type="button" 
+                      onClick={() => removeAPlusBlock(index)}
+                      className="absolute top-4 right-4 text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded"
+                    >
+                      Remove
+                    </button>
+                    <h4 className="text-sm font-semibold text-gray-900 mb-4">Block {index + 1}</h4>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Image URL *</label>
+                        <input 
+                          required
+                          type="url"
+                          value={block.imageUrl}
+                          onChange={e => updateAPlusBlock(index, 'imageUrl', e.target.value)}
+                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="https://example.com/banner.jpg"
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Title</label>
+                          <input 
+                            type="text"
+                            value={block.title || ""}
+                            onChange={e => updateAPlusBlock(index, 'title', e.target.value)}
+                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Sourced from Japan"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Description</label>
+                          <textarea 
+                            rows={3}
+                            value={block.description || ""}
+                            onChange={e => updateAPlusBlock(index, 'description', e.target.value)}
+                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                            placeholder="Add a detailed description here..."
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </section>
 
