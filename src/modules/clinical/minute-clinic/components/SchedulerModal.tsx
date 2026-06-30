@@ -47,7 +47,7 @@ export function SchedulerModal({ isOpen, onClose }: SchedulerModalProps) {
                 <h2 className="font-serif text-3xl mb-4 leading-tight">MinuteClinic<br/>Consultation</h2>
                 <p className="font-sans text-sm text-alabaster/70 leading-relaxed">
                   A seamless, private session with our holistic practitioners. 
-                  Collective Members receive priority booking.
+                  AIRO Members receive priority booking.
                 </p>
               </div>
               

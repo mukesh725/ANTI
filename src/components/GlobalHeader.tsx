@@ -137,7 +137,7 @@ export function GlobalHeader() {
                   ? "text-[#FFFFFF] bg-white/10 border-white/20 hover:bg-white/20"
                   : "text-[#1C1C1E] bg-[#1C1C1E]/5 border-[#1C1C1E]/20 hover:bg-[#1C1C1E]/10")
           }`}>
-            <Sparkles className="w-3 h-3" /> The Collective
+            <Sparkles className="w-3 h-3" /> Membership
           </button>
           
           
@@ -233,9 +233,9 @@ export function GlobalHeader() {
 
               {/* Footer CTA */}
               <div className="mt-auto p-6 border-t border-[#1C1C1E]/10">
-                <button className="w-full flex items-center justify-center gap-2 text-[10px] tracking-widest uppercase font-medium text-[#1C1C1E] bg-[#1C1C1E]/5 px-4 py-3 rounded-full hover:bg-[#1C1C1E]/10 transition-colors duration-300">
-                  <Sparkles className="w-3 h-3" /> The Collective
-                </button>
+                <Link href="/membership" className="w-full flex items-center justify-center gap-2 text-[10px] tracking-widest uppercase font-medium text-[#1C1C1E] bg-[#1C1C1E]/5 px-4 py-3 rounded-full hover:bg-[#1C1C1E]/10 transition-colors duration-300">
+                  <Sparkles className="w-3 h-3" /> Membership
+                </Link>
               </div>
             </motion.div>
           </>

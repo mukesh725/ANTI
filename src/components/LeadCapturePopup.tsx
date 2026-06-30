@@ -111,7 +111,7 @@ export function LeadCapturePopup() {
                   <div className="w-16 h-16 bg-[#0A84FF]/10 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-8 h-8 text-[#0A84FF]" />
                   </div>
-                  <h3 className="font-serif text-2xl text-[#FFFFFF] mb-2 tracking-wide">Welcome to the Collective</h3>
+                  <h3 className="font-serif text-2xl text-[#FFFFFF] mb-2 tracking-wide">Welcome to AIRO</h3>
                   <p className="text-sm text-[#FFFFFF]/60 leading-relaxed">
                     You have successfully joined the waitlist. Keep an eye out for our exclusive invitations.
                   </p>
@@ -123,7 +123,7 @@ export function LeadCapturePopup() {
                   </div>
                   
                   <h3 className="font-serif text-2xl text-[#FFFFFF] mb-3 tracking-wide">
-                    Join the AIRO Collective
+                    Join the AIRO Waitlist
                   </h3>
                   <p className="text-sm text-[#FFFFFF]/60 leading-relaxed mb-8">
                     Enter your details to receive early access to the Minute Clinic, exclusive organic grocery drops, and personalized wellness insights.
