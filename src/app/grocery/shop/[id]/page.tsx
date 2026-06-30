@@ -7,7 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { Product, useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/modules/retail/grocery/components/ProductCard";
 import { GlobalHeader } from "@/components/GlobalHeader";
-import { ArrowLeft, Plus, Minus, Check } from "lucide-react";
+import { ArrowLeft, Check, Heart, Package, Clock, Calendar, Star, ChevronDown, ChevronUp } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductDetailPage() {
@@ -16,50 +16,72 @@ export default function ProductDetailPage() {
   const { addItem } = useCart();
   const { products: allProducts } = useProducts("grocery");
   
-  
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   
-  const [quantity, setQuantity] = useState(1);
-  const [openAccordion, setOpenAccordion] = useState<string | null>("ingredients");
+  const [quantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [activeImage, setActiveImage] = useState<string>("");
+  const [selectedVariant, setSelectedVariant] = useState<string>("");
+  const [openAccordion, setOpenAccordion] = useState<string | null>("description");
+  const [timeRemaining, setTimeRemaining] = useState("02:50:25");
+
+  // Mock Timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeRemaining(prev => {
+        let [hours, minutes, seconds] = prev.split(':').map(Number);
+        if (seconds > 0) seconds--;
+        else {
+          seconds = 59;
+          if (minutes > 0) minutes--;
+          else {
+            minutes = 59;
+            hours = Math.max(0, hours - 1);
+          }
+        }
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     async function fetchProduct() {
       if (!id) return;
       try {
         if (id === "mock-essentials-1") {
-          setProduct({
+          const mockData = {
             id: "mock-essentials-1",
             name: "Organic Matcha Green Tea",
             price: 24.99,
             category: "Wellness",
             storeType: "grocery",
             image: "https://images.unsplash.com/photo-1582793988951-9aed550c6ea2?auto=format&fit=crop&q=80",
+            galleryImages: [
+              "https://images.unsplash.com/photo-1582793988951-9aed550c6ea2?auto=format&fit=crop&q=80",
+              "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80",
+              "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80"
+            ],
+            variants: ["100g", "250g", "500g"],
             description: "Premium ceremonial grade matcha sourced directly from Uji, Japan. Rich in antioxidants and perfect for daily energy without the jittery crash.",
-            tagline: "Your daily calm energy",
-            discount: 0,
-            stock: 50,
-            sku: "MTC-ORG-01",
-            weight: 100,
-            ingredients: "100% Ceremonial Grade Matcha Green Tea Powder\nL-Theanine\nNaturally Occurring Caffeine",
-            benefits: "Boosts Metabolism naturally\nEnhances focus and clarity\nRich in Catechins (EGCG)",
             isActive: true,
             isFeatured: true,
             isComingSoon: false,
-            badge: "Best Seller",
-            themeColor: "#5b8c5a",
-            sortPosition: 1
-          } as Product);
+          } as Product;
+          setProduct(mockData);
+          setActiveImage(mockData.image);
+          if (mockData.variants?.length) setSelectedVariant(mockData.variants[0]);
           return;
         }
 
         const docRef = doc(db, "products", id as string);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setProduct({ id: docSnap.id, ...docSnap.data() } as Product);
-        } else {
-          console.error("Product not found");
+          const data = { id: docSnap.id, ...docSnap.data() } as Product;
+          setProduct(data);
+          setActiveImage(data.image);
+          if (data.variants?.length) setSelectedVariant(data.variants[0]);
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -70,29 +92,13 @@ export default function ProductDetailPage() {
     fetchProduct();
   }, [id]);
 
-  if (loading) {
+  if (loading || !product) {
     return (
       <main className="min-h-screen bg-[#FFFFFF]">
         <GlobalHeader />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="w-8 h-8 border-4 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
         </div>
-
-      </main>
-    );
-  }
-
-  if (!product) {
-    return (
-      <main className="min-h-screen bg-[#FFFFFF]">
-        <GlobalHeader />
-        <div className="flex flex-col items-center justify-center min-h-[60vh]">
-          <h1 className="text-2xl font-serif text-[#1C1C1E] mb-4">Product Not Found</h1>
-          <button onClick={() => router.back()} className="text-sm font-medium hover:opacity-70 transition-opacity flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" /> Back to Shop
-          </button>
-        </div>
-
       </main>
     );
   }
@@ -103,211 +109,244 @@ export default function ProductDetailPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const ingredientsList = product.ingredients ? product.ingredients.split('\n').filter(Boolean) : [];
-  const benefitsList = product.benefits ? product.benefits.split('\n').filter(Boolean) : [];
-  
-  // Create a very subtle background from the theme color if it exists, otherwise fallback to standard #F0EAE1
-  const themeBg = product.themeColor ? `${product.themeColor}15` : '#F0EAE1';
-
   const recommendedProducts = allProducts.filter(p => p.id !== product.id).slice(0, 4);
+  const images = product.galleryImages?.length ? product.galleryImages : [product.image];
 
   return (
     <main className="min-h-screen bg-[#FFFFFF]">
       <GlobalHeader />
       
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-12 md:py-24">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-8">
         
-        <button 
-          onClick={() => router.back()} 
-          className="text-sm font-medium text-[#1C1C1E]/60 hover:text-[#1C1C1E] transition-colors flex items-center gap-2 mb-8 md:mb-16"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Shop
-        </button>
+        {/* Breadcrumb & Actions */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2 text-sm text-[#1C1C1E]/60">
+            <button onClick={() => router.back()} className="hover:text-[#1C1C1E] flex items-center gap-1">
+              <ArrowLeft className="w-4 h-4" /> Home
+            </button>
+            <span>-</span>
+            <span className="text-[#1C1C1E] font-medium">Product details</span>
+          </div>
+          <div className="flex items-center gap-4 text-sm text-[#1C1C1E]">
+            <span className="cursor-pointer hover:opacity-70">About</span>
+            <span className="cursor-pointer hover:opacity-70">FAQs</span>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+        {/* Main Product Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-24">
           
-          {/* LEFT: IMAGE */}
-          <div 
-            className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden flex items-center justify-center p-12 relative"
-            style={{ backgroundColor: themeBg }}
-          >
-            {product.badge && (
-              <div className="absolute top-6 left-6 px-4 py-1.5 bg-[#1C1C1E] text-[#FFFFFF] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full z-10">
-                {product.badge}
+          {/* LEFT: IMAGE GALLERY */}
+          <div className="flex flex-col gap-4">
+            <div className="w-full aspect-[4/5] rounded-[2rem] bg-[#F5F5F7] overflow-hidden flex items-center justify-center p-8">
+              <img src={activeImage} alt={product.name} className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-300" />
+            </div>
+            {images.length > 1 && (
+              <div className="grid grid-cols-3 gap-4">
+                {images.map((img, idx) => (
+                  <button 
+                    key={idx} 
+                    onClick={() => setActiveImage(img)}
+                    className={`aspect-square rounded-2xl bg-[#F5F5F7] p-2 flex items-center justify-center overflow-hidden border-2 transition-colors ${activeImage === img ? 'border-[#1C1C1E]' : 'border-transparent'}`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-contain mix-blend-multiply" />
+                  </button>
+                ))}
               </div>
             )}
-            <img 
-              src={product.image} 
-              alt={product.name} 
-              className="w-full h-full object-contain mix-blend-multiply drop-shadow-2xl transition-transform duration-700 hover:scale-105"
-            />
           </div>
 
           {/* RIGHT: DETAILS */}
-          <div className="flex flex-col max-w-[500px]">
+          <div className="flex flex-col pt-4">
             
-            <div className="mb-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">
-                {product.category}
-              </span>
+            <div className="inline-block border border-[#1C1C1E]/10 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#1C1C1E]/60 w-fit mb-4">
+              {product.category}
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-serif text-[#1C1C1E] mb-4 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-sans font-bold text-[#1C1C1E] mb-3">
               {product.name}
             </h1>
             
-            {product.tagline && (
-              <p className="text-lg text-[#1C1C1E]/70 mb-8 font-medium">
-                {product.tagline}
-              </p>
-            )}
-
-            <div className="text-2xl font-serif text-[#1C1C1E] mb-8">
+            <div className="text-xl font-bold text-[#1C1C1E] mb-6">
               ${Number(product.price).toFixed(2)}
-              {product.weight && (
-                <span className="text-sm font-sans text-[#1C1C1E]/50 ml-2">/ {product.weight}g</span>
-              )}
             </div>
 
-            <p className="text-base text-[#1C1C1E]/70 leading-relaxed mb-10">
-              {product.description}
-            </p>
+            {/* Delivery Timer */}
+            <div className="flex items-center gap-2 border border-[#1C1C1E]/10 rounded-full py-2 px-4 w-fit mb-8 bg-gray-50 text-sm">
+              <Clock className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-500">Order in</span>
+              <span className="font-bold text-[#1C1C1E]">{timeRemaining}</span>
+              <span className="text-gray-500">to get next day delivery</span>
+            </div>
 
-            {/* ADD TO CART CONTROLS */}
-            {!product.isComingSoon ? (
-              <div className="flex items-center gap-4 mb-16">
-                <div className="flex items-center border border-[#1C1C1E]/10 rounded-full bg-white h-14 w-32">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="flex-1 flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E]/5 rounded-l-full h-full transition-colors"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-8 text-center font-medium text-sm">{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="flex-1 flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E]/5 rounded-r-full h-full transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+            {/* Variants / Sizes */}
+            {product.variants && product.variants.length > 0 && (
+              <div className="mb-8">
+                <p className="text-sm font-medium text-gray-600 mb-3">Select Size</p>
+                <div className="flex flex-wrap gap-3">
+                  {product.variants.map(v => (
+                    <button
+                      key={v}
+                      onClick={() => setSelectedVariant(v)}
+                      className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                        selectedVariant === v 
+                          ? 'bg-[#1C1C1E] text-white' 
+                          : 'bg-[#F5F5F7] text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      {v}
+                    </button>
+                  ))}
                 </div>
-                
-                <button 
-                  onClick={handleAddToCart}
-                  disabled={added}
-                  className={`flex-1 h-14 rounded-full text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-                    added 
-                      ? 'bg-emerald-600 text-white' 
-                      : 'bg-[#1C1C1E] text-[#FFFFFF] hover:bg-[#0A84FF] hover:text-[#1C1C1E]'
-                  }`}
-                >
-                  {added ? <><Check className="w-4 h-4" /> Added to Cart</> : 'Add to Cart'}
-                </button>
-              </div>
-            ) : (
-              <div className="mb-16">
-                <button 
-                  disabled
-                  className="w-full h-14 rounded-full bg-[#1C1C1E]/5 text-[#1C1C1E]/40 text-sm font-bold uppercase tracking-widest cursor-not-allowed"
-                >
-                  Coming Soon
-                </button>
               </div>
             )}
 
-            {/* ACCORDIONS */}
-            <div className="border-t border-[#1C1C1E]/10">
-              
-              {ingredientsList.length > 0 && (
-                <div className="border-b border-[#1C1C1E]/10">
-                  <button 
-                    onClick={() => setOpenAccordion(openAccordion === 'ingredients' ? null : 'ingredients')}
-                    className="w-full py-6 flex items-center justify-between text-left group"
-                  >
-                    <span className="text-lg font-serif text-[#1C1C1E]">Ingredients</span>
-                    <span className="text-[#1C1C1E]/40 group-hover:text-[#1C1C1E] transition-colors">
-                      {openAccordion === 'ingredients' ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-                    </span>
-                  </button>
-                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openAccordion === 'ingredients' ? 'max-h-[500px] pb-6 opacity-100' : 'max-h-0 opacity-0'
-                  }`}>
-                    <ul className="space-y-3">
-                      {ingredientsList.map((ing, i) => (
-                        <li key={i} className="text-sm text-[#1C1C1E]/70 flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0A84FF] mt-1.5 flex-shrink-0" />
-                          <span>{ing}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
+            {/* ADD TO CART */}
+            <div className="flex items-center gap-3 mb-10">
+              <button 
+                onClick={handleAddToCart}
+                disabled={added || product.isComingSoon}
+                className={`flex-1 h-14 rounded-full text-sm font-bold transition-all flex items-center justify-center gap-2 ${
+                  added 
+                    ? 'bg-emerald-600 text-white' 
+                    : 'bg-[#1C1C1E] text-white hover:bg-black/80'
+                } ${product.isComingSoon ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {added ? <><Check className="w-5 h-5" /> Added to Cart</> : 'Add to Cart'}
+              </button>
+              <button className="h-14 w-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                <Heart className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
 
-              {benefitsList.length > 0 && (
-                <div className="border-b border-[#1C1C1E]/10">
-                  <button 
-                    onClick={() => setOpenAccordion(openAccordion === 'benefits' ? null : 'benefits')}
-                    className="w-full py-6 flex items-center justify-between text-left group"
-                  >
-                    <span className="text-lg font-serif text-[#1C1C1E]">Benefits</span>
-                    <span className="text-[#1C1C1E]/40 group-hover:text-[#1C1C1E] transition-colors">
-                      {openAccordion === 'benefits' ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-                    </span>
-                  </button>
-                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openAccordion === 'benefits' ? 'max-h-[500px] pb-6 opacity-100' : 'max-h-0 opacity-0'
-                  }`}>
-                    <ul className="space-y-3">
-                      {benefitsList.map((ben, i) => (
-                        <li key={i} className="text-sm text-[#1C1C1E]/70 flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0A84FF] mt-1.5 flex-shrink-0" />
-                          <span>{ben}</span>
-                        </li>
-                      ))}
-                    </ul>
+            {/* ACCORDIONS */}
+            <div className="space-y-4">
+              
+              {/* Description & Fit */}
+              <div className="border border-gray-200 rounded-2xl overflow-hidden">
+                <button 
+                  onClick={() => setOpenAccordion(openAccordion === 'description' ? null : 'description')}
+                  className="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-semibold text-sm">Description & Fit</span>
+                  {openAccordion === 'description' ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+                </button>
+                <div className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${openAccordion === 'description' ? 'max-h-[500px] pb-6' : 'max-h-0'}`}>
+                  <p className="text-sm text-gray-600 leading-relaxed">{product.description}</p>
+                </div>
+              </div>
+
+              {/* Shipping */}
+              <div className="border border-gray-200 rounded-2xl overflow-hidden">
+                <button 
+                  onClick={() => setOpenAccordion(openAccordion === 'shipping' ? null : 'shipping')}
+                  className="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-semibold text-sm">Shipping</span>
+                  {openAccordion === 'shipping' ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+                </button>
+                <div className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${openAccordion === 'shipping' ? 'max-h-[500px] pb-6' : 'max-h-0'}`}>
+                  <div className="grid grid-cols-2 gap-6 pt-2">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-gray-100 p-2 rounded-full"><Check className="w-4 h-4" /></div>
+                      <div>
+                        <p className="text-xs text-gray-400">Discount</p>
+                        <p className="text-sm font-semibold">Over 80%</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-gray-100 p-2 rounded-full"><Package className="w-4 h-4" /></div>
+                      <div>
+                        <p className="text-xs text-gray-400">Package</p>
+                        <p className="text-sm font-semibold">Regular Package</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-gray-100 p-2 rounded-full"><Calendar className="w-4 h-4" /></div>
+                      <div>
+                        <p className="text-xs text-gray-400">Delivery Time</p>
+                        <p className="text-sm font-semibold">3-5 Working Days</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-gray-100 p-2 rounded-full"><Clock className="w-4 h-4" /></div>
+                      <div>
+                        <p className="text-xs text-gray-400">Estimated Arrival</p>
+                        <p className="text-sm font-semibold">10 - 12 October</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
+              </div>
 
             </div>
 
           </div>
         </div>
-      </div>
 
-      {/* A+ CONTENT SECTIONS */}
-      {product.aPlusContent && product.aPlusContent.length > 0 && (
-        <div className="w-full">
-          {product.aPlusContent.map((block, idx) => (
-            <div key={idx} className={`w-full py-24 md:py-32 ${idx % 2 === 0 ? 'bg-[#F9F9FB]' : 'bg-white'}`}>
-              <div className="max-w-[1200px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-                <div className={`aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl ${idx % 2 !== 0 ? 'md:order-last' : ''}`}>
-                  <img src={block.imageUrl} alt={block.title || "Product feature"} className="w-full h-full object-cover" />
+        {/* Rating & Reviews */}
+        <div className="mb-24">
+          <h2 className="text-xl font-bold text-[#1C1C1E] mb-8">Rating & Reviews</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            {/* Stats */}
+            <div className="flex items-start gap-8">
+              <div className="flex flex-col items-center">
+                <div className="text-7xl font-bold text-[#1C1C1E] tracking-tighter">
+                  4,5<span className="text-2xl text-gray-400 font-normal">/5</span>
                 </div>
-                <div className="flex flex-col justify-center">
-                  {block.title && <h2 className="font-serif text-3xl md:text-5xl tracking-tight text-[#1C1C1E] mb-6">{block.title}</h2>}
-                  {block.description && <p className="font-sans text-[#1C1C1E]/70 leading-relaxed text-lg font-light">{block.description}</p>}
+                <p className="text-xs text-gray-400 mt-2">(60 New Reviews)</p>
+              </div>
+              <div className="flex-1 space-y-2">
+                {[5, 4, 3, 2, 1].map(star => (
+                  <div key={star} className="flex items-center gap-3">
+                    <div className="flex items-center gap-1 w-8">
+                      <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                      <span className="text-xs font-medium text-gray-600">{star}</span>
+                    </div>
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-[#1C1C1E]" style={{ width: star === 5 ? '70%' : star === 4 ? '20%' : '5%' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sample Review */}
+            <div className="border border-gray-200 rounded-3xl p-6 relative">
+              <div className="flex justify-between items-start mb-3">
+                <span className="font-bold text-sm">Alex Mathio</span>
+                <span className="text-xs text-gray-400">13 Oct 2024</span>
+              </div>
+              <div className="flex gap-1 mb-4">
+                {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                &quot;AIRO&apos;s dedication to quality and ethical practices resonates strongly with today&apos;s consumers, positioning the brand as a responsible choice in the health world.&quot;
+              </p>
+              <div className="flex gap-2">
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                  <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80" alt="Reviewer" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* RECOMMENDED PRODUCTS */}
-      {recommendedProducts.length > 0 && (
-        <div className="w-full bg-[#1C1C1E]/[0.02] py-24 border-t border-[#1C1C1E]/10">
-          <div className="max-w-[1400px] mx-auto px-6 md:px-8">
-            <h2 className="text-3xl font-serif text-[#1C1C1E] mb-12 text-center tracking-tight">You Might Also Like</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          </div>
+        </div>
+
+        {/* RECOMMENDED PRODUCTS */}
+        {recommendedProducts.length > 0 && (
+          <div className="mb-24">
+            <h2 className="text-2xl font-bold text-[#1C1C1E] mb-8 text-center">You might also like</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {recommendedProducts.map(rec => (
                 <ProductCard key={rec.id} product={{ ...rec, imageUrl: rec.image }} />
               ))}
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+      </div>
     </main>
   );
 }

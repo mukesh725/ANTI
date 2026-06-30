@@ -25,6 +25,8 @@ export interface Product {
   themeColor?: string;
   sortPosition?: number;
   aPlusContent?: { imageUrl: string; title?: string; description?: string }[];
+  galleryImages?: string[];
+  variants?: string[];
 }
 
 export function useProducts(storeType: "grocery" | "pharmacy") {
@@ -61,6 +63,13 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           badge: "Best Seller",
           themeColor: "#5b8c5a",
           sortPosition: 1,
+          galleryImages: [
+            "https://images.unsplash.com/photo-1582793988951-9aed550c6ea2?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&q=80"
+          ],
+          variants: ["100g", "250g", "500g"],
           aPlusContent: [
             {
               imageUrl: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80",
@@ -96,6 +105,13 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           badge: "Clinically Proven",
           themeColor: "#8e6e53",
           sortPosition: 1,
+          galleryImages: [
+            "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1611078709540-54d6fc922e9e?auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80"
+          ],
+          variants: ["30 Capsules", "60 Capsules", "90 Capsules"],
           aPlusContent: [
             {
               imageUrl: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80",

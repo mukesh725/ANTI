@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { LayoutGrid } from "lucide-react";
+import { X, LayoutGrid } from "lucide-react";
 import { Product } from "@/hooks/useProducts";
 import { useCms } from "@/context/CmsContext";
 
@@ -35,6 +35,8 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
     themeColor: initialData?.themeColor || "",
     sortPosition: initialData?.sortPosition || 0,
     aPlusContent: initialData?.aPlusContent || [],
+    galleryImages: initialData?.galleryImages || [],
+    variants: initialData?.variants || [],
   });
 
   const [saving, setSaving] = useState(false);
@@ -77,6 +79,51 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
     });
   };
 
+  const addVariant = () => {
+    setFormData(prev => ({
+      ...prev,
+      variants: [...(prev.variants || []), ""]
+    }));
+  };
+
+  const removeVariant = (index: number) => {
+    setFormData(prev => {
+      const newVariants = [...(prev.variants || [])];
+      newVariants.splice(index, 1);
+      return { ...prev, variants: newVariants };
+    });
+  };
+
+  const updateVariant = (index: number, value: string) => {
+    setFormData(prev => {
+      const newVariants = [...(prev.variants || [])];
+      newVariants[index] = value;
+      return { ...prev, variants: newVariants };
+    });
+  };
+
+  const addGalleryImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      galleryImages: [...(prev.galleryImages || []), ""]
+    }));
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setFormData(prev => {
+      const newImages = [...(prev.galleryImages || [])];
+      newImages.splice(index, 1);
+      return { ...prev, galleryImages: newImages };
+    });
+  };
+
+  const updateGalleryImage = (index: number, value: string) => {
+    setFormData(prev => {
+      const newImages = [...(prev.galleryImages || [])];
+      newImages[index] = value;
+      return { ...prev, galleryImages: newImages };
+    });
+  };
 
   return (
     <div className="bg-[#F8F9FA] min-h-screen -m-8 p-8">
@@ -120,16 +167,41 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
             <p className="text-sm text-gray-500 mb-6">Name, category, and the copy customers see on the product page.</p>
 
             <div className="grid grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Name *</label>
-                <input 
-                  required
-                  type="text"
-                  value={formData.name}
-                  onChange={e => updateField('name', e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="e.g. AIRO Energy"
-                />
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Main Image URL *</label>
+                  <input 
+                    required
+                    type="url"
+                    value={formData.image}
+                    onChange={e => updateField('image', e.target.value)}
+                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                
+                <div className="pt-2 border-t border-gray-100">
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500">Additional Gallery Images</label>
+                    <button type="button" onClick={addGalleryImage} className="text-xs text-blue-600 font-medium hover:text-blue-700">+ Add image</button>
+                  </div>
+                  <div className="space-y-3">
+                    {(formData.galleryImages || []).map((imgUrl, idx) => (
+                      <div key={idx} className="flex gap-2">
+                        <input 
+                          type="url"
+                          value={imgUrl}
+                          onChange={e => updateGalleryImage(idx, e.target.value)}
+                          className="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="https://..."
+                        />
+                        <button type="button" onClick={() => removeGalleryImage(idx)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg">
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -282,23 +354,38 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
             </div>
           </section>
 
-          {/* VARIANTS (Placeholder) */}
+          {/* VARIANTS */}
           <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
             <div className="flex justify-between items-center mb-1">
-              <h2 className="text-base font-semibold text-gray-900">Variants</h2>
-              <button type="button" className="text-xs bg-gray-900 text-white px-3 py-1.5 rounded-md font-medium hover:bg-gray-800 transition-colors">+ Add variant</button>
-            </div>
-            <p className="text-sm text-gray-500 mb-6">Each row is one Size x Flavor combination with its own price, SKU, stock, and image.</p>
-            
-            <div className="border border-dashed border-gray-300 rounded-xl p-10 flex flex-col items-center justify-center text-center bg-gray-50/50">
-              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
-                <LayoutGrid className="w-5 h-5 text-gray-400" />
-              </div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-1">No variants yet</h3>
-              <p className="text-xs text-gray-500 mb-4">Add variants to track stock and pricing per size or flavor.</p>
-              <button type="button" className="text-xs bg-gray-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors">
-                + Add first variant
+              <h2 className="text-base font-semibold text-gray-900">Variants (Sizes / Pills)</h2>
+              <button type="button" onClick={addVariant} className="text-xs bg-gray-900 text-white px-3 py-1.5 rounded-md font-medium hover:bg-gray-800 transition-colors">
+                + Add variant
               </button>
+            </div>
+            <p className="text-sm text-gray-500 mb-6">Add size, weight, or format options (e.g. S, M, L or 100g, 250g).</p>
+            
+            <div className="space-y-3">
+              {(formData.variants || []).length === 0 ? (
+                <div className="border border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center text-center bg-gray-50/50">
+                  <p className="text-xs text-gray-500 mb-2">No variants yet.</p>
+                  <button type="button" onClick={addVariant} className="text-xs text-blue-600 font-medium">Add first variant</button>
+                </div>
+              ) : (
+                (formData.variants || []).map((v, idx) => (
+                  <div key={idx} className="flex gap-2">
+                    <input 
+                      type="text"
+                      value={v}
+                      onChange={e => updateVariant(idx, e.target.value)}
+                      className="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. 500g"
+                    />
+                    <button type="button" onClick={() => removeVariant(idx)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </section>
 
