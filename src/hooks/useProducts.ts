@@ -126,10 +126,20 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           ]
         };
 
-        const mockProduct = storeType === "grocery" ? MOCK_GROCERY : MOCK_PHARMACY;
+        const mockGrocery2: Product = { ...MOCK_GROCERY, id: "mock-essentials-2", name: "Organic Cold-Pressed Olive Oil", price: 18.50, galleryImages: ["https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80"] };
+        const mockGrocery3: Product = { ...MOCK_GROCERY, id: "mock-essentials-3", name: "Himalayan Pink Salt", price: 8.99, galleryImages: ["https://images.unsplash.com/photo-1518118014377-a6f9f0f63e6e?auto=format&fit=crop&q=80"] };
+        const mockGrocery4: Product = { ...MOCK_GROCERY, id: "mock-essentials-4", name: "Artisan Sourdough Loaf", price: 12.00, galleryImages: ["https://images.unsplash.com/photo-1585478259715-876acc5be8eb?auto=format&fit=crop&q=80"] };
         
-        // Append the mock product if it isn't already in the database
-        setProducts([mockProduct, ...fetchedProducts]);
+        const mockPharmacy2: Product = { ...MOCK_PHARMACY, id: "mock-health-2", name: "Daily Multivitamin Gummies", price: 22.00, galleryImages: ["https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80"] };
+        const mockPharmacy3: Product = { ...MOCK_PHARMACY, id: "mock-health-3", name: "Liquid IV Hydration Multiplier", price: 24.99, galleryImages: ["https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80"] };
+        const mockPharmacy4: Product = { ...MOCK_PHARMACY, id: "mock-health-4", name: "Probiotic Complex", price: 28.50, galleryImages: ["https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80"] };
+
+        const mockProducts = storeType === "grocery" 
+          ? [MOCK_GROCERY, mockGrocery2, mockGrocery3, mockGrocery4] 
+          : [MOCK_PHARMACY, mockPharmacy2, mockPharmacy3, mockPharmacy4];
+        
+        // Append the mock products if it isn't already in the database
+        setProducts([...mockProducts, ...fetchedProducts]);
       } catch (error) {
         console.error(`Failed to fetch ${storeType} products:`, error);
       } finally {
