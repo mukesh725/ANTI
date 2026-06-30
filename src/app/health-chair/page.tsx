@@ -93,7 +93,7 @@ export default function HealthChairPage() {
   };
 
   return (
-    <div className="bg-[#FAF8F5] text-[#0B2114] min-h-screen font-sans selection:bg-[#0B2114] selection:text-[#FAF8F5] overflow-clip">
+    <div className="bg-[#FAF8F5] text-[#597467] min-h-screen font-sans selection:bg-[#597467] selection:text-[#FAF8F5] overflow-clip">
       <GlobalHeader />
 
       {/* SECTION 1: HERO */}
@@ -190,7 +190,7 @@ export default function HealthChairPage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16 md:mb-24 z-20 relative">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
-              {assessment.title.split('.')[0]}. <span className="italic font-light text-[#0B2114]/60">{assessment.title.split('.').slice(1).join('.')}</span>
+              {assessment.title.split('.')[0]}. <span className="italic font-light text-[#597467]/60">{assessment.title.split('.').slice(1).join('.')}</span>
             </h2>
           </div>
 
@@ -198,20 +198,20 @@ export default function HealthChairPage() {
             {assessmentSteps.map((step: { title: string; description: string }, i: number) => {
               const stepIcons = [Activity, Heart, CheckCircle2];
               const stepColors = [
-                "border-[#0B2114]/20 bg-[#FAF8F5]",
+                "border-[#597467]/20 bg-[#FAF8F5]",
                 "border-blue-500/20 bg-blue-50/50",
                 "border-green-500/20 bg-green-50/50"
               ];
               const StepIcon = stepIcons[i] || Activity;
-              const iconColor = i === 2 ? "text-green-600/60" : "text-[#0B2114]/60";
+              const iconColor = i === 2 ? "text-green-600/60" : "text-[#597467]/60";
               return (
                 <div key={i} className="flex flex-col items-center">
                   <div className={`w-24 h-24 rounded-full border ${stepColors[i]} flex items-center justify-center mb-6`}>
                     <StepIcon className={`w-8 h-8 ${iconColor}`} />
                   </div>
-                  <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">0{i + 1}</div>
+                  <div className="font-serif text-3xl italic text-[#597467]/30 mb-2">0{i + 1}</div>
                   <h3 className="font-bold text-xl uppercase tracking-widest mb-4">{step.title}</h3>
-                  <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">{step.description}</p>
+                  <p className="text-[#597467]/60 leading-relaxed max-w-sm">{step.description}</p>
                 </div>
               );
             })}
@@ -224,21 +224,21 @@ export default function HealthChairPage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16 md:mb-24 relative z-20">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
-              {insights.title.split(' ')[0]} {insights.title.split(' ')[1]} <span className="italic font-light text-[#0B2114]/60">{insights.title.split(' ').slice(2).join(' ')}</span>
+              {insights.title.split(' ')[0]} {insights.title.split(' ')[1]} <span className="italic font-light text-[#597467]/60">{insights.title.split(' ').slice(2).join(' ')}</span>
             </h2>
-            <p className="text-[#0B2114]/60 max-w-xl mx-auto">{insights.description.split('.')[0]}.</p>
+            <p className="text-[#597467]/60 max-w-xl mx-auto">{insights.description.split('.')[0]}.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 relative z-20">
             {insightCards.map((card: { title: string; description: string }, i: number) => {
               const CardIcon = cardIconMap[card.title] || Activity;
               return (
-                <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-[#0B2114]/5 rounded-xl flex items-center justify-center mb-6">
-                    <CardIcon className="w-6 h-6 text-[#0B2114]" />
+                <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#597467]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-[#597467]/5 rounded-xl flex items-center justify-center mb-6">
+                    <CardIcon className="w-6 h-6 text-[#597467]" />
                   </div>
                   <h4 className="font-bold text-lg uppercase tracking-widest mb-2">{card.title}</h4>
-                  <p className="text-[#0B2114]/60 text-sm leading-relaxed">{card.description}</p>
+                  <p className="text-[#597467]/60 text-sm leading-relaxed">{card.description}</p>
                 </div>
               );
             })}
@@ -247,7 +247,7 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 4: CONNECTED CARE */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden">
+      <section className="bg-[#597467] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden">
         <div className="max-w-[1400px] mx-auto text-center">
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-24 text-[#FAF8F5]">
             {(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[0]}Entire <span className="italic font-light text-[#FAF8F5]/80">{(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[1]}</span>
@@ -271,8 +271,8 @@ export default function HealthChairPage() {
             {connectedNodeLabels.map((label: string, i: number) => {
               const NodeIcon = nodeIconMap[label] || Activity;
               return (
-                <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114]">
-                  <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
+                <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#597467]">
+                  <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#597467] flex items-center justify-center">
                     <NodeIcon className="w-8 h-8 text-[#FAF8F5]" />
                   </div>
                   <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70 w-24 text-center">
@@ -294,9 +294,9 @@ export default function HealthChairPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "0px" }}
-                  className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114] py-4"
+                  className="relative z-10 flex flex-col items-center gap-4 bg-[#597467] py-4"
                 >
-                  <div className="w-16 h-16 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full border-2 border-[#FAF8F5]/20 bg-[#597467] flex items-center justify-center">
                     <NodeIcon className="w-6 h-6 text-[#FAF8F5]" />
                   </div>
                   <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70">
@@ -358,7 +358,7 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 6: FINAL CTA */}
-      <section className="bg-[#FAF8F5] text-[#0B2114] py-32 md:py-48 px-6 md:px-16 relative overflow-hidden">
+      <section className="bg-[#FAF8F5] text-[#597467] py-32 md:py-48 px-6 md:px-16 relative overflow-hidden">
         {/* Spotlight effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-50 z-0 pointer-events-none" />
         
@@ -379,7 +379,7 @@ export default function HealthChairPage() {
           
           <Link 
             href={finalCta?.buttonLink || "/minute-clinic"} 
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#0B2114] text-[#FAF8F5] text-[10px] tracking-widest uppercase font-bold hover:bg-[#1A3324] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#597467] text-[#FAF8F5] text-[10px] tracking-widest uppercase font-bold hover:bg-[#7C9A8E] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
           >
             {finalCta?.buttonText || "Book Your AIRO Health Scan"}
           </Link>

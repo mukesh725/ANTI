@@ -62,7 +62,7 @@ const essentialsCategories = [
 
 export default function EssentialsHomePage() {
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#0B2114] overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#597467] overflow-x-hidden selection:bg-[#597467] selection:text-[#FAF8F5]">
       
       {/* HERO SECTION */}
       <section className="relative h-[70vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden pt-20">
@@ -76,17 +76,17 @@ export default function EssentialsHomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/90 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-[800px] text-[#0B2114] pt-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
-            <Leaf className="w-3 h-3 text-[#0B2114]" /> Natural Nourishment
+        <div className="relative z-10 max-w-[800px] text-[#597467] pt-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#597467]/10 bg-[#597467]/5 text-[#597467] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mb-8">
+            <Leaf className="w-3 h-3 text-[#597467]" /> Natural Nourishment
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6rem] tracking-tight leading-[1.02] text-[#0B2114] mb-8">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6rem] tracking-tight leading-[1.02] text-[#597467] mb-8">
             AIRO <br/>
-            <span className="italic font-light text-[#0B2114]/80">Essentials.</span>
+            <span className="italic font-light text-[#597467]/80">Essentials.</span>
           </h1>
           
-          <p className="font-sans text-sm md:text-base text-[#0B2114]/70 max-w-lg leading-relaxed mb-12 tracking-wide">
+          <p className="font-sans text-sm md:text-base text-[#597467]/70 max-w-lg leading-relaxed mb-12 tracking-wide">
             A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out.
           </p>
         </div>
@@ -95,11 +95,11 @@ export default function EssentialsHomePage() {
       {/* CATEGORIES */}
       <section className="py-24 md:py-36 px-6 md:px-16 w-full max-w-[1500px] mx-auto">
         <div className="text-center mb-20">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#597467]/50 block mb-6 font-bold">
             Explore the Market
           </span>
           <h2 className="font-serif text-4xl md:text-5xl tracking-tight">
-            Curated <span className="italic font-light text-[#0B2114]/80">Departments</span>
+            Curated <span className="italic font-light text-[#597467]/80">Departments</span>
           </h2>
         </div>
 
@@ -113,15 +113,15 @@ export default function EssentialsHomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#0B2114]/5 mix-blend-multiply group-hover:bg-transparent transition-colors duration-500" />
+                <div className="absolute inset-0 bg-[#597467]/5 mix-blend-multiply group-hover:bg-transparent transition-colors duration-500" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#0B2114] mb-3">{cat.name}</h3>
-              <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed mb-6 flex-grow">
+              <h3 className="font-serif text-2xl md:text-3xl text-[#597467] mb-3">{cat.name}</h3>
+              <p className="font-sans text-xs md:text-sm text-[#597467]/70 leading-relaxed mb-6 flex-grow">
                 {cat.desc}
               </p>
               <Link 
                 href={cat.href} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#0B2114] hover:text-[#0B2114]/60 silent-luxury-transition"
+                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#597467] hover:text-[#597467]/60 silent-luxury-transition"
               >
                 Shop {cat.name} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
