@@ -128,93 +128,96 @@ export default function HomePage() {
           ========================================================================= */}
       <section className="bg-white border-y border-[#1C1C1E]/10 py-24 md:py-36 px-6 md:px-16 w-full">
         <div className="max-w-[1500px] mx-auto">
-          <div className="text-center mb-20 max-w-2xl mx-auto">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-6 font-bold">
+          <div className="text-center mb-24 max-w-3xl mx-auto">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/40 block mb-6 font-bold">
               {pillars?.sectionLabel || "The Foundations"}
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
-              {(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.')[0]}. <span className="italic font-light text-[#1C1C1E]/80">{(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.').slice(1).join('.')}</span>
+            <h2 className="font-serif text-5xl md:text-6xl font-medium tracking-tight leading-tight">
+              {(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.')[0]}. <span className="italic font-light text-[#1C1C1E]/60">{(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.').slice(1).join('.')}</span>
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
 
             {/* Pillar 1: Essentials */}
-            <div className="flex flex-col group h-full">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
+            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src={pillars?.essentials?.image || "https://plus.unsplash.com/premium_photo-1663039978847-63f7484bf701?q=80&w=800"}
                   alt={pillars?.essentials?.title || "AIRO Essentials Market"}
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#1C1C1E]/5 mix-blend-multiply" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#1C1C1E] mb-3">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
-              <p className="font-sans text-[11px] uppercase tracking-widest text-[#1C1C1E]/50 font-bold mb-4">
-                {pillars?.essentials?.subtitle || "Fresh • Organic • Local • Wellness Retail"}
-              </p>
-              <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed mb-6 flex-grow">
-                {pillars?.essentials?.description || "A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out."}
-              </p>
-              <Link 
-                href={pillars?.essentials?.buttonLink || "/grocery"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#1C1C1E]/60 silent-luxury-transition"
-              >
-                {pillars?.essentials?.buttonText || "Browse Essentials"} <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <div className="p-8 md:p-10 flex flex-col flex-grow">
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
+                <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
+                  {pillars?.essentials?.subtitle || "Fresh • Organic • Local • Wellness Retail"}
+                </p>
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                  {pillars?.essentials?.description || "A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out."}
+                </p>
+                <Link 
+                  href={pillars?.essentials?.buttonLink || "/grocery"} 
+                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
+                >
+                  {pillars?.essentials?.buttonText || "Browse Essentials"} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
             {/* Pillar 2: Pharmacy */}
-            <div className="flex flex-col group h-full">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
+            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src={pillars?.pharmacy?.image || "/pharmacy-hero.jpg"}
                   alt={pillars?.pharmacy?.title || "AIRO Pharmacy"}
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#1C1C1E]/5 mix-blend-multiply" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#1C1C1E] mb-3">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
-              <p className="font-sans text-[11px] uppercase tracking-widest text-[#1C1C1E]/50 font-bold mb-4">
-                {pillars?.pharmacy?.subtitle || "Prescriptions • Supplements • Custom Compounding"}
-              </p>
-              <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed mb-6 flex-grow">
-                {pillars?.pharmacy?.description || "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers."}
-              </p>
-              <Link 
-                href={pillars?.pharmacy?.buttonLink || "/pharmacy"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#1C1C1E]/60 silent-luxury-transition"
-              >
-                {pillars?.pharmacy?.buttonText || "Visit Pharmacy Portal"} <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <div className="p-8 md:p-10 flex flex-col flex-grow">
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
+                <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
+                  {pillars?.pharmacy?.subtitle || "Prescriptions • Supplements • Custom Compounding"}
+                </p>
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                  {pillars?.pharmacy?.description || "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers."}
+                </p>
+                <Link 
+                  href={pillars?.pharmacy?.buttonLink || "/pharmacy"} 
+                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
+                >
+                  {pillars?.pharmacy?.buttonText || "Visit Pharmacy Portal"} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
             {/* Pillar 3: Minute Clinic */}
-            <div className="flex flex-col group h-full">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 shadow-md">
+            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src={pillars?.clinic?.image || "/clinic-connected.jpg"}
                   alt={pillars?.clinic?.title || "AIRO Minute Clinic"}
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute inset-0 bg-[#1C1C1E]/5 mix-blend-multiply" />
               </div>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#1C1C1E] mb-3">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
-              <p className="font-sans text-[11px] uppercase tracking-widest text-[#1C1C1E]/50 font-bold mb-4">
-                {pillars?.clinic?.subtitle || "Preventive Care • Walk-In Clinics • Screenings"}
-              </p>
-              <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed mb-6 flex-grow">
-                {pillars?.clinic?.description || "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times."}
-              </p>
-              <Link 
-                href={pillars?.clinic?.buttonLink || "/minute-clinic"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#1C1C1E]/60 silent-luxury-transition"
-              >
-                {pillars?.clinic?.buttonText || "View Clinic Services"} <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <div className="p-8 md:p-10 flex flex-col flex-grow">
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
+                <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
+                  {pillars?.clinic?.subtitle || "Preventive Care • Walk-In Clinics • Screenings"}
+                </p>
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                  {pillars?.clinic?.description || "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times."}
+                </p>
+                <Link 
+                  href={pillars?.clinic?.buttonLink || "/minute-clinic"} 
+                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
+                >
+                  {pillars?.clinic?.buttonText || "View Clinic Services"} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
           </div>
