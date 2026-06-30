@@ -66,22 +66,22 @@ export function LanguageTranslateWidget() {
       />
 
       {/* Our Custom, Beautiful UI */}
-      <div className="relative flex items-center bg-[#0B2114]/80 border border-[#1A3324] rounded-full overflow-hidden hover:border-[#D4AF37]/50 transition-colors">
-        <div className="pl-3 pr-1 text-[#D4AF37] pointer-events-none flex items-center">
+      <div className="relative flex items-center bg-[#1C1C1E]/80 border border-[#2C2C2E] rounded-full overflow-hidden hover:border-[#0A84FF]/50 transition-colors">
+        <div className="pl-3 pr-1 text-[#0A84FF] pointer-events-none flex items-center">
           <Globe className="w-3.5 h-3.5" />
         </div>
         <select
           value={selectedLang}
           onChange={handleLangChange}
-          className="appearance-none bg-transparent text-[#FAF8F5] text-[10px] font-bold tracking-widest uppercase pl-1 pr-6 py-2 outline-none cursor-pointer"
+          className="appearance-none bg-transparent text-[#FFFFFF] text-[10px] font-bold tracking-widest uppercase pl-1 pr-6 py-2 outline-none cursor-pointer"
         >
-          <option value="en" className="bg-[#09120F] text-[#FAF8F5]">ENG</option>
-          <option value="hi" className="bg-[#09120F] text-[#FAF8F5]">HINDI</option>
-          <option value="te" className="bg-[#09120F] text-[#FAF8F5]">TELUGU</option>
+          <option value="en" className="bg-[#09120F] text-[#FFFFFF]">ENG</option>
+          <option value="hi" className="bg-[#09120F] text-[#FFFFFF]">HINDI</option>
+          <option value="te" className="bg-[#09120F] text-[#FFFFFF]">TELUGU</option>
         </select>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L4 4L7 1" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M1 1L4 4L7 1" stroke="#0A84FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
       </div>

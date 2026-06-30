@@ -89,17 +89,17 @@ export default function ContactPage() {
   const { details } = pageContent.sections;
 
   return (
-    <div className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+    <div className="w-full bg-[#FFFFFF] text-[#1C1C1E] min-h-screen overflow-x-hidden selection:bg-[#1C1C1E] selection:text-[#FFFFFF]">
       
       {/* Editorial Header */}
       <section className="relative px-6 md:px-12 pt-16 pb-12 md:py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
-        <span className="text-[10px] tracking-[0.25em] uppercase text-[#0B2114]/60 mb-4 font-semibold block">
+        <span className="text-[10px] tracking-[0.25em] uppercase text-[#1C1C1E]/60 mb-4 font-semibold block">
           Connect With AIRO
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-[#0B2114] max-w-4xl tracking-tight leading-tight mb-6">
+        <h1 className="font-serif text-4xl md:text-6xl text-[#1C1C1E] max-w-4xl tracking-tight leading-tight mb-6">
           Start Your Journey to Proactive Health Optimization
         </h1>
-        <p className="text-[#0B2114]/75 text-sm md:text-base max-w-2xl leading-relaxed">
+        <p className="text-[#1C1C1E]/75 text-sm md:text-base max-w-2xl leading-relaxed">
           Whether you are looking to schedule a 5-minute Health Chair scan, request custom compounded medicine, or explore personalized nutrition, our concierge team is here to assist.
         </p>
       </section>
@@ -114,33 +114,33 @@ export default function ContactPage() {
             
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#0B2114] mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#1C1C1E] mt-0.5 border border-[#E6DFD5]">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call AIRO Concierge</h4>
-                  <p className="text-sm font-semibold hover:text-[#0B2114]/70 transition-colors">
+                  <p className="text-sm font-semibold hover:text-[#1C1C1E]/70 transition-colors">
                     {details.phone}
                   </p>
-                  <p className="text-xs text-[#0B2114]/60 mt-0.5">Toll-free across North America</p>
+                  <p className="text-xs text-[#1C1C1E]/60 mt-0.5">Toll-free across North America</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#0B2114] mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#1C1C1E] mt-0.5 border border-[#E6DFD5]">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Email Inquiry</h4>
-                  <p className="text-sm font-semibold hover:text-[#0B2114]/70 transition-colors">
+                  <p className="text-sm font-semibold hover:text-[#1C1C1E]/70 transition-colors">
                     {details.email}
                   </p>
-                  <p className="text-xs text-[#0B2114]/60 mt-0.5">Our response standard is within 3 business hours</p>
+                  <p className="text-xs text-[#1C1C1E]/60 mt-0.5">Our response standard is within 3 business hours</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#0B2114] mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#1C1C1E] mt-0.5 border border-[#E6DFD5]">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
@@ -148,12 +148,12 @@ export default function ContactPage() {
                   <p className="text-sm font-semibold">
                     {details.address}
                   </p>
-                  <p className="text-xs text-[#0B2114]/60 mt-0.5">Integrated clinic, laboratory, and pharmacy center</p>
+                  <p className="text-xs text-[#1C1C1E]/60 mt-0.5">Integrated clinic, laboratory, and pharmacy center</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#0B2114] mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-[#1C1C1E] mt-0.5 border border-[#E6DFD5]">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
@@ -166,14 +166,14 @@ export default function ContactPage() {
           </div>
 
           {/* Connected Care Info Card */}
-          <div className="bg-[#0B2114] text-[#FAF8F5] p-8 rounded-2xl relative overflow-hidden shadow-lg border border-[#1A3324]">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#FAF8F5]/5 rounded-full blur-2xl transform translate-x-1/3 -translate-y-1/3"></div>
-            <Sparkles className="w-8 h-8 text-[#D4AF37] mb-5 animate-pulse" />
+          <div className="bg-[#1C1C1E] text-[#FFFFFF] p-8 rounded-2xl relative overflow-hidden shadow-lg border border-[#2C2C2E]">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFFFFF]/5 rounded-full blur-2xl transform translate-x-1/3 -translate-y-1/3"></div>
+            <Sparkles className="w-8 h-8 text-[#0A84FF] mb-5 animate-pulse" />
             <h3 className="font-serif text-xl mb-3 tracking-wide">Rapid Health Screening</h3>
-            <p className="text-xs text-[#FAF8F5]/80 leading-relaxed mb-4">
+            <p className="text-xs text-[#FFFFFF]/80 leading-relaxed mb-4">
               Our flagship wellness assessment starts with the 5-Minute Health Chair Scan. Capture real-time vitals, ECG, SpO2, and key physiological biomarkers to kickstart your personalized medical programs.
             </p>
-            <div className="text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">
+            <div className="text-xs font-semibold uppercase tracking-widest text-[#0A84FF]">
               Available walk-in at all sites
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function ContactPage() {
               >
                 <div>
                   <h3 className="font-serif text-2xl mb-2 tracking-wide">Submit Inquiry</h3>
-                  <p className="text-xs text-[#0B2114]/65">Provide your information below and our coordinators will guide you.</p>
+                  <p className="text-xs text-[#1C1C1E]/65">Provide your information below and our coordinators will guide you.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -206,7 +206,7 @@ export default function ContactPage() {
                       placeholder="Jane Doe"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0B2114] transition-all text-[#0B2114]"
+                      className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1C1E] transition-all text-[#1C1C1E]"
                     />
                   </div>
 
@@ -221,7 +221,7 @@ export default function ContactPage() {
                         placeholder="jane@example.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0B2114] transition-all text-[#0B2114]"
+                        className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1C1E] transition-all text-[#1C1C1E]"
                       />
                     </div>
                     <div>
@@ -233,7 +233,7 @@ export default function ContactPage() {
                         placeholder="+1 (555) 000-0000"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0B2114] transition-all text-[#0B2114]"
+                        className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1C1E] transition-all text-[#1C1C1E]"
                       />
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default function ContactPage() {
                     <select
                       value={formData.type}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                      className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0B2114] transition-all text-[#0B2114] appearance-none cursor-pointer"
+                      className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1C1E] transition-all text-[#1C1C1E] appearance-none cursor-pointer"
                     >
                       <option value="General Inquiry">General Consultation & Wellness</option>
                       <option value="Health Chair assessment">5-Minute Health Chair Assessment</option>
@@ -267,14 +267,14 @@ export default function ContactPage() {
                       placeholder="Please detail your wellness goals or inquiry..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0B2114] transition-all text-[#0B2114] resize-none"
+                      className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1C1E] transition-all text-[#1C1C1E] resize-none"
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[#0B2114] hover:bg-[#0B2114]/90 text-[#FAF8F5] rounded-xl py-3.5 px-6 font-medium text-sm flex items-center justify-center space-x-2 transition-all shadow-md hover:shadow-lg disabled:opacity-50 active:scale-[0.99]"
+                    className="w-full bg-[#1C1C1E] hover:bg-[#1C1C1E]/90 text-[#FFFFFF] rounded-xl py-3.5 px-6 font-medium text-sm flex items-center justify-center space-x-2 transition-all shadow-md hover:shadow-lg disabled:opacity-50 active:scale-[0.99]"
                   >
                     {isSubmitting ? (
                       <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
@@ -295,20 +295,20 @@ export default function ContactPage() {
                 exit={{ opacity: 0 }}
                 className="py-12 flex flex-col items-center text-center space-y-6"
               >
-                <div className="w-16 h-16 bg-[#0B2114] text-[#FAF8F5] rounded-full flex items-center justify-center border border-[#1A3324] shadow-md">
+                <div className="w-16 h-16 bg-[#1C1C1E] text-[#FFFFFF] rounded-full flex items-center justify-center border border-[#2C2C2E] shadow-md">
                   <Check className="w-8 h-8" />
                 </div>
                 
                 <div className="space-y-3">
-                  <h3 className="font-serif text-3xl text-[#0B2114] tracking-wide">Inquiry Logged</h3>
-                  <p className="text-[#0B2114]/80 text-sm max-w-md leading-relaxed">
+                  <h3 className="font-serif text-3xl text-[#1C1C1E] tracking-wide">Inquiry Logged</h3>
+                  <p className="text-[#1C1C1E]/80 text-sm max-w-md leading-relaxed">
                     Thank you. Your consultation request has been routed to our wellness concierge desk. An AIRO coordinator will contact you by email or phone shortly.
                   </p>
                 </div>
 
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="bg-[#0B2114] hover:bg-[#0B2114]/90 text-[#FAF8F5] font-medium text-xs px-6 py-2.5 rounded-full transition-all border border-[#1A3324] active:scale-95"
+                  className="bg-[#1C1C1E] hover:bg-[#1C1C1E]/90 text-[#FFFFFF] font-medium text-xs px-6 py-2.5 rounded-full transition-all border border-[#2C2C2E] active:scale-95"
                 >
                   Submit Another Inquiry
                 </button>
@@ -319,13 +319,13 @@ export default function ContactPage() {
       </section>
 
       {/* Minimal Footer */}
-      <footer className="bg-[#0B2114] text-[#FAF8F5] py-12 px-6 md:px-12 border-t border-[#1A3324]">
+      <footer className="bg-[#1C1C1E] text-[#FFFFFF] py-12 px-6 md:px-12 border-t border-[#2C2C2E]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           <div className="flex flex-col space-y-2 text-center md:text-left">
-            <span className="font-serif text-xl tracking-widest uppercase text-[#FAF8F5]">AIRO.</span>
-            <span className="text-[10px] text-[#FAF8F5]/50 tracking-wider">PREVENTIVE LONGEVITY ECOSYSTEM</span>
+            <span className="font-serif text-xl tracking-widest uppercase text-[#FFFFFF]">AIRO.</span>
+            <span className="text-[10px] text-[#FFFFFF]/50 tracking-wider">PREVENTIVE LONGEVITY ECOSYSTEM</span>
           </div>
-          <p className="text-[10px] text-[#FAF8F5]/45 text-center md:text-right max-w-sm leading-relaxed">
+          <p className="text-[10px] text-[#FFFFFF]/45 text-center md:text-right max-w-sm leading-relaxed">
             &copy; 2026 AIRO Health. All rights reserved. Clinical treatments, compounding services, and physical programs are subject to practitioner assessment.
           </p>
         </div>

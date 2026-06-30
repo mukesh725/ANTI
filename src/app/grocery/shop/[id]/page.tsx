@@ -69,10 +69,10 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#FAF8F5]">
+      <main className="min-h-screen bg-[#FFFFFF]">
         <GlobalHeader />
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="w-8 h-8 border-4 border-[#0B2114]/20 border-t-[#0B2114] rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
         </div>
 
       </main>
@@ -81,10 +81,10 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-[#FAF8F5]">
+      <main className="min-h-screen bg-[#FFFFFF]">
         <GlobalHeader />
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
-          <h1 className="text-2xl font-serif text-[#0B2114] mb-4">Product Not Found</h1>
+          <h1 className="text-2xl font-serif text-[#1C1C1E] mb-4">Product Not Found</h1>
           <button onClick={() => router.back()} className="text-sm font-medium hover:opacity-70 transition-opacity flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" /> Back to Shop
           </button>
@@ -107,14 +107,14 @@ export default function ProductDetailPage() {
   const themeBg = product.themeColor ? `${product.themeColor}15` : '#F0EAE1';
 
   return (
-    <main className="min-h-screen bg-[#FAF8F5]">
+    <main className="min-h-screen bg-[#FFFFFF]">
       <GlobalHeader />
       
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-12 md:py-24">
         
         <button 
           onClick={() => router.back()} 
-          className="text-sm font-medium text-[#0B2114]/60 hover:text-[#0B2114] transition-colors flex items-center gap-2 mb-8 md:mb-16"
+          className="text-sm font-medium text-[#1C1C1E]/60 hover:text-[#1C1C1E] transition-colors flex items-center gap-2 mb-8 md:mb-16"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Shop
         </button>
@@ -127,7 +127,7 @@ export default function ProductDetailPage() {
             style={{ backgroundColor: themeBg }}
           >
             {product.badge && (
-              <div className="absolute top-6 left-6 px-4 py-1.5 bg-[#0B2114] text-[#FAF8F5] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full z-10">
+              <div className="absolute top-6 left-6 px-4 py-1.5 bg-[#1C1C1E] text-[#FFFFFF] text-[10px] font-bold uppercase tracking-[0.2em] rounded-full z-10">
                 {product.badge}
               </div>
             )}
@@ -142,46 +142,46 @@ export default function ProductDetailPage() {
           <div className="flex flex-col max-w-[500px]">
             
             <div className="mb-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#0B2114]/50">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">
                 {product.category}
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-serif text-[#0B2114] mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-serif text-[#1C1C1E] mb-4 leading-tight">
               {product.name}
             </h1>
             
             {product.tagline && (
-              <p className="text-lg text-[#0B2114]/70 mb-8 font-medium">
+              <p className="text-lg text-[#1C1C1E]/70 mb-8 font-medium">
                 {product.tagline}
               </p>
             )}
 
-            <div className="text-2xl font-serif text-[#0B2114] mb-8">
+            <div className="text-2xl font-serif text-[#1C1C1E] mb-8">
               ${Number(product.price).toFixed(2)}
               {product.weight && (
-                <span className="text-sm font-sans text-[#0B2114]/50 ml-2">/ {product.weight}g</span>
+                <span className="text-sm font-sans text-[#1C1C1E]/50 ml-2">/ {product.weight}g</span>
               )}
             </div>
 
-            <p className="text-base text-[#0B2114]/70 leading-relaxed mb-10">
+            <p className="text-base text-[#1C1C1E]/70 leading-relaxed mb-10">
               {product.description}
             </p>
 
             {/* ADD TO CART CONTROLS */}
             {!product.isComingSoon ? (
               <div className="flex items-center gap-4 mb-16">
-                <div className="flex items-center border border-[#0B2114]/10 rounded-full bg-white h-14 w-32">
+                <div className="flex items-center border border-[#1C1C1E]/10 rounded-full bg-white h-14 w-32">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="flex-1 flex items-center justify-center text-[#0B2114] hover:bg-[#0B2114]/5 rounded-l-full h-full transition-colors"
+                    className="flex-1 flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E]/5 rounded-l-full h-full transition-colors"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
                   <span className="w-8 text-center font-medium text-sm">{quantity}</span>
                   <button 
                     onClick={() => setQuantity(quantity + 1)}
-                    className="flex-1 flex items-center justify-center text-[#0B2114] hover:bg-[#0B2114]/5 rounded-r-full h-full transition-colors"
+                    className="flex-1 flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E]/5 rounded-r-full h-full transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -193,7 +193,7 @@ export default function ProductDetailPage() {
                   className={`flex-1 h-14 rounded-full text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
                     added 
                       ? 'bg-emerald-600 text-white' 
-                      : 'bg-[#0B2114] text-[#FAF8F5] hover:bg-[#D4AF37] hover:text-[#0B2114]'
+                      : 'bg-[#1C1C1E] text-[#FFFFFF] hover:bg-[#0A84FF] hover:text-[#1C1C1E]'
                   }`}
                 >
                   {added ? <><Check className="w-4 h-4" /> Added to Cart</> : 'Add to Cart'}
@@ -203,7 +203,7 @@ export default function ProductDetailPage() {
               <div className="mb-16">
                 <button 
                   disabled
-                  className="w-full h-14 rounded-full bg-[#0B2114]/5 text-[#0B2114]/40 text-sm font-bold uppercase tracking-widest cursor-not-allowed"
+                  className="w-full h-14 rounded-full bg-[#1C1C1E]/5 text-[#1C1C1E]/40 text-sm font-bold uppercase tracking-widest cursor-not-allowed"
                 >
                   Coming Soon
                 </button>
@@ -211,16 +211,16 @@ export default function ProductDetailPage() {
             )}
 
             {/* ACCORDIONS */}
-            <div className="border-t border-[#0B2114]/10">
+            <div className="border-t border-[#1C1C1E]/10">
               
               {ingredientsList.length > 0 && (
-                <div className="border-b border-[#0B2114]/10">
+                <div className="border-b border-[#1C1C1E]/10">
                   <button 
                     onClick={() => setOpenAccordion(openAccordion === 'ingredients' ? null : 'ingredients')}
                     className="w-full py-6 flex items-center justify-between text-left group"
                   >
-                    <span className="text-lg font-serif text-[#0B2114]">Ingredients</span>
-                    <span className="text-[#0B2114]/40 group-hover:text-[#0B2114] transition-colors">
+                    <span className="text-lg font-serif text-[#1C1C1E]">Ingredients</span>
+                    <span className="text-[#1C1C1E]/40 group-hover:text-[#1C1C1E] transition-colors">
                       {openAccordion === 'ingredients' ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                     </span>
                   </button>
@@ -229,8 +229,8 @@ export default function ProductDetailPage() {
                   }`}>
                     <ul className="space-y-3">
                       {ingredientsList.map((ing, i) => (
-                        <li key={i} className="text-sm text-[#0B2114]/70 flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-1.5 flex-shrink-0" />
+                        <li key={i} className="text-sm text-[#1C1C1E]/70 flex items-start gap-3">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0A84FF] mt-1.5 flex-shrink-0" />
                           <span>{ing}</span>
                         </li>
                       ))}
@@ -240,13 +240,13 @@ export default function ProductDetailPage() {
               )}
 
               {benefitsList.length > 0 && (
-                <div className="border-b border-[#0B2114]/10">
+                <div className="border-b border-[#1C1C1E]/10">
                   <button 
                     onClick={() => setOpenAccordion(openAccordion === 'benefits' ? null : 'benefits')}
                     className="w-full py-6 flex items-center justify-between text-left group"
                   >
-                    <span className="text-lg font-serif text-[#0B2114]">Benefits</span>
-                    <span className="text-[#0B2114]/40 group-hover:text-[#0B2114] transition-colors">
+                    <span className="text-lg font-serif text-[#1C1C1E]">Benefits</span>
+                    <span className="text-[#1C1C1E]/40 group-hover:text-[#1C1C1E] transition-colors">
                       {openAccordion === 'benefits' ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                     </span>
                   </button>
@@ -255,8 +255,8 @@ export default function ProductDetailPage() {
                   }`}>
                     <ul className="space-y-3">
                       {benefitsList.map((ben, i) => (
-                        <li key={i} className="text-sm text-[#0B2114]/70 flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-1.5 flex-shrink-0" />
+                        <li key={i} className="text-sm text-[#1C1C1E]/70 flex items-start gap-3">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0A84FF] mt-1.5 flex-shrink-0" />
                           <span>{ben}</span>
                         </li>
                       ))}

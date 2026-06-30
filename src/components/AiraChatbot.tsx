@@ -311,17 +311,17 @@ export function AiraChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="mb-4 w-[380px] h-[580px] max-h-[80vh] max-w-[calc(100vw-2rem)] bg-[#FAF8F5] border border-[#E6DFD5] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-none"
+            className="mb-4 w-[380px] h-[580px] max-h-[80vh] max-w-[calc(100vw-2rem)] bg-[#FFFFFF] border border-[#E6DFD5] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-none"
           >
             {/* Chat Window Header */}
-            <div className="bg-[#0B2114] text-[#FAF8F5] px-5 py-4 flex items-center justify-between border-b border-[#1A3324]">
+            <div className="bg-[#1C1C1E] text-[#FFFFFF] px-5 py-4 flex items-center justify-between border-b border-[#2C2C2E]">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-[#FAF8F5]/10 flex items-center justify-center border border-[#FAF8F5]/20">
+                <div className="w-8 h-8 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center border border-[#FFFFFF]/20">
                   <Bot className="w-5 h-5 text-[#E6DFD5]" />
                 </div>
                 <div>
                   <h3 className="font-serif text-lg tracking-wide">AIRO</h3>
-                  <p className="text-[10px] text-[#FAF8F5]/60 tracking-wider uppercase font-medium">AIRO Health Concierge</p>
+                  <p className="text-[10px] text-[#FFFFFF]/60 tracking-wider uppercase font-medium">AIRO Health Concierge</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -329,7 +329,7 @@ export function AiraChatbot() {
                   onClick={handleRestart}
                   type="button"
                   title="Reset Conversation"
-                  className="p-1.5 rounded-full hover:bg-white/10 text-[#FAF8F5]/80 hover:text-white transition-colors"
+                  className="p-1.5 rounded-full hover:bg-white/10 text-[#FFFFFF]/80 hover:text-white transition-colors"
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
@@ -337,7 +337,7 @@ export function AiraChatbot() {
                   onClick={() => setIsOpen(false)}
                   type="button"
                   title="Close Assistant"
-                  className="p-1.5 rounded-full hover:bg-white/10 text-[#FAF8F5]/80 hover:text-white transition-colors"
+                  className="p-1.5 rounded-full hover:bg-white/10 text-[#FFFFFF]/80 hover:text-white transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -351,7 +351,7 @@ export function AiraChatbot() {
                   <div className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                     <div className="flex items-start max-w-[85%] space-x-2">
                       {msg.sender === "bot" && (
-                        <div className="w-6 h-6 rounded-full bg-[#0B2114] flex-shrink-0 flex items-center justify-center text-[10px] text-[#FAF8F5] mt-1 font-serif">
+                        <div className="w-6 h-6 rounded-full bg-[#1C1C1E] flex-shrink-0 flex items-center justify-center text-[10px] text-[#FFFFFF] mt-1 font-serif">
                           O
                         </div>
                       )}
@@ -359,10 +359,10 @@ export function AiraChatbot() {
                       <div
                         className={`rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
                           msg.sender === "user"
-                            ? "bg-[#0B2114] text-[#FAF8F5]"
+                            ? "bg-[#1C1C1E] text-[#FFFFFF]"
                             : msg.isEmergency
                             ? "bg-red-50 text-red-950 border border-red-200"
-                            : "bg-[#F5EFEB] text-[#0B2114] border border-[#E6DFD5]"
+                            : "bg-[#F5EFEB] text-[#1C1C1E] border border-[#E6DFD5]"
                         }`}
                       >
                         {msg.isEmergency && (
@@ -384,7 +384,7 @@ export function AiraChatbot() {
                           key={i}
                           type="button"
                           onClick={() => handleChipClick(chip)}
-                          className="bg-white border border-[#E6DFD5] text-[#0B2114] hover:bg-[#0B2114] hover:text-[#FAF8F5] hover:border-[#0B2114] text-xs px-3 py-1.5 rounded-full transition-all duration-200 shadow-sm font-medium tracking-wide active:scale-95"
+                          className="bg-white border border-[#E6DFD5] text-[#1C1C1E] hover:bg-[#1C1C1E] hover:text-[#FFFFFF] hover:border-[#1C1C1E] text-xs px-3 py-1.5 rounded-full transition-all duration-200 shadow-sm font-medium tracking-wide active:scale-95"
                         >
                           {chip}
                         </button>
@@ -397,9 +397,9 @@ export function AiraChatbot() {
               {isTyping && (
                 <div className="flex justify-start items-center space-x-2 pl-8">
                   <div className="bg-[#F5EFEB] border border-[#E6DFD5] rounded-2xl px-4 py-3 flex space-x-1 items-center">
-                    <span className="w-2 h-2 bg-[#0B2114]/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
-                    <span className="w-2 h-2 bg-[#0B2114]/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
-                    <span className="w-2 h-2 bg-[#0B2114]/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
+                    <span className="w-2 h-2 bg-[#1C1C1E]/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
+                    <span className="w-2 h-2 bg-[#1C1C1E]/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
+                    <span className="w-2 h-2 bg-[#1C1C1E]/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
                   </div>
                 </div>
               )}
@@ -408,7 +408,7 @@ export function AiraChatbot() {
             </div>
 
             {/* Disclaimer and Input Area */}
-            <div className="border-t border-[#E6DFD5] bg-[#FAF8F5] p-3 space-y-2">
+            <div className="border-t border-[#E6DFD5] bg-[#FFFFFF] p-3 space-y-2">
               {/* Disclaimer */}
               <p className="text-[10px] text-center text-gray-500 leading-normal px-2">
                 AIRO provides wellness insights and does not diagnose disease or replace professional medical advice. For emergencies, call 911 immediately.
@@ -420,19 +420,19 @@ export function AiraChatbot() {
                   e.preventDefault();
                   handleSendMessage(inputVal);
                 }}
-                className="flex items-center bg-white border border-[#E6DFD5] rounded-full px-4 py-1.5 shadow-sm focus-within:border-[#0B2114] transition-all"
+                className="flex items-center bg-white border border-[#E6DFD5] rounded-full px-4 py-1.5 shadow-sm focus-within:border-[#1C1C1E] transition-all"
               >
                 <input
                   type="text"
                   placeholder="Ask AIRO about health chair, vitamins..."
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
-                  className="flex-grow bg-transparent border-none text-sm text-[#0B2114] focus:outline-none placeholder-gray-400 py-1"
+                  className="flex-grow bg-transparent border-none text-sm text-[#1C1C1E] focus:outline-none placeholder-gray-400 py-1"
                 />
                 <button
                   type="submit"
                   disabled={!inputVal.trim()}
-                  className="p-1.5 text-[#0B2114] hover:text-[#0B2114]/80 disabled:text-gray-300 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 text-[#1C1C1E] hover:text-[#1C1C1E]/80 disabled:text-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -447,7 +447,7 @@ export function AiraChatbot() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#0B2114] rounded-full shadow-2xl flex items-center justify-center text-[#FAF8F5] focus:outline-none border border-[#1A3324]/50 relative"
+        className="w-14 h-14 bg-[#1C1C1E] rounded-full shadow-2xl flex items-center justify-center text-[#FFFFFF] focus:outline-none border border-[#2C2C2E]/50 relative"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -471,7 +471,7 @@ export function AiraChatbot() {
             >
               <MessageSquare className="w-6 h-6" />
               {/* Notification dot */}
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#D4AF37] rounded-full border-2 border-[#0B2114]"></span>
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#0A84FF] rounded-full border-2 border-[#1C1C1E]"></span>
             </motion.div>
           )}
         </AnimatePresence>

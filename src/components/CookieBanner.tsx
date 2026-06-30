@@ -42,31 +42,31 @@ export function CookieBanner() {
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Cookie className="w-5 h-5 text-emerald-700" />
-                <h3 className="font-serif text-lg font-medium text-[#0B2114]">Consent Preferences</h3>
+                <h3 className="font-serif text-lg font-medium text-[#1C1C1E]">Consent Preferences</h3>
               </div>
               <button 
                 onClick={acceptEssential}
-                className="text-[#0B2114]/40 hover:text-[#0B2114] transition-colors"
+                className="text-[#1C1C1E]/40 hover:text-[#1C1C1E] transition-colors"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <p className="text-xs text-[#0B2114]/70 leading-relaxed mb-4">
+            <p className="text-xs text-[#1C1C1E]/70 leading-relaxed mb-4">
               To comply with the DPDP Act 2023, we use tracking technologies for site performance, FSSAI-compliant grocery personalization, and marketing. By clicking &quot;Accept All&quot;, you agree to our <Link href="/privacy-policy" className="underline font-medium hover:text-emerald-700">Privacy Policy</Link> and <Link href="/terms" className="underline font-medium hover:text-emerald-700">Terms of Service</Link>.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button 
                 onClick={acceptEssential}
-                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-widest text-[#0B2114] bg-[#F4F7F6] border border-[#E6DFD5] hover:bg-[#E6DFD5]/50 transition-colors"
+                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-widest text-[#1C1C1E] bg-[#F4F7F6] border border-[#E6DFD5] hover:bg-[#E6DFD5]/50 transition-colors"
               >
                 Essential Only
               </button>
               <button 
                 onClick={acceptAll}
-                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-widest text-[#FAF8F5] bg-[#0B2114] hover:bg-[#0B2114]/90 transition-colors"
+                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-widest text-[#FFFFFF] bg-[#1C1C1E] hover:bg-[#1C1C1E]/90 transition-colors"
               >
                 Accept All
               </button>

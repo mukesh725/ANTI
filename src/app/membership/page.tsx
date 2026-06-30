@@ -11,9 +11,9 @@ const plans = [
     price: "₹456",
     period: "/ Year",
     popular: false,
-    color: "from-[#D4AF37]/20 to-transparent",
-    borderColor: "border-[#D4AF37]/30",
-    buttonColor: "bg-[#0B2114] text-[#FAF8F5] hover:bg-[#D4AF37] hover:text-[#0B2114]",
+    color: "from-[#0A84FF]/20 to-transparent",
+    borderColor: "border-[#0A84FF]/30",
+    buttonColor: "bg-[#1C1C1E] text-[#FFFFFF] hover:bg-[#0A84FF] hover:text-[#1C1C1E]",
     features: [
       { name: "Wellness Checkups", value: "3 / Year" },
       { name: "AIRO Praana Smart Health Scans", value: "6 / Year" },
@@ -39,9 +39,9 @@ const plans = [
     price: "₹4,999",
     period: "/ Year",
     popular: true,
-    color: "from-[#0B2114] to-[#1a3826]",
-    borderColor: "border-[#0B2114]",
-    buttonColor: "bg-[#D4AF37] text-[#0B2114] hover:bg-white hover:text-[#0B2114]",
+    color: "from-[#1C1C1E] to-[#1a3826]",
+    borderColor: "border-[#1C1C1E]",
+    buttonColor: "bg-[#0A84FF] text-[#1C1C1E] hover:bg-white hover:text-[#1C1C1E]",
     features: [
       { name: "Wellness Checkups", value: "12 / Year" },
       { name: "AIRO Praana Smart Health Scans", value: "24 / Year" },
@@ -96,7 +96,7 @@ const detections = [
 
 export default function MembershipPage() {
   return (
-    <main className="min-h-screen bg-[#FAF8F5] font-sans selection:bg-[#D4AF37]/30 selection:text-[#0B2114]">
+    <main className="min-h-screen bg-[#FFFFFF] font-sans selection:bg-[#0A84FF]/30 selection:text-[#1C1C1E]">
       <GlobalHeader />
 
       {/* Hero Section */}
@@ -105,26 +105,26 @@ export default function MembershipPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[10px] font-bold tracking-[0.2em] uppercase mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#1C1C1E]/10 bg-[#1C1C1E]/5 text-[#1C1C1E] text-[10px] font-bold tracking-[0.2em] uppercase mb-8"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" /> The AIRO Ecosystem
+          <Sparkles className="w-3.5 h-3.5 text-[#0A84FF]" /> The AIRO Ecosystem
         </motion.div>
         
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="font-serif text-5xl md:text-7xl lg:text-8xl text-[#0B2114] tracking-tight leading-[1.1] mb-6"
+          className="font-serif text-5xl md:text-7xl lg:text-8xl text-[#1C1C1E] tracking-tight leading-[1.1] mb-6"
         >
           AIRO One.<br />
-          <span className="italic font-light text-[#0B2114]/70">Rise to Health.</span>
+          <span className="italic font-light text-[#1C1C1E]/70">Rise to Health.</span>
         </motion.h1>
 
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-lg md:text-xl text-[#0B2114]/70 max-w-3xl mx-auto leading-relaxed mb-8"
+          className="text-lg md:text-xl text-[#1C1C1E]/70 max-w-3xl mx-auto leading-relaxed mb-8"
         >
           Food as Medicine | Prevention is Healthcare
         </motion.p>
@@ -133,7 +133,7 @@ export default function MembershipPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-sm md:text-base text-[#0B2114]/60 max-w-4xl mx-auto leading-relaxed"
+          className="text-sm md:text-base text-[#1C1C1E]/60 max-w-4xl mx-auto leading-relaxed"
         >
           Your all-in-one preventive healthcare membership designed to help you save more, access care faster, 
           and stay healthier through one connected ecosystem across <b>Essentials, Pharmacy, Clinic, Praana, and Diagnostics.</b>
@@ -141,7 +141,7 @@ export default function MembershipPage() {
       </section>
 
       {/* Pricing Comparison */}
-      <section className="py-20 px-6 md:px-16 bg-white border-y border-[#0B2114]/10">
+      <section className="py-20 px-6 md:px-16 bg-white border-y border-[#1C1C1E]/10">
         <div className="max-w-[1200px] mx-auto">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             
@@ -152,14 +152,14 @@ export default function MembershipPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: idx * 0.2 }}
-                className={`relative rounded-3xl p-8 md:p-12 overflow-hidden border ${plan.borderColor} ${plan.popular ? 'bg-[#0B2114] text-[#FAF8F5]' : 'bg-[#FAF8F5] text-[#0B2114]'}`}
+                className={`relative rounded-3xl p-8 md:p-12 overflow-hidden border ${plan.borderColor} ${plan.popular ? 'bg-[#1C1C1E] text-[#FFFFFF]' : 'bg-[#FFFFFF] text-[#1C1C1E]'}`}
               >
                 {/* Background Gradient */}
                 <div className={`absolute top-0 right-0 w-full h-full bg-gradient-to-bl ${plan.color} opacity-50 z-0 pointer-events-none`} />
                 
                 <div className="relative z-10 flex flex-col h-full">
                   {plan.popular && (
-                    <div className="absolute top-0 right-0 bg-[#D4AF37] text-[#0B2114] text-[9px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
+                    <div className="absolute top-0 right-0 bg-[#0A84FF] text-[#1C1C1E] text-[9px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full">
                       Most Popular
                     </div>
                   )}
@@ -191,15 +191,15 @@ export default function MembershipPage() {
       </section>
 
       {/* Elite Exclusive Benefits Section */}
-      <section className="py-24 px-6 md:px-16 bg-[#0B2114] text-[#FAF8F5] overflow-hidden relative">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#D4AF37] blur-[150px] opacity-10 rounded-full" />
+      <section className="py-24 px-6 md:px-16 bg-[#1C1C1E] text-[#FFFFFF] overflow-hidden relative">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#0A84FF] blur-[150px] opacity-10 rounded-full" />
         
         <div className="max-w-[1200px] mx-auto relative z-10">
           <div className="text-center mb-20">
             <h2 className="font-serif text-4xl md:text-5xl mb-6">
-              AIRO Elite <span className="italic font-light text-[#D4AF37]">Exclusive Benefits</span>
+              AIRO Elite <span className="italic font-light text-[#0A84FF]">Exclusive Benefits</span>
             </h2>
-            <p className="text-[#FAF8F5]/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[#FFFFFF]/70 max-w-2xl mx-auto leading-relaxed">
               Advanced Precision Preventive Health. From vitals to advanced biomarkers — a complete health assessment in one place, because we test the markers that matter.
             </p>
           </div>
@@ -207,8 +207,8 @@ export default function MembershipPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 mb-24">
             {/* Vitals */}
             <div>
-              <div className="flex items-center gap-4 mb-8 border-b border-[#FAF8F5]/10 pb-6">
-                <HeartPulse className="w-8 h-8 text-[#D4AF37]" />
+              <div className="flex items-center gap-4 mb-8 border-b border-[#FFFFFF]/10 pb-6">
+                <HeartPulse className="w-8 h-8 text-[#0A84FF]" />
                 <h3 className="text-2xl font-serif">Vital Signs & Basic Screening</h3>
               </div>
               <ul className="space-y-6">
@@ -222,7 +222,7 @@ export default function MembershipPage() {
                     className="flex flex-col"
                   >
                     <span className="font-bold tracking-wide">{vital.name}</span>
-                    <span className="text-sm text-[#FAF8F5]/50 mt-1">{vital.desc}</span>
+                    <span className="text-sm text-[#FFFFFF]/50 mt-1">{vital.desc}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -230,8 +230,8 @@ export default function MembershipPage() {
 
             {/* Biomarkers */}
             <div>
-              <div className="flex items-center gap-4 mb-8 border-b border-[#FAF8F5]/10 pb-6">
-                <Dna className="w-8 h-8 text-[#D4AF37]" />
+              <div className="flex items-center gap-4 mb-8 border-b border-[#FFFFFF]/10 pb-6">
+                <Dna className="w-8 h-8 text-[#0A84FF]" />
                 <h3 className="text-2xl font-serif">Advanced Biomarker Panel</h3>
               </div>
               <ul className="space-y-6">
@@ -245,7 +245,7 @@ export default function MembershipPage() {
                     className="flex flex-col"
                   >
                     <span className="font-bold tracking-wide">{marker.name}</span>
-                    <span className="text-sm text-[#FAF8F5]/50 mt-1">{marker.desc}</span>
+                    <span className="text-sm text-[#FFFFFF]/50 mt-1">{marker.desc}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -253,12 +253,12 @@ export default function MembershipPage() {
           </div>
 
           {/* Detections */}
-          <div className="bg-[#FAF8F5]/5 border border-[#FAF8F5]/10 rounded-3xl p-8 md:p-12 text-center">
-            <ShieldCheck className="w-12 h-12 text-[#D4AF37] mx-auto mb-6" />
+          <div className="bg-[#FFFFFF]/5 border border-[#FFFFFF]/10 rounded-3xl p-8 md:p-12 text-center">
+            <ShieldCheck className="w-12 h-12 text-[#0A84FF] mx-auto mb-6" />
             <h3 className="text-2xl font-serif mb-8">What AIRO Elite Helps Detect</h3>
             <div className="flex flex-wrap justify-center gap-3">
               {detections.map((detection, idx) => (
-                <span key={idx} className="bg-[#FAF8F5]/10 px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase">
+                <span key={idx} className="bg-[#FFFFFF]/10 px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase">
                   {detection}
                 </span>
               ))}
@@ -270,14 +270,14 @@ export default function MembershipPage() {
 
       {/* CTA / Footer Promise */}
       <section className="py-24 px-6 md:px-16 text-center max-w-[800px] mx-auto">
-        <h2 className="font-serif text-4xl mb-6 text-[#0B2114]">The AIRO One Promise</h2>
-        <h3 className="text-xl text-[#0B2114]/80 mb-4 font-bold">
+        <h2 className="font-serif text-4xl mb-6 text-[#1C1C1E]">The AIRO One Promise</h2>
+        <h3 className="text-xl text-[#1C1C1E]/80 mb-4 font-bold">
           Early Detection. Better Prevention. Smarter Health Decisions.
         </h3>
-        <p className="text-[#0B2114]/60 italic mb-12">
+        <p className="text-[#1C1C1E]/60 italic mb-12">
           Because prevention starts before symptoms appear.
         </p>
-        <Link href="/" className="inline-flex items-center justify-center gap-2 bg-[#D4AF37] text-[#0B2114] px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase hover:bg-[#0B2114] hover:text-[#FAF8F5] transition-colors">
+        <Link href="/" className="inline-flex items-center justify-center gap-2 bg-[#0A84FF] text-[#1C1C1E] px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase hover:bg-[#1C1C1E] hover:text-[#FFFFFF] transition-colors">
           Return Home <ArrowRight className="w-4 h-4" />
         </Link>
       </section>

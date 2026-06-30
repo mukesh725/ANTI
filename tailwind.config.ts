@@ -10,9 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        alabaster: "#F9F8F4",
+        alabaster: "#FFFFFF",
         charcoal: "#1C1C1E",
-        background: "#F9F8F4",
+        background: "#FFFFFF",
         foreground: "#1C1C1E",
       },
       fontFamily: {

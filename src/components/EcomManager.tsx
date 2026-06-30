@@ -106,7 +106,7 @@ export function EcomManager() {
                 <th className="px-6 py-4 font-bold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#0B2114]/5">
+            <tbody className="divide-y divide-[#1C1C1E]/5">
               {orders.map((order) => (
                 <tr key={order.id} className="hover:bg-white/50 transition-colors">
                   <td className="px-6 py-4 font-mono text-xs">{order.id.slice(0, 8)}</td>

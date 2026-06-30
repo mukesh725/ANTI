@@ -61,7 +61,7 @@ export default function EssentialsPage() {
   const closingSection = sections.closingSection;
 
   return (
-    <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+    <div ref={pageRef} className="w-full bg-[#FFFFFF] text-[#1C1C1E] min-h-screen overflow-x-hidden selection:bg-[#1C1C1E] selection:text-[#FFFFFF]">
       
       {/* SECTION 1: HERO SECTION */}
       <section className="relative px-6 md:px-16 pt-12 pb-24 md:pb-32 max-w-[1600px] mx-auto">
@@ -69,28 +69,28 @@ export default function EssentialsPage() {
           
           {/* Hero text */}
           <div className="lg:col-span-7 flex flex-col justify-center pt-8 items-center text-center lg:items-start lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
-              <Leaf className="w-3 h-3 text-[#0B2114]" /> {pc.heroBadge || "Pure Sourcing"}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#1C1C1E]/10 bg-[#1C1C1E]/5 text-[#1C1C1E] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
+              <Leaf className="w-3 h-3 text-[#1C1C1E]" /> {pc.heroBadge || "Pure Sourcing"}
             </div>
             
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#1C1C1E] mb-8">
               {pageContent.title.split('.')[0]}. {pageContent.title.split('.')[1]}.<br/>
-              <span className="italic font-light text-[#0B2114]/80">{pageContent.subtitle}</span>
+              <span className="italic font-light text-[#1C1C1E]/80">{pageContent.subtitle}</span>
             </h1>
             
-            <p className="font-serif text-lg md:text-2xl text-[#0B2114]/85 italic max-w-xl leading-relaxed mb-6">
+            <p className="font-serif text-lg md:text-2xl text-[#1C1C1E]/85 italic max-w-xl leading-relaxed mb-6">
               {pc.heroTagline || "More than a grocery store, AIRO Essentials is a curated destination for healthier everyday living."}
             </p>
             
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
               {hero.description}
             </p>
 
             <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#0B2114] border border-[#0B2114]/20 bg-[#0B2114]/5 px-6 py-3 rounded-full">
+              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#1C1C1E] border border-[#1C1C1E]/20 bg-[#1C1C1E]/5 px-6 py-3 rounded-full">
                 {pc.heroButtonText || "Delivery Waitlist Open"}
               </span>
-              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
+              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#1C1C1E]/50">
                 {pc.heroButtonLabel || "Online Orders Coming Winter 2026"}
               </span>
             </div>
@@ -105,12 +105,12 @@ export default function EssentialsPage() {
                 className="w-full h-full"
                 speed={0.12}
               />
-              <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
-              <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
-                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
+              <div className="absolute inset-0 bg-[#1C1C1E]/10 mix-blend-multiply" />
+              <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FFFFFF]/90 border border-[#1C1C1E]/10 p-6 rounded-xl text-left">
+                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#1C1C1E]/50 block mb-1">
                   {hero.title}
                 </span>
-                <p className="font-serif text-lg text-[#0B2114] font-medium">
+                <p className="font-serif text-lg text-[#1C1C1E] font-medium">
                   {hero.description.split('.')[0]}
                 </p>
               </div>
@@ -121,25 +121,25 @@ export default function EssentialsPage() {
       </section>
 
       {/* SECTION 2: PHILOSOPHY (Storytelling Block) */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
             {/* Story text */}
             <div className="lg:col-span-6 order-2 lg:order-1 flex flex-col items-center text-center lg:items-start lg:text-left">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FFFFFF]/50 block mb-6 font-bold">
                 {philosophy.sectionLabel || "Philosophy"}
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                {philosophy.title.split('with')[0]}<br/>with <span className="italic font-light text-[#FAF8F5]/80">{philosophy.title.split('with')[1]}</span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FFFFFF]">
+                {philosophy.title.split('with')[0]}<br/>with <span className="italic font-light text-[#FFFFFF]/80">{philosophy.title.split('with')[1]}</span>
               </h2>
-              <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+              <p className="font-serif text-xl md:text-2xl text-[#FFFFFF]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
                 {philosophy.description.split('.')[0]}.
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+              <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
                 {philosophy.description.split('.')[1]}.
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed tracking-wide">
+              <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/70 max-w-lg leading-relaxed tracking-wide">
                 {philosophy.description.split('.').slice(2).join('.')}
               </p>
             </div>
@@ -153,7 +153,7 @@ export default function EssentialsPage() {
                   className="w-full h-full"
                   speed={0.08}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114]/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E]/30 to-transparent" />
               </div>
             </div>
 
@@ -164,7 +164,7 @@ export default function EssentialsPage() {
       {/* SECTION 3: SOURCING PILLARS (Fresh • Organic • Local) */}
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
         <div className="text-center mb-16 max-w-xl mx-auto">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-6 font-bold">
             {sourcingPillars?.sectionLabel || "The Sourcing Sagas"}
           </span>
           <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight">
@@ -174,25 +174,25 @@ export default function EssentialsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Fresh */}
-          <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
-            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">{sourcingPillars?.fresh?.title || "Fresh"}</span>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+          <div className="border border-[#1C1C1E]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
+            <span className="font-serif text-3xl italic text-[#1C1C1E] mb-4">{sourcingPillars?.fresh?.title || "Fresh"}</span>
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed tracking-wide">
               {sourcingPillars?.fresh?.description || "Seasonal fruits, vegetables, herbs, and freshly prepared foods selected for quality and taste."}
             </p>
           </div>
 
           {/* Organic */}
-          <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
-            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">{sourcingPillars?.organic?.title || "Organic"}</span>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+          <div className="border border-[#1C1C1E]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
+            <span className="font-serif text-3xl italic text-[#1C1C1E] mb-4">{sourcingPillars?.organic?.title || "Organic"}</span>
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed tracking-wide">
               {sourcingPillars?.organic?.description || "Carefully sourced organic products that support healthier lifestyles and responsible farming practices."}
             </p>
           </div>
 
           {/* Local */}
-          <div className="border border-[#0B2114]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
-            <span className="font-serif text-3xl italic text-[#0B2114] mb-4">{sourcingPillars?.local?.title || "Local"}</span>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+          <div className="border border-[#1C1C1E]/10 bg-white/40 p-8 rounded-2xl flex flex-col items-center text-center">
+            <span className="font-serif text-3xl italic text-[#1C1C1E] mb-4">{sourcingPillars?.local?.title || "Local"}</span>
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed tracking-wide">
               {sourcingPillars?.local?.description || "Supporting local producers and bringing communities closer to the foods they consume."}
             </p>
           </div>
@@ -200,16 +200,16 @@ export default function EssentialsPage() {
       </section>
 
       {/* SECTION 4: EXPLORE CATEGORIES */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 w-full">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16 w-full">
         <div className="max-w-[1500px] mx-auto">
           <div className="text-center mb-20 max-w-2xl mx-auto">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#FFFFFF]/50 block mb-6 font-bold">
               {catalogSection?.sectionLabel || "The Catalog"}
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-[#FAF8F5]">
-              {(catalogSection?.sectionTitle || "Explore AIRO Essentials").split(' ')[0]} <span className="italic font-light text-[#FAF8F5]/80">{(catalogSection?.sectionTitle || "Explore AIRO Essentials").split(' ').slice(1).join(' ')}</span>
+            <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-[#FFFFFF]">
+              {(catalogSection?.sectionTitle || "Explore AIRO Essentials").split(' ')[0]} <span className="italic font-light text-[#FFFFFF]/80">{(catalogSection?.sectionTitle || "Explore AIRO Essentials").split(' ').slice(1).join(' ')}</span>
             </h2>
-            <p className="font-sans text-xs text-[#FAF8F5]/60 mt-4 leading-relaxed tracking-wide">
+            <p className="font-sans text-xs text-[#FFFFFF]/60 mt-4 leading-relaxed tracking-wide">
               {catalogSection?.sectionDescription || "Every category is built as a storytelling gateway, housing premium wellness brands and clinical-grade staples."}
             </p>
           </div>
@@ -232,14 +232,14 @@ export default function EssentialsPage() {
                     alt={category.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114] via-[#0B2114]/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E] via-[#1C1C1E]/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-80" />
                   
                   <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-start">
-                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#D4AF37] mb-3">
+                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#0A84FF] mb-3">
                       Category {String(index + 1).padStart(2, '0')}
                     </span>
-                    <h3 className="font-serif text-3xl md:text-4xl text-[#FAF8F5] mb-2">{category.title}</h3>
-                    <p className="font-sans text-xs text-[#FAF8F5]/70 max-w-sm leading-relaxed tracking-wide opacity-0 transform translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                    <h3 className="font-serif text-3xl md:text-4xl text-[#FFFFFF] mb-2">{category.title}</h3>
+                    <p className="font-sans text-xs text-[#FFFFFF]/70 max-w-sm leading-relaxed tracking-wide opacity-0 transform translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
                       {category.description}
                     </p>
                   </div>
@@ -251,7 +251,7 @@ export default function EssentialsPage() {
           <div className="mt-16 flex justify-center z-20 relative">
             <Link 
               href={catalogSection?.shopAllButtonLink || "/grocery/shop"}
-              className="bg-[#D4AF37] text-[#0B2114] text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-[#FAF8F5] transition-colors duration-300 shadow-lg flex items-center gap-3"
+              className="bg-[#0A84FF] text-[#1C1C1E] text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-[#FFFFFF] transition-colors duration-300 shadow-lg flex items-center gap-3"
             >
               {catalogSection?.shopAllButtonText || "Shop All Essentials"} <ArrowRight className="w-4 h-4" />
             </Link>
@@ -265,13 +265,13 @@ export default function EssentialsPage() {
           
           {/* Header left */}
           <div className="lg:col-span-5 flex flex-col items-center text-center lg:items-start lg:text-left">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-6 font-bold">
               {whySection?.sectionLabel || "The Standard"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
-              {(whySection?.sectionTitle || "Why AIRO Essentials").split(' ')[0]} <br/><span className="italic font-light text-[#0B2114]/80">{(whySection?.sectionTitle || "Why AIRO Essentials").split(' ').slice(1).join(' ')}</span>
+              {(whySection?.sectionTitle || "Why AIRO Essentials").split(' ')[0]} <br/><span className="italic font-light text-[#1C1C1E]/80">{(whySection?.sectionTitle || "Why AIRO Essentials").split(' ').slice(1).join(' ')}</span>
             </h2>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-sm leading-relaxed mt-8 tracking-wide">
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-sm leading-relaxed mt-8 tracking-wide">
               {whySection?.sectionDescription || "We vet every supplier, audit every ingredient list, and verify sustainability metrics so you don't have to."}
             </p>
           </div>
@@ -285,8 +285,8 @@ export default function EssentialsPage() {
               { title: "Community Focused", description: "Supporting local producers and sustainable sourcing whenever possible." }
             ]).map((pillar: { title: string; description: string }, i: number) => (
               <div key={i} className="flex flex-col">
-                <span className="font-serif text-2xl text-[#0B2114] mb-3">{pillar.title}</span>
-                <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 leading-relaxed tracking-wide">
+                <span className="font-serif text-2xl text-[#1C1C1E] mb-3">{pillar.title}</span>
+                <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 leading-relaxed tracking-wide">
                   {pillar.description}
                 </p>
               </div>
@@ -297,65 +297,65 @@ export default function EssentialsPage() {
       </section>
 
       {/* SECTION 6: CLOSING WAITLIST */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
         <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#FFFFFF]/50 block mb-6 font-bold">
             {closingSection?.sectionLabel || "Conscious Commerce"}
           </span>
           
-          <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl text-[#FAF8F5]">
-            {(closingSection?.sectionTitle || "A Better Way to Shop for Wellness.").split('for')[0]}for <br/><span className="italic font-light text-[#FAF8F5]/80">{(closingSection?.sectionTitle || "A Better Way to Shop for Wellness.").split('for').slice(1).join('for')}</span>
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl text-[#FFFFFF]">
+            {(closingSection?.sectionTitle || "A Better Way to Shop for Wellness.").split('for')[0]}for <br/><span className="italic font-light text-[#FFFFFF]/80">{(closingSection?.sectionTitle || "A Better Way to Shop for Wellness.").split('for').slice(1).join('for')}</span>
           </h2>
           
-          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-4 tracking-wide">
+          <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/80 max-w-lg leading-relaxed mb-4 tracking-wide">
             {closingSection?.sectionDescription || "AIRO Essentials combines the quality of a premium organic market with the convenience of modern retail."}
           </p>
-          <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-16 font-light">
+          <p className="font-serif text-lg md:text-xl italic text-[#FFFFFF]/90 max-w-xl leading-relaxed mb-16 font-light">
             {closingSection?.sectionTagline || "Because healthier living starts with what you choose every day."}
           </p>
 
           {/* Premium waitlist form */}
-          <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
-            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">{closingSection?.waitlistTitle || "The Essentials Waitlist"}</h3>
+          <div className="w-full max-w-md border border-[#FFFFFF]/10 bg-[#FFFFFF]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
+            <h3 className="font-serif text-2xl mb-2 text-[#FFFFFF] tracking-tight">{closingSection?.waitlistTitle || "The Essentials Waitlist"}</h3>
             
-            <span className="inline-block border border-[#FAF8F5]/20 bg-[#FAF8F5]/5 text-[#FAF8F5] text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-6">
+            <span className="inline-block border border-[#FFFFFF]/20 bg-[#FFFFFF]/5 text-[#FFFFFF] text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-6">
               {closingSection?.waitlistBadge || "Products & Online Shopping Coming Soon"}
             </span>
             
             <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
               <div>
-                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FFFFFF]/50 mb-2">
                   Full Name
                 </label>
                 <input 
                   type="text" 
                   placeholder="e.g. Marcus Aurelius"
-                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                  className="w-full bg-[#FFFFFF]/5 border border-[#FFFFFF]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/30 silent-luxury-transition"
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FFFFFF]/50 mb-2">
                   Email Address
                 </label>
                 <input 
                   type="email" 
                   placeholder="e.g. marcus@philosophy.com"
-                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                  className="w-full bg-[#FFFFFF]/5 border border-[#FFFFFF]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/30 silent-luxury-transition"
                 />
               </div>
 
               <div className="pt-4">
                 <button 
                   type="button"
-                  className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
+                  className="w-full bg-[#FFFFFF] text-[#1C1C1E] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
                 >
                   {closingSection?.waitlistButtonText || "Join Delivery Waitlist"} <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </form>
             
-            <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FAF8F5]/40 font-semibold">
+            <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FFFFFF]/40 font-semibold">
               <Shield className="w-3.5 h-3.5" /> Secure & Private Sourcing
             </div>
           </div>
@@ -364,17 +364,17 @@ export default function EssentialsPage() {
       </section>
 
       {/* MINI FOOTER */}
-      <footer className="bg-[#FAF8F5] py-16 px-6 md:px-16 border-t border-[#0B2114]/10">
+      <footer className="bg-[#FFFFFF] py-16 px-6 md:px-16 border-t border-[#1C1C1E]/10">
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#0B2114]">
+          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#1C1C1E]">
             AIRO<span className="opacity-50">.</span>
           </Link>
-          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
-            <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Essentials</Link>
-            <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
-            <Link href="/minute-clinic" className="hover:text-[#0B2114] silent-luxury-transition">Minute Clinic</Link>
+          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#1C1C1E]/60">
+            <Link href="/grocery" className="hover:text-[#1C1C1E] silent-luxury-transition">Essentials</Link>
+            <Link href="/pharmacy" className="hover:text-[#1C1C1E] silent-luxury-transition">Pharmacy</Link>
+            <Link href="/minute-clinic" className="hover:text-[#1C1C1E] silent-luxury-transition">Minute Clinic</Link>
           </div>
-          <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
+          <span className="text-[9px] tracking-widest uppercase text-[#1C1C1E]/40 font-medium">
             © 2026 AIRO Essentials. All Rights Reserved.
           </span>
         </div>

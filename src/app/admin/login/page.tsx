@@ -36,22 +36,22 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#07120F] flex items-center justify-center px-4 font-sans selection:bg-[#FAF8F5] selection:text-[#0B2114]">
+    <div className="w-full min-h-screen bg-[#07120F] flex items-center justify-center px-4 font-sans selection:bg-[#FFFFFF] selection:text-[#1C1C1E]">
       
       {/* Login Card */}
-      <div className="w-full max-w-md bg-[#0B2114] border border-[#1A3324] rounded-3xl p-8 md:p-10 shadow-2xl relative">
+      <div className="w-full max-w-md bg-[#1C1C1E] border border-[#2C2C2E] rounded-3xl p-8 md:p-10 shadow-2xl relative">
         
         {/* Soft light effects */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#FAF8F5]/5 rounded-full blur-2xl transform translate-x-1/4 -translate-y-1/4"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#FAF8F5]/5 rounded-full blur-2xl transform -translate-x-1/4 translate-y-1/4"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFFFFF]/5 rounded-full blur-2xl transform translate-x-1/4 -translate-y-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#FFFFFF]/5 rounded-full blur-2xl transform -translate-x-1/4 translate-y-1/4"></div>
 
         {/* Logo and title */}
         <div className="flex flex-col items-center text-center mb-8 relative">
-          <div className="w-12 h-12 rounded-2xl bg-[#FAF8F5]/10 flex items-center justify-center border border-[#FAF8F5]/20 mb-4 shadow-inner">
-            <Shield className="w-6 h-6 text-[#FAF8F5]/90" />
+          <div className="w-12 h-12 rounded-2xl bg-[#FFFFFF]/10 flex items-center justify-center border border-[#FFFFFF]/20 mb-4 shadow-inner">
+            <Shield className="w-6 h-6 text-[#FFFFFF]/90" />
           </div>
-          <h1 className="font-serif text-2xl text-[#FAF8F5] tracking-wider mb-2">AIRO HEALTH</h1>
-          <p className="text-xs text-[#FAF8F5]/60 uppercase tracking-widest font-medium">Administrative Portal</p>
+          <h1 className="font-serif text-2xl text-[#FFFFFF] tracking-wider mb-2">AIRO HEALTH</h1>
+          <p className="text-xs text-[#FFFFFF]/60 uppercase tracking-widest font-medium">Administrative Portal</p>
         </div>
 
         {/* Error Badge */}
@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-5 relative">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-[#FAF8F5]/50 font-semibold mb-2">
+            <label className="block text-[10px] uppercase tracking-wider text-[#FFFFFF]/50 font-semibold mb-2">
               Console Username
             </label>
             <input
@@ -74,12 +74,12 @@ export default function AdminLoginPage() {
               placeholder="e.g. admin"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-[#FAF8F5]/5 border border-[#1A3324] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/20 transition-all"
+              className="w-full bg-[#FFFFFF]/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/20 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-[#FAF8F5]/50 font-semibold mb-2">
+            <label className="block text-[10px] uppercase tracking-wider text-[#FFFFFF]/50 font-semibold mb-2">
               Console Password
             </label>
             <div className="relative">
@@ -89,12 +89,12 @@ export default function AdminLoginPage() {
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#FAF8F5]/5 border border-[#1A3324] rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/20 transition-all"
+                className="w-full bg-[#FFFFFF]/5 border border-[#2C2C2E] rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/20 transition-all"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#FAF8F5]/40 hover:text-[#FAF8F5]/70 transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#FFFFFF]/40 hover:text-[#FFFFFF]/70 transition-colors"
               >
                 {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
               </button>
@@ -104,10 +104,10 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#FAF8F5] hover:bg-[#FAF8F5]/90 text-[#0B2114] rounded-xl py-3.5 px-6 font-semibold text-sm flex items-center justify-center space-x-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50"
+            className="w-full bg-[#FFFFFF] hover:bg-[#FFFFFF]/90 text-[#1C1C1E] rounded-xl py-3.5 px-6 font-semibold text-sm flex items-center justify-center space-x-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50"
           >
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-[#0B2114]/20 border-t-[#0B2114] rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-2 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
             ) : (
               <span>Access Dashboard</span>
             )}
@@ -115,7 +115,7 @@ export default function AdminLoginPage() {
         </form>
 
         {/* Help disclaimer */}
-        <p className="text-[10px] text-center text-[#FAF8F5]/30 mt-8 leading-relaxed">
+        <p className="text-[10px] text-center text-[#FFFFFF]/30 mt-8 leading-relaxed">
           Authorized personnel access only. Actions on this console are securely logged. For access assistance, contact DevOps.
         </p>
 

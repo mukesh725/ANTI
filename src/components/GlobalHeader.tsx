@@ -83,7 +83,7 @@ export function GlobalHeader() {
   } else {
     logoNode = (
       <span className={`font-serif text-2xl tracking-widest uppercase transition-colors duration-300 ${
-        isScrolled ? "text-[#0B2114]" : (pathname === "/" || pathname === "/health" ? "text-[#FAF8F5]" : "text-[#0B2114]")
+        isScrolled ? "text-[#1C1C1E]" : (pathname === "/" || pathname === "/health" ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
       }`}>
         AIRO<span className="opacity-50">.</span>
       </span>
@@ -94,7 +94,7 @@ export function GlobalHeader() {
     <>
       <nav className={`fixed top-0 w-full z-30 px-6 md:px-8 flex justify-between items-center transition-all duration-300 ${
         isScrolled 
-          ? "bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#0B2114]/5 py-3 md:py-4 shadow-sm" 
+          ? "bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#1C1C1E]/5 py-3 md:py-4 shadow-sm" 
           : "bg-transparent border-transparent py-5 md:py-6"
       }`}>
         <Link href={isHealthDomain ? "/health" : "/"} className="hover:opacity-80 transition-opacity duration-300 flex items-center">
@@ -102,7 +102,7 @@ export function GlobalHeader() {
         </Link>
         
         {/* Desktop nav capsule (floating glassmorphism bar) */}
-        <div className="hidden md:flex items-center gap-1 bg-[#0B2114]/50 border border-[#FAF8F5]/20 px-1.5 py-1.5 rounded-full backdrop-blur-xl shadow-2xl">
+        <div className="hidden md:flex items-center gap-1 bg-[#1C1C1E]/50 border border-[#FFFFFF]/20 px-1.5 py-1.5 rounded-full backdrop-blur-xl shadow-2xl">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -110,13 +110,13 @@ export function GlobalHeader() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
-                  isActive ? "text-[#0B2114]" : "text-[#FAF8F5]/90 hover:text-white"
+                  isActive ? "text-[#1C1C1E]" : "text-[#FFFFFF]/90 hover:text-white"
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="activeHeaderPill"
-                    className="absolute inset-0 bg-[#FAF8F5] rounded-full -z-10 shadow-sm"
+                    className="absolute inset-0 bg-[#FFFFFF] rounded-full -z-10 shadow-sm"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -132,10 +132,10 @@ export function GlobalHeader() {
           </div>
           <button className={`hidden sm:flex text-[10px] tracking-widest uppercase font-bold items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-300 border ${
             isScrolled
-              ? "text-[#FAF8F5] bg-[#0B2114] border-[#0B2114] hover:bg-[#0b2114]/90"
+              ? "text-[#FFFFFF] bg-[#1C1C1E] border-[#1C1C1E] hover:bg-[#1C1C1E]/90"
               : (["/", "/health", "/health-chair"].includes(pathname)
-                  ? "text-[#FAF8F5] bg-white/10 border-white/20 hover:bg-white/20"
-                  : "text-[#0B2114] bg-[#0B2114]/5 border-[#0B2114]/20 hover:bg-[#0B2114]/10")
+                  ? "text-[#FFFFFF] bg-white/10 border-white/20 hover:bg-white/20"
+                  : "text-[#1C1C1E] bg-[#1C1C1E]/5 border-[#1C1C1E]/20 hover:bg-[#1C1C1E]/10")
           }`}>
             <Sparkles className="w-3 h-3" /> The Collective
           </button>
@@ -144,7 +144,7 @@ export function GlobalHeader() {
           <Link 
             href={user ? "/ecommerce/account" : "/ecommerce/login"}
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
-              isScrolled ? "text-[#0B2114]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FAF8F5]" : "text-[#0B2114]")
+              isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
             }`}
           >
             <UserIcon className="w-5 h-5" />
@@ -153,12 +153,12 @@ export function GlobalHeader() {
           <button 
             onClick={() => setIsCartOpen(true)} 
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
-              isScrolled ? "text-[#0B2114]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FAF8F5]" : "text-[#0B2114]")
+              isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
             }`}
           >
             <ShoppingBag className="w-5 h-5" />
             {cartItems.length > 0 && (
-              <span className="absolute -top-1 -right-2 bg-[#0B2114] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-2 bg-[#1C1C1E] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
                 {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
               </span>
             )}
@@ -168,7 +168,7 @@ export function GlobalHeader() {
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className={`md:hidden p-1 hover:opacity-75 transition-opacity duration-300 ${
-              isScrolled ? "text-[#0B2114]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FAF8F5]" : "text-[#0B2114]")
+              isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
             }`}
             aria-label="Open menu"
           >
@@ -186,7 +186,7 @@ export function GlobalHeader() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-[#0B2114]/20 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-[#1C1C1E]/20 backdrop-blur-sm z-40"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -194,16 +194,16 @@ export function GlobalHeader() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-0 right-0 h-full w-full max-w-xs bg-[#FAF8F5] shadow-2xl z-50 flex flex-col border-l border-[#0B2114]/10"
+              className="fixed top-0 right-0 h-full w-full max-w-xs bg-[#FFFFFF] shadow-2xl z-50 flex flex-col border-l border-[#1C1C1E]/10"
             >
               {/* Header */}
-              <div className="flex justify-between items-center p-6 border-b border-[#0B2114]/10">
-                <span className="font-serif text-xl tracking-widest uppercase text-[#0B2114]">
+              <div className="flex justify-between items-center p-6 border-b border-[#1C1C1E]/10">
+                <span className="font-serif text-xl tracking-widest uppercase text-[#1C1C1E]">
                   Menu
                 </span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 hover:bg-[#0B2114]/5 rounded-full transition-colors duration-300"
+                  className="p-2 hover:bg-[#1C1C1E]/5 rounded-full transition-colors duration-300"
                   aria-label="Close menu"
                 >
                   <X className="w-5 h-5" />
@@ -222,7 +222,7 @@ export function GlobalHeader() {
                       <Link
                         href={link.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="block px-6 py-4 text-sm tracking-widest uppercase font-medium text-[#0B2114] hover:bg-[#0B2114]/5 transition-colors duration-300"
+                        className="block px-6 py-4 text-sm tracking-widest uppercase font-medium text-[#1C1C1E] hover:bg-[#1C1C1E]/5 transition-colors duration-300"
                       >
                         {link.label}
                       </Link>
@@ -232,8 +232,8 @@ export function GlobalHeader() {
               </div>
 
               {/* Footer CTA */}
-              <div className="mt-auto p-6 border-t border-[#0B2114]/10">
-                <button className="w-full flex items-center justify-center gap-2 text-[10px] tracking-widest uppercase font-medium text-[#0B2114] bg-[#0B2114]/5 px-4 py-3 rounded-full hover:bg-[#0B2114]/10 transition-colors duration-300">
+              <div className="mt-auto p-6 border-t border-[#1C1C1E]/10">
+                <button className="w-full flex items-center justify-center gap-2 text-[10px] tracking-widest uppercase font-medium text-[#1C1C1E] bg-[#1C1C1E]/5 px-4 py-3 rounded-full hover:bg-[#1C1C1E]/10 transition-colors duration-300">
                   <Sparkles className="w-3 h-3" /> The Collective
                 </button>
               </div>

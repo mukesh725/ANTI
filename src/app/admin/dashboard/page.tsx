@@ -66,8 +66,8 @@ const analyzeLead = (lead: Lead) => {
     glow = "shadow-[0_0_15px_rgba(239,68,68,0.5)]";
   } else if (score >= 70) {
     priority = "High Intent";
-    color = "bg-[#D4AF37]/10 text-emerald-600 border-[#D4AF37]/20";
-    barColor = "bg-[#D4AF37]";
+    color = "bg-[#0A84FF]/10 text-emerald-600 border-[#0A84FF]/20";
+    barColor = "bg-[#0A84FF]";
     glow = "shadow-[0_0_15px_rgba(212,175,55,0.4)]";
   } else if (score < 55) {
     priority = "Exploring / Low";
@@ -251,10 +251,10 @@ export default function AdminDashboardPage() {
   const conversionRate = ((leads.length / uniqueVisitors) * 100).toFixed(1);
 
   return (
-    <div className="min-h-screen bg-[#F4F7F6] text-gray-800 font-sans selection:bg-[#D4AF37] selection:text-gray-800">
+    <div className="min-h-screen bg-[#F4F7F6] text-gray-800 font-sans selection:bg-[#0A84FF] selection:text-gray-800">
       
       {/* Glow Effects */}
-      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-[#0A84FF]/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Top Header Navigation */}
@@ -281,7 +281,7 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("intelligence")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "intelligence" 
-                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  ? "bg-[#0A84FF] text-gray-800 shadow-sm" 
                   : "text-gray-500 hover:text-gray-900"
               }`}
             >
@@ -291,7 +291,7 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("cms")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "cms" 
-                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  ? "bg-[#0A84FF] text-gray-800 shadow-sm" 
                   : "text-gray-500 hover:text-gray-900"
               }`}
             >
@@ -301,7 +301,7 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("ecom")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "ecom" 
-                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  ? "bg-[#0A84FF] text-gray-800 shadow-sm" 
                   : "text-gray-500 hover:text-gray-900"
               }`}
             >
@@ -311,7 +311,7 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab("products")}
               className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
                 activeTab === "products" 
-                  ? "bg-[#D4AF37] text-gray-800 shadow-sm" 
+                  ? "bg-[#0A84FF] text-gray-800 shadow-sm" 
                   : "text-gray-500 hover:text-gray-900"
               }`}
             >
@@ -369,7 +369,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="bg-white/60 backdrop-blur-md border border-emerald-100 rounded-2xl p-6 shadow-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0A84FF]/5 to-transparent pointer-events-none" />
             <div className="flex justify-between items-start mb-4 relative z-10">
               <div className="p-2.5 bg-[#F4F7F6] rounded-lg border border-emerald-100">
                 <Database className="w-5 h-5 text-emerald-600" />
@@ -403,7 +403,7 @@ export default function AdminDashboardPage() {
                         initial={{ width: 0 }}
                         animate={{ width: `${region.percentage}%` }}
                         transition={{ duration: 1, delay: idx * 0.1 }}
-                        className="bg-gradient-to-r from-[#D4AF37]/50 to-[#D4AF37] h-full rounded-full"
+                        className="bg-gradient-to-r from-[#0A84FF]/50 to-[#0A84FF] h-full rounded-full"
                       />
                     </div>
                   </div>
@@ -422,7 +422,7 @@ export default function AdminDashboardPage() {
                 ) : (
                   browsingHistory.map((entry, idx) => (
                     <div key={idx} className="relative">
-                      <span className="absolute -left-[30px] top-1.5 w-2 h-2 bg-[#D4AF37] rounded-full border border-gray-200 shadow-[0_0_8px_#D4AF37]"></span>
+                      <span className="absolute -left-[30px] top-1.5 w-2 h-2 bg-[#0A84FF] rounded-full border border-gray-200 shadow-[0_0_8px_#0A84FF]"></span>
                       <div className="flex flex-col space-y-1">
                         <span className="font-mono text-xs text-gray-800">
                           {entry.path}
@@ -465,7 +465,7 @@ export default function AdminDashboardPage() {
                       placeholder="Search neural DB..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full md:w-64 bg-[#F4F7F6] border border-emerald-100 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-[#D4AF37]/50 text-gray-800 transition-colors"
+                      className="w-full md:w-64 bg-[#F4F7F6] border border-emerald-100 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-[#0A84FF]/50 text-gray-800 transition-colors"
                     />
                   </div>
                 </div>
@@ -486,7 +486,7 @@ export default function AdminDashboardPage() {
                     <motion.div 
                       layout
                       key={lead.id}
-                      className={`relative overflow-hidden rounded-xl border border-emerald-100 bg-[#F4F7F6]/80 p-5 cursor-pointer transition-all hover:-translate-y-1 hover:border-[#D4AF37]/30 ${ai.glow}`}
+                      className={`relative overflow-hidden rounded-xl border border-emerald-100 bg-[#F4F7F6]/80 p-5 cursor-pointer transition-all hover:-translate-y-1 hover:border-[#0A84FF]/30 ${ai.glow}`}
                       onClick={() => setSelectedLead(lead)}
                     >
                       {/* Intent Progress Bar Background */}
@@ -564,7 +564,7 @@ export default function AdminDashboardPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white border border-[#D4AF37]/30 rounded-2xl p-8 max-w-2xl w-full shadow-lg relative overflow-hidden"
+              className="bg-white border border-[#0A84FF]/30 rounded-2xl p-8 max-w-2xl w-full shadow-lg relative overflow-hidden"
             >
               {/* Decorative top bar based on AI score */}
               <div className={`absolute top-0 left-0 w-full h-2 ${analyzeLead(selectedLead).barColor}`} />
@@ -637,7 +637,7 @@ export default function AdminDashboardPage() {
                   onClick={() => handleToggleStatus(selectedLead.id)}
                   className={`px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold flex items-center space-x-2 transition-all ${
                     selectedLead.status === 'Pending' 
-                    ? 'bg-[#D4AF37] hover:bg-[#B8962E] text-gray-800' 
+                    ? 'bg-[#0A84FF] hover:bg-[#B8962E] text-gray-800' 
                     : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-600 border border-emerald-500/50'
                   }`}
                 >

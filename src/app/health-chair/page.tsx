@@ -93,7 +93,7 @@ export default function HealthChairPage() {
   };
 
   return (
-    <div className="bg-[#FAF8F5] text-[#0B2114] min-h-screen font-sans selection:bg-[#0B2114] selection:text-[#FAF8F5] overflow-clip">
+    <div className="bg-[#FFFFFF] text-[#1C1C1E] min-h-screen font-sans selection:bg-[#1C1C1E] selection:text-[#FFFFFF] overflow-clip">
       <GlobalHeader />
 
       {/* SECTION 1: HERO */}
@@ -105,12 +105,12 @@ export default function HealthChairPage() {
         />
         {/* Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#09120F]/90 via-[#09120F]/50 to-transparent" />
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#FAF8F5] via-transparent to-transparent opacity-10" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#FFFFFF] via-transparent to-transparent opacity-10" />
 
         <div className="relative z-10 w-full px-6 md:px-16 flex flex-col md:flex-row items-center justify-between h-full pt-32 md:pt-24 pb-12">
           
           {/* Text Content (Centered on mobile, Left on desktop) */}
-          <div className="w-full md:w-1/2 flex flex-col items-center text-center md:items-start md:text-left text-[#FAF8F5]">
+          <div className="w-full md:w-1/2 flex flex-col items-center text-center md:items-start md:text-left text-[#FFFFFF]">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -190,7 +190,7 @@ export default function HealthChairPage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16 md:mb-24 z-20 relative">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
-              {assessment.title.split('.')[0]}. <span className="italic font-light text-[#0B2114]/60">{assessment.title.split('.').slice(1).join('.')}</span>
+              {assessment.title.split('.')[0]}. <span className="italic font-light text-[#1C1C1E]/60">{assessment.title.split('.').slice(1).join('.')}</span>
             </h2>
           </div>
 
@@ -198,20 +198,20 @@ export default function HealthChairPage() {
             {assessmentSteps.map((step: { title: string; description: string }, i: number) => {
               const stepIcons = [Activity, Heart, CheckCircle2];
               const stepColors = [
-                "border-[#0B2114]/20 bg-[#FAF8F5]",
+                "border-[#1C1C1E]/20 bg-[#FFFFFF]",
                 "border-blue-500/20 bg-blue-50/50",
                 "border-green-500/20 bg-green-50/50"
               ];
               const StepIcon = stepIcons[i] || Activity;
-              const iconColor = i === 2 ? "text-green-600/60" : "text-[#0B2114]/60";
+              const iconColor = i === 2 ? "text-green-600/60" : "text-[#1C1C1E]/60";
               return (
                 <div key={i} className="flex flex-col items-center">
                   <div className={`w-24 h-24 rounded-full border ${stepColors[i]} flex items-center justify-center mb-6`}>
                     <StepIcon className={`w-8 h-8 ${iconColor}`} />
                   </div>
-                  <div className="font-serif text-3xl italic text-[#0B2114]/30 mb-2">0{i + 1}</div>
+                  <div className="font-serif text-3xl italic text-[#1C1C1E]/30 mb-2">0{i + 1}</div>
                   <h3 className="font-bold text-xl uppercase tracking-widest mb-4">{step.title}</h3>
-                  <p className="text-[#0B2114]/60 leading-relaxed max-w-sm">{step.description}</p>
+                  <p className="text-[#1C1C1E]/60 leading-relaxed max-w-sm">{step.description}</p>
                 </div>
               );
             })}
@@ -220,25 +220,25 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 3: WHAT YOU GET */}
-      <section className="bg-[#FAF8F5] py-24 md:py-32 px-6 md:px-16 overflow-hidden">
+      <section className="bg-[#FFFFFF] py-24 md:py-32 px-6 md:px-16 overflow-hidden">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16 md:mb-24 relative z-20">
             <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-4">
-              {insights.title.split(' ')[0]} {insights.title.split(' ')[1]} <span className="italic font-light text-[#0B2114]/60">{insights.title.split(' ').slice(2).join(' ')}</span>
+              {insights.title.split(' ')[0]} {insights.title.split(' ')[1]} <span className="italic font-light text-[#1C1C1E]/60">{insights.title.split(' ').slice(2).join(' ')}</span>
             </h2>
-            <p className="text-[#0B2114]/60 max-w-xl mx-auto">{insights.description.split('.')[0]}.</p>
+            <p className="text-[#1C1C1E]/60 max-w-xl mx-auto">{insights.description.split('.')[0]}.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 relative z-20">
             {insightCards.map((card: { title: string; description: string }, i: number) => {
               const CardIcon = cardIconMap[card.title] || Activity;
               return (
-                <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#0B2114]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-[#0B2114]/5 rounded-xl flex items-center justify-center mb-6">
-                    <CardIcon className="w-6 h-6 text-[#0B2114]" />
+                <div key={i} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm bg-white border border-[#1C1C1E]/5 rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-[#1C1C1E]/5 rounded-xl flex items-center justify-center mb-6">
+                    <CardIcon className="w-6 h-6 text-[#1C1C1E]" />
                   </div>
                   <h4 className="font-bold text-lg uppercase tracking-widest mb-2">{card.title}</h4>
-                  <p className="text-[#0B2114]/60 text-sm leading-relaxed">{card.description}</p>
+                  <p className="text-[#1C1C1E]/60 text-sm leading-relaxed">{card.description}</p>
                 </div>
               );
             })}
@@ -247,19 +247,19 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 4: CONNECTED CARE */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-32 md:py-48 px-6 md:px-16 overflow-hidden">
         <div className="max-w-[1400px] mx-auto text-center">
-          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-24 text-[#FAF8F5]">
-            {(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[0]}Entire <span className="italic font-light text-[#FAF8F5]/80">{(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[1]}</span>
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-24 text-[#FFFFFF]">
+            {(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[0]}Entire <span className="italic font-light text-[#FFFFFF]/80">{(connectedEcosystem?.title || "Connected To The Entire AIRO Ecosystem").split('Entire')[1]}</span>
           </h2>
 
           <div ref={flowRef} className="relative max-w-[1000px] mx-auto hidden md:flex items-center justify-between">
             {/* SVG Line connecting nodes */}
-            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-[#FAF8F5]/10 -translate-y-1/2 z-0" />
+            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-[#FFFFFF]/10 -translate-y-1/2 z-0" />
             <svg className="absolute top-1/2 left-0 w-full h-[4px] -translate-y-1/2 z-0 overflow-visible" preserveAspectRatio="none">
               <motion.line 
                 x1="0" y1="2" x2="100%" y2="2" 
-                stroke="#FAF8F5" 
+                stroke="#FFFFFF" 
                 strokeWidth="2"
                 strokeDasharray="1000"
                 style={{ 
@@ -271,11 +271,11 @@ export default function HealthChairPage() {
             {connectedNodeLabels.map((label: string, i: number) => {
               const NodeIcon = nodeIconMap[label] || Activity;
               return (
-                <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114]">
-                  <div className="w-20 h-20 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
-                    <NodeIcon className="w-8 h-8 text-[#FAF8F5]" />
+                <div key={i} className="relative z-10 flex flex-col items-center gap-4 bg-[#1C1C1E]">
+                  <div className="w-20 h-20 rounded-full border-2 border-[#FFFFFF]/20 bg-[#1C1C1E] flex items-center justify-center">
+                    <NodeIcon className="w-8 h-8 text-[#FFFFFF]" />
                   </div>
-                  <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70 w-24 text-center">
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-[#FFFFFF]/70 w-24 text-center">
                     {label}
                   </span>
                 </div>
@@ -285,7 +285,7 @@ export default function HealthChairPage() {
 
           {/* Mobile view of flow */}
           <div className="md:hidden flex flex-col gap-8 relative items-center">
-            <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-[#FAF8F5]/10 -translate-x-1/2 z-0" />
+            <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-[#FFFFFF]/10 -translate-x-1/2 z-0" />
             {connectedNodeLabels.map((label: string, i: number) => {
               const NodeIcon = nodeIconMap[label] || Activity;
               return (
@@ -294,12 +294,12 @@ export default function HealthChairPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "0px" }}
-                  className="relative z-10 flex flex-col items-center gap-4 bg-[#0B2114] py-4"
+                  className="relative z-10 flex flex-col items-center gap-4 bg-[#1C1C1E] py-4"
                 >
-                  <div className="w-16 h-16 rounded-full border-2 border-[#FAF8F5]/20 bg-[#0B2114] flex items-center justify-center">
-                    <NodeIcon className="w-6 h-6 text-[#FAF8F5]" />
+                  <div className="w-16 h-16 rounded-full border-2 border-[#FFFFFF]/20 bg-[#1C1C1E] flex items-center justify-center">
+                    <NodeIcon className="w-6 h-6 text-[#FFFFFF]" />
                   </div>
-                  <span className="font-bold text-[10px] uppercase tracking-widest text-[#FAF8F5]/70">
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-[#FFFFFF]/70">
                     {label}
                   </span>
                 </motion.div>
@@ -311,20 +311,20 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 5: PREVENTIVE HEALTH */}
-      <section ref={preventRef} className="bg-[#09120F] text-[#FAF8F5] py-32 md:py-48 px-6 md:px-16 overflow-hidden relative">
+      <section ref={preventRef} className="bg-[#09120F] text-[#FFFFFF] py-32 md:py-48 px-6 md:px-16 overflow-hidden relative">
         <div className="max-w-[1200px] mx-auto text-center relative z-20">
-          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-8 text-[#FAF8F5]">
-            {(preventiveSection?.title || "Know Earlier. Act Sooner.").split('.')[0]}. <span className="italic font-light text-[#FAF8F5]/80">{(preventiveSection?.title || "Know Earlier. Act Sooner.").split('.').slice(1).join('.')}</span>
+          <h2 className="font-serif text-4xl md:text-6xl tracking-tight mb-8 text-[#FFFFFF]">
+            {(preventiveSection?.title || "Know Earlier. Act Sooner.").split('.')[0]}. <span className="italic font-light text-[#FFFFFF]/80">{(preventiveSection?.title || "Know Earlier. Act Sooner.").split('.').slice(1).join('.')}</span>
           </h2>
-          <p className="text-[#FAF8F5]/60 max-w-xl mx-auto mb-24">
+          <p className="text-[#FFFFFF]/60 max-w-xl mx-auto mb-24">
             {preventiveSection?.description || "People shouldn't feel they're using a machine. They should feel they're gaining unprecedented visibility into their own health."}
           </p>
 
           <div className="relative w-full max-w-[400px] mx-auto h-[600px] flex items-center justify-center">
             {/* Abstract Silhouette */}
             <svg viewBox="0 0 200 400" className="w-full h-full opacity-20">
-              <path d="M100 20 C120 20, 130 40, 130 60 C130 80, 120 90, 100 90 C80 90, 70 80, 70 60 C70 40, 80 20, 100 20 Z" fill="none" stroke="#FAF8F5" strokeWidth="2" />
-              <path d="M100 90 C140 90, 160 120, 160 160 L160 250 C160 270, 140 280, 120 280 L120 380 C120 390, 110 400, 100 400 C90 400, 80 390, 80 380 L80 280 C60 280, 40 270, 40 250 L40 160 C40 120, 60 90, 100 90 Z" fill="none" stroke="#FAF8F5" strokeWidth="2" />
+              <path d="M100 20 C120 20, 130 40, 130 60 C130 80, 120 90, 100 90 C80 90, 70 80, 70 60 C70 40, 80 20, 100 20 Z" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+              <path d="M100 90 C140 90, 160 120, 160 160 L160 250 C160 270, 140 280, 120 280 L120 380 C120 390, 110 400, 100 400 C90 400, 80 390, 80 380 L80 280 C60 280, 40 270, 40 250 L40 160 C40 120, 60 90, 100 90 Z" fill="none" stroke="#FFFFFF" strokeWidth="2" />
             </svg>
 
             {/* Pulsing Indicators */}
@@ -344,10 +344,10 @@ export default function HealthChairPage() {
                 style={{ top: indicator.top, left: indicator.left }}
               >
                 <div className="relative flex items-center justify-center">
-                  <div className="absolute inset-0 bg-[#FAF8F5]/20 rounded-full animate-ping" />
-                  <div className="w-3 h-3 bg-[#FAF8F5] rounded-full shadow-[0_0_15px_#FAF8F5]" />
+                  <div className="absolute inset-0 bg-[#FFFFFF]/20 rounded-full animate-ping" />
+                  <div className="w-3 h-3 bg-[#FFFFFF] rounded-full shadow-[0_0_15px_#FFFFFF]" />
                 </div>
-                <div className="bg-[#1A2E22] border border-[#FAF8F5]/10 px-3 py-1.5 rounded-full backdrop-blur-md whitespace-nowrap flex items-center gap-2">
+                <div className="bg-[#1A2E22] border border-[#FFFFFF]/10 px-3 py-1.5 rounded-full backdrop-blur-md whitespace-nowrap flex items-center gap-2">
                   <span>{indicator.icon}</span>
                   <span className="text-[10px] uppercase tracking-widest font-bold">{indicator.label}</span>
                 </div>
@@ -358,7 +358,7 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 6: FINAL CTA */}
-      <section className="bg-[#FAF8F5] text-[#0B2114] py-32 md:py-48 px-6 md:px-16 relative overflow-hidden">
+      <section className="bg-[#FFFFFF] text-[#1C1C1E] py-32 md:py-48 px-6 md:px-16 relative overflow-hidden">
         {/* Spotlight effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-50 z-0 pointer-events-none" />
         
@@ -379,7 +379,7 @@ export default function HealthChairPage() {
           
           <Link 
             href={finalCta?.buttonLink || "/minute-clinic"} 
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#0B2114] text-[#FAF8F5] text-[10px] tracking-widest uppercase font-bold hover:bg-[#1A3324] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#1C1C1E] text-[#FFFFFF] text-[10px] tracking-widest uppercase font-bold hover:bg-[#2C2C2E] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
           >
             {finalCta?.buttonText || "Book Your AIRO Health Scan"}
           </Link>

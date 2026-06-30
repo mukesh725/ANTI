@@ -58,7 +58,7 @@ export default function MinuteClinicPage() {
   const visionSection = sections.visionSection;
 
   return (
-    <div ref={pageRef} className="w-full bg-[#FAF8F5] text-[#0B2114] min-h-screen overflow-x-hidden selection:bg-[#0B2114] selection:text-[#FAF8F5]">
+    <div ref={pageRef} className="w-full bg-[#FFFFFF] text-[#1C1C1E] min-h-screen overflow-x-hidden selection:bg-[#1C1C1E] selection:text-[#FFFFFF]">
       
       {/* SECTION 1: HERO SECTION */}
       <section className="relative px-6 md:px-16 pt-12 pb-24 md:pb-32 max-w-[1600px] mx-auto">
@@ -66,28 +66,28 @@ export default function MinuteClinicPage() {
           
           {/* Hero text */}
           <div className="lg:col-span-7 flex flex-col justify-center pt-8 items-center text-center lg:items-start lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#0B2114]/10 bg-[#0B2114]/5 text-[#0B2114] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#1C1C1E]/10 bg-[#1C1C1E]/5 text-[#1C1C1E] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
               <Sparkles className="w-3 h-3" /> {pc.heroBadge || "Redefining Clinical Care"}
             </div>
             
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#0B2114] mb-8">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.05] text-[#1C1C1E] mb-8">
               {pageContent.title}<br/>
-              <span className="italic font-light text-[#0B2114]/80">{pageContent.subtitle}</span>
+              <span className="italic font-light text-[#1C1C1E]/80">{pageContent.subtitle}</span>
             </h1>
             
-            <p className="font-serif text-lg md:text-2xl text-[#0B2114]/80 italic max-w-xl leading-relaxed mb-6">
+            <p className="font-serif text-lg md:text-2xl text-[#1C1C1E]/80 italic max-w-xl leading-relaxed mb-6">
               {pc.heroTagline || "Professional care. Minimal waiting. Meaningful outcomes."}
             </p>
             
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
               {pc.heroDescription || "AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles, making it easier to access trusted medical support whenever you need it."}
             </p>
 
             <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FAF8F5] bg-[#0B2114] px-6 py-3 rounded-full border border-[#0B2114]">
+              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FFFFFF] bg-[#1C1C1E] px-6 py-3 rounded-full border border-[#1C1C1E]">
                 {pc.heroButtonText || "Booking Waitlist Only"}
               </span>
-              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#0B2114]/50">
+              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#1C1C1E]/50">
                 {pc.heroButtonLabel || "Opening Winter 2026"}
               </span>
             </div>
@@ -102,12 +102,12 @@ export default function MinuteClinicPage() {
                 className="w-full h-full"
                 speed={0.1}
               />
-              <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
-              <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FAF8F5]/90 border border-[#0B2114]/10 p-6 rounded-xl text-left">
-                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#0B2114]/50 block mb-1">
+              <div className="absolute inset-0 bg-[#1C1C1E]/10 mix-blend-multiply" />
+              <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-[#FFFFFF]/90 border border-[#1C1C1E]/10 p-6 rounded-xl text-left">
+                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-[#1C1C1E]/50 block mb-1">
                   {hero.title}
                 </span>
-                <p className="font-serif text-lg text-[#0B2114] font-medium">
+                <p className="font-serif text-lg text-[#1C1C1E] font-medium">
                   {hero.description}
                 </p>
               </div>
@@ -118,22 +118,22 @@ export default function MinuteClinicPage() {
       </section>
 
       {/* SECTION 2: HEALTHCARE WITHOUT THE FRICTION (Storytelling Block 1) */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
             {/* Story text */}
             <div className="lg:col-span-6 order-2 lg:order-1 flex flex-col items-center text-center lg:items-start lg:text-left">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FFFFFF]/50 block mb-6 font-bold">
                 {friction.sectionLabel || "Access"}
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                {friction.title.split('the')[0]}<br/>the <span className="italic font-light text-[#FAF8F5]/80">{friction.title.split('the')[1]}</span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FFFFFF]">
+                {friction.title.split('the')[0]}<br/>the <span className="italic font-light text-[#FFFFFF]/80">{friction.title.split('the')[1]}</span>
               </h2>
-              <p className="font-serif text-xl md:text-2xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+              <p className="font-serif text-xl md:text-2xl text-[#FFFFFF]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
                 {friction.description.split('.')[0]}.
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+              <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
                 {friction.description.split('.').slice(1).join('.')}
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function MinuteClinicPage() {
                   className="w-full h-full"
                   speed={0.12}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B2114]/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E]/30 to-transparent" />
               </div>
             </div>
 
@@ -168,22 +168,22 @@ export default function MinuteClinicPage() {
                 className="w-full h-full"
                 speed={0.08}
               />
-              <div className="absolute inset-0 bg-[#0B2114]/15" />
+              <div className="absolute inset-0 bg-[#1C1C1E]/15" />
             </div>
           </div>
 
           {/* Text block */}
           <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-6 font-bold">
               {prevention.sectionLabel || "Vision"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              {prevention.title.split('Before')[0]}Before <br/><span className="italic font-light text-[#0B2114]/80">{prevention.title.split('Before')[1] || "It Starts"}</span>
+              {prevention.title.split('Before')[0]}Before <br/><span className="italic font-light text-[#1C1C1E]/80">{prevention.title.split('Before')[1] || "It Starts"}</span>
             </h2>
-            <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+            <p className="font-serif text-lg md:text-xl text-[#1C1C1E]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
               {prevention.description.split('.')[0]}.
             </p>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
               {prevention.description.split('.').slice(1).join('.')}
             </p>
           </div>
@@ -192,25 +192,25 @@ export default function MinuteClinicPage() {
       </section>
 
       {/* SECTION 4: EVERYDAY CARE, ELEVATED (Storytelling Block 3) */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
             {/* Story text */}
             <div className="lg:col-span-5 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-[#FFFFFF]/50 block mb-6 font-bold">
                 {everydayCare?.sectionLabel || "Clinical Care"}
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FAF8F5]">
-                {(everydayCare?.title || "Everyday Care, Elevated").split(',')[0]}, <br/><span className="italic font-light text-[#FAF8F5]/80">{(everydayCare?.title || "Everyday Care, Elevated").split(',').slice(1).join(',')}</span>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-[#FFFFFF]">
+                {(everydayCare?.title || "Everyday Care, Elevated").split(',')[0]}, <br/><span className="italic font-light text-[#FFFFFF]/80">{(everydayCare?.title || "Everyday Care, Elevated").split(',').slice(1).join(',')}</span>
               </h2>
-              <p className="font-serif text-lg md:text-xl text-[#FAF8F5]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+              <p className="font-serif text-lg md:text-xl text-[#FFFFFF]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
                 {everydayCare?.tagline || "From seasonal illnesses and vaccinations to annual wellness visits and health screenings, our clinic supports your everyday needs."}
               </p>
-              <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/70 max-w-lg leading-relaxed mb-8 tracking-wide">
+              <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/70 max-w-lg leading-relaxed mb-8 tracking-wide">
                 {everydayCare?.description || "Our clinic covers the full spectrum of day-to-day medical needs with a patient-first focus. We ensure you feel understood, treated, and guided toward optimal long-term health."}
               </p>
-              <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 border-l border-[#FAF8F5]/20 pl-6 mb-4 font-light leading-relaxed">
+              <p className="font-serif text-lg md:text-xl italic text-[#FFFFFF]/90 border-l border-[#FFFFFF]/20 pl-6 mb-4 font-light leading-relaxed">
                 &ldquo;{everydayCare?.quote || "Our goal is not simply to treat illness. It's to help people stay healthy."}&rdquo;
               </p>
             </div>
@@ -224,7 +224,7 @@ export default function MinuteClinicPage() {
                   className="w-full h-full"
                   speed={0.1}
                 />
-                <div className="absolute inset-0 bg-[#0B2114]/15" />
+                <div className="absolute inset-0 bg-[#1C1C1E]/15" />
               </div>
             </div>
 
@@ -245,25 +245,25 @@ export default function MinuteClinicPage() {
                 className="w-full h-full"
                 speed={0.14}
               />
-              <div className="absolute inset-0 bg-[#0B2114]/10 mix-blend-multiply" />
+              <div className="absolute inset-0 bg-[#1C1C1E]/10 mix-blend-multiply" />
             </div>
           </div>
 
           {/* Text block */}
           <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B2114]/50 block mb-6 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-6 font-bold">
               {connectedCare?.sectionLabel || "Connectivity"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8">
-              {(connectedCare?.title || "Connected Healthcare").split(' ')[0]} <br/><span className="italic font-light text-[#0B2114]/80">{(connectedCare?.title || "Connected Healthcare").split(' ').slice(1).join(' ')}</span>
+              {(connectedCare?.title || "Connected Healthcare").split(' ')[0]} <br/><span className="italic font-light text-[#1C1C1E]/80">{(connectedCare?.title || "Connected Healthcare").split(' ').slice(1).join(' ')}</span>
             </h2>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-lg leading-relaxed mb-6 tracking-wide">
               {connectedCare?.description || "Healthcare works best when information, services, and providers work together. As part of the AIRO ecosystem, the Minute Clinic integrates with pharmacy services, diagnostics, wellness programs, and digital health tools to create a more complete picture of patient health."}
             </p>
-            <p className="font-serif text-lg md:text-xl text-[#0B2114]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
+            <p className="font-serif text-lg md:text-xl text-[#1C1C1E]/90 italic mb-8 max-w-xl font-normal leading-relaxed">
               {connectedCare?.tagline || "A single appointment should be the beginning of a healthier future—not the end of a conversation."}
             </p>
-            <p className="font-sans text-xs md:text-sm text-[#0B2114]/70 max-w-lg leading-relaxed tracking-wide">
+            <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-lg leading-relaxed tracking-wide">
               {connectedCare?.bodyText || "Through ongoing monitoring, preventive health programs, advanced diagnostics, and wellness support, AIRO helps patients take a more active role in their long-term health."}
             </p>
           </div>
@@ -272,64 +272,64 @@ export default function MinuteClinicPage() {
       </section>
 
       {/* SECTION 6: THE NEW STANDARD & BOOKING WAITLIST (Storytelling Block 6) */}
-      <section className="bg-[#0B2114] text-[#FAF8F5] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
+      <section className="bg-[#1C1C1E] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16 rounded-t-[3rem]">
         <div className="max-w-[1000px] mx-auto text-center flex flex-col items-center">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#FAF8F5]/50 block mb-6 font-bold">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#FFFFFF]/50 block mb-6 font-bold">
             {visionSection?.sectionLabel || "The Vision"}
           </span>
           
           <h2 className="font-serif text-4xl md:text-6xl tracking-tight leading-tight mb-8 max-w-3xl">
-            {(visionSection?.title || "The New Standard for Community Healthcare.").split('for')[0]}for <span className="italic font-light text-[#FAF8F5]/80">{(visionSection?.title || "The New Standard for Community Healthcare.").split('for').slice(1).join('for')}</span>
+            {(visionSection?.title || "The New Standard for Community Healthcare.").split('for')[0]}for <span className="italic font-light text-[#FFFFFF]/80">{(visionSection?.title || "The New Standard for Community Healthcare.").split('for').slice(1).join('for')}</span>
           </h2>
           
-          <p className="font-serif text-lg md:text-xl italic text-[#FAF8F5]/90 max-w-xl leading-relaxed mb-8 font-light">
+          <p className="font-serif text-lg md:text-xl italic text-[#FFFFFF]/90 max-w-xl leading-relaxed mb-8 font-light">
             {visionSection?.tagline || "Accessible. Preventive. Personalized."}
           </p>
-          <p className="font-sans text-xs md:text-sm text-[#FAF8F5]/80 max-w-lg leading-relaxed mb-16 tracking-wide">
+          <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/80 max-w-lg leading-relaxed mb-16 tracking-wide">
             {visionSection?.description || "AIRO Minute Clinic is redefining what modern healthcare can look like—bringing together clinical expertise, advanced technology, and a patient-first philosophy to create a better healthcare experience for everyone."}
           </p>
 
           {/* Premium waitlist form */}
-          <div className="w-full max-w-md border border-[#FAF8F5]/10 bg-[#FAF8F5]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
-            <h3 className="font-serif text-2xl mb-2 text-[#FAF8F5] tracking-tight">{visionSection?.waitlistTitle || "The Clinic Waitlist"}</h3>
-            <p className="font-sans text-[11px] text-[#FAF8F5]/60 mb-8 uppercase tracking-widest font-medium">
+          <div className="w-full max-w-md border border-[#FFFFFF]/10 bg-[#FFFFFF]/5 p-8 md:p-10 rounded-3xl backdrop-blur-xl">
+            <h3 className="font-serif text-2xl mb-2 text-[#FFFFFF] tracking-tight">{visionSection?.waitlistTitle || "The Clinic Waitlist"}</h3>
+            <p className="font-sans text-[11px] text-[#FFFFFF]/60 mb-8 uppercase tracking-widest font-medium">
               {visionSection?.waitlistSubtitle || "Secure priority booking invitation"}
             </p>
             
             <form onSubmit={(e) => e.preventDefault()} className="space-y-4 text-left">
               <div>
-                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FFFFFF]/50 mb-2">
                   Full Name
                 </label>
                 <input 
                   type="text" 
                   placeholder="e.g. Samuel Henderson"
-                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                  className="w-full bg-[#FFFFFF]/5 border border-[#FFFFFF]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/30 silent-luxury-transition"
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FAF8F5]/50 mb-2">
+                <label className="block text-[9px] tracking-widest uppercase font-bold text-[#FFFFFF]/50 mb-2">
                   Email Address
                 </label>
                 <input 
                   type="email" 
                   placeholder="e.g. samuel@longevity.com"
-                  className="w-full bg-[#FAF8F5]/5 border border-[#FAF8F5]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FAF8F5]/40 text-[#FAF8F5] placeholder-[#FAF8F5]/30 silent-luxury-transition"
+                  className="w-full bg-[#FFFFFF]/5 border border-[#FFFFFF]/15 rounded-lg px-4 py-3 text-xs focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/30 silent-luxury-transition"
                 />
               </div>
 
               <div className="pt-4">
                 <button 
                   type="button"
-                  className="w-full bg-[#FAF8F5] text-[#0B2114] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
+                  className="w-full bg-[#FFFFFF] text-[#1C1C1E] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition flex items-center justify-center gap-2"
                 >
                   {visionSection?.waitlistButtonText || "Join Clinic Booking Waitlist"} <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </form>
             
-            <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FAF8F5]/40 font-semibold">
+            <div className="mt-6 inline-flex items-center gap-1.5 justify-center text-[9px] tracking-wider uppercase text-[#FFFFFF]/40 font-semibold">
               <Shield className="w-3.5 h-3.5" /> HIPAA Compliant & Secure
             </div>
           </div>
@@ -338,17 +338,17 @@ export default function MinuteClinicPage() {
       </section>
 
       {/* MINI FOOTER */}
-      <footer className="bg-[#FAF8F5] py-16 px-6 md:px-16 border-t border-[#0B2114]/10">
+      <footer className="bg-[#FFFFFF] py-16 px-6 md:px-16 border-t border-[#1C1C1E]/10">
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#0B2114]">
+          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-[#1C1C1E]">
             AIRO<span className="opacity-50">.</span>
           </Link>
-          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#0B2114]/60">
-            <Link href="/grocery" className="hover:text-[#0B2114] silent-luxury-transition">Essentials</Link>
-            <Link href="/pharmacy" className="hover:text-[#0B2114] silent-luxury-transition">Pharmacy</Link>
-            <Link href="/minute-clinic" className="hover:text-[#0B2114] silent-luxury-transition">Minute Clinic</Link>
+          <div className="flex gap-8 text-[10px] tracking-widest uppercase font-bold text-[#1C1C1E]/60">
+            <Link href="/grocery" className="hover:text-[#1C1C1E] silent-luxury-transition">Essentials</Link>
+            <Link href="/pharmacy" className="hover:text-[#1C1C1E] silent-luxury-transition">Pharmacy</Link>
+            <Link href="/minute-clinic" className="hover:text-[#1C1C1E] silent-luxury-transition">Minute Clinic</Link>
           </div>
-          <span className="text-[9px] tracking-widest uppercase text-[#0B2114]/40 font-medium">
+          <span className="text-[9px] tracking-widest uppercase text-[#1C1C1E]/40 font-medium">
             © 2026 AIRO Minute Clinic. All Rights Reserved.
           </span>
         </div>
