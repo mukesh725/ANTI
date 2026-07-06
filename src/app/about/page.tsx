@@ -159,52 +159,7 @@ export default function AboutPage() {
       </section>
 
       {/* Global Footer (Hardcoded as it is on other pages unless CMS footer is globally accessible) */}
-      <footer className="bg-[#1C1C1E] text-[#FFFFFF] py-16 px-6 md:px-12 border-t border-[#2C2C2E]">
-        <div className="max-w-7xl mx-auto space-y-12">
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <span className="font-serif text-2xl tracking-widest uppercase text-[#FFFFFF]">AIRO.</span>
-              <p className="text-xs text-[#FFFFFF]/60 leading-relaxed">
-                An integrated longevity ecosystem combining nutrition, diagnostics, clinical care, and personalized pharmacy solutions.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider text-[#0A84FF] font-semibold mb-4">Support & Care</h4>
-              <ul className="space-y-2 text-xs text-[#FFFFFF]/70">
-                <li>Concierge: <a href="mailto:concierge@airohealth.com" className="hover:text-white transition-colors">concierge@airohealth.com</a></li>
-                <li>Clinical Team: <a href="mailto:clinical@airohealth.com" className="hover:text-white transition-colors">clinical@airohealth.com</a></li>
-                <li>Phone: <a href="tel:+18005552476" className="hover:text-white transition-colors">+1 (800) 555-2476</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider text-[#0A84FF] font-semibold mb-4">Ecosystem</h4>
-              <ul className="space-y-2 text-xs text-[#FFFFFF]/70">
-                <li><Link href="/grocery" className="hover:text-white transition-colors">AIRO Essentials</Link></li>
-                <li><Link href="/pharmacy" className="hover:text-white transition-colors">AIRO Pharmacy</Link></li>
-                <li><Link href="/minute-clinic" className="hover:text-white transition-colors">Minute Clinic</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider text-[#0A84FF] font-semibold mb-4">Legal & Press</h4>
-              <ul className="space-y-2 text-xs text-[#FFFFFF]/70">
-                <li><Link href="/about" className="hover:text-white transition-colors font-medium">About & Leadership</Link></li>
-                <li><Link href="/press" className="hover:text-white transition-colors">Press & Investor Kit</Link></li>
-                <li><Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-[#2C2C2E] pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] text-[#FFFFFF]/40">
-            <span>&copy; 2026 AIRO Health. All rights reserved.</span>
-            <span className="text-center max-w-lg leading-relaxed md:text-right">
-              Healthcare programs and compounding therapies are subject to practitioner evaluation. All contents are informational and not medical advice.
-            </span>
-          </div>
-
-        </div>
-      </footer>
+      
 
     </div>
   );

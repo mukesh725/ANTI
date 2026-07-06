@@ -168,7 +168,7 @@ export default function ProductDetailPage() {
             </h1>
             
             <div className="text-xl font-bold text-[#1C1C1E] mb-6">
-              ${Number(product.price).toFixed(2)}
+              ₹{Number(product.price).toFixed(2)}
             </div>
 
             {/* Delivery Timer */}

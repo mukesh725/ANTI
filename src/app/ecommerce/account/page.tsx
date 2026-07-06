@@ -116,7 +116,7 @@ export default function AccountPage() {
                       <p className="text-xs text-[#1C1C1E]/60 mt-1">{order.items?.length || 0} items</p>
                     </div>
                     <div className="text-right w-full md:w-auto">
-                      <p className="font-serif text-xl mb-2">${order.total?.toFixed(2)}</p>
+                      <p className="font-serif text-xl mb-2">₹{order.total?.toFixed(2)}</p>
                       <button className="text-xs uppercase tracking-widest font-bold text-[#0A84FF] hover:text-[#1C1C1E] transition-colors">
                         View Details
                       </button>

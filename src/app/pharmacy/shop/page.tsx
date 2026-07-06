@@ -111,7 +111,7 @@ function ShopContent() {
                       </p>
                     </Link>
                     <div className="flex items-center justify-between mt-auto border-t border-[#1C1C1E]/10 pt-4">
-                      <span className="font-sans font-medium text-[#0A84FF]">${product.price.toFixed(2)}</span>
+                      <span className="font-sans font-medium text-[#0A84FF]">₹{product.price.toFixed(2)}</span>
                       <button 
                         onClick={(e) => {
                           e.preventDefault();

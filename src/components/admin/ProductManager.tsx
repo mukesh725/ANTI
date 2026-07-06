@@ -187,7 +187,7 @@ export function ProductManager() {
                     </span>
                   </td>
                   <td className="py-4 px-4 text-sm text-gray-700">{product.category}</td>
-                  <td className="py-4 px-4 text-sm font-medium text-gray-900">${Number(product.price).toFixed(2)}</td>
+                  <td className="py-4 px-4 text-sm font-medium text-gray-900">₹{Number(product.price).toFixed(2)}</td>
                   <td className="py-4 px-4">
                     <div className="flex justify-end gap-2">
                       <button 

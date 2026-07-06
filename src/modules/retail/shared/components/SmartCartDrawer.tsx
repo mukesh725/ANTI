@@ -71,7 +71,7 @@ export function SmartCartDrawer() {
                           <button onClick={() => addItem(item)} className="p-1 hover:text-charcoal/50"><Plus className="w-3 h-3" /></button>
                         </div>
                         <p className="text-xs tracking-widest text-charcoal/50 uppercase">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ₹{(item.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -103,7 +103,7 @@ export function SmartCartDrawer() {
             <div className="p-8 bg-charcoal text-alabaster mt-auto">
               <div className="flex justify-between items-center mb-6">
                 <span className="font-sans text-sm tracking-widest uppercase text-alabaster/70">Subtotal</span>
-                <span className="font-serif text-2xl">${subtotal.toFixed(2)}</span>
+                <span className="font-serif text-2xl">₹{subtotal.toFixed(2)}</span>
               </div>
               <Link href="/ecommerce/checkout" onClick={onClose} className="w-full py-4 bg-alabaster text-charcoal tracking-widest uppercase text-sm font-medium flex justify-center items-center gap-2 hover:bg-alabaster/90 silent-luxury-transition">
                 Checkout <ArrowRight className="w-4 h-4" />

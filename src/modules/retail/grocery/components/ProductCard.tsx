@@ -53,7 +53,7 @@ export function ProductCard({
           {product.name}
         </h3>
         <p className="font-sans text-[11px] md:text-xs text-charcoal/60">
-          ${product.price.toFixed(2)}
+          ₹{product.price.toFixed(2)}
         </p>
       </Link>
     </div>

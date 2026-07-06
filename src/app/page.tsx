@@ -384,69 +384,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* =========================================================================
-          SECTION 7: FOOTER
-          ========================================================================= */}
-      <footer className="border-t border-[#1C1C1E]/10 py-24 px-8 md:px-16 bg-[#1C1C1E] text-[#FFFFFF] rounded-t-[3rem] w-full">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
-
-          <div className="col-span-1 md:col-span-2">
-            <h2 className="font-serif text-4xl tracking-[0.2em] uppercase mb-12 text-[#FFFFFF]">AIRO<span className="opacity-50">.</span></h2>
-            <h3 className="font-sans text-xl font-medium mb-4">{footerData?.waitlistTitle || "The Waitlist"}</h3>
-            <p className="text-sm text-[#FFFFFF]/60 mb-8 max-w-sm leading-relaxed">
-              {footerData?.waitlistDescription || "Subscribe to receive clinical updates, seasonal grocery drops, and exclusive invitation status."}
-            </p>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-6 max-w-sm">
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full border-b border-[#FFFFFF]/30 pb-3 text-sm focus:outline-none focus:border-[#FFFFFF] bg-transparent placeholder-[#FFFFFF]/30 text-[#FFFFFF] silent-luxury-transition"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="w-full border-b border-[#FFFFFF]/30 pb-3 text-sm focus:outline-none focus:border-[#FFFFFF] bg-transparent placeholder-[#FFFFFF]/30 text-[#FFFFFF] silent-luxury-transition"
-              />
-              <button
-                type="submit"
-                className="w-full bg-[#FFFFFF] text-[#1C1C1E] text-[10px] font-bold tracking-widest uppercase py-4 rounded-full hover:opacity-90 silent-luxury-transition"
-              >
-                Join Waitlist
-              </button>
-            </form>
-          </div>
-
-          <div>
-            <h3 className="font-sans text-xs font-bold mb-8 text-[#FFFFFF]/40 tracking-widest uppercase">Ecosystem Portals</h3>
-            <ul className="space-y-4 text-sm text-[#FFFFFF]/80 font-medium">
-              <li><Link href="/grocery" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Essentials</Link></li>
-              <li><Link href="/pharmacy" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Pharmacy Portal</Link></li>
-              <li><Link href="/minute-clinic" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Minute Clinic</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-sans text-xs font-bold mb-8 text-[#FFFFFF]/40 tracking-widest uppercase">Support</h3>
-            <ul className="space-y-4 text-sm text-[#FFFFFF]/80 font-medium">
-              <li><a href="mailto:concierge@airo.com" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">concierge@airo.com</a></li>
-              <li><a href="mailto:grievance@airo.com" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">grievance@airo.com</a></li>
-              <li className="pt-2 text-[#FFFFFF]/50 text-xs">Lic. No. 10026047000000</li>
-              <li className="pt-8 text-[#FFFFFF]/30 text-[10px] tracking-widest uppercase">{footerData?.copyright || "© 2026 AIRO Health."}</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-sans text-xs font-bold mb-8 text-[#FFFFFF]/40 tracking-widest uppercase">Legal</h3>
-            <ul className="space-y-4 text-sm text-[#FFFFFF]/80 font-medium">
-              <li><Link href="/privacy-policy" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Terms of Service</Link></li>
-              <li><Link href="/refund-policy" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Refund Policy</Link></li>
-              <li><Link href="/shipping-policy" className="hover:text-[#FFFFFF]/50 silent-luxury-transition">Shipping Policy</Link></li>
-            </ul>
-          </div>
-
-        </div>
-      </footer>
+      
     </div>
   );
 }

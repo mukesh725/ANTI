@@ -289,9 +289,9 @@ export function ProductForm({ initialData, onSave, onCancel }: ProductFormProps)
 
             <div className="grid grid-cols-3 gap-6 mb-6">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Base Price ($) *</label>
+                <label className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Base Price (₹) *</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
                   <input 
                     required
                     type="number"

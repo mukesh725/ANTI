@@ -319,17 +319,7 @@ export default function ContactPage() {
       </section>
 
       {/* Minimal Footer */}
-      <footer className="bg-[#1C1C1E] text-[#FFFFFF] py-12 px-6 md:px-12 border-t border-[#2C2C2E]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-          <div className="flex flex-col space-y-2 text-center md:text-left">
-            <span className="font-serif text-xl tracking-widest uppercase text-[#FFFFFF]">AIRO.</span>
-            <span className="text-[10px] text-[#FFFFFF]/50 tracking-wider">PREVENTIVE LONGEVITY ECOSYSTEM</span>
-          </div>
-          <p className="text-[10px] text-[#FFFFFF]/45 text-center md:text-right max-w-sm leading-relaxed">
-            &copy; 2026 AIRO Health. All rights reserved. Clinical treatments, compounding services, and physical programs are subject to practitioner assessment.
-          </p>
-        </div>
-      </footer>
+      
     </div>
   );
 }

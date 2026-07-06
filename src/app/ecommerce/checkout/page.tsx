@@ -180,7 +180,7 @@ export default function CheckoutPage() {
                         <p className="text-xs text-[#1C1C1E]/50">Qty: {item.quantity}</p>
                       </div>
                     </div>
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                 ))}
               </div>
@@ -188,15 +188,15 @@ export default function CheckoutPage() {
               <div className="space-y-4 border-t border-[#1C1C1E]/10 pt-6 text-sm">
                 <div className="flex justify-between">
                   <span className="text-[#1C1C1E]/60">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#1C1C1E]/60">Shipping</span>
-                  <span className="font-medium">{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                  <span className="font-medium">{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
                 </div>
                 <div className="flex justify-between border-t border-[#1C1C1E]/10 pt-4 mt-4">
                   <span className="font-serif text-xl">Total</span>
-                  <span className="font-serif text-xl font-bold">${total.toFixed(2)}</span>
+                  <span className="font-serif text-xl font-bold">₹{total.toFixed(2)}</span>
                 </div>
               </div>
 

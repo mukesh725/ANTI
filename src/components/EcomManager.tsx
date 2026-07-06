@@ -115,7 +115,7 @@ export function EcomManager() {
                     <p className="font-medium">{order.shippingDetails?.firstName} {order.shippingDetails?.lastName}</p>
                     <p className="text-xs text-gray-800/50">{order.customerEmail}</p>
                   </td>
-                  <td className="px-6 py-4 font-medium">${order.total?.toFixed(2)}</td>
+                  <td className="px-6 py-4 font-medium">₹{order.total?.toFixed(2)}</td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-[10px] tracking-widest uppercase font-bold ${
                       order.status === 'Processing' ? 'bg-yellow-100 text-yellow-700' :
