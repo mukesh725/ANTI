@@ -109,12 +109,11 @@ export default function PrivacyPolicyPage() {
           </p>
           <div className="mt-4 space-y-1 text-sm font-medium text-emerald-900">
             <p><strong>Name:</strong> Compliance & Grievance Officer</p>
-            <p><strong>Email:</strong> <a href="mailto:airoessentials@gmail.com" className="underline hover:text-emerald-700">grievance@airohealth.com</a></p>
+            <p><strong>Email:</strong> <a href="mailto:airoessentials@gmail.com" className="underline hover:text-emerald-700">airoessentials@gmail.com</a></p>
             <p><strong>Address:</strong> #7-1-621/66, 2nd Floor, Near CMS Degree College, Sanjeev Reddy Nagar (SR Nagar), Ameerpet, Hyderabad, Telangana, India - 500038</p>
             <p><strong>Response Time:</strong> We will acknowledge your grievance within 48 hours and resolve it within 30 days.</p>
           </div>
         </div>
-
       </section>
     </div>
   );
