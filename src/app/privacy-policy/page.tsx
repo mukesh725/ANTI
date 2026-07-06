@@ -48,7 +48,7 @@ export default function PrivacyPolicyPage() {
 
       {/* Detailed Legal Text */}
       <section className="px-6 md:px-12 pb-24 max-w-4xl mx-auto font-sans text-sm leading-relaxed text-[#1C1C1E]/85 space-y-12">
-        
+
         <div className="space-y-4">
           <h2 className="font-serif text-2xl text-[#1C1C1E] tracking-wide border-b border-[#E6DFD5] pb-2">1. Information We Collect</h2>
           <p>
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
         <div className="space-y-4">
           <h2 className="font-serif text-2xl text-[#1C1C1E] tracking-wide border-b border-[#E6DFD5] pb-2">4. Third-Party Sharing & Localization</h2>
           <p>
-            We do not sell, rent, or trade your personal data. We only share data with verified &quot;Data Processors&quot; (logistics partners, payment gateways) strictly necessary to fulfill your orders. 
+            We do not sell, rent, or trade your personal data. We only share data with verified &quot;Data Processors&quot; (logistics partners, payment gateways) strictly necessary to fulfill your orders.
           </p>
           <p>
             All critical personal data, especially clinical and health records, are localized and securely stored in encrypted data centers geographically located within India, in compliance with national security guidelines.
@@ -109,14 +109,13 @@ export default function PrivacyPolicyPage() {
           </p>
           <div className="mt-4 space-y-1 text-sm font-medium text-emerald-900">
             <p><strong>Name:</strong> Compliance & Grievance Officer</p>
-            <p><strong>Email:</strong> <a href="mailto:grievance@airohealth.com" className="underline hover:text-emerald-700">grievance@airohealth.com</a></p>
-            <p><strong>Address:</strong> AIRO Health HQ, SR Nagar, Hyderabad, Telangana, India - 500038</p>
+            <p><strong>Email:</strong> <a href="mailto:airoessentials@gmail.com" className="underline hover:text-emerald-700">grievance@airohealth.com</a></p>
+            <p><strong>Address:</strong> #7-1-621/66, 2nd Floor, Near CMS Degree College, Sanjeev Reddy Nagar (SR Nagar), Ameerpet, Hyderabad, Telangana, India - 500038</p>
             <p><strong>Response Time:</strong> We will acknowledge your grievance within 48 hours and resolve it within 30 days.</p>
           </div>
         </div>
 
       </section>
-
     </div>
   );
 }
