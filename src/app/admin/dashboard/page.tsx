@@ -16,6 +16,7 @@ import { CmsEditor } from "@/components/CmsEditor";
 import { EcomManager } from "@/components/EcomManager";
 import { ProductManager } from "@/components/admin/ProductManager";
 import { PlaceholderView } from "@/components/admin/PlaceholderView";
+import { AdminTeamManager } from "@/components/admin/AdminTeamManager";
 import Image from "next/image";
 
 // Types
@@ -65,14 +66,29 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
-  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [currentUser, setCurrentUser] = useState<{username: string, role: string, allowedModules: string[]} | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem("airo_admin_auth");
+    const userStr = localStorage.getItem("airo_admin_user");
+    
     if (!auth || auth !== "true") {
       router.replace("/admin/login");
     } else {
       setIsAuthenticated(true);
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          setCurrentUser(user);
+          
+          // RBAC default routing
+          if (!user.allowedModules.includes("all")) {
+             if (!user.allowedModules.includes("dashboard") && user.allowedModules.length > 0) {
+                setActiveTab(user.allowedModules[0]);
+             }
+          }
+        } catch(e) {}
+      }
       loadDashboardData();
     }
   }, [router]);
@@ -316,6 +332,8 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         );
+      case "admin-team":
+        return <AdminTeamManager />;
       default:
         const title = SIDEBAR_NAV.find(item => item.id === activeTab)?.label || "Module";
         return <PlaceholderView title={title} />;
@@ -334,7 +352,9 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
-          {SIDEBAR_NAV.map((item) => (
+          {SIDEBAR_NAV.filter(item => 
+            currentUser?.allowedModules.includes("all") || currentUser?.allowedModules.includes(item.id)
+          ).map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
@@ -356,8 +376,8 @@ export default function AdminDashboardPage() {
               <ShieldAlert className="w-5 h-5 text-gray-300" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">Super Admin</p>
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest">Super Admin</p>
+              <p className="text-sm font-medium text-white">{currentUser?.username || "Admin"}</p>
+              <p className="text-[10px] text-gray-500 uppercase tracking-widest">{currentUser?.role || "Super Admin"}</p>
             </div>
           </div>
           <button

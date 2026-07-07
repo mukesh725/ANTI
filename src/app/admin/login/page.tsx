@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Shield, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -12,7 +14,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -23,16 +25,53 @@ export default function AdminLoginPage() {
 
     setIsLoading(true);
 
-    // Simulate authentication processing
-    setTimeout(() => {
+    try {
+      // 1. Check Super Admin Fallback
       if (username === "admin" && password === "airohealthadmin2026") {
+        const superAdminUser = {
+          id: "super_admin",
+          username: "admin",
+          role: "Super Admin",
+          allowedModules: ["all"] // 'all' acts as a wildcard
+        };
         localStorage.setItem("airo_admin_auth", "true");
+        localStorage.setItem("airo_admin_user", JSON.stringify(superAdminUser));
+        router.push("/admin/dashboard");
+        return;
+      }
+
+      // 2. Query Firestore for Team Members
+      const q = query(
+        collection(db, "admin_users"), 
+        where("username", "==", username),
+        where("password", "==", password)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        // User found
+        const userDoc = querySnapshot.docs[0];
+        const userData = { id: userDoc.id, ...userDoc.data() };
+        
+        localStorage.setItem("airo_admin_auth", "true");
+        localStorage.setItem("airo_admin_user", JSON.stringify({
+          id: userData.id,
+          username: userData.username,
+          role: userData.role,
+          allowedModules: userData.allowedModules || []
+        }));
+        
         router.push("/admin/dashboard");
       } else {
         setError("Invalid administrative credentials.");
-        setIsLoading(false);
       }
-    }, 1000);
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("System error during authentication. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
