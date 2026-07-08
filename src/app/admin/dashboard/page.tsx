@@ -66,7 +66,7 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
-  const [currentUser, setCurrentUser] = useState<{username: string, role: string, allowedModules: string[]} | null>(null);
+  const [currentUser, setCurrentUser] = useState<{name: string, email: string, role: string, allowedModules: string[]} | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem("airo_admin_auth");
@@ -376,7 +376,7 @@ export default function AdminDashboardPage() {
               <ShieldAlert className="w-5 h-5 text-gray-300" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">{currentUser?.username || "Admin"}</p>
+              <p className="text-sm font-medium text-white">{currentUser?.name || "Admin"}</p>
               <p className="text-[10px] text-gray-500 uppercase tracking-widest">{currentUser?.role || "Super Admin"}</p>
             </div>
           </div>

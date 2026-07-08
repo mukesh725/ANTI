@@ -8,7 +8,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError("");
 
-    if (!username || !password) {
+    if (!email || !password) {
       setError("Please enter all credentials.");
       return;
     }
@@ -27,12 +27,14 @@ export default function AdminLoginPage() {
 
     try {
       // 1. Check Super Admin Fallback
-      if (username === "admin" && password === "airohealthadmin2026") {
+      if (email === "admin@airo.dev" && password === "airohealthadmin2026") {
         const superAdminUser = {
           id: "super_admin",
-          username: "admin",
+          name: "Super Admin",
+          email: "admin@airo.dev",
           role: "Super Admin",
-          allowedModules: ["all"] // 'all' acts as a wildcard
+          allowedModules: ["all"],
+          status: "active"
         };
         localStorage.setItem("airo_admin_auth", "true");
         localStorage.setItem("airo_admin_user", JSON.stringify(superAdminUser));
@@ -43,7 +45,7 @@ export default function AdminLoginPage() {
       // 2. Query Firestore for Team Members
       const q = query(
         collection(db, "admin_users"), 
-        where("username", "==", username),
+        where("email", "==", email.toLowerCase().trim()),
         where("password", "==", password)
       );
       
@@ -54,12 +56,19 @@ export default function AdminLoginPage() {
         const userDoc = querySnapshot.docs[0];
         const userData = { id: userDoc.id, ...userDoc.data() };
         
+        if (userData.status === "disabled") {
+          setError("Your account has been disabled. Contact an administrator.");
+          return;
+        }
+
         localStorage.setItem("airo_admin_auth", "true");
         localStorage.setItem("airo_admin_user", JSON.stringify({
           id: userData.id,
-          username: userData.username,
+          name: userData.name || userData.username, // Fallback to username for legacy docs
+          email: userData.email,
           role: userData.role,
-          allowedModules: userData.allowedModules || []
+          allowedModules: userData.allowedModules || [],
+          status: userData.status || "active"
         }));
         
         router.push("/admin/dashboard");
@@ -105,14 +114,14 @@ export default function AdminLoginPage() {
         <form onSubmit={handleLogin} className="space-y-5 relative">
           <div>
             <label className="block text-[10px] uppercase tracking-wider text-[#FFFFFF]/50 font-semibold mb-2">
-              Console Username
+              Email Address
             </label>
             <input
-              type="text"
+              type="email"
               required
-              placeholder="e.g. admin"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="admin@airo.dev"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-[#FFFFFF]/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#FFFFFF]/40 text-[#FFFFFF] placeholder-[#FFFFFF]/20 transition-all"
             />
           </div>
