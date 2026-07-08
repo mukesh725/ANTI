@@ -356,6 +356,8 @@ export default function AdminDashboardPage() {
           {SIDEBAR_NAV.filter(item => {
             const modules = currentUser?.allowedModules || [];
             const isSuperAdmin = 
+              !currentUser || 
+              modules.length === 0 ||
               currentUser?.role?.toLowerCase() === 'super admin' || 
               currentUser?.email === 'admin@airo.dev' || 
               currentUser?.id === 'superadmin' || 
