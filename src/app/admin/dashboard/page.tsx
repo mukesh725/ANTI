@@ -65,6 +65,7 @@ export default function AdminDashboardPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
   const [currentUser, setCurrentUser] = useState<{name: string, email: string, role: string, allowedModules: string[]} | null>(null);
 
