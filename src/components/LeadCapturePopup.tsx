@@ -94,11 +94,12 @@ export function LeadCapturePopup() {
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#FFFFFF]/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
 
             <button
+              type="button"
               onClick={handleDismiss}
-              className="absolute top-4 right-4 z-10 p-2 text-[#FFFFFF]/40 hover:text-[#FFFFFF] transition-colors rounded-full hover:bg-white/5"
+              className="absolute top-4 right-4 z-[100] p-2 text-[#FFFFFF]/50 hover:text-[#FFFFFF] transition-colors rounded-full hover:bg-white/10"
               aria-label="Close"
             >
-              <X className="w-5 h-5" />
+              <X className="w-6 h-6" />
             </button>
 
             <div className="relative z-10 p-8 sm:p-10 text-center">
@@ -169,6 +170,14 @@ export function LeadCapturePopup() {
                       )}
                     </button>
                   </form>
+                  
+                  <button
+                    type="button"
+                    onClick={handleDismiss}
+                    className="mt-4 text-[#FFFFFF]/50 hover:text-[#FFFFFF] text-[10px] uppercase tracking-widest font-bold underline decoration-[#FFFFFF]/30 underline-offset-4 transition-colors"
+                  >
+                    Not interested right now
+                  </button>
                   
                   <p className="text-[9px] text-[#FFFFFF]/30 mt-6 tracking-wide">
                     By submitting, you agree to our Privacy Policy & Terms of Service.
