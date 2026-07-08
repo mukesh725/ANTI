@@ -353,9 +353,11 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
-          {SIDEBAR_NAV.filter(item => 
-            currentUser?.allowedModules.includes("all") || currentUser?.allowedModules.includes(item.id)
-          ).map((item) => (
+          {SIDEBAR_NAV.filter(item => {
+            const modules = currentUser?.allowedModules || [];
+            const isSuperAdmin = currentUser?.role?.toLowerCase() === 'super admin' || currentUser?.role === 'Super Admin';
+            return isSuperAdmin || modules.includes("all") || modules.includes(item.id);
+          }).map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}

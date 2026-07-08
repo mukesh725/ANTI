@@ -25,8 +25,10 @@ function ShopContent() {
     if (cat) setActiveCategory(cat);
   }, [searchParams]);
 
-  // Extract categories for tabs
-  const categories = ["All", ...(cmsData.pages.grocery.sections.categories || []).map((c: { title: string }) => c.title)];
+  // Extract categories for tabs dynamically from products and CMS
+  const cmsCategories = (cmsData.pages.grocery.sections.categories || []).map((c: { title: string }) => c.title);
+  const productCategories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
+  const categories = ["All", ...Array.from(new Set([...cmsCategories, ...productCategories]))];
 
   const filteredProducts = activeCategory === "All" 
     ? products 

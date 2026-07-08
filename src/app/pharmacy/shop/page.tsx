@@ -24,7 +24,9 @@ function ShopContent() {
     if (cat) setActiveCategory(cat);
   }, [searchParams]);
 
-  const categories = ["All", ...(cmsData.pages.pharmacy.sections.categories || []).map((c: { title: string }) => c.title)];
+  const cmsCategories = (cmsData.pages.pharmacy.sections.categories || []).map((c: { title: string }) => c.title);
+  const productCategories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
+  const categories = ["All", ...Array.from(new Set([...cmsCategories, ...productCategories]))];
 
   const filteredProducts = activeCategory === "All" 
     ? products 
