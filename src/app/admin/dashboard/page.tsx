@@ -67,7 +67,7 @@ export default function AdminDashboardPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
-  const [currentUser, setCurrentUser] = useState<{name: string, email: string, role: string, allowedModules: string[]} | null>(null);
+  const [currentUser, setCurrentUser] = useState<{id?: string, name: string, email: string, role: string, allowedModules: string[]} | null>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem("airo_admin_auth");
