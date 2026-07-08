@@ -53,8 +53,18 @@ export default function AdminLoginPage() {
       
       if (!querySnapshot.empty) {
         // User found
+        interface AdminUser {
+          id: string;
+          status?: string;
+          name?: string;
+          username?: string;
+          email?: string;
+          role?: string;
+          allowedModules?: string[];
+        }
+
         const userDoc = querySnapshot.docs[0];
-        const userData = { id: userDoc.id, ...userDoc.data() };
+        const userData = { id: userDoc.id, ...userDoc.data() } as AdminUser;
         
         if (userData.status === "disabled") {
           setError("Your account has been disabled. Contact an administrator.");
