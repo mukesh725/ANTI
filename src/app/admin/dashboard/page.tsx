@@ -355,7 +355,12 @@ export default function AdminDashboardPage() {
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
           {SIDEBAR_NAV.filter(item => {
             const modules = currentUser?.allowedModules || [];
-            const isSuperAdmin = currentUser?.role?.toLowerCase() === 'super admin' || currentUser?.role === 'Super Admin';
+            const isSuperAdmin = 
+              currentUser?.role?.toLowerCase() === 'super admin' || 
+              currentUser?.email === 'admin@airo.dev' || 
+              currentUser?.id === 'superadmin' || 
+              currentUser?.id === 'super_admin' || 
+              currentUser?.name?.toLowerCase() === 'super admin';
             return isSuperAdmin || modules.includes("all") || modules.includes(item.id);
           }).map((item) => (
             <button
