@@ -1,0 +1,36 @@
+import { Product } from "@/hooks/useProducts";
+
+const COMMON_IMAGE = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80";
+
+export const MOCK_GROCERY_LIST: Product[] = [
+  { id: "groc-1", name: "Semi Polished rice", category: "Rice", variants: ["Loose"], price: 80, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Semi Polished Rice" },
+  { id: "groc-2", name: "white rice", category: "Rice", variants: ["Loose"], price: 75, storeType: "grocery", image: COMMON_IMAGE, description: "Organic White Rice" },
+  { id: "groc-3", name: "Brown rice", category: "Rice", variants: ["Loose"], price: 90, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Brown Rice" },
+  { id: "groc-4", name: "Groundnut", category: "Pulses", variants: ["500gm", "1kg"], price: 120, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Groundnut" },
+  { id: "groc-5", name: "Urad Gota", category: "Pulses", variants: ["500gm", "1kg"], price: 150, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Urad Gota" },
+  { id: "groc-6", name: "Urad Dal", category: "Pulses", variants: ["500gm", "1kg"], price: 140, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Urad Dal" },
+  { id: "groc-7", name: "Toor Dal", category: "Pulses", variants: ["500gm", "1kg"], price: 160, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Toor Dal" },
+  { id: "groc-8", name: "Chana whole", category: "Pulses", variants: ["500gm", "1kg"], price: 110, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Chana whole" },
+  { id: "groc-9", name: "Chena Dal", category: "Pulses", variants: ["500gm", "1kg"], price: 115, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Chena Dal" },
+  { id: "groc-10", name: "Moong whole", category: "Pulses", variants: ["500gm", "1kg"], price: 130, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Moong whole" },
+  { id: "groc-11", name: "Moong Dal", category: "Pulses", variants: ["500gm", "1kg"], price: 135, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Moong Dal" },
+  { id: "groc-12", name: "Bajra Whole", category: "Millets", variants: ["500gm", "1kg"], price: 80, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Bajra Whole" },
+  { id: "groc-13", name: "Jowar Whole", category: "Millets", variants: ["500gm", "1kg"], price: 85, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Jowar Whole" },
+  { id: "groc-14", name: "Brown top Millet", category: "Millets", variants: ["500gm", "1kg"], price: 95, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Brown top Millet" },
+  { id: "groc-15", name: "Barnyard Millets", category: "Millets", variants: ["500gm", "1kg"], price: 100, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Barnyard Millets" },
+  { id: "groc-16", name: "Foxtail Millet Rice", category: "Millets", variants: ["500gm", "1kg"], price: 110, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Foxtail Millet Rice" },
+  { id: "groc-17", name: "Little Millet Rice", category: "Millets", variants: ["500gm", "1kg"], price: 105, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Little Millet Rice" },
+  { id: "groc-18", name: "Kodo millet", category: "Millets", variants: ["500gm", "1kg"], price: 115, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Kodo millet" },
+  { id: "groc-19", name: "Groundnut Oil", category: "Oils", variants: ["500ml", "1L"], price: 250, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Cold Pressed Groundnut Oil" },
+  { id: "groc-20", name: "Sesame Oil", category: "Oils", variants: ["500ml", "1L"], price: 300, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Cold Pressed Sesame Oil" },
+  { id: "groc-21", name: "Sunflower oil", category: "Oils", variants: ["500ml", "1L"], price: 220, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Cold Pressed Sunflower oil" },
+  { id: "groc-22", name: "Safflower oil", category: "Oils", variants: ["500ml", "1L"], price: 350, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Cold Pressed Safflower oil" },
+  { id: "groc-23", name: "Moong Dal Chilka", category: "Pulses", variants: ["500gm", "1kg"], price: 145, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Moong Dal Chilka" },
+  { id: "groc-24", name: "Rajma Kashmiri", category: "Pulses", variants: ["250gm", "500gm"], price: 180, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Rajma Kashmiri" },
+  { id: "groc-25", name: "Black Pepper", category: "Spices", variants: ["50gm", "100gm"], price: 200, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Black Pepper" },
+  { id: "groc-26", name: "Turmeric", category: "Spices", variants: ["100gm", "250gm"], price: 90, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Turmeric" },
+  { id: "groc-27", name: "Honey (Natural)", category: "Pantry", variants: ["250gm", "500gm"], price: 350, storeType: "grocery", image: COMMON_IMAGE, description: "Natural Honey" },
+  { id: "groc-28", name: "Horse gram", category: "Pulses", variants: ["250gm", "500gm"], price: 100, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Horse gram" },
+  { id: "groc-29", name: "Ragulu", category: "Millets", variants: ["500gm", "1kg"], price: 90, storeType: "grocery", image: COMMON_IMAGE, description: "Organic Ragulu" },
+  { id: "groc-30", name: "ghee", category: "Pantry", variants: ["250gm", "500gm"], price: 400, storeType: "grocery", image: COMMON_IMAGE, description: "Pure Desi Ghee" },
+];

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { MOCK_GROCERY_LIST } from "@/lib/mockGroceryProducts";
 
 export interface Product {
   id: string;
@@ -42,47 +43,8 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           id: doc.id,
           ...doc.data()
         } as Product));
-        const MOCK_GROCERY: Product = {
-          id: "mock-essentials-1",
-          name: "Organic Matcha Green Tea",
-          price: 24.99,
-          category: "Wellness",
-          storeType: "grocery",
-          image: "https://images.unsplash.com/photo-1582793988951-9aed550c6ea2?auto=format&fit=crop&q=80",
-          description: "Premium ceremonial grade matcha sourced directly from Uji, Japan. Rich in antioxidants and perfect for daily energy without the jittery crash.",
-          tagline: "Your daily calm energy",
-          discount: 0,
-          stock: 50,
-          sku: "MTC-ORG-01",
-          weight: 100,
-          ingredients: "100% Ceremonial Grade Matcha Green Tea Powder\nL-Theanine\nNaturally Occurring Caffeine",
-          benefits: "Boosts Metabolism naturally\nEnhances focus and clarity\nRich in Catechins (EGCG)",
-          isActive: true,
-          isFeatured: true,
-          isComingSoon: false,
-          badge: "Best Seller",
-          themeColor: "#5b8c5a",
-          sortPosition: 1,
-          galleryImages: [
-            "https://images.unsplash.com/photo-1582793988951-9aed550c6ea2?auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&q=80"
-          ],
-          variants: ["100g", "250g", "500g"],
-          aPlusContent: [
-            {
-              imageUrl: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&q=80",
-              title: "Antioxidant Powerhouse",
-              description: "Packed with EGCG, our ceremonial grade matcha provides steady, calm energy without the midday crash."
-            },
-            {
-              imageUrl: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80",
-              title: "Sourced from Uji, Japan",
-              description: "Shade-grown for 20 days before harvest to maximize chlorophyll and L-theanine levels."
-            }
-          ]
-        };
+        
+
 
         const MOCK_PHARMACY: Product = {
           id: "mock-health-1",
@@ -126,16 +88,14 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
           ]
         };
 
-        const mockGrocery2: Product = { ...MOCK_GROCERY, id: "mock-essentials-2", name: "Organic Cold-Pressed Olive Oil", price: 18.50, galleryImages: ["https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80"] };
-        const mockGrocery3: Product = { ...MOCK_GROCERY, id: "mock-essentials-3", name: "Himalayan Pink Salt", price: 8.99, galleryImages: ["https://images.unsplash.com/photo-1518118014377-a6f9f0f63e6e?auto=format&fit=crop&q=80"] };
-        const mockGrocery4: Product = { ...MOCK_GROCERY, id: "mock-essentials-4", name: "Artisan Sourdough Loaf", price: 12.00, galleryImages: ["https://images.unsplash.com/photo-1585478259715-876acc5be8eb?auto=format&fit=crop&q=80"] };
+
         
         const mockPharmacy2: Product = { ...MOCK_PHARMACY, id: "mock-health-2", name: "Daily Multivitamin Gummies", price: 22.00, galleryImages: ["https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80"] };
         const mockPharmacy3: Product = { ...MOCK_PHARMACY, id: "mock-health-3", name: "Liquid IV Hydration Multiplier", price: 24.99, galleryImages: ["https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80"] };
         const mockPharmacy4: Product = { ...MOCK_PHARMACY, id: "mock-health-4", name: "Probiotic Complex", price: 28.50, galleryImages: ["https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80"] };
 
         const mockProducts = storeType === "grocery" 
-          ? [MOCK_GROCERY, mockGrocery2, mockGrocery3, mockGrocery4] 
+          ? MOCK_GROCERY_LIST 
           : [MOCK_PHARMACY, mockPharmacy2, mockPharmacy3, mockPharmacy4];
         
         // Append the mock products if it isn't already in the database
