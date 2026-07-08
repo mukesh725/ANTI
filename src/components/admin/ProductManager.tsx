@@ -81,6 +81,24 @@ export function ProductManager() {
     }
   };
 
+  const handleSyncMockProducts = async () => {
+    try {
+      const { MOCK_GROCERY_LIST } = await import("@/lib/mockGroceryProducts");
+      const { setDoc } = await import("firebase/firestore");
+      setLoading(true);
+      for (const product of MOCK_GROCERY_LIST) {
+        await setDoc(doc(db, "products", product.id), product);
+      }
+      await fetchAllProducts();
+      alert("Successfully synced organic products to database!");
+    } catch (err) {
+      console.error("Error syncing products:", err);
+      alert("Failed to sync products.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStore = filterStore === "all" || p.storeType === filterStore;
@@ -104,12 +122,20 @@ export function ProductManager() {
           <h2 className="text-2xl font-sans font-semibold text-gray-900 mb-1">Products</h2>
           <p className="text-sm text-gray-500 font-sans tracking-wide">Manage your e-commerce catalog</p>
         </div>
-        <button 
-          onClick={handleCreateNew}
-          className="bg-gray-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 transition-colors shadow-sm"
-        >
-          <Plus className="w-4 h-4" /> Add Product
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={handleSyncMockProducts}
+            className="bg-white border border-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            Sync Organic Products
+          </button>
+          <button 
+            onClick={handleCreateNew}
+            className="bg-gray-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 transition-colors shadow-sm"
+          >
+            <Plus className="w-4 h-4" /> Add Product
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-8">

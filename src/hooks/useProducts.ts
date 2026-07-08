@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { MOCK_GROCERY_LIST } from "@/lib/mockGroceryProducts";
 
 export interface Product {
   id: string;
@@ -95,7 +94,7 @@ export function useProducts(storeType: "grocery" | "pharmacy") {
         const mockPharmacy4: Product = { ...MOCK_PHARMACY, id: "mock-health-4", name: "Probiotic Complex", price: 28.50, galleryImages: ["https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80"] };
 
         const mockProducts = storeType === "grocery" 
-          ? MOCK_GROCERY_LIST 
+          ? [] 
           : [MOCK_PHARMACY, mockPharmacy2, mockPharmacy3, mockPharmacy4];
         
         // Append the mock products if it isn't already in the database
