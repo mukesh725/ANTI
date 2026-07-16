@@ -53,9 +53,11 @@ export async function GET(request: Request) {
       // 4. Get Transactions
       const txRef = collection(db, 'membershipTransactions');
       const txSnapshot = await getDocs(
-        query(txRef, where('membershipId', '==', membership.id), orderBy('createdAt', 'desc'))
+        query(txRef, where('membershipId', '==', membership.id))
       );
-      membership.transactions = txSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      membership.transactions = txSnapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() } as any))
+        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
     }
 
     return NextResponse.json({ 

@@ -7,11 +7,12 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const plansRef = collection(db, 'membershipPlans');
-    const q = query(plansRef, where('status', '==', 'ACTIVE'), orderBy('displayOrder', 'asc'));
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(plansRef);
     
-    let plans = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
+    let plans = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() } as any))
+      .filter(plan => plan.status === 'ACTIVE')
+      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
     if (!plans || plans.length === 0) {
       // Fallback to hardcoded plans if database is not seeded
       plans = [
