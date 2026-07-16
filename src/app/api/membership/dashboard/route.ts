@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+
+export const dynamic = 'force-dynamic';
 import { verifyToken } from '@/lib/membershipAuth';
 
 export async function GET(request: Request) {
