@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AIRO Platform
 
-## Getting Started
+Welcome to the **AIRO Platform** repository. This codebase powers both the **AIRO Health** and **AIRO Essentials** websites. 
 
-First, run the development server:
+It is a premium e-commerce and wellness platform built with Next.js, featuring dynamic multi-domain routing, an integrated e-commerce shop, a built-in AI assistant, and a private admin dashboard.
+
+## 📖 Developer Guide
+
+For a complete walkthrough of the project structure, routing, where to find files, and how to customize the platform, please read our dedicated developer guide:
+
+👉 **[Read the Developer & Customization Guide (DEVELOPER_GUIDE.md)](./DEVELOPER_GUIDE.md)**
+
+## 🚀 Quick Start
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)
+- **State Management:** React Context (Cart, Auth, Products)
 
-## Learn More
+## 🌐 Environments
 
-To learn more about Next.js, take a look at the following resources:
+- **AIRO Essentials:** The default retail and grocery experience.
+- **AIRO Health:** Accessible via the `/health` route (or when deployed under a `health.*` domain). Offers clinical features, pharmacy, and membership details.
+- **Admin Portal:** Accessible via `/admin` for tracking telemetry, leads, and managing e-commerce settings. Default login is `admin` / `airohealthadmin2026`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is optimized for deployment on [Vercel](https://vercel.com). Pushing to the `main` branch will automatically trigger a production build.

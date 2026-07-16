@@ -1,18 +1,18 @@
-# AIRO Health — Developer & Customization Guide
+# AIRO Health & AIRO Essentials — Developer & Customization Guide
 
-Welcome to the **AIRO Health** codebase! This guide is designed specifically for developers, designers, or anyone new to coding (freshers) who needs to understand how this website is built, where files are located, and how to change things easily.
+Welcome to the **AIRO** codebase! This guide is designed specifically for developers, designers, or anyone new to coding (freshers) who needs to understand how this website is built, where files are located, and how to change things easily.
 
 ---
 
 ## 1. What Have We Built?
 
-AIRO Health is a premium, integrated wellness and longevity website. We redesigned the user interface to look elegant, clean, and luxurious (using a warm cream, deep forest green, and gold theme).
+The AIRO platform is a premium, integrated wellness and longevity e-commerce website. We designed the user interface to look elegant, clean, and luxurious (using a warm cream, deep forest green, and gold theme). The architecture supports multi-domain logic, serving distinct experiences for "AIRO Health" and "AIRO Essentials" from the same codebase.
 
 Features we have implemented:
-1.  **Brand Redesigns**: Redesigned Homepage, sub-pages (Essentials, Pharmacy, Minute Clinic) focusing on preventive healthcare.
-2.  **AIRO AI Assistant**: A global, floating, interactive chatbot widget that answers wellness questions, drives lead generation, and handles emergency redirections.
-3.  **Contact Us Page**: A public page for users to submit wellness and clinical consult inquiries.
-4.  **Admin Portal**: A private administrative portal containing real-time web telemetry analytics and a customer leads CRM data manager.
+1.  **Multi-Domain Experience**: Dynamic routing and styling that adapts based on the visitor's domain (Health vs. Essentials).
+2.  **E-Commerce Engine**: Fully integrated shop with smart cart drawer, product listings, user authentication, and checkout flows.
+3.  **AIRO AI Assistant**: A global, floating, interactive chatbot widget that answers wellness questions, drives lead generation, and handles emergency redirections.
+4.  **Admin Portal**: A private administrative portal containing real-time web telemetry analytics, a customer leads CRM data manager, and an e-commerce order manager.
 
 ---
 
@@ -21,35 +21,41 @@ Features we have implemented:
 Here is where each part of the website lives inside the folders:
 
 ### Page Layouts (Pages you see in the browser)
-*   **Homepage (`/`)**: 
+*   **AIRO Essentials Homepage (`/`)**: 
     *   File: `src/app/page.tsx`
-    *   What it contains: Landing page with hero message, pillars, and diagnostic Health Chair scan blocks.
-*   **AIRO Essentials Page (`/grocery`)**:
+*   **AIRO Health Homepage (`/health`)**:
+    *   File: `src/app/health/page.tsx`
+*   **AIRO Essentials Shop (`/grocery`)**:
     *   File: `src/app/grocery/page.tsx`
-    *   What it contains: Sourcing philosophy and 10 storytelling category cards (Produce, Proteins, Dairy, etc.).
 *   **AIRO Pharmacy Page (`/pharmacy`)**:
     *   File: `src/app/pharmacy/page.tsx`
-    *   What it contains: Longevity, compounding descriptions, and a waitlist form.
 *   **AIRO Minute Clinic Page (`/minute-clinic`)**:
     *   File: `src/app/minute-clinic/page.tsx`
-    *   What it contains: Primary medical services list, diagnostics, and appointments forms.
+*   **AIRO Praana (Health Chair) Page (`/health-chair`)**:
+    *   File: `src/app/health-chair/page.tsx`
+*   **Membership (`/membership`) & About (`/about`)**:
+    *   Files: `src/app/membership/page.tsx`, `src/app/about/page.tsx`
+*   **E-Commerce Portal (`/ecommerce/*`)**:
+    *   Files: `src/app/ecommerce/login/page.tsx`, `src/app/ecommerce/account/page.tsx`
 *   **Contact Us Page (`/contact`)**:
     *   File: `src/app/contact/page.tsx`
-    *   What it contains: Location & support details, along with the interactive contact form.
-*   **Admin Redirect Portal (`/admin`)**:
-    *   File: `src/app/admin/page.tsx`
-    *   What it contains: Auth router that redirects active sessions either to the Dashboard or to the Login page.
-*   **Admin Login Page (`/admin/login`)**:
-    *   File: `src/app/admin/login/page.tsx`
-    *   What it contains: Secure credential submission gate (Username/Password) styled in dark branding.
 *   **Admin Dashboard (`/admin/dashboard`)**:
     *   File: `src/app/admin/dashboard/page.tsx`
-    *   What it contains: Telemetry graphs, geolocated visitors list, active session browsed path tracking, and leads table CRM.
+    *   What it contains: Telemetry graphs, geolocated visitors list, active session tracking, e-commerce manager, and leads table CRM.
 
 ### Common Components (Reused items)
 *   **Global Navigation Header**:
     *   File: `src/components/GlobalHeader.tsx`
-    *   What it contains: The top menu bar. Configured to display path-specific logos dynamically.
+    *   What it contains: The top menu bar. Configured to display path-specific logos and navigate based on domain context dynamically.
+*   **Smart Cart Drawer**:
+    *   File: `src/modules/retail/shared/components/SmartCartDrawer.tsx`
+    *   What it contains: The sliding side-drawer for e-commerce cart management.
+*   **Lead Capture Popup**:
+    *   File: `src/components/LeadCapturePopup.tsx`
+    *   What it contains: Global newsletter/lead generation popover.
+*   **Language Translate Widget**:
+    *   File: `src/components/LanguageTranslateWidget.tsx`
+    *   What it contains: UI control to toggle site translations.
 *   **AIRO AI Assistant Chatbot**:
     *   File: `src/components/AiraChatbot.tsx`
     *   What it contains: The floating assistant UI. Parses conversational inputs (fatigue, weight loss, vitamins) and stores captured emails/phone numbers automatically.
@@ -89,16 +95,35 @@ To access the admin console, navigate to `/admin` in your browser.
 *   **Default Password**: `airohealthadmin2026`
 
 ### How Data Storage Works
-The CRM leads database and pageview analytics are stored directly inside the browser's `localStorage` (under key names `"airo_leads"` and `"airo_analytics"`).
+The CRM leads database, e-commerce products/cart state, and pageview analytics are managed directly inside the browser's `localStorage` and React Context providers (`useCart`, `useAuth`, `useProducts`).
 *   **Why?**: This prevents database configuration failures in Vercel or local deployments. It allows the website to deploy instantly as a static/serverless build for free, with zero database servers to pay for or configure.
-*   **Leads sources**: Data entries are pushed automatically whenever a user submits the public **Contact Form** or when they share an email/phone number inside the **AIRO Chatbot**.
-*   **Resetting/Prepopulating**: If the database is empty, the Admin Dashboard automatically generates mock records (like Alexander Mercer, Genevieve Thorne, etc.) so that the console looks fully populated and professional out-of-the-box.
+*   **Leads sources**: Data entries are pushed automatically whenever a user submits the public **Contact Form**, interacts with the **Lead Capture Popup**, or when they share an email/phone number inside the **AIRO Chatbot**.
 
 ---
 
 ## 5. Beginner's Customization Guide (How to change things)
 
-### A. How to Change Chatbot Dialogues or Keyword Rules
+### A. How to Add, Edit, or Remove Navigation Links
+Navigation is controlled dynamically in **`src/components/GlobalHeader.tsx`**. The header detects the domain the user is on (`isHealthDomain`) and serves distinct link lists.
+
+*   **To edit the links shown in the top menu**:
+    Look at the navigation link arrays at the top of the file:
+    ```typescript
+    const allLinks = [
+      { href: "/", label: "Home" },
+      { href: "/about", label: "About" },
+      { href: "/grocery", label: "Essentials" },
+      // Edit or add default links here!
+    ];
+
+    const healthLinks = [
+      { href: "/health", label: "Health Home" },
+      { href: "/pharmacy", label: "Pharmacy" },
+      // Edit or add health domain specific links here!
+    ];
+    ```
+
+### B. How to Change Chatbot Dialogues or Keyword Rules
 All chatbot logic is located inside **`src/components/AiraChatbot.tsx`**.
 
 *   **To change the initial greeting message**:
@@ -112,31 +137,8 @@ All chatbot logic is located inside **`src/components/AiraChatbot.tsx`**.
       }
     ];
     ```
-*   **To change how the chatbot responds to keywords (e.g. fatigue, weight loss)**:
-    Scroll down to the `getAiraResponse` function. Inside, you will see `if` conditions checking user inputs:
-    ```typescript
-    // Example: If the user types 'tired' or 'sleep'
-    if (input.includes("tired") || input.includes("sleep")) {
-      return {
-        text: "Your custom response text goes here...",
-        chips: ["Option A", "Option B"] // Edit these buttons!
-      };
-    }
-    ```
-
-### B. How to Add, Edit, or Remove Navigation Links
-Navigation is controlled in **`src/components/GlobalHeader.tsx`**.
-
-*   **To edit the links shown in the top menu**:
-    Look at the navigation links array:
-    ```typescript
-    const navLinks = [
-      { href: "/grocery", label: "Essentials" },
-      { href: "/pharmacy", label: "Pharmacy" },
-      { href: "/minute-clinic", label: "MinuteClinic" },
-      { href: "/contact", label: "Contact" }, // Edit this list!
-    ];
-    ```
+*   **To change how the chatbot responds to keywords**:
+    Scroll down to the `getAiraResponse` function. Inside, you will see `if` conditions checking user inputs.
 
 ### C. How to Change Website Colors & Styling
 This project uses **Tailwind CSS** for styling. Styling is written directly inside the `className` attribute of HTML elements.

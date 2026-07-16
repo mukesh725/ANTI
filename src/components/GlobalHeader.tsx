@@ -17,6 +17,7 @@ const allLinks = [
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "MinuteClinic" },
   { href: "/health-chair", label: "AIRO Praana" },
+  { href: "/membership", label: "Membership" },
   { href: "/contact", label: "Contact" },
 ];
 
