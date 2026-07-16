@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, where, addDoc, updateDoc } from 'firebase/firestore';
 import { verifyToken } from '@/lib/membershipAuth';
 
 export const dynamic = 'force-dynamic';
@@ -25,42 +26,48 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'First name and email are required' }, { status: 400 });
     }
 
+    const usersRef = collection(db, 'users');
+
     // Check if user with this email already exists
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser && existingUser.mobile !== decoded.mobile) {
-      return NextResponse.json({ error: 'Email already registered to another number' }, { status: 400 });
+    const emailQuerySnap = await getDocs(query(usersRef, where('email', '==', email)));
+    if (!emailQuerySnap.empty) {
+      const existingUser = emailQuerySnap.docs[0].data();
+      if (existingUser.mobile !== decoded.mobile) {
+        return NextResponse.json({ error: 'Email already registered to another number' }, { status: 400 });
+      }
     }
 
+    const dataToSave = {
+      firstName,
+      lastName,
+      email,
+      gender,
+      dob: dob ? dob : null, // Store as string to avoid date parsing issues
+      occupation,
+      bloodGroup,
+      emergencyContact,
+    };
+
     // Create or update user
-    const user = await prisma.user.upsert({
-      where: { mobile: decoded.mobile },
-      update: {
-        firstName,
-        lastName,
-        email,
-        gender,
-        dob: dob ? new Date(dob) : null,
-        occupation,
-        bloodGroup,
-        emergencyContact,
-      },
-      create: {
-        mobile: decoded.mobile,
-        firstName,
-        lastName,
-        email,
-        gender,
-        dob: dob ? new Date(dob) : null,
-        occupation,
-        bloodGroup,
-        emergencyContact,
-        role: 'CUSTOMER'
-      }
-    });
+    const mobileQuerySnap = await getDocs(query(usersRef, where('mobile', '==', decoded.mobile)));
+    
+    let user;
+    if (!mobileQuerySnap.empty) {
+      const docRef = mobileQuerySnap.docs[0].ref;
+      await updateDoc(docRef, dataToSave);
+      user = { id: docRef.id, mobile: decoded.mobile, firstName };
+    } else {
+      const docRef = await addDoc(usersRef, { 
+        mobile: decoded.mobile, 
+        ...dataToSave, 
+        role: 'CUSTOMER' 
+      });
+      user = { id: docRef.id, mobile: decoded.mobile, firstName };
+    }
 
     return NextResponse.json({ success: true, user: { id: user.id, mobile: user.mobile, firstName: user.firstName } });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration Error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Internal server error', details: error?.stack }, { status: 500 });
   }
 }

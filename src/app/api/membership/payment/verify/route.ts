@@ -1,18 +1,33 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, doc, getDoc, query, where, addDoc, updateDoc, runTransaction } from 'firebase/firestore';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 import QRCode from 'qrcode';
 import { verifyToken } from '@/lib/membershipAuth';
 
-// Helper to generate padded Membership ID
+// Helper to generate padded Membership ID using Firestore transactions
 async function generateMembershipId() {
-  // Simple transaction-safe approach: count existing and add 1
-  // In highly concurrent production, use a sequence or auto-incrementing integer mapped to a string
-  const count = await prisma.membership.count();
-  const nextNumber = count + 1;
-  return `AIRO${nextNumber.toString().padStart(9, '0')}`;
+  const counterRef = doc(db, 'counters', 'membershipIdCounter');
+  
+  try {
+    const nextNumber = await runTransaction(db, async (transaction) => {
+      const counterDoc = await transaction.get(counterRef);
+      if (!counterDoc.exists()) {
+        transaction.set(counterRef, { count: 1 });
+        return 1;
+      }
+      const newCount = (counterDoc.data().count || 0) + 1;
+      transaction.update(counterRef, { count: newCount });
+      return newCount;
+    });
+    return `AIRO${nextNumber.toString().padStart(9, '0')}`;
+  } catch (error) {
+    console.error("Counter transaction failed: ", error);
+    // Fallback if transaction fails
+    return `AIRO${Date.now().toString().slice(-9)}`;
+  }
 }
 
 export async function POST(request: Request) {
@@ -48,24 +63,28 @@ export async function POST(request: Request) {
       .digest('hex');
 
     if (generated_signature !== razorpay_signature) {
-      await prisma.membershipPayment.update({
-        where: { id: paymentRecordId },
-        data: { status: 'FAILED' }
-      });
+      await updateDoc(doc(db, 'membershipPayments', paymentRecordId), { status: 'FAILED' });
       return NextResponse.json({ error: 'Payment verification failed' }, { status: 400 });
     }
 
-    // Check if membership already exists for this user to avoid duplicates
-    const user = await prisma.user.findUnique({ where: { mobile: decoded.mobile } });
-    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    // Check if user exists
+    const usersRef = collection(db, 'users');
+    const userSnapshot = await getDocs(query(usersRef, where('mobile', '==', decoded.mobile)));
+    if (userSnapshot.empty) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    const user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() } as any;
 
-    const existingMembership = await prisma.membership.findFirst({ where: { userId: user.id } });
-    if (existingMembership) {
+    // Check for existing membership
+    const membershipsRef = collection(db, 'memberships');
+    const existingMembership = await getDocs(query(membershipsRef, where('userId', '==', user.id)));
+    if (!existingMembership.empty) {
       return NextResponse.json({ error: 'User already has a membership' }, { status: 400 });
     }
 
-    const plan = await prisma.membershipPlan.findUnique({ where: { id: planId } });
-    if (!plan) return NextResponse.json({ error: 'Plan not found' }, { status: 404 });
+    // Get Plan
+    const planRef = doc(db, 'membershipPlans', planId);
+    const planSnapshot = await getDoc(planRef);
+    if (!planSnapshot.exists()) return NextResponse.json({ error: 'Plan not found' }, { status: 404 });
+    const plan = planSnapshot.data();
 
     // Generate Membership ID
     const membershipId = await generateMembershipId();
@@ -76,47 +95,45 @@ export async function POST(request: Request) {
     // Calculate Dates
     const startDate = new Date();
     const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + plan.duration);
+    expiryDate.setDate(expiryDate.getDate() + (plan.durationDays || 365));
 
-    // Run in a transaction
-    const result = await prisma.$transaction(async (tx) => {
-      // 1. Create Membership
-      const newMembership = await tx.membership.create({
-        data: {
-          membershipId,
-          userId: user.id,
-          planId: plan.id,
-          status: 'ACTIVE',
-          startDate,
-          expiryDate,
-          qrCode: qrCodeDataUrl,
-          barcode: membershipId // Barcode is often just the string representation rendered by frontend
-        }
-      });
-
-      // 2. Update Payment Record
-      await tx.membershipPayment.update({
-        where: { id: paymentRecordId },
-        data: {
-          status: 'CAPTURED',
-          razorpayPaymentId,
-          paymentDate: new Date(),
-          membershipId: newMembership.id
-        }
-      });
-
-      // 3. Create Transaction Record
-      await tx.membershipTransaction.create({
-        data: {
-          membershipId: newMembership.id,
-          type: 'NEW',
-          amount: plan.price,
-          remarks: `New membership via Razorpay ${razorpay_payment_id}`
-        }
-      });
-
-      return newMembership;
+    // 1. Create Membership
+    const membershipDoc = await addDoc(collection(db, 'memberships'), {
+      membershipId,
+      userId: user.id,
+      planId: planSnapshot.id,
+      status: 'ACTIVE',
+      startDate: startDate.toISOString(),
+      expiryDate: expiryDate.toISOString(),
+      qrCode: qrCodeDataUrl,
+      barcode: membershipId,
+      createdAt: new Date().toISOString()
     });
+
+    // 2. Update Payment Record
+    await updateDoc(doc(db, 'membershipPayments', paymentRecordId), {
+      status: 'CAPTURED',
+      razorpayPaymentId,
+      paymentDate: new Date().toISOString(),
+      membershipId: membershipDoc.id
+    });
+
+    // 3. Create Transaction Record
+    await addDoc(collection(db, 'membershipTransactions'), {
+      membershipId: membershipDoc.id,
+      type: 'NEW',
+      amount: plan.price,
+      remarks: `New membership via Razorpay ${razorpay_payment_id}`,
+      createdAt: new Date().toISOString()
+    });
+
+    const result = {
+      id: membershipDoc.id,
+      membershipId,
+      status: 'ACTIVE',
+      startDate,
+      expiryDate
+    };
 
     return NextResponse.json({ success: true, membership: result });
   } catch (error) {

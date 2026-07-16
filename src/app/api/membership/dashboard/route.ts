@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 
 export const dynamic = 'force-dynamic';
 import { verifyToken } from '@/lib/membershipAuth';
@@ -18,25 +19,44 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({ 
-      where: { mobile: decoded.mobile },
-      include: {
-        memberships: {
-          include: {
-            plan: true,
-            transactions: {
-              orderBy: { createdAt: 'desc' }
-            }
-          }
-        }
-      }
-    });
-
-    if (!user) {
+    // 1. Get User
+    const usersRef = collection(db, 'users');
+    const userSnapshot = await getDocs(query(usersRef, where('mobile', '==', decoded.mobile)));
+    
+    if (userSnapshot.empty) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+    
+    const userDoc = userSnapshot.docs[0];
+    const user = { id: userDoc.id, ...userDoc.data() } as any;
 
-    const membership = user.memberships[0];
+    // 2. Get Membership
+    const membershipsRef = collection(db, 'memberships');
+    const membershipSnapshot = await getDocs(
+      query(membershipsRef, where('userId', '==', user.id))
+    );
+
+    let membership = null;
+    if (!membershipSnapshot.empty) {
+      const memDoc = membershipSnapshot.docs[0];
+      membership = { id: memDoc.id, ...memDoc.data() } as any;
+
+      // 3. Get Plan details
+      if (membership.planId) {
+        const plansRef = collection(db, 'membershipPlans');
+        const planSnapshot = await getDocs(query(plansRef, where('__name__', '==', membership.planId)));
+        if (!planSnapshot.empty) {
+          membership.plan = { id: planSnapshot.docs[0].id, ...planSnapshot.docs[0].data() };
+        }
+      }
+
+      // 4. Get Transactions
+      const txRef = collection(db, 'membershipTransactions');
+      const txSnapshot = await getDocs(
+        query(txRef, where('membershipId', '==', membership.id), orderBy('createdAt', 'desc'))
+      );
+      membership.transactions = txSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
 
     return NextResponse.json({ 
       success: true, 

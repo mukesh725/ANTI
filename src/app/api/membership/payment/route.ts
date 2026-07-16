@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, doc, getDoc, query, where, addDoc } from 'firebase/firestore';
 import { razorpay } from '@/lib/razorpay';
 import { verifyToken } from '@/lib/membershipAuth';
 
@@ -19,20 +20,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({ where: { mobile: decoded.mobile } });
-    if (!user) {
+    const usersRef = collection(db, 'users');
+    const userSnapshot = await getDocs(query(usersRef, where('mobile', '==', decoded.mobile)));
+    if (userSnapshot.empty) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+    const userDoc = userSnapshot.docs[0];
+    const user = { id: userDoc.id, ...userDoc.data() } as any;
 
     const { planId } = await request.json();
     if (!planId) {
       return NextResponse.json({ error: 'Plan ID required' }, { status: 400 });
     }
 
-    const plan = await prisma.membershipPlan.findUnique({ where: { id: planId } });
-    if (!plan) {
+    const planRef = doc(db, 'membershipPlans', planId);
+    const planSnapshot = await getDoc(planRef);
+    if (!planSnapshot.exists()) {
       return NextResponse.json({ error: 'Plan not found' }, { status: 404 });
     }
+    const plan = planSnapshot.data();
 
     const amountInPaise = Math.round(plan.price * 100);
 
@@ -46,14 +52,13 @@ export async function POST(request: Request) {
     const order = await razorpay.orders.create(options);
 
     // Create PaymentProviderStatus pending record in our DB
-    const paymentRecord = await prisma.membershipPayment.create({
-      data: {
-        userId: user.id,
-        amount: plan.price,
-        currency: 'INR',
-        status: 'CREATED',
-        razorpayOrderId: order.id,
-      }
+    const paymentRecordRef = await addDoc(collection(db, 'membershipPayments'), {
+      userId: user.id,
+      amount: plan.price,
+      currency: 'INR',
+      status: 'CREATED',
+      razorpayOrderId: order.id,
+      createdAt: new Date().toISOString()
     });
 
     return NextResponse.json({
@@ -61,7 +66,7 @@ export async function POST(request: Request) {
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
-      paymentRecordId: paymentRecord.id
+      paymentRecordId: paymentRecordRef.id
     });
   } catch (error) {
     console.error('Payment Error:', error);

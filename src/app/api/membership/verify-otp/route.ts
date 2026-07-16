@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+
 export const dynamic = 'force-dynamic';
 import { validateOtp, signToken } from '@/lib/membershipAuth';
-import { prisma } from '@/lib/prisma'; // Assuming we need to export prisma
 
 export async function POST(request: Request) {
   try {
@@ -18,18 +20,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid or expired OTP' }, { status: 400 });
     }
 
-    // Check if user exists
-    // We need to import prisma client. I'll assume it exists at '@/lib/prisma'
-    // For now I'll create a token that just holds the mobile number.
+    // Create a token that holds the mobile number.
     const token = signToken({ mobile });
 
-    // Try to find existing user
+    // Try to find existing user in Firebase
     let isNewUser = true;
     try {
-      const user = await prisma.user.findUnique({ where: { mobile } });
-      if (user) isNewUser = false;
+      const usersRef = collection(db, 'users');
+      const userSnapshot = await getDocs(query(usersRef, where('mobile', '==', mobile)));
+      if (!userSnapshot.empty) isNewUser = false;
     } catch (e) {
-      console.error("Prisma error checking user:", e);
+      console.error("Firebase error checking user:", e);
     }
 
     return NextResponse.json({ 

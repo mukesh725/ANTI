@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    let plans = await prisma.membershipPlan.findMany({
-      where: { status: 'ACTIVE' },
-      orderBy: { displayOrder: 'asc' }
-    });
+    const plansRef = collection(db, 'membershipPlans');
+    const q = query(plansRef, where('status', '==', 'ACTIVE'), orderBy('displayOrder', 'asc'));
+    const snapshot = await getDocs(q);
+    
+    let plans = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
     if (!plans || plans.length === 0) {
       // Fallback to hardcoded plans if database is not seeded
