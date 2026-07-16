@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
+
+export const dynamic = 'force-dynamic';
 import QRCode from 'qrcode';
 import { verifyToken } from '@/lib/membershipAuth';
 

@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 import { validateOtp, signToken } from '@/lib/membershipAuth';
 import { prisma } from '@/lib/prisma'; // Assuming we need to export prisma
 
