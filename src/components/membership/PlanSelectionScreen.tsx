@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Script from 'next/script';
 import { Check } from 'lucide-react';
 
 declare global {
@@ -105,7 +104,6 @@ export default function PlanSelectionScreen({
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-semibold text-[#006537] mb-4">Choose Your Plan</h2>
@@ -118,31 +116,33 @@ export default function PlanSelectionScreen({
           <div className="flex justify-center"><div className="animate-pulse flex gap-6"><div className="w-80 h-[500px] bg-gray-200 rounded-3xl"></div><div className="w-80 h-[500px] bg-gray-200 rounded-3xl"></div></div></div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-start">
-            {plans.map((plan, i) => (
+            {Array.isArray(plans) && plans.map((plan, i) => {
+              if (!plan) return null;
+              return (
               <motion.div 
-                key={plan.id}
+                key={plan.id || i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full relative overflow-hidden group hover:border-[#006537] hover:shadow-md transition-all"
               >
-                {plan.name.toLowerCase().includes('premium') && (
+                {plan.name?.toLowerCase().includes('premium') && (
                   <div className="absolute top-0 inset-x-0 bg-[#006537] text-white text-xs font-bold text-center py-1.5 uppercase tracking-widest">
                     Most Popular
                   </div>
                 )}
                 <div className="mb-8 mt-4">
-                  <h3 className="text-2xl font-semibold mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-semibold mb-2">{plan.name || 'AIRO Plan'}</h3>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold">₹{plan.price}</span>
-                    <span className="text-gray-500">/ {plan.duration} days</span>
+                    <span className="text-4xl font-bold">₹{plan.price || 0}</span>
+                    <span className="text-gray-500">/ {plan.duration || 365} days</span>
                   </div>
                   {plan.description && <p className="text-gray-500 mt-4 text-sm">{plan.description}</p>}
                 </div>
 
                 <div className="flex-1">
                   <ul className="space-y-4 mb-8">
-                    {plan.features.map((feature: string, idx: number) => (
+                    {Array.isArray(plan.features) && plan.features.map((feature: string, idx: number) => (
                       <li key={idx} className="flex items-start gap-3 text-sm text-gray-700">
                         <Check size={18} className="text-[#006537] shrink-0 mt-0.5" />
                         <span>{feature}</span>
@@ -155,7 +155,7 @@ export default function PlanSelectionScreen({
                   onClick={() => handleJoin(plan)}
                   disabled={processing}
                   className={`w-full py-4 rounded-xl font-medium transition-colors ${
-                    plan.name.toLowerCase().includes('premium') 
+                    plan.name?.toLowerCase().includes('premium') 
                       ? 'bg-[#006537] text-white hover:bg-[#004e2a]' 
                       : 'bg-[#F8F7F4] text-[#006537] hover:bg-[#e8e6e1]'
                   } disabled:opacity-50`}
@@ -163,7 +163,7 @@ export default function PlanSelectionScreen({
                   {processing ? 'Processing...' : 'Choose Plan'}
                 </button>
               </motion.div>
-            ))}
+            )})}
           </div>
         )}
       </div>

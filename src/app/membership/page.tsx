@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Script from 'next/script';
 import LandingScreen from '@/components/membership/LandingScreen';
 import MobileInputScreen from '@/components/membership/MobileInputScreen';
 import OtpVerificationScreen from '@/components/membership/OtpVerificationScreen';
@@ -8,6 +9,7 @@ import AccountDetailsScreen from '@/components/membership/AccountDetailsScreen';
 import PlanSelectionScreen from '@/components/membership/PlanSelectionScreen';
 import PaymentSuccessScreen from '@/components/membership/PaymentSuccessScreen';
 import MembershipDashboard from '@/components/membership/MembershipDashboard';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export type MembershipStep = 
   | 'LANDING' 
@@ -62,7 +64,10 @@ export default function MembershipPage() {
 
   return (
     <div className="min-h-screen bg-[#F8F7F4]">
-      {renderStep()}
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
+      <ErrorBoundary>
+        {renderStep()}
+      </ErrorBoundary>
     </div>
   );
 }
