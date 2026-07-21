@@ -52,6 +52,32 @@ export default function PlanSelectionScreen({
         throw new Error(data.error || 'Failed to initialize payment');
       }
 
+      // 1.5. Bypass Razorpay if dummy key is used
+      if (data.orderId.startsWith('dummy_')) {
+        const verifyRes = await fetch('/api/membership/payment/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            razorpay_order_id: data.orderId,
+            razorpay_payment_id: 'dummy_payment_id',
+            razorpay_signature: 'dummy_signature',
+            paymentRecordId: data.paymentRecordId,
+            planId: plan.id
+          })
+        });
+        const verifyData = await verifyRes.json();
+        if (verifyRes.ok && verifyData.success) {
+          onPaymentSuccess({ plan, membership: verifyData.membership });
+        } else {
+          setError(verifyData.error || 'Payment verification failed');
+          setProcessing(false);
+        }
+        return;
+      }
+
       // 2. Open Razorpay
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_dummy_key_id',

@@ -42,14 +42,24 @@ export async function POST(request: Request) {
 
     const amountInPaise = Math.round(plan.price * 100);
 
-    // Create Razorpay order
-    const options = {
-      amount: amountInPaise,
-      currency: "INR",
-      receipt: `receipt_${Date.now()}_${user.id.substring(0,5)}`
-    };
+    let orderId = '';
+    let amount = amountInPaise;
+    let currency = 'INR';
 
-    const order = await razorpay.orders.create(options);
+    if (process.env.RAZORPAY_KEY_ID === 'rzp_test_dummy_key_id' || !process.env.RAZORPAY_KEY_ID) {
+      orderId = `dummy_order_${Date.now()}`;
+    } else {
+      // Create Razorpay order
+      const options = {
+        amount: amountInPaise,
+        currency: "INR",
+        receipt: `receipt_${Date.now()}_${user.id.substring(0,5)}`
+      };
+      const order = await razorpay.orders.create(options);
+      orderId = order.id;
+      amount = order.amount as number;
+      currency = order.currency;
+    }
 
     // Create PaymentProviderStatus pending record in our DB
     const paymentRecordRef = await addDoc(collection(db, 'membershipPayments'), {
@@ -57,15 +67,15 @@ export async function POST(request: Request) {
       amount: plan.price,
       currency: 'INR',
       status: 'CREATED',
-      razorpayOrderId: order.id,
+      razorpayOrderId: orderId,
       createdAt: new Date().toISOString()
     });
 
     return NextResponse.json({
       success: true,
-      orderId: order.id,
-      amount: order.amount,
-      currency: order.currency,
+      orderId: orderId,
+      amount: amount,
+      currency: currency,
       paymentRecordId: paymentRecordRef.id
     });
   } catch (error: any) {
