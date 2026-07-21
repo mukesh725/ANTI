@@ -68,8 +68,8 @@ export async function POST(request: Request) {
       currency: order.currency,
       paymentRecordId: paymentRecordRef.id
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Payment Error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: error?.error?.description || error?.description || error?.message || 'Internal server error' }, { status: 500 });
   }
 }
