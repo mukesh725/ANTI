@@ -21,6 +21,11 @@ export default function CardDesignerPage() {
   const [selectTextColor, setSelectTextColor] = useState('#1e293b');
   const [selectNameColor, setSelectNameColor] = useState('#0f172a');
   
+  // Custom Backgrounds
+  const [signatureBgUrl, setSignatureBgUrl] = useState('');
+  const [preferredBgUrl, setPreferredBgUrl] = useState('');
+  const [selectBgUrl, setSelectBgUrl] = useState('');
+  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
@@ -44,6 +49,10 @@ export default function CardDesignerPage() {
           if (layout.preferredNameColor) setPreferredNameColor(layout.preferredNameColor);
           if (layout.selectTextColor) setSelectTextColor(layout.selectTextColor);
           if (layout.selectNameColor) setSelectNameColor(layout.selectNameColor);
+
+          if (layout.signatureBgUrl) setSignatureBgUrl(layout.signatureBgUrl);
+          if (layout.preferredBgUrl) setPreferredBgUrl(layout.preferredBgUrl);
+          if (layout.selectBgUrl) setSelectBgUrl(layout.selectBgUrl);
         }
       } catch (err) {
         console.error('Error loading settings', err);
@@ -69,8 +78,11 @@ export default function CardDesignerPage() {
         preferredTextColor,
         preferredNameColor,
         selectTextColor,
-        selectNameColor
-      });
+        selectNameColor,
+        signatureBgUrl,
+        preferredBgUrl,
+        selectBgUrl
+      }, { merge: true });
       setMessage('Settings saved successfully!');
     } catch (err) {
       console.error(err);
@@ -98,12 +110,44 @@ export default function CardDesignerPage() {
     }
   };
 
+  const handleUploadBg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setMessage('Uploading template image...');
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/cms/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setMessage('Upload successful! Remember to click Save.');
+        if (tier === 'Signature') setSignatureBgUrl(data.url);
+        if (tier === 'Preferred') setPreferredBgUrl(data.url);
+        if (tier === 'Select') setSelectBgUrl(data.url);
+      } else {
+        setMessage('Upload failed.');
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage('Upload error.');
+    }
+  };
+
   if (loading) return <div className="p-10 text-white">Loading...</div>;
 
   // Determine current colors based on selected tier preview
   const currentTextColor = tier === 'Signature' ? signatureTextColor : tier === 'Preferred' ? preferredTextColor : selectTextColor;
   const currentNameColor = tier === 'Signature' ? signatureNameColor : tier === 'Preferred' ? preferredNameColor : selectNameColor;
-  const templateImage = tier === 'Signature' ? '/templates/signature.jpg' : tier === 'Preferred' ? '/templates/preferred.jpg' : '/templates/select.png';
+  
+  let templateImage = tier === 'Signature' ? '/templates/signature.jpg' : tier === 'Preferred' ? '/templates/preferred.jpg' : '/templates/select.png';
+  if (tier === 'Signature' && signatureBgUrl) templateImage = signatureBgUrl;
+  if (tier === 'Preferred' && preferredBgUrl) templateImage = preferredBgUrl;
+  if (tier === 'Select' && selectBgUrl) templateImage = selectBgUrl;
 
   return (
     <div className="min-h-screen bg-neutral-900 p-8">
@@ -126,6 +170,19 @@ export default function CardDesignerPage() {
                 {t}
               </button>
             ))}
+          </div>
+          
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold">Custom Background Image</label>
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleUploadBg}
+              className="text-xs file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-500 file:text-white hover:file:bg-indigo-600 cursor-pointer"
+            />
+            {tier === 'Signature' && signatureBgUrl && <div className="text-xs text-green-400 truncate">Using custom: {signatureBgUrl}</div>}
+            {tier === 'Preferred' && preferredBgUrl && <div className="text-xs text-green-400 truncate">Using custom: {preferredBgUrl}</div>}
+            {tier === 'Select' && selectBgUrl && <div className="text-xs text-green-400 truncate">Using custom: {selectBgUrl}</div>}
           </div>
 
           {/* Positioning */}

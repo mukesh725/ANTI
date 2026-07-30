@@ -109,15 +109,35 @@ export async function generateDigitalMembershipCard(
   const essentialsLogoUrl = await getLogoDataUrl('airo-essentials-logo.png');
   const healthLogoUrl = await getLogoDataUrl('airo-health-logo.png');
 
+  // Try fetching dynamic layout overrides from Firestore
+  let layout: any = null;
+  try {
+    const layoutRef = doc(db, 'settings', 'cardLayout');
+    const layoutSnap = await getDoc(layoutRef);
+    if (layoutSnap.exists()) {
+      layout = layoutSnap.data();
+    }
+  } catch (e) {
+    console.error('Failed to fetch card layout settings', e);
+  }
+
   let activeTemplateUrl = '';
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
   let templatePath = '';
   if (isSignature) {
-    templatePath = `${baseUrl}/templates/signature.jpg`;
+    templatePath = layout?.signatureBgUrl ? layout.signatureBgUrl : `${baseUrl}/templates/signature.jpg`;
   } else if (isPreferred) {
-    templatePath = `${baseUrl}/templates/preferred.jpg`;
+    templatePath = layout?.preferredBgUrl ? layout.preferredBgUrl : `${baseUrl}/templates/preferred.jpg`;
   } else if (isSelect) {
-    templatePath = `${baseUrl}/templates/select.jpg`;
+    templatePath = layout?.selectBgUrl ? layout.selectBgUrl : `${baseUrl}/templates/select.jpg`; // Wait wait wait, it should be select.png! The user previously uploaded select.png!
+    if (!layout?.selectBgUrl && templatePath.endsWith('select.jpg')) {
+      templatePath = `${baseUrl}/templates/select.png`;
+    }
+  }
+
+  // Ensure absolute URLs if the layout bg url is just a relative path
+  if (templatePath && templatePath.startsWith('/')) {
+    templatePath = `${baseUrl}${templatePath}`;
   }
 
   // Fetch the template image and convert it to a Base64 data URL so it renders inside the SVG
@@ -174,26 +194,19 @@ export async function generateDigitalMembershipCard(
   let qrTranslateY = 560;
   let qrTranslateX = 590;
 
-  // Try fetching dynamic layout overrides from Firestore
-  try {
-    const layoutRef = doc(db, 'settings', 'cardLayout');
-    const layoutSnap = await getDoc(layoutRef);
-    if (layoutSnap.exists()) {
-      const layout = layoutSnap.data();
-      if (layout.textTranslateY !== undefined) textTranslateY = Number(layout.textTranslateY);
-      if (layout.textTranslateX !== undefined) textTranslateX = Number(layout.textTranslateX);
-      if (layout.qrTranslateY !== undefined) qrTranslateY = Number(layout.qrTranslateY);
-      if (layout.qrTranslateX !== undefined) qrTranslateX = Number(layout.qrTranslateX);
-      
-      if (isSignature && layout.signatureTextColor) textColor = layout.signatureTextColor;
-      if (isSignature && layout.signatureNameColor) textNameColor = layout.signatureNameColor;
-      if (isPreferred && layout.preferredTextColor) textColor = layout.preferredTextColor;
-      if (isPreferred && layout.preferredNameColor) textNameColor = layout.preferredNameColor;
-      if (isSelect && layout.selectTextColor) textColor = layout.selectTextColor;
-      if (isSelect && layout.selectNameColor) textNameColor = layout.selectNameColor;
-    }
-  } catch (e) {
-    console.error('Failed to fetch card layout settings', e);
+  // Apply dynamic layout overrides if available
+  if (layout) {
+    if (layout.textTranslateY !== undefined) textTranslateY = Number(layout.textTranslateY);
+    if (layout.textTranslateX !== undefined) textTranslateX = Number(layout.textTranslateX);
+    if (layout.qrTranslateY !== undefined) qrTranslateY = Number(layout.qrTranslateY);
+    if (layout.qrTranslateX !== undefined) qrTranslateX = Number(layout.qrTranslateX);
+    
+    if (isSignature && layout.signatureTextColor) textColor = layout.signatureTextColor;
+    if (isSignature && layout.signatureNameColor) textNameColor = layout.signatureNameColor;
+    if (isPreferred && layout.preferredTextColor) textColor = layout.preferredTextColor;
+    if (isPreferred && layout.preferredNameColor) textNameColor = layout.preferredNameColor;
+    if (isSelect && layout.selectTextColor) textColor = layout.selectTextColor;
+    if (isSelect && layout.selectNameColor) textNameColor = layout.selectNameColor;
   }
 
   // Format valid until date e.g. "July 28 2027"
