@@ -67,6 +67,7 @@ export async function generateDigitalMembershipCard(
 ): Promise<string> {
   
   if (!templates) {
+    /*
     try {
       const docRef = doc(db, 'global_settings', 'card_templates');
       const docSnap = await getDoc(docRef);
@@ -76,6 +77,7 @@ export async function generateDigitalMembershipCard(
     } catch (e) {
       console.error('Failed to fetch card templates', e);
     }
+    */
   }
 
   const memberName = `${member.firstName || ''} ${member.lastName || ''}`.trim() || 'Valued Member';
@@ -205,7 +207,7 @@ export async function generateDigitalMembershipCard(
 
       <!-- Outer Background Card -->
       ${activeTemplateUrl ? 
-        `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
+        `<image href="${activeTemplateUrl}?v=${Date.now()}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
         : 
         `<rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
       }
