@@ -16,7 +16,7 @@ export async function generateMemberQRCode(textOrUrl: string): Promise<string> {
       width: 300,
       color: {
         dark: '#000000',
-        light: '#FFFFFF',
+        light: '#00000000', // transparent
       },
     });
     return qrDataUrl;
@@ -100,41 +100,6 @@ export async function generateDigitalMembershipCard(
   const isPreferred = displayPlanTitle.includes('Preferred');
   const isSelect = displayPlanTitle.includes('Select') || (!isSignature && !isPreferred);
 
-  let outerBgFill = 'url(#selectOuterGrad)';
-  let innerBgFill = 'url(#selectInnerGrad)';
-  let outerStroke = '#e5e7eb';
-  let innerStroke = '#f0f0f0';
-  let logoFilter = 'none';
-  let textColor = '#6b7280';
-  let textNameColor = '#374151';
-
-  if (isSignature) {
-    outerBgFill = 'url(#sigOuterGrad)';
-    innerBgFill = 'url(#sigInnerGrad)';
-    outerStroke = '#ca8a04';
-    innerStroke = '#eab308';
-    logoFilter = 'url(#darkBrownLogo)';
-    textColor = '#4a3b1a';
-    textNameColor = '#29200e';
-  } else if (isPreferred) {
-    outerBgFill = 'url(#prefOuterGrad)';
-    innerBgFill = 'url(#prefInnerGrad)';
-    outerStroke = '#9ca3af';
-    innerStroke = '#d1d5db';
-    logoFilter = 'url(#blackLogo)';
-    textColor = '#3f3f46';
-    textNameColor = '#18181b';
-  }
-
-  // Format valid until date e.g. "July 28 2027"
-  const expiryDateObj = member.expiryDate ? new Date(member.expiryDate) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
-  const formattedExpiry = expiryDateObj.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  }).replace(',', '');
-
-  
   // Base64 logo data URLs
   const airoOneLogoUrl = await getLogoDataUrl('airo-one-logo.png');
   const essentialsLogoUrl = await getLogoDataUrl('airo-essentials-logo.png');
@@ -150,6 +115,39 @@ export async function generateDigitalMembershipCard(
     activeTemplateUrl = templates?.Select ? templates.Select : `${baseUrl}/templates/select.jpg`;
   }
 
+  let outerBgFill = 'url(#selectOuterGrad)';
+  let innerBgFill = 'url(#selectInnerGrad)';
+  let outerStroke = 'rgba(255,255,255,0.2)';
+  let innerStroke = '#f0f0f0';
+  let logoFilter = 'none';
+  let textColor = activeTemplateUrl ? '#1e293b' : '#ffffff';
+  let textNameColor = activeTemplateUrl ? '#0f172a' : '#ffffff';
+
+  if (isSignature) {
+    outerBgFill = 'url(#sigOuterGrad)';
+    innerBgFill = 'url(#sigInnerGrad)';
+    outerStroke = '#ca8a04';
+    innerStroke = '#eab308';
+    logoFilter = 'url(#darkBrownLogo)';
+    textColor = '#4a3b1a';
+    textNameColor = '#29200e';
+  } else if (isPreferred) {
+    outerBgFill = 'url(#prefOuterGrad)';
+    innerBgFill = 'url(#prefInnerGrad)';
+    outerStroke = 'rgba(255,255,255,0.8)';
+    innerStroke = '#d1d5db';
+    logoFilter = 'url(#blackLogo)';
+    textColor = '#3f3f46';
+    textNameColor = '#18181b';
+  }
+
+  // Format valid until date e.g. "July 28 2027"
+  const expiryDateObj = member.expiryDate ? new Date(member.expiryDate) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+  const formattedExpiry = expiryDateObj.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).replace(',', '');
 
   // SVG graphic matching the exact card design
   const svgContent = `
@@ -160,24 +158,15 @@ export async function generateDigitalMembershipCard(
           <rect x="20" y="20" width="860" height="880" rx="44" />
         </clipPath>
         <style>
-
-          .bg-container { fill: #f3f4f6; rx: 40px; }
-          .white-card { fill: #ffffff; rx: 32px; filter: drop-shadow(0px 16px 32px rgba(0, 0, 0, 0.08)); }
-          
           .member-name { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 32px; fill: ${textNameColor}; }
           .member-plan { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 400; font-size: 24px; fill: ${textColor}; }
           .lbl { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 500; font-size: 16px; fill: ${textColor}; }
           .val { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 20px; fill: ${textNameColor}; }
-          
           .scan-lbl { font-family: 'Times New Roman', 'Georgia', serif; font-weight: 700; font-size: 13px; fill: #111827; letter-spacing: 1px; }
-          .top-plan-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 2px; fill: ${textColor}; }
         </style>
-
         <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
           <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.12"/>
         </filter>
-
-        <!-- Gradients -->
         <linearGradient id="selectOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#ffffff" />
           <stop offset="100%" stop-color="#f3f4f6" />
@@ -186,7 +175,6 @@ export async function generateDigitalMembershipCard(
           <stop offset="0%" stop-color="#ffffff" />
           <stop offset="100%" stop-color="#ffffff" />
         </linearGradient>
-
         <linearGradient id="prefOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#e5e7eb" />
           <stop offset="50%" stop-color="#d1d5db" />
@@ -196,7 +184,6 @@ export async function generateDigitalMembershipCard(
           <stop offset="0%" stop-color="#f9fafb" />
           <stop offset="100%" stop-color="#e5e7eb" />
         </linearGradient>
-
         <linearGradient id="sigOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#fde047" />
           <stop offset="30%" stop-color="#eab308" />
@@ -208,8 +195,6 @@ export async function generateDigitalMembershipCard(
         </linearGradient>
       </defs>
 
-      
-      
       <!-- Outer Background Card -->
       ${activeTemplateUrl ? 
         `<image href="${activeTemplateUrl}" x="20" y="20" width="860" height="880" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
@@ -217,48 +202,38 @@ export async function generateDigitalMembershipCard(
         `<rect x="20" y="20" width="860" height="880" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
       }
 
-      <!-- Top Branding: AIRO 1 Custom Logo -->
+      <!-- Top Branding -->
       <image href="${airoOneLogoUrl}" x="150" y="70" width="600" height="180" preserveAspectRatio="xMidYMid meet" />
 
       <!-- Inner Digital Membership Card -->
+      ${activeTemplateUrl ? 
+        `<rect x="90" y="470" width="720" height="350" rx="12" fill="#ffffff" />`
+        : 
+        `<rect x="75" y="280" width="750" height="550" rx="36" fill="${innerBgFill}" filter="url(#cardShadow)" stroke="${innerStroke}" stroke-width="1.5" />`
+      }
 
-      <!-- Inner Digital Membership Card -->
-      <rect x="75" y="280" width="750" height="550" rx="36" fill="${innerBgFill}" filter="url(#cardShadow)" stroke="${innerStroke}" stroke-width="1.5" />
+      <!-- Inner Logos -->
+      ${activeTemplateUrl ? '' : `
+      <image href="${essentialsLogoUrl}" x="120" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
+      <image href="${healthLogoUrl}" x="480" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
+      `}
 
-      <!-- Top Logos Section inside Card -->
-      <g transform="translate(140, 330)">
-        <!-- AIRO Essentials Green Logo -->
-        <image href="${essentialsLogoUrl}" x="0" y="5" width="230" height="90" preserveAspectRatio="xMinYMid meet" />
-        
-        <!-- AIRO Health Red Logo -->
-        <image href="${healthLogoUrl}" x="340" y="-12" width="300" height="120" preserveAspectRatio="xMinYMid meet" />
-      </g>
-
-      <!-- Member Details (Bottom Left) -->
+      <!-- Member Details -->
       <g transform="translate(130, 560)">
-        <!-- Full Name -->
         <text x="0" y="0" class="member-name">${memberName}</text>
-        
-        <!-- Plan Title -->
         <text x="0" y="38" class="member-plan">${displayPlanTitle}</text>
-
-        <!-- Two Column Metadata -->
         <g transform="translate(0, 100)">
-          <!-- Column 1: One ID -->
           <text x="0" y="0" class="lbl">One ID</text>
           <text x="0" y="28" class="val">${displayId}</text>
-
-          <!-- Column 2: Valid Until -->
           <text x="170" y="0" class="lbl">Valid Until</text>
           <text x="170" y="28" class="val">${formattedExpiry}</text>
         </g>
       </g>
 
-      <!-- QR Code Container (Bottom Right) -->
+      <!-- QR Code Container -->
       <g transform="translate(590, 530)">
-        <text x="90" y="0" class="scan-lbl" text-anchor="middle">SCAN TO VERIFY</text>
-        <rect x="0" y="15" width="180" height="180" rx="8" fill="#ffffff" />
-        <image href="${qrCodeDataUrl}" x="0" y="15" width="180" height="180" />
+        <text x="50" y="-15" class="scan-lbl" text-anchor="middle">SCAN TO VERIFY</text>
+        <image href="${qrCodeDataUrl}" x="-10" y="-10" width="120" height="120" />
       </g>
 
     </svg>
