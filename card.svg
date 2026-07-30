@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1425" width="900" height="1425">
+      
+      <defs>
+        <clipPath id="cardClip">
+          <rect x="20" y="20" width="860" height="1385" rx="44" />
+        </clipPath>
+        <style>
+          .member-name { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 32px; fill: #0f172a; }
+          .member-plan { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 400; font-size: 24px; fill: #1e293b; }
+          .lbl { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 500; font-size: 16px; fill: #1e293b; }
+          .val { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 20px; fill: #0f172a; }
+          .scan-lbl { font-family: 'Times New Roman', 'Georgia', serif; font-weight: 700; font-size: 13px; fill: #111827; letter-spacing: 1px; }
+        </style>
+        <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.12"/>
+        </filter>
+        <linearGradient id="selectOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#f3f4f6" />
+        </linearGradient>
+        <linearGradient id="selectInnerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#ffffff" />
+        </linearGradient>
+        <linearGradient id="prefOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e5e7eb" />
+          <stop offset="50%" stop-color="#d1d5db" />
+          <stop offset="100%" stop-color="#9ca3af" />
+        </linearGradient>
+        <linearGradient id="prefInnerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f9fafb" />
+          <stop offset="100%" stop-color="#e5e7eb" />
+        </linearGradient>
+        <linearGradient id="sigOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fde047" />
+          <stop offset="30%" stop-color="#eab308" />
+          <stop offset="100%" stop-color="#b45309" />
+        </linearGradient>
+        <linearGradient id="sigInnerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fef08a" />
+          <stop offset="100%" stop-color="#f59e0b" />
+        </linearGradient>
+      </defs>
+
+      <!-- Outer Background Card -->
+      <image href="https://airoessentials.com/templates/select.jpg?v=1785442038028" x="20" y="20" width="860" height="1385" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />
+
+      <!-- Top Branding -->
+      
+
+      <!-- Inner Digital Membership Card -->
+      
+
+      <!-- Inner Logos -->
+      
+
+      <!-- Member Details -->
+      <g transform="translate(130, 1065)">
+        <text x="0" y="0" class="member-name">MUKESH LAUDYA</text>
+        <text x="0" y="38" class="member-plan">Select Member</text>
+        <g transform="translate(0, 100)">
+          <text x="0" y="0" class="lbl">One ID</text>
+          <text x="0" y="28" class="val">AIRO1000001</text>
+          <text x="170" y="0" class="lbl">Valid Until</text>
+          <text x="170" y="28" class="val">July 28 2027</text>
+        </g>
+      </g>
+
+      <!-- QR Code Container -->
+      <g transform="translate(590, 1035)">
+        <text x="50" y="-15" class="scan-lbl" text-anchor="middle">SCAN TO VERIFY</text>
+        <image href="data:image/png;base64,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" x="-10" y="-10" width="120" height="120" />
+      </g>
+
+    </svg>

@@ -109,12 +109,29 @@ export async function generateDigitalMembershipCard(
 
   let activeTemplateUrl = '';
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
+  let templatePath = '';
   if (isSignature) {
-    activeTemplateUrl = templates?.Signature ? templates.Signature : `${baseUrl}/templates/signature.jpg`;
+    templatePath = `${baseUrl}/templates/signature.jpg`;
   } else if (isPreferred) {
-    activeTemplateUrl = templates?.Preferred ? templates.Preferred : `${baseUrl}/templates/preferred.jpg`;
+    templatePath = `${baseUrl}/templates/preferred.jpg`;
   } else if (isSelect) {
-    activeTemplateUrl = templates?.Select ? templates.Select : `${baseUrl}/templates/select.jpg`;
+    templatePath = `${baseUrl}/templates/select.jpg`;
+  }
+
+  // Fetch the template image and convert it to a Base64 data URL so it renders inside the SVG
+  if (templatePath) {
+    try {
+      const response = await fetch(templatePath);
+      if (response.ok) {
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const base64 = buffer.toString('base64');
+        const contentType = response.headers.get('content-type') || 'image/jpeg';
+        activeTemplateUrl = `data:${contentType};base64,${base64}`;
+      }
+    } catch (e) {
+      console.error('Failed to fetch template image as base64', e);
+    }
   }
 
   let outerBgFill = 'url(#selectOuterGrad)';
@@ -207,7 +224,7 @@ export async function generateDigitalMembershipCard(
 
       <!-- Outer Background Card -->
       ${activeTemplateUrl ? 
-        `<image href="${activeTemplateUrl}?v=${Date.now()}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
+        `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
         : 
         `<rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
       }
