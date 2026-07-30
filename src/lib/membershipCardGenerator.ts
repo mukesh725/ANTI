@@ -149,13 +149,21 @@ export async function generateDigitalMembershipCard(
     year: 'numeric',
   }).replace(',', '');
 
+  // Dynamic Dimensions
+  const svgWidth = 900;
+  const svgHeight = activeTemplateUrl ? 1425 : 920;
+  const cardWidth = 860;
+  const cardHeight = activeTemplateUrl ? 1385 : 880;
+  const textTranslateY = activeTemplateUrl ? 1065 : 560;
+  const qrTranslateY = activeTemplateUrl ? 1035 : 530;
+
   // SVG graphic matching the exact card design
   const svgContent = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 920" width="900" height="920">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" width="${svgWidth}" height="${svgHeight}">
       
       <defs>
         <clipPath id="cardClip">
-          <rect x="20" y="20" width="860" height="880" rx="44" />
+          <rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" />
         </clipPath>
         <style>
           .member-name { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 32px; fill: ${textNameColor}; }
@@ -197,9 +205,9 @@ export async function generateDigitalMembershipCard(
 
       <!-- Outer Background Card -->
       ${activeTemplateUrl ? 
-        `<image href="${activeTemplateUrl}" x="20" y="20" width="860" height="880" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
+        `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
         : 
-        `<rect x="20" y="20" width="860" height="880" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
+        `<rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
       }
 
       <!-- Top Branding -->
@@ -217,7 +225,7 @@ export async function generateDigitalMembershipCard(
       <image href="${healthLogoUrl}" x="480" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
 
       <!-- Member Details -->
-      <g transform="translate(130, 560)">
+      <g transform="translate(130, ${textTranslateY})">
         <text x="0" y="0" class="member-name">${memberName}</text>
         <text x="0" y="38" class="member-plan">${displayPlanTitle}</text>
         <g transform="translate(0, 100)">
@@ -229,7 +237,7 @@ export async function generateDigitalMembershipCard(
       </g>
 
       <!-- QR Code Container -->
-      <g transform="translate(590, 530)">
+      <g transform="translate(590, ${qrTranslateY})">
         <text x="50" y="-15" class="scan-lbl" text-anchor="middle">SCAN TO VERIFY</text>
         <image href="${qrCodeDataUrl}" x="-10" y="-10" width="120" height="120" />
       </g>
