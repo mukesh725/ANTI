@@ -146,7 +146,7 @@ export async function generateDigitalMembershipCard(
   } else if (isPreferred) {
     activeTemplateUrl = await getLogoDataUrl(templates?.Preferred ? templates.Preferred.replace(process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com/', '') : 'templates/silver.jpg');
   } else if (isSelect) {
-    activeTemplateUrl = await getLogoDataUrl(templates?.Select ? templates.Select.replace(process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com/', '') : 'templates/black.jpg');
+    activeTemplateUrl = await getLogoDataUrl(templates?.Select ? templates.Select.replace(process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com/', '') : 'templates/select.jpg');
   }
 
 
