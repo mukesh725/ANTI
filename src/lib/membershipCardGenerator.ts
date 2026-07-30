@@ -170,11 +170,11 @@ export async function generateDigitalMembershipCard(
 
   // Dynamic Dimensions
   const svgWidth = 900;
-  const svgHeight = activeTemplateUrl ? 1240 : 920;
+  const svgHeight = 920;
   const cardWidth = 860;
-  const cardHeight = activeTemplateUrl ? 1200 : 880;
-  const textTranslateY = activeTemplateUrl ? 890 : 560;
-  const qrTranslateY = activeTemplateUrl ? 860 : 530;
+  const cardHeight = 880;
+  const textTranslateY = 560;
+  const qrTranslateY = 530;
 
   // SVG graphic matching the exact card design
   const svgContent = `
