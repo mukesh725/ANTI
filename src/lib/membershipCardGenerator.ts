@@ -162,9 +162,6 @@ export async function generateDigitalMembershipCard(
     logoFilter = 'url(#blackLogo)';
     textColor = '#3f3f46';
     textNameColor = '#18181b';
-  } else if (isSelect) {
-    textColor = '#f3f4f6';
-    textNameColor = '#ffffff';
   }
 
   // Format valid until date e.g. "July 28 2027"
@@ -180,8 +177,8 @@ export async function generateDigitalMembershipCard(
   const svgHeight = 920;
   const cardWidth = 860;
   const cardHeight = 880;
-  const textTranslateY = 490;
-  const qrTranslateY = 490;
+  const textTranslateY = 560;
+  const qrTranslateY = 560;
 
   // SVG graphic matching the exact card design
   const svgContent = `
