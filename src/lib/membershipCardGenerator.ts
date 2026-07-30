@@ -203,11 +203,11 @@ export async function generateDigitalMembershipCard(
       }
 
       <!-- Top Branding -->
-      <image href="${airoOneLogoUrl}" x="150" y="70" width="600" height="180" preserveAspectRatio="xMidYMid meet" />
+      ${activeTemplateUrl ? '' : `<image href="${airoOneLogoUrl}" x="150" y="70" width="600" height="180" preserveAspectRatio="xMidYMid meet" />`}
 
       <!-- Inner Digital Membership Card -->
       ${activeTemplateUrl ? 
-        `<rect x="90" y="470" width="720" height="350" rx="12" fill="#ffffff" />`
+        ''
         : 
         `<rect x="75" y="280" width="750" height="550" rx="36" fill="${innerBgFill}" filter="url(#cardShadow)" stroke="${innerStroke}" stroke-width="1.5" />`
       }
