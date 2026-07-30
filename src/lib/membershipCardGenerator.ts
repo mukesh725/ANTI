@@ -170,11 +170,11 @@ export async function generateDigitalMembershipCard(
 
   // Dynamic Dimensions
   const svgWidth = 900;
-  const svgHeight = activeTemplateUrl ? 1425 : 920;
+  const svgHeight = activeTemplateUrl ? 1240 : 920;
   const cardWidth = 860;
-  const cardHeight = activeTemplateUrl ? 1385 : 880;
-  const textTranslateY = activeTemplateUrl ? 1065 : 560;
-  const qrTranslateY = activeTemplateUrl ? 1035 : 530;
+  const cardHeight = activeTemplateUrl ? 1200 : 880;
+  const textTranslateY = activeTemplateUrl ? 890 : 560;
+  const qrTranslateY = activeTemplateUrl ? 860 : 530;
 
   // SVG graphic matching the exact card design
   const svgContent = `
@@ -224,7 +224,7 @@ export async function generateDigitalMembershipCard(
 
       <!-- Outer Background Card -->
       ${activeTemplateUrl ? 
-        `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#cardClip)" />` 
+        `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMin slice" clip-path="url(#cardClip)" />` 
         : 
         `<rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
       }
