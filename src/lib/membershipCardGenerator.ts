@@ -40,7 +40,9 @@ async function getLogoDataUrl(filename: string): Promise<string> {
       fetchUrl = `https://raw.githubusercontent.com/mukesh725/ANTI/main/public/uploads/${filenameOnly}`;
     }
 
-    const res = await fetch(fetchUrl);
+    const timestamp = new Date().getTime();
+    const fetchUrlWithCacheBust = fetchUrl.includes('?') ? `${fetchUrl}&v=${timestamp}` : `${fetchUrl}?v=${timestamp}`;
+    const res = await fetch(fetchUrlWithCacheBust, { cache: 'no-store' });
     if (res.ok) {
       const arrayBuffer = await res.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
@@ -121,7 +123,9 @@ export async function generateDigitalMembershipCard(
   // Fetch the template image and convert it to a Base64 data URL so it renders inside the SVG
   if (templatePath) {
     try {
-      const response = await fetch(templatePath);
+      // Add a timestamp to completely bypass CDN/Next.js edge caching
+      const timestamp = new Date().getTime();
+      const response = await fetch(`${templatePath}?v=${timestamp}`, { cache: 'no-store' });
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
