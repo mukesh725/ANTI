@@ -115,7 +115,7 @@ export async function generateDigitalMembershipCard(
   } else if (isPreferred) {
     templatePath = `${baseUrl}/templates/preferred.jpg`;
   } else if (isSelect) {
-    templatePath = `${baseUrl}/templates/select.jpg`;
+    templatePath = `${baseUrl}/templates/select.png`;
   }
 
   // Fetch the template image and convert it to a Base64 data URL so it renders inside the SVG
