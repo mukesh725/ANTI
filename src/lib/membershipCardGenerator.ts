@@ -162,6 +162,9 @@ export async function generateDigitalMembershipCard(
     logoFilter = 'url(#blackLogo)';
     textColor = '#3f3f46';
     textNameColor = '#18181b';
+  } else if (isSelect) {
+    textColor = '#f3f4f6';
+    textNameColor = '#ffffff';
   }
 
   // Format valid until date e.g. "July 28 2027"
@@ -178,7 +181,7 @@ export async function generateDigitalMembershipCard(
   const cardWidth = 860;
   const cardHeight = 880;
   const textTranslateY = 560;
-  const qrTranslateY = 530;
+  const qrTranslateY = 560;
 
   // SVG graphic matching the exact card design
   const svgContent = `
@@ -193,7 +196,7 @@ export async function generateDigitalMembershipCard(
           .member-plan { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 400; font-size: 24px; fill: ${textColor}; }
           .lbl { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 500; font-size: 16px; fill: ${textColor}; }
           .val { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 20px; fill: ${textNameColor}; }
-          .scan-lbl { font-family: 'Times New Roman', 'Georgia', serif; font-weight: 700; font-size: 13px; fill: #111827; letter-spacing: 1px; }
+          .scan-lbl { font-family: 'Times New Roman', 'Georgia', serif; font-weight: 700; font-size: 13px; fill: ${textNameColor}; letter-spacing: 1px; }
         </style>
         <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
           <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.12"/>
