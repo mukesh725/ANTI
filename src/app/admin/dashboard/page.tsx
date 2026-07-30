@@ -8,7 +8,7 @@ import {
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
   Settings, ShieldAlert, LogOut, ArrowRight,
   TrendingUp, TrendingDown, DollarSign, Activity,
-  Trash2, CheckCircle2, BrainCircuit
+  Trash2, CheckCircle2, BrainCircuit, ShieldCheck
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
@@ -17,6 +17,7 @@ import { EcomManager } from "@/components/EcomManager";
 import { ProductManager } from "@/components/admin/ProductManager";
 import { PlaceholderView } from "@/components/admin/PlaceholderView";
 import { AdminTeamManager } from "@/components/admin/AdminTeamManager";
+import AdminMembershipDashboard from "@/app/admin/membership/page";
 import Image from "next/image";
 
 // Types
@@ -47,6 +48,7 @@ interface Lead {
 
 const SIDEBAR_NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "membership", label: "Memberships", icon: ShieldCheck },
   { id: "orders", label: "Orders", icon: ShoppingBag },
   { id: "payments", label: "Payments", icon: CreditCard },
   { id: "products", label: "Products", icon: Package },
@@ -130,7 +132,6 @@ export default function AdminDashboardPage() {
 
   const totalPageViews = Object.values(pageViews).reduce((a, b) => a + b, 0) + 1450; 
   const uniqueVisitors = Math.round(totalPageViews * 0.42);
-  const conversionRate = leads.length > 0 ? ((leads.length / uniqueVisitors) * 100).toFixed(1) : "0.4";
 
   const renderContent = () => {
     switch (activeTab) {
@@ -139,7 +140,7 @@ export default function AdminDashboardPage() {
           <div className="p-8 max-w-[1600px] mx-auto space-y-6">
             <div className="mb-8">
               <h1 className="text-xl text-gray-800 font-medium">Good afternoon, here is your sales overview</h1>
-              <p className="text-sm text-gray-500">Tuesday 7 July 2021</p>
+              <p className="text-sm text-gray-500">Overview of AIRO platform operations</p>
             </div>
 
             {/* Top Cards Row */}
@@ -273,6 +274,8 @@ export default function AdminDashboardPage() {
             
           </div>
         );
+      case "membership":
+        return <AdminMembershipDashboard />;
       case "orders":
         return <EcomManager />;
       case "products":
@@ -356,8 +359,6 @@ export default function AdminDashboardPage() {
           {SIDEBAR_NAV.filter(item => {
             const modules = currentUser?.allowedModules || [];
             const isSuperAdmin = 
-              !currentUser || 
-              modules.length === 0 ||
               currentUser?.role?.toLowerCase() === 'super admin' || 
               currentUser?.email === 'admin@airo.dev' || 
               currentUser?.id === 'superadmin' || 
@@ -417,87 +418,6 @@ export default function AdminDashboardPage() {
           </div>
         </main>
       </div>
-
-      {/* Expanded Lead Modal (if needed for the leads view) */}
-      <AnimatePresence>
-        {selectedLead && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm"
-            onClick={() => setSelectedLead(null)}
-          >
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white border border-[#0A84FF]/30 rounded-2xl p-8 max-w-2xl w-full shadow-lg relative overflow-hidden"
-            >
-              <div className="flex justify-between items-start mb-6 pt-2">
-                <div>
-                  <h2 className="font-sans font-medium text-3xl mb-1">{selectedLead.name}</h2>
-                  <p className="text-sm text-emerald-600 font-mono">{selectedLead.email}</p>
-                </div>
-                <button 
-                  onClick={() => setSelectedLead(null)}
-                  className="text-gray-500 hover:text-gray-900 bg-[#F4F7F6] p-2 rounded-lg border border-emerald-100"
-                >
-                  Close
-                </button>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold block mb-1">Phone Number</label>
-                    <p className="text-sm">{selectedLead.phone}</p>
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold block mb-1">Inquiry Target</label>
-                    <p className="text-sm">{selectedLead.type}</p>
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold block mb-1">Acquisition Source</label>
-                    <p className="text-sm">{selectedLead.source}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold block mb-2">Raw Message Content</label>
-                <div className="bg-[#F4F7F6] p-4 rounded-xl border border-emerald-100 text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
-                  {selectedLead.message}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.1);
-          border-radius: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 0, 0, 0.2);
-        }
-        
-        aside.custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-        }
-        aside.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </div>
   );
 }

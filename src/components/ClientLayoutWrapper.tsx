@@ -144,14 +144,18 @@ export function ClientLayoutWrapper({
           <CmsProvider initialData={cmsData}>
             {/* Hide content until loading is done to prevent flash */}
             <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-              <GlobalHeader />
-              <main className={`flex-grow flex flex-col min-h-screen ${pathname === '/' || pathname === '/health' ? '' : 'pt-28'}`}>
+              {!pathname.startsWith('/admin') && <GlobalHeader />}
+              <main className={`flex-grow flex flex-col min-h-screen ${pathname.startsWith('/admin') ? '' : (pathname === '/' || pathname === '/health' ? '' : 'pt-28')}`}>
                 {children}
-                <GlobalFooter />
+                {!pathname.startsWith('/admin') && <GlobalFooter />}
               </main>
-              <AiraChatbot />
-              <CookieBanner />
-              <LeadCapturePopup />
+              {!pathname.startsWith('/admin') && (
+                <>
+                  <AiraChatbot />
+                  <CookieBanner />
+                  <LeadCapturePopup />
+                </>
+              )}
             </div>
           </CmsProvider>
         </CartProvider>

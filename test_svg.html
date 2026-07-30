@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <svg width="600" height="200" style="background: #ccc;">
+    <defs>
+      <filter id="blackLogo">
+        <!-- Convert to luminance alpha (white=1, black=0) -->
+        <feColorMatrix type="luminanceToAlpha" result="lum" />
+        <!-- Invert alpha so white=0, black=1 -->
+        <feComponentTransfer in="lum" result="invLum">
+          <feFuncA type="linear" slope="-1" intercept="1" />
+        </feComponentTransfer>
+        <feFlood flood-color="#18181b" result="color" />
+        <feComposite in="color" in2="invLum" operator="in" />
+      </filter>
+
+      <filter id="brownLogo">
+        <feColorMatrix type="luminanceToAlpha" result="lum" />
+        <feComponentTransfer in="lum" result="invLum">
+          <feFuncA type="linear" slope="-1" intercept="1" />
+        </feComponentTransfer>
+        <feFlood flood-color="#4a3b1a" result="color" />
+        <feComposite in="color" in2="invLum" operator="in" />
+      </filter>
+    </defs>
+    <image href="http://localhost:3333/airo-one-logo.png" x="0" y="0" width="300" height="100" filter="url(#blackLogo)" />
+    <image href="http://localhost:3333/airo-one-logo.png" x="300" y="0" width="300" height="100" filter="url(#brownLogo)" />
+  </svg>
+</body>
+</html>

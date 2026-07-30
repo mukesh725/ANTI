@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, addDoc, updateDoc, doc } from "firebase/firestore";
-import { Loader2, Plus, Star, X } from "lucide-react";
+import { Loader2, Plus, Star, X, ShieldCheck } from "lucide-react";
 
 interface AdminUser {
   id: string;
@@ -17,7 +17,8 @@ interface AdminUser {
 
 const PREDEFINED_ROLES = [
   { id: "super_admin", label: "Super admin — full access to everything", roleName: "Super admin", modules: ["all"] },
-  { id: "admin", label: "Admin", roleName: "Admin", modules: ["dashboard", "orders", "products", "customers", "leads", "cms", "settings", "admin-team"] },
+  { id: "admin", label: "Admin", roleName: "Admin", modules: ["dashboard", "orders", "products", "customers", "leads", "cms", "settings", "admin-team", "membership"] },
+  { id: "membership_manager", label: "Membership Manager — Membership tab access only", roleName: "Membership Manager", modules: ["membership"] },
   { id: "warehouse_manager", label: "Warehouse Manager", roleName: "Warehouse Manager", modules: ["orders", "inventory"] },
 ];
 
@@ -156,7 +157,7 @@ export function AdminTeamManager() {
         <h1 className="text-[22px] font-semibold text-[#111827]">Admin team</h1>
         <button 
           onClick={openAddModal}
-          className="bg-[#0A1128] hover:bg-[#0A1128]/90 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          className="bg-[#0A1128] hover:bg-[#0A1128]/90 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm"
         >
           <Plus className="w-4 h-4" />
           Invite admin
@@ -195,6 +196,7 @@ export function AdminTeamManager() {
                       {/* Avatar */}
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0 ${
                         user.role === 'Super admin' ? 'bg-emerald-500' : 
+                        user.role === 'Membership Manager' ? 'bg-emerald-600' :
                         user.role === 'Warehouse Manager' ? 'bg-indigo-500' : 'bg-cyan-500'
                       }`}>
                         {user.name.charAt(0).toUpperCase()}
@@ -217,6 +219,11 @@ export function AdminTeamManager() {
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold border border-blue-100">
                         <Star className="w-3 h-3 fill-blue-600" />
                         Super admin
+                      </span>
+                    ) : user.role === "Membership Manager" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        Membership Manager
                       </span>
                     ) : user.role === "Warehouse Manager" ? (
                       <span className="inline-flex items-center px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs font-semibold border border-orange-200">
@@ -275,10 +282,10 @@ export function AdminTeamManager() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Invite / Edit Admin Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-2xl shadow-xl flex flex-col">
+          <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl flex flex-col">
             
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
@@ -341,9 +348,9 @@ export function AdminTeamManager() {
                     <select 
                       value={formData.roleId}
                       onChange={(e) => setFormData({...formData, roleId: e.target.value})}
-                      className="w-full appearance-none border border-gray-200 bg-[#5A87FF] text-white font-medium rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full appearance-none border border-gray-200 bg-[#3B82F6] text-white font-medium rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                       style={{
-                        backgroundColor: formData.roleId === "super_admin" ? "#5A87FF" : "white",
+                        backgroundColor: formData.roleId === "super_admin" ? "#3B82F6" : "white",
                         color: formData.roleId === "super_admin" ? "white" : "#111827",
                       }}
                     >
@@ -353,7 +360,6 @@ export function AdminTeamManager() {
                         </option>
                       ))}
                     </select>
-                    {/* Custom chevron to match the style */}
                     <div className={`absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none ${formData.roleId === "super_admin" ? "text-white" : "text-gray-500"}`}>
                       <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

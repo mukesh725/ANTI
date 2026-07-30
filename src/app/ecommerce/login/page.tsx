@@ -1,36 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
-import { auth } from "@/lib/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { useAuth } from "@/context/AuthContext";
 
 export default function EcommerceLogin() {
   const router = useRouter();
+  const { user, profile, loading: authLoading, loginWithEmail, signUpWithEmail } = useAuth();
   
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Redirect to Account if already logged in
+  useEffect(() => {
+    if (!authLoading && (user || profile)) {
+      router.replace("/ecommerce/account");
+    }
+  }, [user, profile, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
+
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
+        await loginWithEmail(email, password);
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        await signUpWithEmail(email, password, name);
       }
       router.push("/ecommerce/account");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("An unknown error occurred.");
+        setError("Sign in failed. Please check your credentials.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,14 +56,28 @@ export default function EcommerceLogin() {
         <div className="text-center mb-8">
           <h1 className="font-serif text-3xl mb-2">{isLogin ? "Welcome Back" : "Create Account"}</h1>
           <p className="font-sans text-xs text-[#1C1C1E]/60 tracking-wide">
-            {isLogin ? "Sign in to access your orders and saved carts." : "Join AIRO to track your wellness journey."}
+            {isLogin ? "Sign in to access your orders, membership, and saved carts." : "Join AIRO to track your wellness journey and AIRO ONE membership."}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 text-xs text-red-500 bg-red-50 rounded-lg">
+            <div className="p-3 text-xs text-red-600 bg-red-50 rounded-lg font-medium border border-red-100">
               {error}
+            </div>
+          )}
+
+          {!isLogin && (
+            <div>
+              <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">Full Name</label>
+              <input 
+                type="text" 
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#1C1C1E]/10 rounded-lg focus:outline-none focus:border-[#1C1C1E] text-sm"
+                placeholder="John Doe"
+              />
             </div>
           )}
           
@@ -81,9 +107,16 @@ export default function EcommerceLogin() {
 
           <button 
             type="submit"
-            className="w-full bg-[#1C1C1E] text-[#FFFFFF] py-3 rounded-lg text-xs uppercase tracking-widest font-bold hover:bg-[#1C1C1E]/90 transition-colors mt-6"
+            disabled={loading}
+            className="w-full bg-[#1C1C1E] text-[#FFFFFF] py-3 rounded-lg text-xs uppercase tracking-widest font-bold hover:bg-[#1C1C1E]/90 transition-colors mt-6 disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {isLogin ? "Sign In" : "Sign Up"}
+            {loading ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : isLogin ? (
+              "Sign In"
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
 

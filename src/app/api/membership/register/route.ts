@@ -1,73 +1,58 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where, addDoc, updateDoc } from 'firebase/firestore';
-import { verifyToken } from '@/lib/membershipAuth';
+import { submitPendingRegistration } from '@/lib/membershipRepository';
+import { PendingRegistrationInput } from '@/types/membership';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.split(' ')[1];
-    const decoded = verifyToken(token) as { mobile: string } | null;
-    
-    if (!decoded || !decoded.mobile) {
-      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
-    }
-
     const body = await request.json();
-    const { firstName, lastName, email, gender, dob, occupation, bloodGroup, emergencyContact } = body;
 
-    if (!firstName || !email) {
-      return NextResponse.json({ error: 'First name and email are required' }, { status: 400 });
-    }
-
-    const usersRef = collection(db, 'users');
-
-    // Check if user with this email already exists
-    const emailQuerySnap = await getDocs(query(usersRef, where('email', '==', email)));
-    if (!emailQuerySnap.empty) {
-      const existingUser = emailQuerySnap.docs[0].data();
-      if (existingUser.mobile !== decoded.mobile) {
-        return NextResponse.json({ error: 'Email already registered to another number' }, { status: 400 });
-      }
-    }
-
-    const dataToSave = {
+    const {
       firstName,
       lastName,
       email,
+      mobile,
+      dob,
       gender,
-      dob: dob ? dob : null, // Store as string to avoid date parsing issues
-      occupation,
-      bloodGroup,
+      address,
       emergencyContact,
-    };
+      membershipPlan,
+    } = body;
 
-    // Create or update user
-    const mobileQuerySnap = await getDocs(query(usersRef, where('mobile', '==', decoded.mobile)));
-    
-    let user;
-    if (!mobileQuerySnap.empty) {
-      const docRef = mobileQuerySnap.docs[0].ref;
-      await updateDoc(docRef, dataToSave);
-      user = { id: docRef.id, mobile: decoded.mobile, firstName };
-    } else {
-      const docRef = await addDoc(usersRef, { 
-        mobile: decoded.mobile, 
-        ...dataToSave, 
-        role: 'CUSTOMER' 
-      });
-      user = { id: docRef.id, mobile: decoded.mobile, firstName };
+    // Validation
+    if (!firstName || !lastName || !email || !mobile || !dob || !gender || !address || !membershipPlan) {
+      return NextResponse.json(
+        { error: 'Missing required fields. Please fill out all required personal and plan details.' },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ success: true, user: { id: user.id, mobile: user.mobile, firstName: user.firstName } });
+    const input: PendingRegistrationInput = {
+      firstName,
+      lastName,
+      email,
+      mobile,
+      dob,
+      gender,
+      address,
+      emergencyContact,
+      membershipPlan,
+    };
+
+    const result = await submitPendingRegistration(input);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Registration submitted successfully. Pending payment & activation.',
+      registrationId: result.registrationId,
+      member: result.member,
+    });
   } catch (error: any) {
-    console.error('Registration Error:', error);
-    return NextResponse.json({ error: error?.message || 'Internal server error', details: error?.stack }, { status: 500 });
+    console.error('Registration Route Error:', error);
+    return NextResponse.json(
+      { error: error?.message || 'Failed to submit registration' },
+      { status: 500 }
+    );
   }
 }

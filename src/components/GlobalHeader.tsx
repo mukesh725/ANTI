@@ -31,7 +31,7 @@ const healthLinks = [
 
 export function GlobalHeader() {
   const { items: cartItems, setIsCartOpen } = useCart();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
@@ -136,7 +136,7 @@ export function GlobalHeader() {
           
           
           <Link 
-            href={user ? "/ecommerce/account" : "/ecommerce/login"}
+            href={(user || profile) ? "/ecommerce/account" : "/ecommerce/login"}
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
               isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
             }`}
