@@ -164,6 +164,38 @@ export async function generateDigitalMembershipCard(
     textNameColor = '#18181b';
   }
 
+  // Dynamic Dimensions
+  const svgWidth = 900;
+  const svgHeight = 920;
+  const cardWidth = 860;
+  const cardHeight = 880;
+  let textTranslateY = 560;
+  let textTranslateX = 130;
+  let qrTranslateY = 560;
+  let qrTranslateX = 590;
+
+  // Try fetching dynamic layout overrides from Firestore
+  try {
+    const layoutRef = doc(db, 'settings', 'cardLayout');
+    const layoutSnap = await getDoc(layoutRef);
+    if (layoutSnap.exists()) {
+      const layout = layoutSnap.data();
+      if (layout.textTranslateY !== undefined) textTranslateY = Number(layout.textTranslateY);
+      if (layout.textTranslateX !== undefined) textTranslateX = Number(layout.textTranslateX);
+      if (layout.qrTranslateY !== undefined) qrTranslateY = Number(layout.qrTranslateY);
+      if (layout.qrTranslateX !== undefined) qrTranslateX = Number(layout.qrTranslateX);
+      
+      if (isSignature && layout.signatureTextColor) textColor = layout.signatureTextColor;
+      if (isSignature && layout.signatureNameColor) textNameColor = layout.signatureNameColor;
+      if (isPreferred && layout.preferredTextColor) textColor = layout.preferredTextColor;
+      if (isPreferred && layout.preferredNameColor) textNameColor = layout.preferredNameColor;
+      if (isSelect && layout.selectTextColor) textColor = layout.selectTextColor;
+      if (isSelect && layout.selectNameColor) textNameColor = layout.selectNameColor;
+    }
+  } catch (e) {
+    console.error('Failed to fetch card layout settings', e);
+  }
+
   // Format valid until date e.g. "July 28 2027"
   const expiryDateObj = member.expiryDate ? new Date(member.expiryDate) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
   const formattedExpiry = expiryDateObj.toLocaleDateString('en-US', {
@@ -171,14 +203,6 @@ export async function generateDigitalMembershipCard(
     day: 'numeric',
     year: 'numeric',
   }).replace(',', '');
-
-  // Dynamic Dimensions
-  const svgWidth = 900;
-  const svgHeight = 920;
-  const cardWidth = 860;
-  const cardHeight = 880;
-  const textTranslateY = 560;
-  const qrTranslateY = 560;
 
   // SVG graphic matching the exact card design
   const svgContent = `
@@ -250,7 +274,7 @@ export async function generateDigitalMembershipCard(
       `}
 
       <!-- Member Details -->
-      <g transform="translate(130, ${textTranslateY})">
+      <g transform="translate(${textTranslateX}, ${textTranslateY})">
         <text x="0" y="0" class="member-name">${memberName}</text>
         <text x="0" y="38" class="member-plan">${displayPlanTitle}</text>
         <g transform="translate(0, 100)">
@@ -262,7 +286,7 @@ export async function generateDigitalMembershipCard(
       </g>
 
       <!-- QR Code Container -->
-      <g transform="translate(590, ${qrTranslateY})">
+      <g transform="translate(${qrTranslateX}, ${qrTranslateY})">
         <text x="50" y="-15" class="scan-lbl" text-anchor="middle">SCAN</text>
         <image href="${qrCodeDataUrl}" x="-10" y="-10" width="120" height="120" />
       </g>

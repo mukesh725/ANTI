@@ -301,6 +301,12 @@ export default function AdminMembershipDashboard() {
         >
           Card Templates
         </button>
+        <a 
+          href="/admin/card-designer"
+          className={`pb-3 px-1 text-sm font-bold border-b-2 border-transparent text-indigo-600 hover:text-indigo-800 transition-colors flex items-center gap-1 ml-auto`}
+        >
+          <Pencil className="w-4 h-4" /> Layout Designer
+        </a>
       </div>
       
       {activeTab === 'templates' ? (
