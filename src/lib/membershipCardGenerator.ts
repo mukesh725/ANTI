@@ -211,7 +211,7 @@ export async function generateDigitalMembershipCard(
       }
 
       <!-- Top Branding -->
-      <image href="${airoOneLogoUrl}" x="150" y="70" width="600" height="180" preserveAspectRatio="xMidYMid meet" />
+      ${activeTemplateUrl ? '' : `<image href="${airoOneLogoUrl}" x="150" y="70" width="600" height="180" preserveAspectRatio="xMidYMid meet" />`}
 
       <!-- Inner Digital Membership Card -->
       ${activeTemplateUrl ? 
@@ -221,8 +221,10 @@ export async function generateDigitalMembershipCard(
       }
 
       <!-- Inner Logos -->
+      ${activeTemplateUrl ? '' : `
       <image href="${essentialsLogoUrl}" x="120" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
       <image href="${healthLogoUrl}" x="480" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
+      `}
 
       <!-- Member Details -->
       <g transform="translate(130, ${textTranslateY})">
