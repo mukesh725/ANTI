@@ -29,6 +29,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { MemberRecord, PaymentMethodType } from '@/types/membership';
 import { useRef, FormEvent } from 'react';
+import { CardTemplateManager } from '@/components/admin/CardTemplateManager';
 
 export default function AdminMembershipDashboard() {
   const [members, setMembers] = useState<MemberRecord[]>([]);

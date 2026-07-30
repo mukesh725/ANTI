@@ -42,6 +42,20 @@ export async function POST(request: Request) {
 
     const result = await submitPendingRegistration(input);
 
+    // Send Google Chat Notification (Fire and Forget)
+    try {
+      const webhookUrl = 'https://chat.googleapis.com/v1/spaces/AAQAvRqcoks/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=hpf9sY74058MHnjbAhKydzNKpr4T9Cfi6Z4AQMLrN-Y';
+      const messageText = `🚨 *New Pending Registration*\n\n*Name:* ${firstName} ${lastName}\n*Plan:* ${membershipPlan}\n*Phone:* ${mobile}\n\nThis user is awaiting activation in the admin dashboard.`;
+      
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: messageText }),
+      }).catch(err => console.error('Google Chat Webhook Error:', err));
+    } catch (err) {
+      console.error('Google Chat Notification Failed:', err);
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Registration submitted successfully. Pending payment & activation.',
