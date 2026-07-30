@@ -141,12 +141,13 @@ export async function generateDigitalMembershipCard(
   const healthLogoUrl = await getLogoDataUrl('airo-health-logo.png');
 
   let activeTemplateUrl = '';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
   if (isSignature) {
-    activeTemplateUrl = await getLogoDataUrl(templates?.Signature ? templates.Signature.replace(process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com/', '') : 'templates/gold.jpg');
+    activeTemplateUrl = templates?.Signature ? templates.Signature : `${baseUrl}/templates/signature.jpg`;
   } else if (isPreferred) {
-    activeTemplateUrl = await getLogoDataUrl(templates?.Preferred ? templates.Preferred.replace(process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com/', '') : 'templates/silver.jpg');
+    activeTemplateUrl = templates?.Preferred ? templates.Preferred : `${baseUrl}/templates/preferred.jpg`;
   } else if (isSelect) {
-    activeTemplateUrl = await getLogoDataUrl(templates?.Select ? templates.Select.replace(process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com/', '') : 'templates/select.jpg');
+    activeTemplateUrl = templates?.Select ? templates.Select : `${baseUrl}/templates/select.jpg`;
   }
 
 
