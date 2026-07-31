@@ -250,7 +250,7 @@ export async function generateDigitalMembershipCard(
       `}
 
       <!-- Member Details -->
-      <g transform="translate(160, 590)">
+      <g transform="translate(180, 590)">
         <text x="0" y="0" class="member-name">${memberName}</text>
         <text x="0" y="38" class="member-plan">${displayPlanTitle}</text>
         <g transform="translate(0, 100)">
@@ -262,7 +262,7 @@ export async function generateDigitalMembershipCard(
       </g>
 
       <!-- QR Code Container -->
-      <g transform="translate(600, 590)">
+      <g transform="translate(570, 590)">
         <text x="70" y="-15" class="scan-lbl" text-anchor="middle">SCAN</text>
         <image href="${qrCodeDataUrl}" x="-10" y="-10" width="160" height="160" />
       </g>
