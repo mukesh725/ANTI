@@ -7,40 +7,26 @@ const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 
 const PLAN_BENEFITS: Record<string, string[]> = {
   Signature: [
+    'Up to 5 Members Covered',
+    '6% Essentials Discount',
     '22% Pharmacy Discount',
-    '10 Doctor Consultations',
-    '10 Telemedicine Consultations',
+    '10 Free Doctor Consultations/Yr',
     'Unlimited Basic Health Screenings',
-    '2 Preventive Health Check-ups',
-    '6 Dietitian Consultations',
-    'VIP Priority Service',
-    'Unlimited Medicine Delivery',
-    'AIRO Digital Health Dashboard',
-    'Birthday Rewards',
+    'VIP Priority Service'
   ],
   Preferred: [
+    'Up to 3 Members Covered',
+    '4% Essentials Discount',
     '18% Pharmacy Discount',
-    '5 Doctor Consultations',
-    '5 Telemedicine Consultations',
-    'Unlimited Basic Health Screenings',
-    '1 Preventive Health Check-up',
-    '3 Dietitian Consultations',
-    'Priority Support Service',
-    'Free Medicine Delivery above ₹499',
-    'AIRO Digital Health Dashboard',
-    'Special Event Rewards',
+    '6 Free Doctor Consultations/Yr',
+    '10 Basic Health Screenings'
   ],
   Select: [
+    '1 Member Covered',
+    '2% Essentials Discount',
     '15% Pharmacy Discount',
-    '2 Doctor Consultations',
-    '2 Telemedicine Consultations',
-    'Unlimited Basic Health Screenings',
-    '1 Basic Health Check-up',
-    '1 Dietitian Consultation',
-    'Standard Support Service',
-    'Free Medicine Delivery above ₹999',
-    'AIRO Digital Health Dashboard',
-    'Exclusive Member Newsletters',
+    '2 Free Doctor Consultations/Yr',
+    '4 Basic Health Screenings'
   ],
 };
 
