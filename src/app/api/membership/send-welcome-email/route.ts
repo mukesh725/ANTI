@@ -128,11 +128,12 @@ export async function POST(request: Request) {
               </div>
 
               <!-- Digital Membership Card Preview (Landscape) -->
-              <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: 100% 100%; background-repeat: no-repeat; border-radius: 20px; width: 100%; max-width: 450px; margin: 0 auto; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
-                <!-- Fixed aspect ratio table for pixel-perfect match with dashboard SVG -->
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="min-width: 100%; min-height: 460px;">
+              <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: 100% 100%; background-repeat: no-repeat; border-radius: 20px; width: 100%; max-width: 450px; margin: 0 auto; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; aspect-ratio: 45/46;">
+                <!-- Fluid aspect ratio table using percentage padding (based on width) -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
                   <tr>
-                    <td height="295" colspan="4" style="height: 295px; font-size: 0; line-height: 0;">&nbsp;</td>
+                    <!-- Spacer for top: 62% of width -->
+                    <td colspan="4" style="padding-top: 62%; font-size: 0; line-height: 0;">&nbsp;</td>
                   </tr>
                   <tr>
                     <!-- Left margin (X: 180/900 -> 20%) -->
@@ -140,18 +141,18 @@ export async function POST(request: Request) {
                     
                     <!-- Text Details Box (Width: 380/900 -> 42.2%) -->
                     <td width="42.2%" valign="top" style="width: 42.2%;">
-                      <div style="font-size: 16px; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 8px; white-space: nowrap; line-height: 1;">${memberName}</div>
-                      <div style="font-size: 12px; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 24px; white-space: nowrap; line-height: 1;">${displayPlanName}</div>
+                      <div style="font-size: clamp(12px, 3.5vw, 16px); font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 2%; white-space: nowrap; line-height: 1;">${memberName}</div>
+                      <div style="font-size: clamp(10px, 2.5vw, 12px); font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 8%; white-space: nowrap; line-height: 1;">${displayPlanName}</div>
                       
                       <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                           <td valign="top" width="50%">
-                            <div style="font-size: 8px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 4px; white-space: nowrap; line-height: 1;">One ID</div>
-                            <div style="font-size: 10px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
+                            <div style="font-size: clamp(6px, 1.5vw, 8px); font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">One ID</div>
+                            <div style="font-size: clamp(8px, 2vw, 11px); font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
                           </td>
                           <td valign="top" width="50%">
-                            <div style="font-size: 8px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 4px; white-space: nowrap; line-height: 1;">Valid Until</div>
-                            <div style="font-size: 10px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
+                            <div style="font-size: clamp(6px, 1.5vw, 8px); font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">Valid Until</div>
+                            <div style="font-size: clamp(8px, 2vw, 11px); font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
                           </td>
                         </tr>
                       </table>
@@ -159,15 +160,15 @@ export async function POST(request: Request) {
 
                     <!-- QR Code Box (Start X: 560/900 -> 62.2%, Width: 160/900 -> 17.8%) -->
                     <td width="17.8%" valign="top" align="center" style="width: 17.8%;">
-                      <div style="font-size: 8px; font-family: 'Georgia', serif; font-weight: 700; color: #111827; letter-spacing: 0.5px; margin-bottom: 4px; white-space: nowrap; line-height: 1;">SCAN</div>
-                      <img src="https://airoessentials.com/api/membership/qr?data=${encodeURIComponent(digitalCardPageUrl)}" width="100%" style="max-width: 80px; height: auto; display: block; border: 0;" alt="QR Code" />
+                      <div style="font-size: clamp(5px, 1.5vw, 7px); font-family: 'Georgia', serif; font-weight: 700; color: #111827; letter-spacing: 0.5px; margin-bottom: 2px; white-space: nowrap; line-height: 1;">SCAN</div>
+                      <img src="https://www.airoessentials.com/api/membership/qr?data=${encodeURIComponent(digitalCardPageUrl)}" width="100%" style="max-width: 80px; height: auto; display: block; border: 0;" alt="QR Code" />
                     </td>
 
                     <!-- Right margin (20%) -->
                     <td width="20%" style="width: 20%;"></td>
                   </tr>
                   <tr>
-                    <td height="85" colspan="4" style="height: 85px; font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td colspan="4" style="padding-bottom: 18%; font-size: 0; line-height: 0;">&nbsp;</td>
                   </tr>
                 </table>
               </div>
