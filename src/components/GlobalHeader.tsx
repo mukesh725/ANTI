@@ -71,7 +71,7 @@ export function GlobalHeader() {
         />
       </div>
     );
-  } else if (pathname === "/grocery" || pathname === "/" || pathname === "/contact" || pathname === "/about") {
+  } else if (pathname === "/grocery" || pathname === "/" || pathname === "/contact" || pathname === "/about" || pathname === "/membership" || pathname.startsWith("/member/")) {
     logoNode = (
       <div className={`px-2 py-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : ""}`}>
         <img 
