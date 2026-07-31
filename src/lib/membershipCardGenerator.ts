@@ -263,7 +263,7 @@ export async function generateDigitalMembershipCard(
 
       <!-- QR Code Container -->
       <g transform="translate(570, 590)">
-        <text x="70" y="-10" class="scan-lbl" text-anchor="middle">SCAN</text>
+        <text x="70" y="-20" class="scan-lbl" text-anchor="middle">SCAN</text>
         <image href="${qrCodeDataUrl}" x="-10" y="-10" width="160" height="160" />
       </g>
 
