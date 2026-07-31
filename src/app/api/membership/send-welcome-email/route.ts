@@ -146,13 +146,13 @@ export async function POST(request: Request) {
                         
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td valign="top" width="50%">
-                              <div style="font-size: 7px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">One ID</div>
-                              <div style="font-size: 9px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
+                            <td valign="top" width="55%" style="padding-right: 8px;">
+                              <div style="font-size: 6px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">One ID</div>
+                              <div style="font-size: 8px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
                             </td>
-                            <td valign="top" width="50%">
-                              <div style="font-size: 7px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">Valid Until</div>
-                              <div style="font-size: 9px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
+                            <td valign="top" width="45%">
+                              <div style="font-size: 6px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">Valid Until</div>
+                              <div style="font-size: 8px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
                             </td>
                           </tr>
                         </table>
