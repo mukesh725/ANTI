@@ -33,7 +33,7 @@ async function getLogoDataUrl(filename: string): Promise<string> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
     let fetchUrl = filename.startsWith('http') ? filename : `${baseUrl}/${filename.replace(/^\/+/, '')}`;
-    
+
     // Instant fallback for newly uploaded templates to GitHub before Vercel finishes deploying
     if (filename.includes('/uploads/')) {
       const filenameOnly = filename.split('/uploads/').pop();
@@ -46,7 +46,7 @@ async function getLogoDataUrl(filename: string): Promise<string> {
     if (res.ok) {
       const arrayBuffer = await res.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      
+
       let mime = 'image/png';
       if (filename.endsWith('.svg')) mime = 'image/svg+xml';
       else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) mime = 'image/jpeg';
@@ -67,7 +67,7 @@ export async function generateDigitalMembershipCard(
   qrCodeDataUrl?: string,
   templates?: { Select?: string; Preferred?: string; Signature?: string }
 ): Promise<string> {
-  
+
   if (!templates) {
     /*
     try {
@@ -227,21 +227,21 @@ export async function generateDigitalMembershipCard(
       </defs>
 
       <!-- Outer Background Card -->
-      ${activeTemplateUrl ? 
-        `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMin slice" clip-path="url(#cardClip)" />` 
-        : 
-        `<rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
-      }
+      ${activeTemplateUrl ?
+      `<image href="${activeTemplateUrl}" x="20" y="20" width="${cardWidth}" height="${cardHeight}" preserveAspectRatio="xMidYMin slice" clip-path="url(#cardClip)" />`
+      :
+      `<rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" fill="${outerBgFill}" stroke="${outerStroke}" stroke-width="2" />`
+    }
 
       <!-- Top Branding -->
       ${activeTemplateUrl ? '' : `<image href="${airoOneLogoUrl}" x="150" y="70" width="600" height="180" preserveAspectRatio="xMidYMid meet" />`}
 
       <!-- Inner Digital Membership Card -->
-      ${activeTemplateUrl ? 
-        ''
-        : 
-        `<rect x="75" y="280" width="750" height="550" rx="36" fill="${innerBgFill}" filter="url(#cardShadow)" stroke="${innerStroke}" stroke-width="1.5" />`
-      }
+      ${activeTemplateUrl ?
+      ''
+      :
+      `<rect x="75" y="280" width="750" height="550" rx="36" fill="${innerBgFill}" filter="url(#cardShadow)" stroke="${innerStroke}" stroke-width="1.5" />`
+    }
 
       <!-- Inner Logos -->
       ${activeTemplateUrl ? '' : `
@@ -263,7 +263,7 @@ export async function generateDigitalMembershipCard(
 
       <!-- QR Code Container -->
       <g transform="translate(570, 590)">
-        <text x="70" y="-15" class="scan-lbl" text-anchor="middle">SCAN</text>
+        <text x="70" y="-10" class="scan-lbl" text-anchor="middle">SCAN</text>
         <image href="${qrCodeDataUrl}" x="-10" y="-10" width="160" height="160" />
       </g>
 
