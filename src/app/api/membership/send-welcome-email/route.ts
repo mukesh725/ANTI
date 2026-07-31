@@ -140,38 +140,33 @@ export async function POST(request: Request) {
                   <img src="https://airoessentials.com/airo-one-logo.png" width="160" alt="AIRO 1" style="display: inline-block;" />
                 </div>
 
-                <div style="background-color: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+                <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: cover; background-position: center; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
                   
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 28px;">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 80px;">
                     <tr>
-                      <td align="left" valign="middle" width="50%">
-                        <img src="https://airoessentials.com/airo-essentials-logo.png" width="100" alt="AIRO Essentials" style="display: block;" />
-                      </td>
-                      <td align="right" valign="middle" width="50%">
-                        <img src="https://airoessentials.com/airo-health-logo.png" width="100" alt="AIRO Health" style="display: block;" />
-                      </td>
+                      <td>&nbsp;</td>
                     </tr>
                   </table>
 
-                  <div style="text-align: center; font-size: 11px; font-weight: 700; color: #6b7280; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 28px;">
+                  <div style="text-align: center; font-size: 11px; font-weight: 700; color: #1d1d1f; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 28px;">
                     Membership Access
                   </div>
 
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td valign="bottom" style="padding-right: 12px;">
-                        <div style="font-size: 16px; font-weight: 700; color: #4b5563; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap;">${memberName}</div>
-                        <div style="font-size: 13px; font-weight: 500; color: #6b7280; margin-bottom: 20px; white-space: nowrap;">${displayPlanName}</div>
+                        <div style="font-size: 16px; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap;">${memberName}</div>
+                        <div style="font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 20px; white-space: nowrap;">${displayPlanName}</div>
                         
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                           <tr>
                             <td valign="top" width="50%">
-                              <div style="font-size: 9px; color: #9ca3af; font-weight: 600; margin-bottom: 4px; white-space: nowrap;">One ID</div>
-                              <div style="font-size: 12px; color: #374151; font-weight: 600; white-space: nowrap;">${oneId}</div>
+                              <div style="font-size: 9px; color: #4b5563; font-weight: 600; margin-bottom: 4px; white-space: nowrap;">One ID</div>
+                              <div style="font-size: 12px; color: #1d1d1f; font-weight: 600; white-space: nowrap;">${oneId}</div>
                             </td>
                             <td valign="top" width="50%">
-                              <div style="font-size: 9px; color: #9ca3af; font-weight: 600; margin-bottom: 4px; white-space: nowrap;">Valid Until</div>
-                              <div style="font-size: 12px; color: #374151; font-weight: 600; white-space: nowrap;">${expiryStr}</div>
+                              <div style="font-size: 9px; color: #4b5563; font-weight: 600; margin-bottom: 4px; white-space: nowrap;">Valid Until</div>
+                              <div style="font-size: 12px; color: #1d1d1f; font-weight: 600; white-space: nowrap;">${expiryStr}</div>
                             </td>
                           </tr>
                         </table>
