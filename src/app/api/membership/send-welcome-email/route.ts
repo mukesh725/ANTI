@@ -119,15 +119,9 @@ export async function POST(request: Request) {
                 </p>
               </div>
 
-              <!-- Digital Membership Card Preview (Landscape Uncompressed) -->
-              <div style="background-color: #f3f4f6; border: 2px solid #e5e7eb; border-radius: 20px; padding: 24px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box; text-align: left;">
+              <!-- Digital Membership Card Preview (Landscape) -->
+              <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: cover; background-position: center; border-radius: 20px; padding: 24px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
                 
-                <div style="text-align: center; margin-bottom: 24px;">
-                  <img src="https://airoessentials.com/airo-one-logo.png" width="160" alt="AIRO 1" style="display: inline-block;" />
-                </div>
-
-                <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: cover; background-position: center; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
-                  
                   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 80px;">
                     <tr>
                       <td>&nbsp;</td>
@@ -165,7 +159,6 @@ export async function POST(request: Request) {
                       </td>
                     </tr>
                   </table>
-                </div>
               </div>
             </div>
 
