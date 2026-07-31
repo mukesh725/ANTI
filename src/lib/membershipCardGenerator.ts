@@ -113,9 +113,9 @@ export async function generateDigitalMembershipCard(
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
   let templatePath = '';
   if (isSignature) {
-    templatePath = `${baseUrl}/templates/signature.png`;
+    templatePath = `${baseUrl}/templates/signature.jpg`;
   } else if (isPreferred) {
-    templatePath = `${baseUrl}/templates/preferred.png`;
+    templatePath = `${baseUrl}/templates/preferred.jpg`;
   } else if (isSelect) {
     templatePath = `${baseUrl}/templates/select.jpg`;
   }
