@@ -128,41 +128,48 @@ export async function POST(request: Request) {
               </div>
 
               <!-- Digital Membership Card Preview (Landscape) -->
-              <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: cover; background-position: center; border-radius: 20px; padding: 24px; width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
-                
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 210px;">
-                    <tr>
-                      <td>&nbsp;</td>
-                    </tr>
-                  </table>
+              <div style="background-image: url('https://airoessentials.com/templates/${planKey.toLowerCase()}.jpg'); background-size: 100% 100%; background-repeat: no-repeat; border-radius: 20px; width: 100%; max-width: 450px; margin: 0 auto; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
+                <!-- Fixed aspect ratio table for pixel-perfect match with dashboard SVG -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="min-width: 100%; min-height: 460px;">
+                  <tr>
+                    <td height="295" colspan="4" style="height: 295px; font-size: 0; line-height: 0;">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <!-- Left margin (X: 180/900 -> 20%) -->
+                    <td width="20%" style="width: 20%;"></td>
+                    
+                    <!-- Text Details Box (Width: 380/900 -> 42.2%) -->
+                    <td width="42.2%" valign="top" style="width: 42.2%;">
+                      <div style="font-size: 16px; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 8px; white-space: nowrap; line-height: 1;">${memberName}</div>
+                      <div style="font-size: 12px; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 24px; white-space: nowrap; line-height: 1;">${displayPlanName}</div>
+                      
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td valign="top" width="50%">
+                            <div style="font-size: 8px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 4px; white-space: nowrap; line-height: 1;">One ID</div>
+                            <div style="font-size: 10px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
+                          </td>
+                          <td valign="top" width="50%">
+                            <div style="font-size: 8px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 4px; white-space: nowrap; line-height: 1;">Valid Until</div>
+                            <div style="font-size: 10px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
 
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td valign="bottom" style="padding-right: 12px; padding-left: 20px;">
-                        <div style="font-size: 14px; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap;">${memberName}</div>
-                        <div style="font-size: 11px; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 20px; white-space: nowrap;">${displayPlanName}</div>
-                        
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                            <td valign="top" width="50%">
-                              <div style="font-size: 8px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap;">One ID</div>
-                              <div style="font-size: 10px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 600; white-space: nowrap;">${oneId}</div>
-                            </td>
-                            <td valign="top" width="50%">
-                              <div style="font-size: 8px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap;">Valid Until</div>
-                              <div style="font-size: 10px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 600; white-space: nowrap;">${expiryStr}</div>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                      <td width="76" align="right" valign="bottom" style="padding-right: 12px;">
-                        <div style="text-align: center;">
-                          <div style="font-size: 7px; font-family: 'Georgia', serif; font-weight: 700; color: #111827; letter-spacing: 0.5px; margin-bottom: 4px; white-space: nowrap;">SCAN</div>
-                          <img src="${qrCodeDataUrl}" width="76" height="76" alt="QR Code" style="display: block; border: 0;" />
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
+                    <!-- QR Code Box (Start X: 560/900 -> 62.2%, Width: 160/900 -> 17.8%) -->
+                    <td width="17.8%" valign="top" align="center" style="width: 17.8%;">
+                      <div style="font-size: 8px; font-family: 'Georgia', serif; font-weight: 700; color: #111827; letter-spacing: 0.5px; margin-bottom: 4px; white-space: nowrap; line-height: 1;">SCAN</div>
+                      <img src="https://airoessentials.com/api/membership/qr?data=${encodeURIComponent(digitalCardPageUrl)}" width="100%" style="max-width: 80px; height: auto; display: block; border: 0;" alt="QR Code" />
+                    </td>
+
+                    <!-- Right margin (20%) -->
+                    <td width="20%" style="width: 20%;"></td>
+                  </tr>
+                  <tr>
+                    <td height="85" colspan="4" style="height: 85px; font-size: 0; line-height: 0;">&nbsp;</td>
+                  </tr>
+                </table>
               </div>
             </div>
 
