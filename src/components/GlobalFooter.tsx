@@ -62,6 +62,17 @@ export function GlobalFooter() {
         <p className="text-[#FFFFFF]/30 text-[10px] tracking-widest uppercase">
           © {new Date().getFullYear()} AIRO Health. All Rights Reserved.
         </p>
+        <div className="flex-shrink-0 mt-4 md:mt-0">
+          <iframe
+            title="DUNS Registered Seal"
+            src="https://dunsregistered.dnb.com/SealAuthentication.aspx?Cid=1"
+            width="114"
+            height="97"
+            frameBorder="0"
+            scrolling="no"
+            style={{ border: "none" }}
+          />
+        </div>
       </div>
     </footer>
   );
