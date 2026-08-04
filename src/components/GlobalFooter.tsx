@@ -1,6 +1,21 @@
+"use client";
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export function GlobalFooter() {
+  const [brandName, setBrandName] = useState("AIRO Health");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const host = window.location.hostname;
+      // Default to AIRO Health unless the hostname contains 'essential'
+      if (host.includes("airoessential") || host.includes("essentials.airo")) {
+        setBrandName("AIRO Essentials");
+      }
+    }
+  }, []);
+
   return (
     <footer className="border-t border-[#1C1C1E]/10 py-16 px-8 md:px-16 bg-[#1C1C1E] text-[#FFFFFF] rounded-t-[3rem] w-full mt-auto">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
@@ -60,7 +75,7 @@ export function GlobalFooter() {
 
       <div className="max-w-[1400px] mx-auto mt-16 pt-8 border-t border-[#FFFFFF]/10 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-[#FFFFFF]/30 text-[10px] tracking-widest uppercase">
-          © {new Date().getFullYear()} AIRO Health. All Rights Reserved.
+          © {new Date().getFullYear()} {brandName}. All Rights Reserved.
         </p>
         <div className="flex-shrink-0 mt-4 md:mt-0">
           <iframe
