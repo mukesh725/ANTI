@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import fs from "fs/promises";
+import path from "path";
 
 export async function POST(req: Request) {
   try {
@@ -9,28 +11,43 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Convert file to Base64 for GitHub API
+    // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const base64Content = buffer.toString("base64");
 
     // Clean up filename (remove spaces and special chars)
     const cleanFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
     const uniqueFilename = `${Date.now()}-${cleanFilename}`;
-    const filePath = `public/uploads/${uniqueFilename}`;
+    
+    // The public URL that Next.js will serve
+    const publicUrl = `/uploads/${uniqueFilename}`;
 
     const githubToken = process.env.GITHUB_TOKEN;
     const githubOwner = process.env.GITHUB_OWNER || "mukesh725"; // Fallback to current repo owner
     const githubRepo = process.env.GITHUB_REPO || "ANTI"; // Fallback to current repo name
 
     if (!githubToken) {
-      return NextResponse.json(
-        { error: "GITHUB_TOKEN is not set in environment variables" },
-        { status: 500 }
-      );
+      console.warn("GITHUB_TOKEN is not set. Falling back to local file system upload.");
+      
+      // Save locally to public/uploads directory
+      const uploadDir = path.join(process.cwd(), "public", "uploads");
+      
+      try {
+        await fs.access(uploadDir);
+      } catch {
+        await fs.mkdir(uploadDir, { recursive: true });
+      }
+      
+      const filePath = path.join(uploadDir, uniqueFilename);
+      await fs.writeFile(filePath, buffer);
+      
+      return NextResponse.json({ url: publicUrl, success: true });
     }
 
     // Call GitHub API to upload the file
+    const filePath = `public/uploads/${uniqueFilename}`;
+    const base64Content = buffer.toString("base64");
+    
     const githubResponse = await fetch(
       `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${filePath}`,
       {
@@ -57,9 +74,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Success! Return the public path that Next.js will serve
-    const publicUrl = `/uploads/${uniqueFilename}`;
-
+    // Success! Return the public path
     return NextResponse.json({ url: publicUrl, success: true });
   } catch (error) {
     console.error("Upload error:", error);
