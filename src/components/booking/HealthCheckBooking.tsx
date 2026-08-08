@@ -23,8 +23,7 @@ export function HealthCheckBooking() {
     dob: "",
     age: "",
     sex: "",
-    height: "",
-    occupation: ""
+    height: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -619,29 +618,9 @@ export function HealthCheckBooking() {
                           value={formData.mobile}
                           onChange={e => setFormData({...formData, mobile: e.target.value})}
                           className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#1C1C1E] transition-colors"
-                          placeholder="+1 (555) 000-0000"
+                          placeholder="+91 98765 43210"
                         />
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Occupation</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1">
-                      {['Employed', 'Self-Employed', 'Student', 'Retired', 'Other'].map(option => (
-                        <label key={option} className="flex items-center gap-2 cursor-pointer text-sm">
-                          <input 
-                            required
-                            type="radio" 
-                            name="occupation"
-                            value={option}
-                            checked={formData.occupation === option}
-                            onChange={e => setFormData({...formData, occupation: e.target.value})}
-                            className="w-4 h-4 text-[#1C1C1E] border-gray-300 focus:ring-[#1C1C1E]"
-                          />
-                          {option}
-                        </label>
-                      ))}
                     </div>
                   </div>
 
@@ -777,7 +756,7 @@ export function HealthCheckBooking() {
                     setStep(1);
                     setSelectedSlot("");
                     setSelectedDate("");
-                    setFormData({ firstName: "", lastName: "", email: "", mobile: "", dob: "", age: "", sex: "", height: "", occupation: "" });
+                    setFormData({ firstName: "", lastName: "", email: "", mobile: "", dob: "", age: "", sex: "", height: "" });
                   }}
                   className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50 hover:text-[#1C1C1E] underline underline-offset-4"
                 >
