@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { db } from "@/lib/firebase";
+import { db, storage } from "@/lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ImagePlus, RefreshCw, Save } from "lucide-react";
 import Image from "next/image";
 
@@ -47,21 +48,18 @@ export function CardTemplateManager() {
 
     setUploadingState(prev => ({ ...prev, [tier]: true }));
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/cms/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok && data.url) {
-        setTemplates(prev => ({ ...prev, [tier]: data.url }));
-        alert(`Successfully uploaded image for ${tier}! Don't forget to Save.`);
-      } else {
-        alert("Failed to upload image: " + (data.error || "Unknown error"));
-      }
+      // Clean up filename
+      const cleanFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+      const uniqueFilename = `${Date.now()}-${cleanFilename}`;
+      
+      const storageRef = ref(storage, `cms-uploads/${uniqueFilename}`);
+      const metadata = { contentType: file.type || 'application/octet-stream' };
+      
+      await uploadBytes(storageRef, file, metadata);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      setTemplates(prev => ({ ...prev, [tier]: downloadURL }));
+      alert(`Successfully uploaded image for ${tier}! Don't forget to Save.`);
     } catch (err) {
       console.error(err);
       alert("Error uploading image");

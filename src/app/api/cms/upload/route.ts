@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import { storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export async function POST(req: Request) {
   try {
@@ -11,71 +11,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const uint8Array = new Uint8Array(arrayBuffer);
 
     // Clean up filename (remove spaces and special chars)
     const cleanFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
     const uniqueFilename = `${Date.now()}-${cleanFilename}`;
     
-    // The public URL that Next.js will serve
-    const publicUrl = `/uploads/${uniqueFilename}`;
-
-    const githubToken = process.env.GITHUB_TOKEN;
-    const githubOwner = process.env.GITHUB_OWNER || "mukesh725"; // Fallback to current repo owner
-    const githubRepo = process.env.GITHUB_REPO || "ANTI"; // Fallback to current repo name
-
-    if (!githubToken) {
-      console.warn("GITHUB_TOKEN is not set. Falling back to local file system upload.");
-      
-      // Save locally to public/uploads directory
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      
-      try {
-        await fs.access(uploadDir);
-      } catch {
-        await fs.mkdir(uploadDir, { recursive: true });
-      }
-      
-      const filePath = path.join(uploadDir, uniqueFilename);
-      await fs.writeFile(filePath, buffer);
-      
-      return NextResponse.json({ url: publicUrl, success: true });
-    }
-
-    // Call GitHub API to upload the file
-    const filePath = `public/uploads/${uniqueFilename}`;
-    const base64Content = buffer.toString("base64");
+    // Upload to Firebase Storage
+    const storageRef = ref(storage, `cms-uploads/${uniqueFilename}`);
     
-    const githubResponse = await fetch(
-      `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${filePath}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${githubToken}`,
-          "Content-Type": "application/json",
-          "User-Agent": "AIRO-CMS-Uploader",
-        },
-        body: JSON.stringify({
-          message: `chore: upload image ${uniqueFilename} via CMS`,
-          content: base64Content,
-          branch: "main",
-        }),
-      }
-    );
+    const metadata = {
+      contentType: file.type || 'application/octet-stream',
+    };
 
-    if (!githubResponse.ok) {
-      const errorData = await githubResponse.json();
-      console.error("GitHub API Error:", errorData);
-      return NextResponse.json(
-        { error: "Failed to upload to GitHub", details: errorData },
-        { status: githubResponse.status }
-      );
-    }
+    await uploadBytes(storageRef, uint8Array, metadata);
+    const downloadURL = await getDownloadURL(storageRef);
 
-    // Success! Return the public path
-    return NextResponse.json({ url: publicUrl, success: true });
+    // Success! Return the public URL
+    return NextResponse.json({ url: downloadURL, success: true });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(

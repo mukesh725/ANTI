@@ -202,49 +202,6 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
         </div>
       </div>
 
-      {/* Founding Member Offer */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        className="mb-24 bg-gradient-to-r from-[#D02029] to-[#a81a21] text-white p-10 rounded-3xl shadow-xl text-center"
-      >
-        <span className="bg-white/20 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-6 inline-block">Exclusive for the First 10,000 Members</span>
-        <h2 className="text-4xl font-bold mb-10">Founding Member Offer</h2>
-        
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
-          <div className="bg-white/10 p-6 rounded-2xl">
-            <h3 className="text-xl font-bold mb-2">Select - ₹999</h3>
-            <ul className="space-y-2 opacity-90">
-              <li>🎁 ₹500 Welcome Coupons</li>
-              <li>🛍️ AIRO Reusable Shopping Bag</li>
-            </ul>
-          </div>
-          <div className="bg-white/10 p-6 rounded-2xl border border-white/30">
-            <h3 className="text-xl font-bold mb-2">Preferred - ₹2,999</h3>
-            <ul className="space-y-2 opacity-90">
-              <li>🎁 ₹1,500 Welcome Coupons</li>
-              <li>⚕️ Complimentary AIRO Wellness Kit</li>
-              <li>💧 AIRO Premium Water Bottle</li>
-            </ul>
-          </div>
-          <div className="bg-white/10 p-6 rounded-2xl">
-            <h3 className="text-xl font-bold mb-2">Signature - ₹4,999</h3>
-            <ul className="space-y-2 opacity-90">
-              <li>🎁 ₹2,500 Welcome Coupons</li>
-              <li>⚕️ Premium AIRO Wellness Kit</li>
-              <li>💧 Premium Stainless Steel Water Bottle</li>
-            </ul>
-          </div>
-        </div>
-        
-        <button 
-          onClick={onNext}
-          className="mt-10 bg-white text-[#D02029] px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all shadow-lg"
-        >
-          Claim Offer Now
-        </button>
-      </motion.div>
 
       {/* Terms & Conditions */}
       <div className="text-sm text-gray-500 max-w-4xl mx-auto space-y-2 opacity-75">

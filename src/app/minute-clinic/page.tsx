@@ -84,11 +84,14 @@ export default function MinuteClinicPage() {
             </p>
 
             <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FFFFFF] bg-[#1C1C1E] px-6 py-3 rounded-full border border-[#1C1C1E]">
-                {pc.heroButtonText || "Booking Waitlist Only"}
-              </span>
-              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#1C1C1E]/50">
-                {pc.heroButtonLabel || "Opening Winter 2026"}
+              <Link 
+                href="/book-health-scan"
+                className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FFFFFF] bg-[#1C1C1E] px-6 py-3 rounded-full border border-[#1C1C1E] hover:bg-[#2C2C2E] transition-all"
+              >
+                {pc.heroButtonText || "Book Free Health Scan"}
+              </Link>
+              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#1C1C1E]/50 flex items-center gap-2">
+                <Shield className="w-4 h-4" /> 10-Minute Assessment
               </span>
             </div>
           </div>

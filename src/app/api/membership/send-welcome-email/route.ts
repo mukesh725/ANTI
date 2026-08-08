@@ -9,25 +9,39 @@ const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 const PLAN_BENEFITS: Record<string, string[]> = {
   Signature: [
     'Up to 5 Members Covered',
-    '6% Essentials Discount',
-    '22% Pharmacy Discount',
-    '10 Free Doctor Consultations/Yr',
+    'Up to 60%+* Pharmacy Discount',
+    '6% AIRO Branded Products',
+    '10 Free Doctor Consults/Yr',
+    '10 Free Telemedicine Consults/Yr',
     'Unlimited Basic Health Screenings',
-    'VIP Priority Service'
+    '2 Annual Preventive Health Check-ups',
+    '6 Dietitian Consultations/Yr',
+    'Unlimited Free Medicine Delivery',
+    'VIP Priority Service',
+    'AIRO Care365™ (24/7 Support)',
+    'Senior Citizens Care (60+ Years)'
   ],
   Preferred: [
     'Up to 3 Members Covered',
-    '4% Essentials Discount',
-    '18% Pharmacy Discount',
-    '6 Free Doctor Consultations/Yr',
-    '10 Basic Health Screenings'
+    'Up to 60%+* Pharmacy Discount',
+    '5% AIRO Branded Products',
+    '6 Free Doctor Consults/Yr',
+    '6 Free Telemedicine Consults/Yr',
+    '10 Basic Health Screenings',
+    '1 Annual Preventive Health Check-up',
+    '2 Dietitian Consultations/Yr',
+    'Free Medicine Delivery > ₹1,500',
+    'Senior Citizens Care (60+ Years)'
   ],
   Select: [
     '1 Member Covered',
-    '2% Essentials Discount',
-    '15% Pharmacy Discount',
-    '2 Free Doctor Consultations/Yr',
-    '4 Basic Health Screenings'
+    'Up to 60%+* Pharmacy Discount',
+    '3% AIRO Branded Products',
+    '2 Free Doctor Consults/Yr',
+    '2 Free Telemedicine Consults/Yr',
+    '4 Basic Health Screenings',
+    'Free Medicine Delivery > ₹1,500',
+    'Senior Citizens Care (60+ Years)'
   ],
 };
 
@@ -83,8 +97,14 @@ export async function POST(request: Request) {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light">
+        <meta name="supported-color-schemes" content="light">
         <title>Welcome to AIRO ONE</title>
         <style>
+          :root {
+            color-scheme: light;
+            supported-color-schemes: light;
+          }
           body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f5f5f7; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; color: #1d1d1f; }
           @media only screen and (max-width: 600px) {
             .container { padding: 20px 12px !important; }
@@ -93,6 +113,12 @@ export async function POST(request: Request) {
             .details-grid td { display: block !important; width: 100% !important; margin-bottom: 12px !important; }
             .hide-on-mobile { display: none !important; }
           }
+          @media (prefers-color-scheme: dark) {
+            .force-black { color: #1d1d1f !important; }
+            .force-gray { color: #374151 !important; }
+          }
+          [data-ogsc] .force-black { color: #1d1d1f !important; }
+          [data-ogsc] .force-gray { color: #374151 !important; }
         </style>
       </head>
       <body>
@@ -141,18 +167,18 @@ export async function POST(request: Request) {
                       
                       <!-- Text Details Box -->
                       <td width="151" valign="top" style="width: 151px;">
-                        <div style="font-size: 13px; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; line-height: 1;">${memberName}</div>
-                        <div style="font-size: 10px; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 16px; white-space: nowrap; line-height: 1;">${displayPlanName}</div>
+                        <div class="force-black" style="font-size: 13px; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; line-height: 1;">${memberName}</div>
+                        <div class="force-gray" style="font-size: 10px; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 16px; white-space: nowrap; line-height: 1;">${displayPlanName}</div>
                         
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                           <tr>
                             <td valign="top" width="55%" style="padding-right: 8px;">
-                              <div style="font-size: 6px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">One ID</div>
-                              <div style="font-size: 8px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
+                              <div class="force-gray" style="font-size: 6px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">One ID</div>
+                              <div class="force-black" style="font-size: 8px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${oneId}</div>
                             </td>
                             <td valign="top" width="45%">
-                              <div style="font-size: 6px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">Valid Until</div>
-                              <div style="font-size: 8px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
+                              <div class="force-gray" style="font-size: 6px; font-family: -apple-system, sans-serif; color: #4b5563; font-weight: 600; margin-bottom: 2px; white-space: nowrap; line-height: 1;">Valid Until</div>
+                              <div class="force-black" style="font-size: 8px; font-family: 'Georgia', serif; color: #1d1d1f; font-weight: 700; white-space: nowrap; line-height: 1;">${expiryStr}</div>
                             </td>
                           </tr>
                         </table>
@@ -160,7 +186,7 @@ export async function POST(request: Request) {
 
                       <!-- QR Code Box -->
                       <td width="62" valign="top" align="center" style="width: 62px;">
-                        <div style="font-size: 6px; font-family: 'Georgia', serif; font-weight: 700; color: #111827; letter-spacing: 0.5px; margin-bottom: 2px; white-space: nowrap; line-height: 1;">SCAN</div>
+                        <div class="force-black" style="font-size: 6px; font-family: 'Georgia', serif; font-weight: 700; color: #111827; letter-spacing: 0.5px; margin-bottom: 2px; white-space: nowrap; line-height: 1;">SCAN</div>
                         <img src="https://www.airoessentials.com/api/membership/qr?data=${encodeURIComponent(digitalCardPageUrl)}" width="62" height="62" alt="QR Code" style="display: block; border: 0;" />
                       </td>
 
@@ -248,6 +274,24 @@ export async function POST(request: Request) {
                 </td></tr></table>
                 <![endif]-->
               </div>
+            </div>
+
+            ${planKey === 'Signature' ? `
+            <!-- AIRO Care365 Section -->
+            <div style="background-color: #ffeaea; border: 1px solid #ffcaca; border-radius: 20px; padding: 24px; margin-bottom: 28px;">
+              <h3 style="margin-top: 0; margin-bottom: 8px; color: #D02029; font-size: 16px;">🚨 AIRO Care365™ Included</h3>
+              <p style="margin: 0; font-size: 13px; color: #1d1d1f; line-height: 1.5;">
+                <strong>24/7 Emergency Support:</strong> Immediate assistance during medical emergencies, priority ambulance coordination, and real-time support from an AIRO doctor via teleconsultation.
+              </p>
+            </div>
+            ` : ''}
+
+            <!-- Senior Citizens Care Section -->
+            <div style="background-color: #e6f6ed; border: 1px solid #c2ebd1; border-radius: 20px; padding: 24px; margin-bottom: 28px;">
+              <h3 style="margin-top: 0; margin-bottom: 8px; color: #006537; font-size: 16px;">💚 Senior Citizens Care (Age 60+)</h3>
+              <p style="margin: 0; font-size: 13px; color: #1d1d1f; line-height: 1.5;">
+                Every AIRO ONE membership includes exclusive benefits for members aged 60+, including <strong>75% OFF</strong> routine diagnostic tests and <strong>50% OFF</strong> in-store doctor consultations.
+              </p>
             </div>
 
             <!-- Assistance Contact Box -->

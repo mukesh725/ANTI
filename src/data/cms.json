@@ -10,7 +10,7 @@
       "subtitle": "YOUR COMPLETE HEALTH & WELLNESS PARTNER",
       "tagline": "A complete health network connecting healthy food, clinics, pharmacy, and online care.",
       "description": "At AIRO, we believe in preventing illness before it happens. We bring together expert medical care and daily wellness to help you live a longer, healthier life.",
-      "heroImage": "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000",
+      "heroImage": "/uploads/home-hero.png",
       "buttons": {
         "primary": {
           "text": "Explore Essentials",

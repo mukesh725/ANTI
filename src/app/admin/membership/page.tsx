@@ -146,6 +146,25 @@ export default function AdminMembershipDashboard() {
 
       // Refresh table
       fetchMembers();
+
+      // Automatically send the welcome email
+      try {
+        setSendingEmailId(targetId);
+        const emailRes = await fetch('/api/membership/send-welcome-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ member: data.member }),
+        });
+        const emailData = await emailRes.json();
+        if (!emailRes.ok || !emailData.success) {
+          console.error('Failed to auto-send welcome email:', emailData);
+        }
+      } catch (err) {
+        console.error('Network error during auto-email:', err);
+      } finally {
+        setSendingEmailId(null);
+      }
+
     } catch (err) {
       console.error('Error activating member:', err);
       alert('Failed to activate member. Please try again.');
@@ -346,9 +365,9 @@ export default function AdminMembershipDashboard() {
           </div>
         </div>
 
-        {/* Table Content */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        {/* Table Content for Desktop */}
+        <div className="overflow-x-auto hidden md:block">
+          <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
               <tr className="bg-gray-100/70 text-gray-500 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
                 <th className="p-4">Registration ID</th>
@@ -516,6 +535,123 @@ export default function AdminMembershipDashboard() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Card Layout */}
+        <div className="md:hidden divide-y divide-gray-100">
+          {loading ? (
+            <div className="p-8 text-center text-gray-500 flex flex-col items-center gap-3">
+              <div className="w-6 h-6 border-2 border-[#006537] border-t-transparent rounded-full animate-spin" />
+              <p>Loading membership data...</p>
+            </div>
+          ) : members.length === 0 ? (
+            <div className="p-8 text-center text-gray-400">
+              No membership records found matching your filters.
+            </div>
+          ) : (
+            members.map((m) => {
+              const isPending = m.membershipStatus === 'Pending Activation';
+              const isActive = m.membershipStatus === 'Active';
+              const isEmailSending = sendingEmailId === (m.memberId || m.id || m.registrationId);
+
+              return (
+                <div key={m.id || m.registrationId} className="p-4 space-y-4 bg-white hover:bg-gray-50 transition-colors">
+                  {/* Header: Name and Status */}
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[#006537]/10 text-[#006537] flex items-center justify-center font-bold text-sm">
+                        {m.firstName?.[0]}{m.lastName?.[0]}
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900 text-base">{m.firstName} {m.lastName}</p>
+                        <p className="text-xs text-gray-500 font-mono mt-0.5">{m.registrationId}</p>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-extrabold px-2.5 py-1 rounded-full ${
+                      isActive ? 'bg-emerald-600 text-white shadow-sm' : 'bg-amber-500 text-white'
+                    }`}>
+                      {m.membershipStatus}
+                    </span>
+                  </div>
+
+                  {/* Details Grid */}
+                  <div className="grid grid-cols-2 gap-y-3 gap-x-4 bg-gray-50/50 p-3 rounded-xl border border-gray-100">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">Plan</p>
+                      <span className={`font-bold text-xs px-2 py-0.5 rounded-md ${
+                        m.membershipPlan.includes('Signature') ? 'bg-amber-100 text-amber-900' :
+                        m.membershipPlan.includes('Preferred') ? 'bg-purple-100 text-purple-900' :
+                        'bg-emerald-100 text-emerald-900'
+                      }`}>
+                        {m.membershipPlan}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">Payment</p>
+                      <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md ${
+                        m.paymentStatus === 'Paid' ? 'text-green-700 bg-green-50' : 'text-amber-700 bg-amber-50'
+                      }`}>
+                        {m.paymentStatus}
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">Contact</p>
+                      <div className="flex flex-col gap-1">
+                        <p className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                          <Phone className="w-3.5 h-3.5 text-gray-400" /> {m.mobile}
+                        </p>
+                        <p className="text-sm text-gray-500 flex items-center gap-2">
+                          <Mail className="w-3.5 h-3.5 text-gray-400" /> {m.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap items-center gap-2 pt-2">
+                    {isPending ? (
+                      <button
+                        onClick={() => handleActivateClick(m)}
+                        disabled={actionLoadingId === m.registrationId}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#006537] hover:bg-[#004e2a] text-white font-bold text-sm rounded-xl shadow-md transition-all active:scale-95"
+                      >
+                        <Sparkles className="w-4 h-4" /> Activate
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => setViewingMember(m)}
+                          className="flex-1 inline-flex items-center justify-center gap-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-sm rounded-xl transition-colors border border-gray-200"
+                        >
+                          <Eye className="w-4 h-4" /> Card
+                        </button>
+                        <button
+                          onClick={() => handleResendWelcomeEmail(m)}
+                          disabled={isEmailSending}
+                          className="flex-1 inline-flex items-center justify-center gap-1 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-sm rounded-xl transition-colors border border-blue-200"
+                        >
+                          {isEmailSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                          Email
+                        </button>
+                      </>
+                    )}
+                    <button
+                      onClick={() => setMemberToEdit(m)}
+                      className="p-2.5 text-gray-500 bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors border border-gray-100"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setMemberToDelete(m)}
+                      className="p-2.5 text-gray-500 bg-gray-50 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors border border-gray-100"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
 
         {/* Footer Summary */}

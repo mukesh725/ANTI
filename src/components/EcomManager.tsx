@@ -95,7 +95,7 @@ export function EcomManager() {
 
       <div className="bg-white rounded-2xl border border-gray-200/5 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[800px]">
             <thead className="bg-white text-[10px] uppercase tracking-widest text-gray-800/60">
               <tr>
                 <th className="px-6 py-4 font-bold">Order ID</th>

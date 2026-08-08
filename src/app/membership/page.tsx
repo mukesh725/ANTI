@@ -241,7 +241,96 @@ export default function MembershipPage() {
             {/* Membership Comparison Table Section */}
             <div>
               <h2 className="text-3xl font-semibold text-center mb-10 text-[#006537]">Membership Comparison</h2>
-              <div className="overflow-x-auto bg-white rounded-3xl shadow-sm border border-gray-100">
+
+              {/* Mobile View - Cards */}
+              <div className="lg:hidden space-y-6 mb-8">
+                {[
+                  {
+                    name: "AIRO ONE™ Select", price: "₹999", members: "1 Member",
+                    offers: "✔", pharmacy: "Up to 60%+*", brand: "3%", doc: "2 / Year",
+                    tele: "2 / Year", screen: "4 Basic Screenings", checkup: "—",
+                    diet: "—", delivery: "Free Above ₹1,500", priority: "—", care365: "—", senior: "✔ Included", 
+                    app: "✔",
+                    bg: "bg-white", highlight: false
+                  },
+                  {
+                    name: "AIRO ONE™ Preferred", price: "₹2,999", members: "Up to 3 Members",
+                    offers: "✔", pharmacy: "Up to 60%+*", brand: "5%", doc: "6 / Year",
+                    tele: "6 / Year", screen: "10 Basic Screenings", checkup: "1 Complimentary",
+                    diet: "2 / Year", delivery: "Free Above ₹1,500", priority: "—", care365: "—", senior: "✔ Included", 
+                    app: "✔",
+                    bg: "bg-green-50 border-[#006537]/20", highlight: true
+                  },
+                  {
+                    name: "AIRO ONE™ Signature", price: "₹4,999", members: "Up to 5 Members",
+                    offers: "✔", pharmacy: "Up to 60%+*", brand: "6%", doc: "10 / Year",
+                    tele: "10 / Year", screen: "Unlimited Basic Screenings", checkup: "2 Complimentary",
+                    diet: "6 / Year", delivery: "Unlimited Free Delivery", priority: "VIP Priority", care365: "Included", senior: "✔ Included", 
+                    app: "✔",
+                    bg: "bg-white", highlight: false
+                  }
+                ].map((plan, idx) => (
+                  <div key={idx} className={`${plan.bg} rounded-3xl shadow-md border ${plan.highlight ? 'border-[#006537]/30 border-2' : 'border-gray-100'} p-6 relative`}>
+                    {plan.highlight && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#006537] text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                        ⭐ Most Popular
+                      </div>
+                    )}
+                    <h3 className="text-xl font-bold text-center mb-2 text-[#006537]">{plan.name}</h3>
+                    <div className="text-center text-3xl font-bold mb-6">{plan.price}<span className="text-sm font-normal text-gray-500"> / year</span></div>
+                    
+                    <div className="space-y-3 text-sm">
+                      {[
+                        { label: "Members Covered", val: plan.members },
+                        { label: "Exclusive Member Offers", val: plan.offers },
+                        { label: "Pharmacy Discount*", val: plan.pharmacy },
+                        { label: "AIRO Branded Products", val: plan.brand },
+                        { label: "In-Store Doctor Consults", val: plan.doc },
+                        { label: "Telemedicine Consults", val: plan.tele },
+                        { label: "Health Screenings", val: plan.screen },
+                        { label: "Preventive Health Check", val: plan.checkup },
+                        { label: "Dietitian Consults", val: plan.diet },
+                        { label: "Medicine Home Delivery", val: plan.delivery },
+                        { label: "Priority Service", val: plan.priority },
+                        { label: "AIRO Care365™", val: plan.care365 },
+                        { label: "Senior Citizens Care", val: plan.senior },
+                        { label: "App & Reminders", val: plan.app },
+                      ].map((feature, i) => (
+                        <div key={i} className={`flex flex-col py-3 border-b border-black/5 last:border-0 ${feature.label.includes('Care365') ? 'bg-[#D02029]/5 px-4 -mx-4 rounded-xl border-y border-[#D02029]/20 my-1' : feature.label.includes('Senior') ? 'bg-[#006537]/5 px-4 -mx-4 rounded-xl border-y border-[#006537]/20 my-1' : ''}`}>
+                          <div className="flex justify-between items-center w-full">
+                            {feature.label.includes('Care365') || feature.label.includes('Senior') ? (
+                              <a href={feature.label.includes('Care365') ? '#airo-care365' : '#senior-citizens-care'} className={`pr-4 font-bold ${feature.label.includes('Care365') ? 'text-[#D02029]' : 'text-[#006537]'} hover:underline block`}>
+                                {feature.label}
+                              </a>
+                            ) : (
+                              <span className="pr-4 text-gray-600">{feature.label}</span>
+                            )}
+                            <span className={`font-semibold text-right ${feature.val.includes('✔') || feature.val.includes('Unlimited') || feature.val.includes('VIP') || feature.val.includes('Included') ? 'text-[#006537]' : ''} ${feature.val === '—' ? 'text-gray-400' : ''}`}>
+                              {feature.val === '✔' ? <Check className="inline text-[#006537]" size={18}/> : feature.val}
+                            </span>
+                          </div>
+                          {(feature.label.includes('Care365') || feature.label.includes('Senior')) && (
+                            <a href={feature.label.includes('Care365') ? '#airo-care365' : '#senior-citizens-care'} className={`text-xs mt-1.5 font-medium hover:underline ${feature.label.includes('Care365') ? 'text-[#D02029]/80' : 'text-[#006537]/80'}`}>
+                              Scroll down to view more details ↓
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-6">
+                      <button 
+                        onClick={() => startRegistration(plan.name.replace('™', ''))} 
+                        className="w-full bg-[#006537] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#004e2a] transition-all shadow-md"
+                      >
+                        Join {plan.name.split(' ')[2]} ({plan.price})
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop View - Table */}
+              <div className="hidden lg:block overflow-x-auto bg-white rounded-3xl shadow-sm border border-gray-100">
                 <table className="w-full text-left border-collapse min-w-[800px]">
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-100">
@@ -265,25 +354,25 @@ export default function MembershipPage() {
                       <td className="p-6 text-center font-semibold">Up to 5 Members</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">AIRO Essentials Grocery Discount</td>
-                      <td className="p-6 text-center font-semibold">2%</td>
-                      <td className="p-6 text-center font-semibold bg-green-50">4%</td>
-                      <td className="p-6 text-center font-semibold">6%</td>
+                      <td className="p-6 text-gray-600">Exclusive Member Offers &amp; Seasonal Promotions</td>
+                      <td className="p-6 text-center"><Check className="inline text-[#006537]" size={20}/></td>
+                      <td className="p-6 text-center bg-green-50"><Check className="inline text-[#006537]" size={20}/></td>
+                      <td className="p-6 text-center"><Check className="inline text-[#006537]" size={20}/></td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Pharmacy Discount*</td>
-                      <td className="p-6 text-center font-semibold">15%</td>
-                      <td className="p-6 text-center font-semibold bg-green-50 text-[#006537]">18%</td>
-                      <td className="p-6 text-center font-semibold text-[#006537]">22%</td>
+                      <td className="p-6 text-gray-600">AIRO Pharmacy Discount*</td>
+                      <td className="p-6 text-center font-semibold text-[#006537]">Up to 60%+*</td>
+                      <td className="p-6 text-center font-semibold bg-green-50 text-[#006537]">Up to 60%+*</td>
+                      <td className="p-6 text-center font-semibold text-[#006537]">Up to 60%+*</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="p-6 text-gray-600">AIRO Branded Products Discount</td>
-                      <td className="p-6 text-center font-semibold">4%</td>
-                      <td className="p-6 text-center font-semibold bg-green-50">6%</td>
-                      <td className="p-6 text-center font-semibold">8%</td>
+                      <td className="p-6 text-center font-semibold">3%</td>
+                      <td className="p-6 text-center font-semibold bg-green-50">5%</td>
+                      <td className="p-6 text-center font-semibold">6%</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Free Doctor Consultations</td>
+                      <td className="p-6 text-gray-600">Free In-Store Doctor Consultations</td>
                       <td className="p-6 text-center">2 / Year</td>
                       <td className="p-6 text-center bg-green-50">6 / Year</td>
                       <td className="p-6 text-center font-bold">10 / Year</td>
@@ -298,7 +387,7 @@ export default function MembershipPage() {
                       <td className="p-6 text-gray-600">AIRO Praana™ Health Screenings</td>
                       <td className="p-6 text-center">4 Basic Screenings</td>
                       <td className="p-6 text-center bg-green-50">10 Basic Screenings</td>
-                      <td className="p-6 text-center font-bold text-[#006537]">Unlimited</td>
+                      <td className="p-6 text-center font-bold text-[#006537]">Unlimited Basic Screenings</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="p-6 text-gray-600">Annual Preventive Health Check-up</td>
@@ -323,6 +412,28 @@ export default function MembershipPage() {
                       <td className="p-6 text-center text-gray-400">—</td>
                       <td className="p-6 text-center text-gray-400 bg-green-50">—</td>
                       <td className="p-6 text-center font-bold text-[#D02029]">VIP Priority</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50 bg-[#D02029]/5 border-y border-[#D02029]/20">
+                      <td className="p-6">
+                        <a href="#airo-care365" className="block hover:opacity-80">
+                          <div className="font-bold text-[#D02029] hover:underline">AIRO Care365™ (24/7 Emergency Support)</div>
+                          <div className="text-xs text-[#D02029]/80 mt-1.5 font-medium hover:underline">Scroll down to view more details ↓</div>
+                        </a>
+                      </td>
+                      <td className="p-6 text-center text-gray-400">—</td>
+                      <td className="p-6 text-center text-gray-400 bg-green-50">—</td>
+                      <td className="p-6 text-center font-bold text-[#D02029]">Included</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50 bg-[#006537]/5 border-y border-[#006537]/20">
+                      <td className="p-6">
+                        <a href="#senior-citizens-care" className="block hover:opacity-80">
+                          <div className="font-bold text-[#006537] hover:underline">Senior Citizens Care (60+ Years)</div>
+                          <div className="text-xs text-[#006537]/80 mt-1.5 font-medium hover:underline">Scroll down to view more details ↓</div>
+                        </a>
+                      </td>
+                      <td className="p-6 text-center font-semibold text-[#006537]">✔ Included</td>
+                      <td className="p-6 text-center font-semibold bg-green-50 text-[#006537]">✔ Included</td>
+                      <td className="p-6 text-center font-semibold text-[#006537]">✔ Included</td>
                     </tr>
                     {[
                       "AIRO App (Digital Health Records)",
@@ -365,6 +476,47 @@ export default function MembershipPage() {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+
+              {/* Pharmacy Discount Disclaimer */}
+              <div className="mt-4 text-xs text-gray-500 max-w-4xl mx-auto px-4">
+                <p><strong>* AIRO Pharmacy Discount:</strong> Members receive up to 60%+ savings on eligible generic medicines and selected AIRO Pharmacy products. Discounts vary based on product category, prescription requirements, manufacturer pricing, applicable government regulations, promotional offers, and availability.</p>
+              </div>
+            </div>
+
+            {/* Senior Citizens Care */}
+            <div id="senior-citizens-care" className="bg-[#004e2a] text-white p-8 md:p-12 rounded-3xl shadow-xl scroll-mt-24">
+              <h2 className="text-3xl font-semibold mb-6">Senior Citizens Care (Age 60+)</h2>
+              <p className="text-lg opacity-90 mb-10 max-w-4xl">
+                Every AIRO ONE™ Membership includes exclusive healthcare benefits for senior citizens aged 60 years and above.
+              </p>
+              
+              <div className="bg-white/10 p-6 rounded-2xl">
+                <h3 className="font-semibold text-xl mb-4 text-green-200">Included Benefits</h3>
+                <ul className="space-y-4 opacity-95">
+                  <li className="flex gap-3">
+                    <span className="mt-1">✅</span>
+                    <div>
+                      <strong className="block text-lg">75% OFF routine diagnostic tests including:</strong>
+                      <ul className="list-disc ml-5 mt-2 space-y-1 opacity-90 text-sm">
+                        <li>Blood Glucose</li>
+                        <li>HbA1c</li>
+                        <li>Kidney Function Tests (KFT)</li>
+                        <li>Thyroid Function Tests (TSH)</li>
+                        <li>Urine Routine Examination</li>
+                        <li>Other routine preventive blood investigations</li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="mt-1">✅</span>
+                    <strong className="text-lg">50% OFF in-store doctor consultations.</strong>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="mt-1">✅</span>
+                    <span className="text-base">Benefits are available alongside the member's AIRO Pharmacy Discount and other eligible AIRO ONE™ membership benefits.</span>
+                  </li>
+                </ul>
               </div>
             </div>
 
@@ -409,6 +561,54 @@ export default function MembershipPage() {
               </div>
             </div>
 
+            {/* AIRO Care365 - Exclusive to Signature */}
+            <div id="airo-care365" className="bg-[#D02029] text-white p-8 md:p-12 rounded-3xl shadow-xl mt-12 scroll-mt-24">
+              <span className="bg-white/20 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-6 inline-block">
+                Exclusive to AIRO ONE™ Signature
+              </span>
+              <h2 className="text-3xl font-bold mb-4">AIRO Care365™</h2>
+              <p className="text-xl font-semibold mb-2">24/7 Emergency Support Membership</p>
+              <p className="text-lg opacity-90 mb-10 max-w-4xl">
+                Care Every Day. Support When You Need It Most.
+              </p>
+              
+              <div className="grid md:grid-cols-3 gap-8 text-sm">
+                <div className="bg-white/10 p-6 rounded-2xl">
+                  <div className="text-4xl mb-4">🚨</div>
+                  <h3 className="text-xl font-bold mb-4">24/7 Response Coordination</h3>
+                  <ul className="space-y-3 opacity-90">
+                    <li>• Dedicated AIRO Emergency Support Line</li>
+                    <li>• Immediate assistance during medical emergencies</li>
+                    <li>• Rapid coordination with emergency services, hospitals, and designated family members</li>
+                  </ul>
+                </div>
+                <div className="bg-white/10 p-6 rounded-2xl border border-white/30">
+                  <div className="text-4xl mb-4">🚑</div>
+                  <h3 className="text-xl font-bold mb-4">Ambulance Assistance</h3>
+                  <ul className="space-y-3 opacity-90">
+                    <li>• Priority ambulance coordination</li>
+                    <li>• Assistance in arranging transportation to the nearest appropriate hospital</li>
+                    <li>• Real-time support from the moment you call until you reach medical care</li>
+                  </ul>
+                </div>
+                <div className="bg-white/10 p-6 rounded-2xl">
+                  <div className="text-4xl mb-4">👨‍⚕️</div>
+                  <h3 className="text-xl font-bold mb-4">AIRO Doctor Emergency Support</h3>
+                  <ul className="space-y-3 opacity-90">
+                    <li>• Immediate access to an AIRO doctor via teleconsultation during emergencies</li>
+                    <li>• Medical guidance for patients and caregivers</li>
+                    <li>• Coordination with hospital teams using your AIRO Health Profile, when available</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="mt-8 bg-white/10 p-6 rounded-2xl text-center">
+                <p className="text-base font-medium opacity-100">
+                  Because AIRO knows your health history, medications, allergies, and medical conditions, we can help coordinate your care faster when every minute matters.
+                </p>
+              </div>
+            </div>
+
             {/* Every Membership Includes Grid */}
             <div>
               <h2 className="text-3xl font-semibold text-center mb-10 text-[#006537]">Every AIRO ONE™ Membership Includes</h2>
@@ -429,46 +629,6 @@ export default function MembershipPage() {
               </div>
             </div>
 
-            {/* Founding Member Offer */}
-            <div className="bg-gradient-to-r from-[#D02029] to-[#a81a21] text-white p-10 rounded-3xl shadow-xl text-center">
-              <span className="bg-white/20 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-6 inline-block">
-                Exclusive for the First 10,000 Members
-              </span>
-              <h2 className="text-4xl font-bold mb-10">Founding Member Offer</h2>
-              
-              <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
-                <div className="bg-white/10 p-6 rounded-2xl">
-                  <h3 className="text-xl font-bold mb-2">Select - ₹999</h3>
-                  <ul className="space-y-2 opacity-90 text-sm">
-                    <li>🎁 ₹500 Welcome Coupons</li>
-                    <li>🛍️ AIRO Reusable Shopping Bag</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-6 rounded-2xl border border-white/30">
-                  <h3 className="text-xl font-bold mb-2">Preferred - ₹2,999</h3>
-                  <ul className="space-y-2 opacity-90 text-sm">
-                    <li>🎁 ₹1,500 Welcome Coupons</li>
-                    <li>⚕️ Complimentary AIRO Wellness Kit</li>
-                    <li>💧 AIRO Premium Water Bottle</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-6 rounded-2xl">
-                  <h3 className="text-xl font-bold mb-2">Signature - ₹4,999</h3>
-                  <ul className="space-y-2 opacity-90 text-sm">
-                    <li>🎁 ₹2,500 Welcome Coupons</li>
-                    <li>⚕️ Premium AIRO Wellness Kit</li>
-                    <li>💧 Premium Stainless Steel Water Bottle</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <button 
-                onClick={() => startRegistration()}
-                className="mt-10 bg-white text-[#D02029] px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all shadow-lg"
-              >
-                Claim Offer Now
-              </button>
-            </div>
 
           </motion.div>
         )}

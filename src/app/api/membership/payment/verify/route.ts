@@ -134,8 +134,26 @@ export async function POST(request: Request) {
       membershipId,
       status: 'ACTIVE',
       startDate,
-      expiryDate
+      expiryDate,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      mobile: user.mobile,
+      membershipPlan: plan.name,
+      digitalCardUrl: null,
+      paymentStatus: 'Paid'
     };
+
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.airoessentials.com';
+      fetch(`${baseUrl}/api/membership/send-welcome-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ member: result }),
+      }).catch((e) => console.log('Welcome email dispatch failed during payment verify:', e));
+    } catch (e) {
+      console.log('Async email dispatch notification error:', e);
+    }
 
     return NextResponse.json({ success: true, membership: result });
   } catch (error) {

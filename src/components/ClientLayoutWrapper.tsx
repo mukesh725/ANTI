@@ -12,7 +12,6 @@ import { CmsProvider, CmsDataType } from "@/context/CmsContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { CookieBanner } from "./CookieBanner";
-import { LeadCapturePopup } from "./LeadCapturePopup";
 
 interface LocationData {
   city: string;
@@ -153,7 +152,6 @@ export function ClientLayoutWrapper({
                 <>
                   <AiraChatbot />
                   <CookieBanner />
-                  <LeadCapturePopup />
                 </>
               )}
             </div>

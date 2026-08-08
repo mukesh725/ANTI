@@ -377,17 +377,6 @@ export async function activateMember(
       ...updatedFields,
     };
 
-    // 6. Trigger Welcome Email notification (silent catch)
-    try {
-      fetch('/api/membership/send-welcome-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ member: activatedMember }),
-      }).catch((e) => console.log('Welcome email dispatch handled asynchronously:', e));
-    } catch (e) {
-      console.log('Async email dispatch notification:', e);
-    }
-
     return { success: true, member: activatedMember };
   } catch (error) {
     console.error('Error activating membership:', error);

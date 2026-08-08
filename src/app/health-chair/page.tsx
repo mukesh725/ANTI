@@ -378,7 +378,7 @@ export default function HealthChairPage() {
           </h2>
           
           <Link 
-            href={finalCta?.buttonLink || "/minute-clinic"} 
+            href={finalCta?.buttonLink || "/book-health-scan"} 
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#1C1C1E] text-[#FFFFFF] text-[10px] tracking-widest uppercase font-bold hover:bg-[#2C2C2E] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
           >
             {finalCta?.buttonText || "Book Your AIRO Health Scan"}

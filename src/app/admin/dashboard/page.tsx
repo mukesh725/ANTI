@@ -8,7 +8,7 @@ import {
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
   Settings, ShieldAlert, LogOut, ArrowRight,
   TrendingUp, TrendingDown, DollarSign, Activity,
-  Trash2, CheckCircle2, BrainCircuit, ShieldCheck
+  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
@@ -17,6 +17,8 @@ import { EcomManager } from "@/components/EcomManager";
 import { ProductManager } from "@/components/admin/ProductManager";
 import { PlaceholderView } from "@/components/admin/PlaceholderView";
 import { AdminTeamManager } from "@/components/admin/AdminTeamManager";
+import AdminCustomersManager from "@/components/admin/AdminCustomersManager";
+import { AdminBookingsManager } from "@/components/admin/AdminBookingsManager";
 import AdminMembershipDashboard from "@/app/admin/membership/page";
 import Image from "next/image";
 
@@ -48,6 +50,7 @@ interface Lead {
 
 const SIDEBAR_NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "bookings", label: "Health Intakes", icon: Ticket }, // Using Ticket/Calendar-like icon
   { id: "membership", label: "Memberships", icon: ShieldCheck },
   { id: "orders", label: "Orders", icon: ShoppingBag },
   { id: "payments", label: "Payments", icon: CreditCard },
@@ -69,6 +72,7 @@ export default function AdminDashboardPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{id?: string, name: string, email: string, role: string, allowedModules: string[]} | null>(null);
 
   useEffect(() => {
@@ -137,7 +141,7 @@ export default function AdminDashboardPage() {
     switch (activeTab) {
       case "dashboard":
         return (
-          <div className="p-8 max-w-[1600px] mx-auto space-y-6">
+          <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-6">
             <div className="mb-8">
               <h1 className="text-xl text-gray-800 font-medium">Good afternoon, here is your sales overview</h1>
               <p className="text-sm text-gray-500">Overview of AIRO platform operations</p>
@@ -274,6 +278,8 @@ export default function AdminDashboardPage() {
             
           </div>
         );
+      case "bookings":
+        return <AdminBookingsManager />;
       case "membership":
         return <AdminMembershipDashboard />;
       case "orders":
@@ -282,12 +288,15 @@ export default function AdminDashboardPage() {
         return <ProductManager />;
       case "cms":
         return <CmsEditor />;
+      case "customers":
+        return <AdminCustomersManager />;
       case "leads":
         return (
-          <div className="p-8 max-w-[1600px] mx-auto">
+          <div className="p-4 md:p-8 max-w-[1600px] mx-auto">
             <h1 className="text-2xl font-serif text-gray-900 mb-6">Lead Intelligence</h1>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <table className="w-full text-left border-collapse">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100">
                     <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Lead</th>
@@ -332,7 +341,8 @@ export default function AdminDashboardPage() {
                     </tr>
                   )}
                 </tbody>
-              </table>
+                </table>
+              </div>
             </div>
           </div>
         );
@@ -346,13 +356,29 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="flex h-screen bg-[#F4F7F6] overflow-hidden font-sans text-gray-800">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-[280px] bg-[#0A1128] flex flex-col flex-shrink-0 relative z-20 shadow-2xl">
-        <div className="p-8 border-b border-white/5">
-          <div className="flex items-center gap-3 mb-2">
+      <aside className={`w-[280px] bg-[#0A1128] flex flex-col flex-shrink-0 fixed md:relative h-full z-50 shadow-2xl transition-transform duration-300 ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      }`}>
+        <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <span className="text-2xl font-bold tracking-tight text-white">AIRO</span>
             <span className="text-[10px] font-bold text-[#0A84FF] uppercase tracking-widest bg-[#0A84FF]/10 px-2 py-1 rounded">Admin</span>
           </div>
+          <button 
+            className="md:hidden text-gray-400 hover:text-white"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
@@ -368,7 +394,10 @@ export default function AdminDashboardPage() {
           }).map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                setIsSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
                 activeTab === item.id
                   ? "bg-[#0A84FF]/10 text-[#0A84FF] border border-[#0A84FF]/30"
@@ -404,7 +433,13 @@ export default function AdminDashboardPage() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
         {/* Top Header */}
-        <header className="h-[72px] bg-white border-b border-gray-100 flex items-center px-8 flex-shrink-0 z-10 sticky top-0 shadow-sm">
+        <header className="h-[72px] bg-white border-b border-gray-100 flex items-center px-4 md:px-8 flex-shrink-0 z-10 sticky top-0 shadow-sm gap-4">
+          <button 
+            className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <Menu className="w-5 h-5" />
+          </button>
           <h2 className="text-lg font-medium text-gray-800">
             {SIDEBAR_NAV.find(item => item.id === activeTab)?.label || "Dashboard"}
           </h2>

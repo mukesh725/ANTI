@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 export function GlobalFooter() {
   const [brandName, setBrandName] = useState("AIRO Health");
+  const [supportEmail, setSupportEmail] = useState("info@airohealthhub.com");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -12,6 +13,7 @@ export function GlobalFooter() {
       // Default to AIRO Health unless the hostname contains 'essential'
       if (host.includes("airoessential") || host.includes("essentials.airo")) {
         setBrandName("AIRO Essentials");
+        setSupportEmail("info@airoessentials.com");
       }
     }
   }, []);
@@ -52,9 +54,7 @@ export function GlobalFooter() {
             Support
           </h3>
           <ul className="space-y-4 text-xs text-[#FFFFFF]/80 font-medium">
-            <li><a href="mailto:concierge@airo.com" className="hover:text-[#FFFFFF] transition-colors">concierge@airo.com</a></li>
-            <li><a href="mailto:grievance@airo.com" className="hover:text-[#FFFFFF] transition-colors">grievance@airo.com</a></li>
-            <li className="pt-2 text-[#FFFFFF]/50 text-[10px]">Lic. No. 10026047000000</li>
+            <li><a href={`mailto:${supportEmail}`} className="hover:text-[#FFFFFF] transition-colors">{supportEmail}</a></li>
           </ul>
         </div>
 

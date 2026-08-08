@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Save, CheckCircle2, AlertTriangle, FileText, ImageIcon, Settings2 } from "lucide-react";
+import { storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useCms } from "@/context/CmsContext";
 import { CmsDataType } from "@/context/CmsContext";
 
@@ -59,24 +61,21 @@ export function CmsEditor() {
     setUploadingState(prev => ({ ...prev, [pathKey]: true }));
     
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      // Clean up filename (remove spaces and special chars)
+      const cleanFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+      const uniqueFilename = `${Date.now()}-${cleanFilename}`;
       
-      const res = await fetch("/api/cms/upload", {
-        method: "POST",
-        body: formData,
-      });
+      // Upload directly to Firebase Storage
+      const storageRef = ref(storage, `cms-uploads/${uniqueFilename}`);
+      const metadata = { contentType: file.type || 'application/octet-stream' };
       
-      const data = await res.json();
+      await uploadBytes(storageRef, file, metadata);
+      const downloadURL = await getDownloadURL(storageRef);
       
-      if (res.ok && data.url) {
-        updateField(path, data.url);
-      } else {
-        alert("Failed to upload image: " + (data.error || "Unknown error"));
-      }
+      updateField(path, downloadURL);
     } catch (err) {
-      console.error(err);
-      alert("Failed to upload image");
+      console.error("Upload exception:", err);
+      alert("Failed to upload image: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setUploadingState(prev => ({ ...prev, [pathKey]: false }));
     }

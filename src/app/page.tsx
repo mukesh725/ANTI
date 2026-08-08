@@ -74,7 +74,7 @@ export default function HomePage() {
       {/* =========================================================================
           SECTION 1: HERO SECTION (FULL-WIDTH BACKGROUND)
           ========================================================================= */}
-      <section ref={heroRef} className="relative min-h-[100dvh] md:min-h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100dvh] md:min-h-[95vh] w-full flex items-center justify-center px-6 md:px-16 overflow-hidden">
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           <ParallaxImage 
@@ -83,39 +83,39 @@ export default function HomePage() {
             className="w-full h-full"
             speed={0.1}
           />
-          {/* Elegant dark gradient mask for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1E] via-[#1C1C1E]/75 to-transparent" />
+          {/* Subtle light overlay to ensure dark text readability on any image, though the image itself is white in the center */}
+          <div className="absolute inset-0 bg-white/30 md:bg-transparent" />
         </div>
 
         {/* Hero Content Overlay */}
-        <div className="relative z-10 max-w-[1000px] text-[#FFFFFF] pt-32 md:pt-16 mt-8 md:mt-0 w-full flex flex-col items-center text-center md:items-start md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FFFFFF]/10 bg-[#FFFFFF]/5 text-[#FFFFFF] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
-            <Sparkles className="w-3 h-3 text-[#FFFFFF]" /> {homeData.subtitle || "A Connected Wellness Ecosystem"}
+        <div className="relative z-10 max-w-[1000px] text-[#1C1C1E] pt-32 md:pt-16 mt-8 md:mt-0 w-full flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#1C1C1E]/20 bg-[#1C1C1E]/5 text-[#1C1C1E] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto mb-6 md:mb-8">
+            <Sparkles className="w-3 h-3 text-[#1C1C1E]" /> {homeData.subtitle || "A Connected Wellness Ecosystem"}
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FFFFFF] mb-6 md:mb-8">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#1C1C1E] mb-6 md:mb-8">
             {homeData.title.split(' ')[0] || "The Future of"} <br/>
-            <span className="italic font-light text-[#FFFFFF]/80">{homeData.title.split(' ').slice(1).join(' ') || "Preventive Healthcare."}</span>
+            <span className="italic font-light text-[#1C1C1E]/80">{homeData.title.split(' ').slice(1).join(' ') || "Preventive Healthcare."}</span>
           </h1>
           
-          <p className="font-serif text-lg md:text-2xl text-[#FFFFFF]/95 italic max-w-2xl leading-relaxed mb-6">
+          <p className="font-serif text-lg md:text-2xl text-[#1C1C1E]/90 italic max-w-2xl leading-relaxed mb-6">
             {homeTagline || "An ecosystem uniting nutrition, diagnostics, pharmacy, clinical care, and digital health."}
           </p>
           
-          <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/70 max-w-lg leading-relaxed mb-8 md:mb-12 tracking-wide">
+          <p className="font-sans text-xs md:text-sm text-[#1C1C1E]/70 max-w-lg leading-relaxed mb-8 md:mb-12 tracking-wide mx-auto">
             {homeDescription || "At AIRO, we believe healthcare shouldn't be reactive. By integrating clinical precision with daily wellness, we build a connected environment designed to optimize your biology, ensure longevity, and prevent illness before it starts."}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:items-center w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
             <Link
               href={buttons?.primary?.link || "/grocery"}
-              className="w-full sm:w-auto justify-center bg-[#FFFFFF] text-[#1C1C1E] px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto justify-center bg-[#1C1C1E] text-[#FFFFFF] px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
-              {buttons?.primary?.text || "Explore Essentials"} <ArrowRight className="w-4 h-4 text-[#1C1C1E]" />
+              {buttons?.primary?.text || "Explore Essentials"} <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
             </Link>
             <Link
               href={buttons?.secondary?.link || "/pharmacy"}
-              className="w-full sm:w-auto text-center border border-[#FFFFFF]/20 text-[#FFFFFF] hover:bg-[#FFFFFF]/5 px-8 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
+              className="w-full sm:w-auto text-center border border-[#1C1C1E]/20 text-[#1C1C1E] hover:bg-[#1C1C1E]/5 px-8 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
             >
               {buttons?.secondary?.text || "Join Compounding Waitlist"}
             </Link>

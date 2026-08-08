@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, addDoc, updateDoc, doc } from "firebase/firestore";
-import { Loader2, Plus, Star, X, ShieldCheck } from "lucide-react";
+import { Loader2, Plus, Star, X, ShieldCheck, Ticket } from "lucide-react";
 
 interface AdminUser {
   id: string;
@@ -20,6 +20,7 @@ const PREDEFINED_ROLES = [
   { id: "admin", label: "Admin", roleName: "Admin", modules: ["dashboard", "orders", "products", "customers", "leads", "cms", "settings", "admin-team", "membership"] },
   { id: "membership_manager", label: "Membership Manager — Membership tab access only", roleName: "Membership Manager", modules: ["membership"] },
   { id: "warehouse_manager", label: "Warehouse Manager", roleName: "Warehouse Manager", modules: ["orders", "inventory"] },
+  { id: "health_intakes_manager", label: "Health Intakes Manager — Health Intakes tab access only", roleName: "Health Intakes Manager", modules: ["bookings"] },
 ];
 
 export function AdminTeamManager() {
@@ -150,7 +151,7 @@ export function AdminTeamManager() {
   const activeCount = users.filter(u => u.status === "active").length;
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto space-y-6">
+    <div className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-6">
       
       {/* Header */}
       <div className="flex items-center justify-between bg-white px-6 py-4 rounded-t-2xl shadow-sm border border-gray-100">
@@ -177,7 +178,7 @@ export function AdminTeamManager() {
 
         {/* Table */}
         <div className="w-full overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-white border-b border-gray-100">
                 <th className="py-3 px-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest w-[35%]">Member</th>
@@ -197,7 +198,8 @@ export function AdminTeamManager() {
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0 ${
                         user.role === 'Super admin' ? 'bg-emerald-500' : 
                         user.role === 'Membership Manager' ? 'bg-emerald-600' :
-                        user.role === 'Warehouse Manager' ? 'bg-indigo-500' : 'bg-cyan-500'
+                        user.role === 'Warehouse Manager' ? 'bg-indigo-500' : 
+                        user.role === 'Health Intakes Manager' ? 'bg-purple-500' : 'bg-cyan-500'
                       }`}>
                         {user.name.charAt(0).toUpperCase()}
                       </div>
@@ -228,6 +230,11 @@ export function AdminTeamManager() {
                     ) : user.role === "Warehouse Manager" ? (
                       <span className="inline-flex items-center px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs font-semibold border border-orange-200">
                         Warehouse Manager
+                      </span>
+                    ) : user.role === "Health Intakes Manager" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200">
+                        <Ticket className="w-3.5 h-3.5 text-purple-600" />
+                        Health Intakes Manager
                       </span>
                     ) : (
                       <span className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold border border-gray-200">

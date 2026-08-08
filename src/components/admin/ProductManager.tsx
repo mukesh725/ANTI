@@ -116,7 +116,7 @@ export function ProductManager() {
   }
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-200">
+    <div className="bg-white rounded-3xl p-4 sm:p-8 shadow-sm border border-gray-200">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h2 className="text-2xl font-sans font-semibold text-gray-900 mb-1">Products</h2>
@@ -168,7 +168,7 @@ export function ProductManager() {
 
       {/* Products Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr className="border-b border-gray-200">
               <th className="py-4 px-4 text-xs font-semibold text-gray-500">Product</th>
