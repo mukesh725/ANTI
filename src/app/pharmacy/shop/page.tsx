@@ -73,7 +73,16 @@ function ShopContent() {
 
       {/* Products Grid */}
       <div className="py-16 px-6 md:px-16 max-w-[1500px] mx-auto min-h-[50vh]">
-        {productsLoading ? (
+        {/* Check if store is enabled */}
+        {cmsData.settings && cmsData.settings.storeEnabled === false ? (
+          <div className="text-center text-[#1C1C1E] py-32 flex flex-col items-center justify-center">
+            <ShoppingBag className="w-16 h-16 opacity-20 mb-6" />
+            <h2 className="font-serif text-3xl md:text-4xl tracking-tight mb-4">Our Store is Currently Updating</h2>
+            <p className="font-sans text-sm text-[#1C1C1E]/60 max-w-md mx-auto leading-relaxed">
+              We are adding exciting new inventory and updating our systems. Please check back later!
+            </p>
+          </div>
+        ) : productsLoading ? (
           <div className="text-center text-[#1C1C1E]/50 py-24 text-sm tracking-widest uppercase flex flex-col items-center gap-4">
             <div className="w-6 h-6 border-2 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin" />
             Loading catalog...

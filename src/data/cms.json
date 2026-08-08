@@ -4,6 +4,9 @@
     "secondary": "#FAF8F5",
     "accent": "#D4AF37"
   },
+  "settings": {
+    "storeEnabled": false
+  },
   "pages": {
     "home": {
       "title": "AIRO Essentials",

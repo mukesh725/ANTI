@@ -133,6 +133,21 @@ export function CmsEditor() {
             )}
           </div>
         );
+      } else if (typeof value === "boolean") {
+        return (
+          <div key={fullPath.join(".")} className="mb-6 flex items-center justify-between bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3">
+            <label className="flex items-center gap-2 text-[10px] text-emerald-600 uppercase tracking-widest font-bold">
+              <Settings2 className="w-3 h-3" />
+              {key}
+            </label>
+            <button
+              onClick={() => updateField(fullPath, !value as any)}
+              className={`w-12 h-6 rounded-full transition-colors relative ${value ? 'bg-emerald-500' : 'bg-gray-300'}`}
+            >
+              <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform ${value ? 'translate-x-7' : 'translate-x-1'}`} />
+            </button>
+          </div>
+        );
       } else if (typeof value === "object" && value !== null) {
         return (
           <div key={fullPath.join(".")} className="mb-8 p-6 bg-white/5 border border-white/5 rounded-2xl">
@@ -222,6 +237,22 @@ export function CmsEditor() {
               </li>
             ))}
           </ul>
+
+          <div className="text-[10px] uppercase tracking-widest text-emerald-600 font-bold mb-3 px-3 mt-8">Global Configuration</div>
+          <ul className="space-y-1">
+            <li>
+              <button
+                onClick={() => setActiveCategory("settings" as any)}
+                className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
+                  activeCategory === "settings" as any
+                    ? "bg-[#0A84FF]/10 text-emerald-600 border border-[#0A84FF]/20 font-bold"
+                    : "text-gray-500 hover:bg-white/5 hover:text-gray-900 border border-transparent"
+                }`}
+              >
+                Settings
+              </button>
+            </li>
+          </ul>
         </div>
 
         {/* Editor Area */}
@@ -235,10 +266,13 @@ export function CmsEditor() {
           
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 pb-4 border-b border-emerald-100">
-              <h3 className="font-sans font-medium text-3xl text-gray-900 capitalize">{activeCategory} Page</h3>
-              <p className="text-gray-500 text-sm mt-2">Edit the text and media content for the {activeCategory} section. Changes will reflect instantly across all global edges upon deployment.</p>
+              <h3 className="font-sans font-medium text-3xl text-gray-900 capitalize">{activeCategory}</h3>
+              <p className="text-gray-500 text-sm mt-2">Edit the content and settings. Changes will reflect instantly across all global edges upon deployment.</p>
             </div>
-            {renderFields(formData.pages[activeCategory], ["pages", activeCategory as string])}
+            {activeCategory === "settings" as any 
+              ? renderFields((formData as any).settings, ["settings"])
+              : renderFields(formData.pages[activeCategory], ["pages", activeCategory as string])
+            }
           </div>
         </div>
       </div>
