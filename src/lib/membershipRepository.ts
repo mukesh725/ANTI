@@ -102,6 +102,23 @@ export async function submitPendingRegistration(
       throw new Error('A membership with this mobile number already exists.');
     }
 
+    // Check by Name and DOB
+    const cleanFirstName = input.firstName.trim().toLowerCase();
+    const cleanLastName = input.lastName.trim().toLowerCase();
+    const dobQuerySnap = await getDocs(query(membersRef, where('dob', '==', input.dob)));
+    
+    const existingByNameDob = dobQuerySnap.docs.some(docSnap => {
+      const data = docSnap.data();
+      return (
+        data.firstName?.trim().toLowerCase() === cleanFirstName &&
+        data.lastName?.trim().toLowerCase() === cleanLastName
+      );
+    });
+    
+    if (existingByNameDob) {
+      throw new Error('A membership with this name and date of birth already exists.');
+    }
+
     // 1. Sync or Create User Profile in 'users' collection
     let userId = '';
     try {
