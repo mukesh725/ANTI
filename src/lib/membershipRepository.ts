@@ -87,6 +87,21 @@ export async function submitPendingRegistration(
     const cleanEmail = input.email.trim().toLowerCase();
     const cleanMobile = input.mobile.trim();
 
+    // 0. Check for existing membership (One person = One membership)
+    const membersRef = collection(db, COLLECTION_MEMBERS);
+    
+    // Check by email
+    const emailQuerySnap = await getDocs(query(membersRef, where('email', '==', cleanEmail)));
+    if (!emailQuerySnap.empty) {
+      throw new Error('A membership with this email address already exists.');
+    }
+
+    // Check by mobile
+    const mobileQuerySnap = await getDocs(query(membersRef, where('mobile', '==', cleanMobile)));
+    if (!mobileQuerySnap.empty) {
+      throw new Error('A membership with this mobile number already exists.');
+    }
+
     // 1. Sync or Create User Profile in 'users' collection
     let userId = '';
     try {
