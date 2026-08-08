@@ -61,8 +61,21 @@ export async function GET(request: Request) {
     // Extract booked time slots
     const bookedSlots = snapshot.docs.map(doc => doc.data().timeSlot);
 
+    // Query Firestore for active locks on this date
+    const locksRef = collection(db, 'healthBookingLocks');
+    const qLocks = query(locksRef, where('date', '==', dateStr));
+    const locksSnapshot = await getDocs(qLocks);
+    
+    // Extract actively locked time slots
+    const now = Date.now();
+    const lockedSlots = locksSnapshot.docs
+      .filter(doc => doc.data().expiresAt > now)
+      .map(doc => doc.data().timeSlot);
+
     // Filter available slots
-    const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
+    const availableSlots = allSlots.filter(slot => 
+      !bookedSlots.includes(slot) && !lockedSlots.includes(slot)
+    );
 
     return NextResponse.json({ success: true, availableSlots });
   } catch (error) {

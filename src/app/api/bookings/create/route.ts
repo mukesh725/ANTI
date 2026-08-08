@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, addDoc, serverTimestamp, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { sendBookingConfirmationEmail } from '@/lib/bookingEmailService';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { firstName, lastName, email, mobile, date, timeSlot, dob, age, sex, occupation, height } = body;
+    const { firstName, lastName, email, mobile, date, timeSlot, dob, age, sex, occupation, height, sessionId } = body;
 
-    if (!firstName || !lastName || !email || !mobile || !date || !timeSlot) {
+    if (!firstName || !lastName || !email || !mobile || !date || !timeSlot || !sessionId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -23,6 +23,16 @@ export async function POST(request: Request) {
 
     if (!snapshotSlot.empty) {
       return NextResponse.json({ error: 'Time slot is already booked. Please choose another.' }, { status: 409 });
+    }
+
+    // Check if the slot is actively locked by someone else
+    const lockRef = doc(db, 'healthBookingLocks', `${date}_${timeSlot}`);
+    const lockDoc = await getDoc(lockRef);
+    if (lockDoc.exists()) {
+      const data = lockDoc.data();
+      if (data.sessionId !== sessionId && data.expiresAt > Date.now()) {
+        return NextResponse.json({ error: 'Slot is currently reserved by someone else. Please choose another.' }, { status: 409 });
+      }
     }
 
     // Check if the user has already booked a slot previously
@@ -61,6 +71,9 @@ export async function POST(request: Request) {
       status: 'Confirmed',
       createdAt: serverTimestamp(),
     });
+
+    // Clean up the lock since the booking was successful
+    await deleteDoc(lockRef).catch(console.error);
 
     // Send confirmation email
     const emailSent = await sendBookingConfirmationEmail({

@@ -14,6 +14,8 @@ export function HealthCheckBooking() {
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<string>("");
   const [bookingReference, setBookingReference] = useState<string>("");
+  const [sessionId] = useState(() => Math.random().toString(36).substring(2, 10));
+  const [isReserving, setIsReserving] = useState(false);
   
   const [formData, setFormData] = useState({
     firstName: "",
@@ -146,6 +148,23 @@ export function HealthCheckBooking() {
     }
   }, [selectedDate, activeTab]);
 
+  const fetchSlots = () => {
+    if (!selectedDate) return;
+    setIsLoadingSlots(true);
+    fetch(`/api/bookings/available-slots?date=${selectedDate}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setAvailableSlots(data.availableSlots);
+          if (selectedSlot && !data.availableSlots.includes(selectedSlot)) {
+            setSelectedSlot("");
+          }
+        }
+      })
+      .catch(console.error)
+      .finally(() => setIsLoadingSlots(false));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -211,7 +230,8 @@ export function HealthCheckBooking() {
         body: JSON.stringify({
           ...formData,
           date: selectedDate,
-          timeSlot: selectedSlot
+          timeSlot: selectedSlot,
+          sessionId
         })
       });
 
@@ -456,11 +476,32 @@ export function HealthCheckBooking() {
 
                 <div className="pt-6 flex justify-end">
                   <button
-                    onClick={() => setStep(2)}
-                    disabled={!selectedDate || !selectedSlot}
+                    onClick={async () => {
+                      setIsReserving(true);
+                      setError(null);
+                      try {
+                        const res = await fetch('/api/bookings/reserve-slot', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setStep(2);
+                        } else {
+                          setError(data.error || "Slot is currently reserved by someone else.");
+                          fetchSlots();
+                        }
+                      } catch (err) {
+                        setError("Network error. Please try again.");
+                      } finally {
+                        setIsReserving(false);
+                      }
+                    }}
+                    disabled={!selectedDate || !selectedSlot || isReserving}
                     className="flex items-center gap-2 bg-[#1C1C1E] text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
-                    Next Step <ChevronRight className="w-4 h-4" />
+                    {isReserving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Next Step"} <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </motion.div>
@@ -482,7 +523,19 @@ export function HealthCheckBooking() {
                     <p className="text-xs text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Selected Slot</p>
                     <p className="font-serif font-medium">{new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' })} at {selectedSlot}</p>
                   </div>
-                  <button onClick={() => setStep(1)} className="ml-auto text-xs underline text-[#1C1C1E]/50">Edit</button>
+                  <button 
+                    onClick={() => {
+                      setStep(1);
+                      fetch('/api/bookings/release-slot', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId })
+                      }).catch(console.error);
+                    }} 
+                    className="ml-auto text-xs underline text-[#1C1C1E]/50"
+                  >
+                    Edit
+                  </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
