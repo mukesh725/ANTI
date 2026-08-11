@@ -758,7 +758,20 @@ export function AdminBookingsManager() {
                             ) : (
                               <span className="text-xs text-gray-500 flex flex-col gap-0.5">
                                 <span>{isNaN(new Date(booking.date).getTime()) ? booking.date : new Date(booking.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                                {booking.location && <span className="font-bold text-[#0A84FF]">{booking.location}</span>}
+                                {booking.location && (
+                                  <div className="flex items-center gap-1 group relative w-max">
+                                    <select
+                                      value={booking.location}
+                                      onChange={(e) => handleUpdateStatus(booking.id, booking.status, { location: e.target.value })}
+                                      className="font-bold text-[#0A84FF] bg-transparent border-none focus:outline-none appearance-none cursor-pointer py-0 pl-0 pr-4 text-xs hover:underline"
+                                    >
+                                      {availableLocations.map(loc => (
+                                        <option key={loc} value={loc} className="text-gray-900">{loc}</option>
+                                      ))}
+                                    </select>
+                                    <ChevronDown className="w-3 h-3 text-[#0A84FF] absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+                                  </div>
+                                )}
                               </span>
                             )}
                           </div>
