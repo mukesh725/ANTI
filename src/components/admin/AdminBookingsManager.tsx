@@ -85,6 +85,10 @@ export function AdminBookingsManager() {
   const [newLocationName, setNewLocationName] = useState("");
   const [isSavingLocation, setIsSavingLocation] = useState(false);
   
+  // Delete Location Modal
+  const [isDeleteLocationModalOpen, setIsDeleteLocationModalOpen] = useState(false);
+  const [isDeletingLocation, setIsDeletingLocation] = useState(false);
+  
   const MAX_FREE_MEMBERS = 100000;
   const totalMembers = bookings.length;
   
@@ -160,6 +164,25 @@ export function AdminBookingsManager() {
       console.error("Failed to add location", err);
     } finally {
       setIsSavingLocation(false);
+    }
+  };
+
+  const handleDeleteLocation = async () => {
+    if (selectedLocationFilter === "All Locations") return;
+    setIsDeletingLocation(true);
+    try {
+      const updatedList = availableLocations.filter(loc => loc !== selectedLocationFilter);
+      setAvailableLocations(updatedList);
+      
+      const locRef = doc(db, "settings", "locations");
+      await setDoc(locRef, { list: updatedList }, { merge: true });
+      
+      setSelectedLocationFilter("All Locations");
+      setIsDeleteLocationModalOpen(false);
+    } catch(err) {
+      console.error("Failed to delete location", err);
+    } finally {
+      setIsDeletingLocation(false);
     }
   };
 
@@ -454,6 +477,38 @@ export function AdminBookingsManager() {
         </div>
       )}
 
+      {/* Delete Location Modal */}
+      {isDeleteLocationModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl relative p-6">
+            <button 
+              onClick={() => setIsDeleteLocationModalOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-500 rounded-full hover:bg-gray-200 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Location</h3>
+            <p className="text-sm text-gray-500 mb-6">Are you sure you want to delete the location <strong className="text-gray-900">"{selectedLocationFilter}"</strong>? This will remove it from the booking page.</p>
+            
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setIsDeleteLocationModalOpen(false)}
+                className="flex-1 py-3 bg-gray-100 text-gray-700 font-bold text-sm rounded-xl hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleDeleteLocation}
+                disabled={isDeletingLocation}
+                className="flex-1 py-3 bg-red-500 text-white font-bold text-sm rounded-xl hover:bg-red-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isDeletingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : "Delete Location"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cancel Reason Modal */}
       {cancelModalBooking && (
         <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -590,6 +645,15 @@ export function AdminBookingsManager() {
           >
             <Plus className="w-4 h-4" />
           </button>
+          {selectedLocationFilter !== "All Locations" && (
+            <button 
+              onClick={() => setIsDeleteLocationModalOpen(true)}
+              className="bg-red-50 hover:bg-red-100 text-red-500 p-2.5 rounded-xl transition-colors"
+              title="Delete Location"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         <button className="flex items-center gap-2 px-4 py-2 border-l border-gray-100 text-gray-500 hover:bg-gray-50 rounded-r-xl transition-colors text-sm font-bold">
