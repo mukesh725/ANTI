@@ -12,6 +12,7 @@ export function HealthCheckBooking() {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [availableLocations, setAvailableLocations] = useState<string[]>(["Kondapur", "Kompally"]);
   const [selectedLocation, setSelectedLocation] = useState<string>("Kondapur");
   const [selectedSlot, setSelectedSlot] = useState<string>("");
   const [bookingReference, setBookingReference] = useState<string>("");
@@ -126,6 +127,26 @@ export function HealthCheckBooking() {
       </div>
     );
   };
+
+  useEffect(() => {
+    // Fetch available locations
+    const fetchLocations = async () => {
+      try {
+        const { doc, getDoc } = await import("firebase/firestore");
+        const { db } = await import("@/lib/firebase");
+        const locRef = doc(db, "settings", "locations");
+        const locSnap = await getDoc(locRef);
+        if (locSnap.exists() && locSnap.data().list?.length > 0) {
+          const list = locSnap.data().list;
+          setAvailableLocations(list);
+          setSelectedLocation(list[0]);
+        }
+      } catch (err) {
+        console.error("Failed to load locations", err);
+      }
+    };
+    fetchLocations();
+  }, []);
 
   useEffect(() => {
     if (selectedDate && selectedLocation && activeTab === "book") {
@@ -447,8 +468,9 @@ export function HealthCheckBooking() {
                       }}
                       className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 px-4 outline-none focus:border-[#1C1C1E] transition-colors"
                     >
-                      <option value="Kondapur">Kondapur</option>
-                      <option value="Kompally">Kompally</option>
+                      {availableLocations.map(loc => (
+                        <option key={loc} value={loc}>{loc}</option>
+                      ))}
                     </select>
                   </div>
                   

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "@/lib/firebase";
-import { collection, query, orderBy, getDocs, doc, updateDoc, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, getDocs, doc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
 import { 
   Search, Loader2, CheckCircle2, User, Users, Clock, Calendar, Mail, Phone, 
   QrCode, ShieldCheck, AlertCircle, Download, Camera, X, MoreVertical, 
@@ -76,6 +76,9 @@ export function AdminBookingsManager() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  
+  // Available Locations
+  const [availableLocations, setAvailableLocations] = useState<string[]>([]);
   
   const MAX_FREE_MEMBERS = 100000;
   const totalMembers = bookings.length;
@@ -154,46 +157,62 @@ export function AdminBookingsManager() {
   }, []);
 
   useEffect(() => {
-    // Real-time listener for bookings
-    setIsLoading(true);
-    const bookingsRef = collection(db, "healthBookings");
-    const q = query(bookingsRef, orderBy("createdAt", "desc"));
-    
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
-      const loadedBookings: Booking[] = [];
-      const emailsToCheck = new Set<string>();
+    const fetchData = async () => {
+      setIsLoading(true);
 
-      snapshot.forEach(doc => {
-        const data = doc.data() as Omit<Booking, 'id'>;
-        loadedBookings.push({ id: doc.id, ...data });
-        if (data.email) emailsToCheck.add(data.email.toLowerCase());
-      });
-
-      // Fetch memberships to badge them
-      const memberEmails = new Set<string>();
-      if (emailsToCheck.size > 0) {
-        const memSnapshot = await getDocs(collection(db, "memberships"));
-        memSnapshot.forEach(doc => {
-          const m = doc.data();
-          if (m.status === 'Active' && m.email) {
-            memberEmails.add(m.email.toLowerCase());
-          }
-        });
+      // Load available locations
+      try {
+        const locRef = doc(db, "settings", "locations");
+        const locSnap = await getDoc(locRef);
+        if (locSnap.exists() && locSnap.data().list) {
+          setAvailableLocations(locSnap.data().list);
+        }
+      } catch(err) {
+        console.error("Error loading locations:", err);
       }
 
-      const finalBookings = loadedBookings.map(b => ({
-        ...b,
-        isMember: memberEmails.has(b.email.toLowerCase())
-      }));
+      // Real-time listener for bookings
+      const bookingsRef = collection(db, "healthBookings");
+      const q = query(bookingsRef, orderBy("createdAt", "desc"));
+      
+      const unsubscribe = onSnapshot(q, async (snapshot) => {
+        const loadedBookings: Booking[] = [];
+        const emailsToCheck = new Set<string>();
 
-      setBookings(finalBookings);
-      setIsLoading(false);
-    }, (error) => {
-      console.error("Error loading live bookings:", error);
-      setIsLoading(false);
-    });
+        snapshot.forEach(doc => {
+          const data = doc.data() as Omit<Booking, 'id'>;
+          loadedBookings.push({ id: doc.id, ...data });
+          if (data.email) emailsToCheck.add(data.email.toLowerCase());
+        });
 
-    return () => unsubscribe();
+        // Fetch memberships to badge them
+        const memberEmails = new Set<string>();
+        if (emailsToCheck.size > 0) {
+          const memSnapshot = await getDocs(collection(db, "memberships"));
+          memSnapshot.forEach(doc => {
+            const m = doc.data();
+            if (m.status === 'Active' && m.email) {
+              memberEmails.add(m.email.toLowerCase());
+            }
+          });
+        }
+
+        const finalBookings = loadedBookings.map(b => ({
+          ...b,
+          isMember: memberEmails.has(b.email.toLowerCase())
+        }));
+
+        setBookings(finalBookings);
+        setIsLoading(false);
+      }, (error) => {
+        console.error("Error loading live bookings:", error);
+        setIsLoading(false);
+      });
+
+      return unsubscribe;
+    };
+
+    fetchData();
   }, []);
 
   // Filter logic
@@ -497,8 +516,9 @@ export function AdminBookingsManager() {
           className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 focus:outline-none focus:border-[#0A84FF] transition-colors"
         >
           <option value="All Locations">All Locations</option>
-          <option value="Kondapur">Kondapur</option>
-          <option value="Kompally">Kompally</option>
+          {availableLocations.map(loc => (
+            <option key={loc} value={loc}>{loc}</option>
+          ))}
         </select>
 
         <button className="flex items-center gap-2 px-4 py-2 border-l border-gray-100 text-gray-500 hover:bg-gray-50 rounded-r-xl transition-colors text-sm font-bold">

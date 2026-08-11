@@ -8,7 +8,7 @@ import {
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
   Settings, ShieldAlert, LogOut, ArrowRight,
   TrendingUp, TrendingDown, DollarSign, Activity,
-  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X
+  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
@@ -20,6 +20,7 @@ import { AdminTeamManager } from "@/components/admin/AdminTeamManager";
 import AdminCustomersManager from "@/components/admin/AdminCustomersManager";
 import { AdminBookingsManager } from "@/components/admin/AdminBookingsManager";
 import AdminMembershipDashboard from "@/app/admin/membership/page";
+import { LocationsManager } from "@/components/admin/LocationsManager";
 import Image from "next/image";
 
 // Types
@@ -59,6 +60,7 @@ const SIDEBAR_NAV = [
   { id: "inventory", label: "Inventory", icon: Boxes },
   { id: "customers", label: "Customers", icon: Users },
   { id: "leads", label: "Leads", icon: UserPlus },
+  { id: "locations", label: "Locations", icon: MapPin },
   { id: "cms", label: "CMS", icon: Database },
   { id: "coupons", label: "Coupons", icon: Ticket },
   { id: "settings", label: "Settings", icon: Settings },
@@ -348,6 +350,8 @@ export default function AdminDashboardPage() {
         );
       case "admin-team":
         return <AdminTeamManager />;
+      case "locations":
+        return <LocationsManager />;
       default:
         const title = SIDEBAR_NAV.find(item => item.id === activeTab)?.label || "Module";
         return <PlaceholderView title={title} />;
