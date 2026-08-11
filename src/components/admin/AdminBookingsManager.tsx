@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "@/lib/firebase";
-import { collection, query, orderBy, getDocs, doc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
+import { collection, query, orderBy, getDocs, doc, updateDoc, onSnapshot, getDoc, setDoc } from "firebase/firestore";
 import { 
   Search, Loader2, CheckCircle2, User, Users, Clock, Calendar, Mail, Phone, 
   QrCode, ShieldCheck, AlertCircle, Download, Camera, X, MoreVertical, 
   Video, Play, FileText, FileUp, Filter, CalendarDays, Edit3, Trash2,
-  ChevronDown, ChevronUp, Copy, Check, AlertTriangle, PhoneCall
+  ChevronDown, ChevronUp, Copy, Check, AlertTriangle, PhoneCall, Plus
 } from "lucide-react";
 
 export interface Booking {
@@ -80,6 +80,11 @@ export function AdminBookingsManager() {
   // Available Locations
   const [availableLocations, setAvailableLocations] = useState<string[]>(["Kondapur", "Kompally"]);
   
+  // Add Location Modal
+  const [isAddLocationModalOpen, setIsAddLocationModalOpen] = useState(false);
+  const [newLocationName, setNewLocationName] = useState("");
+  const [isSavingLocation, setIsSavingLocation] = useState(false);
+  
   const MAX_FREE_MEMBERS = 100000;
   const totalMembers = bookings.length;
   
@@ -137,6 +142,26 @@ export function AdminBookingsManager() {
     }
   };
   const [cancelReason, setCancelReason] = useState("");
+
+  const handleAddNewLocation = async () => {
+    if (!newLocationName.trim()) return;
+    setIsSavingLocation(true);
+    try {
+      const updatedList = [...availableLocations, newLocationName.trim()];
+      setAvailableLocations(updatedList);
+      
+      const locRef = doc(db, "settings", "locations");
+      await setDoc(locRef, { list: updatedList }, { merge: true });
+      
+      setSelectedLocationFilter(newLocationName.trim());
+      setIsAddLocationModalOpen(false);
+      setNewLocationName("");
+    } catch(err) {
+      console.error("Failed to add location", err);
+    } finally {
+      setIsSavingLocation(false);
+    }
+  };
 
   // Expandable row state
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
@@ -337,7 +362,7 @@ export function AdminBookingsManager() {
           b.mrn || "N/A"
         ].join(",")
       )
-    ].join("\\n");
+    ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -386,6 +411,44 @@ export function AdminBookingsManager() {
             </div>
             <div className="p-4 bg-gray-50">
               <div id="qr-reader" className="w-full rounded-xl overflow-hidden"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Location Modal */}
+      {isAddLocationModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl relative p-6">
+            <button 
+              onClick={() => setIsAddLocationModalOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-500 rounded-full hover:bg-gray-200 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Add New Location</h3>
+            <p className="text-sm text-gray-500 mb-4">This location will be added to the booking options immediately.</p>
+            <input 
+              type="text"
+              placeholder="e.g. Banjara Hills"
+              value={newLocationName}
+              onChange={(e) => setNewLocationName(e.target.value)}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF] transition-colors mb-6"
+            />
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setIsAddLocationModalOpen(false)}
+                className="flex-1 py-3 bg-gray-100 text-gray-700 font-bold text-sm rounded-xl hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleAddNewLocation}
+                disabled={!newLocationName.trim() || isSavingLocation}
+                className="flex-1 py-3 bg-[#0A84FF] text-white font-bold text-sm rounded-xl hover:bg-[#0A84FF]/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isSavingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Location"}
+              </button>
             </div>
           </div>
         </div>
@@ -509,17 +572,25 @@ export function AdminBookingsManager() {
           />
         </div>
         
-        
-        <select 
-          value={selectedLocationFilter}
-          onChange={e => setSelectedLocationFilter(e.target.value)}
-          className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 focus:outline-none focus:border-[#0A84FF] transition-colors"
-        >
-          <option value="All Locations">All Locations</option>
-          {availableLocations.map(loc => (
-            <option key={loc} value={loc}>{loc}</option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          <select 
+            value={selectedLocationFilter}
+            onChange={e => setSelectedLocationFilter(e.target.value)}
+            className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 focus:outline-none focus:border-[#0A84FF] transition-colors"
+          >
+            <option value="All Locations">All Locations</option>
+            {availableLocations.map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
+          </select>
+          <button 
+            onClick={() => setIsAddLocationModalOpen(true)}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-600 p-2.5 rounded-xl transition-colors"
+            title="Add Location"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+        </div>
 
         <button className="flex items-center gap-2 px-4 py-2 border-l border-gray-100 text-gray-500 hover:bg-gray-50 rounded-r-xl transition-colors text-sm font-bold">
           <Filter className="w-4 h-4" /> Filters
