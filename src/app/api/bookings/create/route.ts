@@ -6,9 +6,9 @@ import { sendBookingConfirmationEmail } from '@/lib/bookingEmailService';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { firstName, lastName, email, mobile, date, timeSlot, dob, age, sex, occupation, height, sessionId } = body;
+    const { firstName, lastName, email, mobile, date, timeSlot, dob, age, sex, occupation, height, sessionId, location } = body;
 
-    if (!firstName || !lastName || !email || !mobile || !date || !timeSlot || !sessionId) {
+    if (!firstName || !lastName || !email || !mobile || !date || !timeSlot || !sessionId || !location) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -17,7 +17,8 @@ export async function POST(request: Request) {
     const qSlot = query(
       bookingsRef, 
       where('date', '==', date), 
-      where('timeSlot', '==', timeSlot)
+      where('timeSlot', '==', timeSlot),
+      where('location', '==', location)
     );
     const snapshotSlot = await getDocs(qSlot);
 
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
     }
 
     // Check if the slot is actively locked by someone else
-    const lockRef = doc(db, 'healthBookingLocks', `${date}_${timeSlot}`);
+    const lockRef = doc(db, 'healthBookingLocks', `${location}_${date}_${timeSlot}`);
     const lockDoc = await getDoc(lockRef);
     if (lockDoc.exists()) {
       const data = lockDoc.data();
@@ -65,6 +66,7 @@ export async function POST(request: Request) {
       sex: sex || null,
       occupation: occupation || null,
       height: height || null,
+      location,
       date,
       timeSlot,
       bookingReference,
@@ -82,6 +84,7 @@ export async function POST(request: Request) {
       email,
       date,
       timeSlot,
+      location,
       bookingReference
     });
 

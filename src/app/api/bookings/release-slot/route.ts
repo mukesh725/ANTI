@@ -4,13 +4,13 @@ import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 
 export async function POST(request: Request) {
   try {
-    const { date, timeSlot, sessionId } = await request.json();
+    const { date, timeSlot, sessionId, location } = await request.json();
 
-    if (!date || !timeSlot || !sessionId) {
+    if (!date || !timeSlot || !sessionId || !location) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const lockRef = doc(db, 'healthBookingLocks', `${date}_${timeSlot}`);
+    const lockRef = doc(db, 'healthBookingLocks', `${location}_${date}_${timeSlot}`);
     const lockDoc = await getDoc(lockRef);
 
     if (lockDoc.exists()) {

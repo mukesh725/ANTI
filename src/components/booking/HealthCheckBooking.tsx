@@ -12,6 +12,7 @@ export function HealthCheckBooking() {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<string>("Kondapur");
   const [selectedSlot, setSelectedSlot] = useState<string>("");
   const [bookingReference, setBookingReference] = useState<string>("");
   const [sessionId] = useState(() => Math.random().toString(36).substring(2, 10));
@@ -127,10 +128,10 @@ export function HealthCheckBooking() {
   };
 
   useEffect(() => {
-    if (selectedDate && activeTab === "book") {
+    if (selectedDate && selectedLocation && activeTab === "book") {
       setIsLoadingSlots(true);
       setError(null);
-      fetch(`/api/bookings/available-slots?date=${selectedDate}`)
+      fetch(`/api/bookings/available-slots?date=${selectedDate}&location=${encodeURIComponent(selectedLocation)}`)
         .then(res => res.json())
         .then(data => {
           if (data.success) {
@@ -146,12 +147,12 @@ export function HealthCheckBooking() {
           setIsLoadingSlots(false);
         });
     }
-  }, [selectedDate, activeTab]);
+  }, [selectedDate, selectedLocation, activeTab]);
 
   const fetchSlots = () => {
-    if (!selectedDate) return;
+    if (!selectedDate || !selectedLocation) return;
     setIsLoadingSlots(true);
-    fetch(`/api/bookings/available-slots?date=${selectedDate}`)
+    fetch(`/api/bookings/available-slots?date=${selectedDate}&location=${encodeURIComponent(selectedLocation)}`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -231,6 +232,7 @@ export function HealthCheckBooking() {
           ...formData,
           date: selectedDate,
           timeSlot: selectedSlot,
+          location: selectedLocation,
           sessionId
         })
       });
@@ -432,8 +434,24 @@ export function HealthCheckBooking() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <CalendarIcon className="w-5 h-5 text-[#1C1C1E]" /> 
-                    <h4 className="font-bold text-lg text-[#1C1C1E]">Select a Date</h4>
+                    <h4 className="font-bold text-lg text-[#1C1C1E]">Select Location & Date</h4>
                   </div>
+                  
+                  <div className="mb-6">
+                    <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50 mb-2 block">Clinic Location</label>
+                    <select 
+                      value={selectedLocation}
+                      onChange={(e) => {
+                        setSelectedLocation(e.target.value);
+                        setSelectedSlot("");
+                      }}
+                      className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 px-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                    >
+                      <option value="Kondapur">Kondapur</option>
+                      <option value="Kompally">Kompally</option>
+                    </select>
+                  </div>
+                  
                   {renderCustomCalendar()}
                 </div>
 
@@ -483,7 +501,7 @@ export function HealthCheckBooking() {
                         const res = await fetch('/api/bookings/reserve-slot', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId })
+                          body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId, location: selectedLocation })
                         });
                         const data = await res.json();
                         if (data.success) {
@@ -522,6 +540,7 @@ export function HealthCheckBooking() {
                   <div>
                     <p className="text-xs text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Selected Slot</p>
                     <p className="font-serif font-medium">{new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' })} at {selectedSlot}</p>
+                    <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold mt-1">Location: {selectedLocation}</p>
                   </div>
                   <button 
                     onClick={() => {
@@ -529,7 +548,7 @@ export function HealthCheckBooking() {
                       fetch('/api/bookings/release-slot', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId })
+                        body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId, location: selectedLocation })
                       }).catch(console.error);
                     }} 
                     className="ml-auto text-xs underline text-[#1C1C1E]/50"

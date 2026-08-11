@@ -4,6 +4,7 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
   email: string;
   date: string;
   timeSlot: string;
+  location: string;
   bookingReference: string;
 }) {
   const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY;
@@ -12,7 +13,7 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
     return false;
   }
 
-  const { firstName, lastName, email, date, timeSlot, bookingReference } = bookingDetails;
+  const { firstName, lastName, email, date, timeSlot, location, bookingReference } = bookingDetails;
   
   // Format date for better readability (e.g. Monday, August 10, 2026)
   const dateObj = new Date(date);
@@ -56,7 +57,7 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
         </div>
 
         <p style="color: #555; line-height: 1.5; font-size: 14px;">
-          <strong>Location:</strong> AIRO Essentials Clinic<br/>
+          <strong>Location:</strong> AIRO Clinic - ${location}<br/>
           Please arrive 5 minutes early for your appointment. If you need to reschedule, please contact our support team.
         </p>
 

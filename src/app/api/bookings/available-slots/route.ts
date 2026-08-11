@@ -41,9 +41,10 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const dateStr = searchParams.get('date');
+    const location = searchParams.get('location');
 
-    if (!dateStr) {
-      return NextResponse.json({ error: 'Date is required' }, { status: 400 });
+    if (!dateStr || !location) {
+      return NextResponse.json({ error: 'Date and location are required' }, { status: 400 });
     }
 
     // Generate all possible slots for the day
@@ -53,17 +54,25 @@ export async function GET(request: Request) {
       return NextResponse.json({ success: true, availableSlots: [] });
     }
 
-    // Query Firestore for existing bookings on this date
+    // Query Firestore for existing bookings on this date and location
     const bookingsRef = collection(db, 'healthBookings');
-    const q = query(bookingsRef, where('date', '==', dateStr));
+    const q = query(
+      bookingsRef, 
+      where('date', '==', dateStr),
+      where('location', '==', location)
+    );
     const snapshot = await getDocs(q);
     
     // Extract booked time slots
     const bookedSlots = snapshot.docs.map(doc => doc.data().timeSlot);
 
-    // Query Firestore for active locks on this date
+    // Query Firestore for active locks on this date and location
     const locksRef = collection(db, 'healthBookingLocks');
-    const qLocks = query(locksRef, where('date', '==', dateStr));
+    const qLocks = query(
+      locksRef, 
+      where('date', '==', dateStr),
+      where('location', '==', location)
+    );
     const locksSnapshot = await getDocs(qLocks);
     
     // Extract actively locked time slots

@@ -22,6 +22,7 @@ export interface Booking {
   status: 'Booked' | 'Confirmed' | 'Checked-In' | 'In Consultation' | 'Completed' | 'Cancelled' | 'No-Show' | 'Rescheduled' | string;
   createdAt: any;
   isMember?: boolean;
+  location?: string;
   
   // EHR / Clinical Extensions
   doctorName?: string;
@@ -81,6 +82,7 @@ export function AdminBookingsManager() {
   
   // Tabs & Filters
   const [activeTab, setActiveTab] = useState<"Today" | "Upcoming" | "Past" | "All">("Today");
+  const [selectedLocationFilter, setSelectedLocationFilter] = useState<string>("All Locations");
   
   // Modals
   const [showScanner, setShowScanner] = useState(false);
@@ -208,6 +210,11 @@ export function AdminBookingsManager() {
       result = result.filter(b => b.date < todayStr);
     }
 
+    // 1.5 Location Filter
+    if (selectedLocationFilter !== "All Locations") {
+      result = result.filter(b => b.location === selectedLocationFilter);
+    }
+
     // 2. Search Filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -222,7 +229,7 @@ export function AdminBookingsManager() {
     }
 
     setFilteredBookings(result);
-  }, [searchQuery, bookings, activeTab]);
+  }, [searchQuery, bookings, activeTab, selectedLocationFilter]);
 
   // Handle Scanner Initialization
   useEffect(() => {
@@ -483,6 +490,17 @@ export function AdminBookingsManager() {
           />
         </div>
         
+        
+        <select 
+          value={selectedLocationFilter}
+          onChange={e => setSelectedLocationFilter(e.target.value)}
+          className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 focus:outline-none focus:border-[#0A84FF] transition-colors"
+        >
+          <option value="All Locations">All Locations</option>
+          <option value="Kondapur">Kondapur</option>
+          <option value="Kompally">Kompally</option>
+        </select>
+
         <button className="flex items-center gap-2 px-4 py-2 border-l border-gray-100 text-gray-500 hover:bg-gray-50 rounded-r-xl transition-colors text-sm font-bold">
           <Filter className="w-4 h-4" /> Filters
         </button>
@@ -583,8 +601,9 @@ export function AdminBookingsManager() {
                             {booking.status === 'Checked-In' ? (
                               <WaitTimeDisplay checkInTime={booking.checkInTime} />
                             ) : (
-                              <span className="text-xs text-gray-500">
-                                {isNaN(new Date(booking.date).getTime()) ? booking.date : new Date(booking.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              <span className="text-xs text-gray-500 flex flex-col gap-0.5">
+                                <span>{isNaN(new Date(booking.date).getTime()) ? booking.date : new Date(booking.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                {booking.location && <span className="font-bold text-[#0A84FF]">{booking.location}</span>}
                               </span>
                             )}
                           </div>
