@@ -127,7 +127,7 @@
       "title": "Welcome to AIRO Health Hub",
       "subtitle": "INTEGRATED CLINICAL & LONGEVITY CARE",
       "tagline": "Top-quality medicines, long-life treatments, walk-in clinics, and advanced health checks.",
-      "heroImage": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000",
+      "heroImage": "/clinic-connected.jpg",
       "buttons": {
         "primary": {
           "text": "Pharmacy Portal",
@@ -455,7 +455,7 @@
       "title": "Know Your Body.",
       "subtitle": "In Just 5 Minutes.",
       "heroBadge": "Proactive Longevity",
-      "heroImage": "/chair-hero.jpg",
+      "heroImage": "/airo-praana-hero.png",
       "description": "The AIRO 5-Minute Health Chair offers a frictionless, clinical-grade metabolic assessment. Sit down, scan your biometrics, and receive actionable insights into your health span instantly.",
       "metrics": "Blood Pressure, Heart Rate & ECG, SpO\u2082, Respiratory Rate, Temperature, Weight & BMI",
       "sections": {
