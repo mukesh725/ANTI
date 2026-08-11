@@ -78,7 +78,7 @@ export function AdminBookingsManager() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   
   // Available Locations
-  const [availableLocations, setAvailableLocations] = useState<string[]>([]);
+  const [availableLocations, setAvailableLocations] = useState<string[]>(["Kondapur", "Kompally"]);
   
   const MAX_FREE_MEMBERS = 100000;
   const totalMembers = bookings.length;
@@ -164,7 +164,7 @@ export function AdminBookingsManager() {
       try {
         const locRef = doc(db, "settings", "locations");
         const locSnap = await getDoc(locRef);
-        if (locSnap.exists() && locSnap.data().list) {
+        if (locSnap.exists() && locSnap.data().list?.length > 0) {
           setAvailableLocations(locSnap.data().list);
         }
       } catch(err) {
