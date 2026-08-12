@@ -27,6 +27,13 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.airoessentials.com';
   const qrCodeUrl = `${baseUrl}/api/bookings/qr?ref=${bookingReference}`;
 
+  let mapLink = 'https://www.google.com/maps/search/AIRO+Essentials';
+  if (location.toLowerCase().includes('kondapur')) {
+    mapLink = 'https://share.google/aAEKjMbEpbbZ3Sq6l';
+  } else if (location.toLowerCase().includes('kompally')) {
+    mapLink = 'https://share.google/kjLtlr771ylTznpGW';
+  }
+
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -79,17 +86,17 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
           
           <div style="margin-bottom: 15px;">
             <p style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1d1d1f;">📍 Directions</p>
-            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">When you arrive at the <strong>${location}</strong> store, please head towards the pharmacy counter and present your QR code to our AIRO Health Associate. We request you to arrive 5 minutes early.</p>
+            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">When you arrive at the <strong>${location}</strong> store, please head towards the pharmacy counter and present your QR code to our AIRO Health Associate. We request you to arrive 5 minutes early. <br/><a href="${mapLink}" style="color: #0A84FF; text-decoration: none; font-weight: 500;">Open in Google Maps &rarr;</a></p>
           </div>
 
           <div style="margin-bottom: 15px;">
             <p style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1d1d1f;">📞 Contact Us</p>
-            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">Need to reschedule? Call us at <a href="tel:+918801010010" style="color: #0A84FF; text-decoration: none;">+91 88010 10010</a></p>
+            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">Need to reschedule? Call us at <a href="tel:+9190000182121" style="color: #0A84FF; text-decoration: none;">+91 90000182121</a></p>
           </div>
           
           <div>
             <p style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1d1d1f;">✉️ Email Support</p>
-            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;"><a href="mailto:support@airoessentials.com" style="color: #0A84FF; text-decoration: none;">support@airoessentials.com</a></p>
+            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;"><a href="mailto:info@airoessentials.com" style="color: #0A84FF; text-decoration: none;">info@airoessentials.com</a></p>
           </div>
         </div>
 
@@ -113,7 +120,7 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
       body: JSON.stringify({
         sender: {
           name: 'AIRO Essentials',
-          email: 'support@airoessentials.com' // Should be an authorized sender in Brevo
+          email: 'info@airoessentials.com' // Should be an authorized sender in Brevo
         },
         to: [
           {
