@@ -140,7 +140,10 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
 
             {/* Pillar 1: Essentials */}
-            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+            <Link 
+              href={pillars?.essentials?.buttonLink || "/grocery"}
+              className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.02] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
+            >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src={pillars?.essentials?.image || "https://plus.unsplash.com/premium_photo-1663039978847-63f7484bf701?q=80&w=800"}
@@ -148,26 +151,26 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
+                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-[#1C1C1E]/10">
+                  <ArrowRight className="w-4 h-4 text-[#1C1C1E] -rotate-45" />
+                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
                   {pillars?.essentials?.subtitle || "Fresh • Organic • Local • Wellness Retail"}
                 </p>
-                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light flex-grow">
                   {pillars?.essentials?.description || "A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out."}
                 </p>
-                <Link 
-                  href={pillars?.essentials?.buttonLink || "/grocery"} 
-                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
-                >
-                  {pillars?.essentials?.buttonText || "Browse Essentials"} <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
-            </div>
+            </Link>
 
             {/* Pillar 2: Pharmacy */}
-            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+            <Link 
+              href={pillars?.pharmacy?.buttonLink || "/pharmacy"}
+              className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.02] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
+            >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src={pillars?.pharmacy?.image || "/pharmacy-hero.jpg"}
@@ -175,26 +178,26 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
+                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-[#1C1C1E]/10">
+                  <ArrowRight className="w-4 h-4 text-[#1C1C1E] -rotate-45" />
+                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
                   {pillars?.pharmacy?.subtitle || "Prescriptions • Supplements • Custom Compounding"}
                 </p>
-                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light flex-grow">
                   {pillars?.pharmacy?.description || "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers."}
                 </p>
-                <Link 
-                  href={pillars?.pharmacy?.buttonLink || "/pharmacy"} 
-                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
-                >
-                  {pillars?.pharmacy?.buttonText || "Visit Pharmacy Portal"} <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
-            </div>
+            </Link
 
             {/* Pillar 3: Minute Clinic */}
-            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+            <Link 
+              href={pillars?.clinic?.buttonLink || "/minute-clinic"}
+              className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.02] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
+            >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src={pillars?.clinic?.image || "/clinic-connected.jpg"}
@@ -202,26 +205,28 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
+                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-[#1C1C1E]/10">
+                  <ArrowRight className="w-4 h-4 text-[#1C1C1E] -rotate-45" />
+                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
                   {pillars?.clinic?.subtitle || "Preventive Care • Walk-In Clinics • Screenings"}
                 </p>
-                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light flex-grow">
                   {pillars?.clinic?.description || "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times."}
                 </p>
-                <Link 
-                  href={pillars?.clinic?.buttonLink || "/minute-clinic"} 
-                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
-                >
-                  {pillars?.clinic?.buttonText || "View Clinic Services"} <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
-            </div>
+            </Link
 
             {/* Pillar 4: AIRO E-Med */}
-            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+            <Link 
+              href="https://airoemed.com"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.02] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
+            >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
                 <ParallaxImage 
                   src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800"
@@ -229,23 +234,20 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
+                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-[#1C1C1E]/10">
+                  <ArrowRight className="w-4 h-4 text-[#1C1C1E] -rotate-45" />
+                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">AIRO E-Med</h3>
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">AIRO E-Med</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
                   Hair Loss • Sexual Health • Weight Management
                 </p>
-                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light flex-grow">
                   Connect with doctors through secure virtual consultations for personalized treatment. Get your custom prescriptions delivered directly to your door in discreet packaging.
                 </p>
-                <Link 
-                  href="/airo-emed" 
-                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
-                >
-                  Visit Virtual Portal <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
-            </div>
+            </Link
 
 
           </div>
