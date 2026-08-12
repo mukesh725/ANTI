@@ -4,18 +4,35 @@
 @tailwind utilities;
 
 :root {
-  /* master brand */
-  --navy: #25225E; --navy-dark: #191742;
-  --navy-soft: #3A3680; --navy-tint: #E9E8F0;
-  /* sub-brand — Essentials */
-  --forest: #173A2B; --forest-dark: #0B241A; --sage: #E8F0EA;
-  --gold: #B98A34; --gold-soft: #D4AF6A; --gold-tint: #F7EDD8;
-  /* sub-brand — Health Hub */
-  --brick: #8C2F2F; --brick-dark: #5C1F1F; --brick-tint: #F5E6E4;
-  /* neutrals + semantic */
-  --linen: #F7F6F1; --paper: #FFFFFF; --ink: #1A1E1B;
-  --moss: #767F76; --hairline: #EBE8DF;
-  --sig-red: #B3261E; --sig-green: #2E7D32;
+  /* master brand (RGB) */
+  --navy: 37 34 94;
+  --navy-dark: 25 23 66;
+  --navy-soft: 58 54 128;
+  --navy-tint: 233 232 240;
+  
+  /* sub-brand — Essentials (RGB) */
+  --forest: 23 58 43;
+  --forest-dark: 11 36 26;
+  --sage: 232 240 234;
+  
+  --gold: 185 138 52;
+  --gold-soft: 212 175 106;
+  --gold-tint: 247 237 216;
+  
+  /* sub-brand — Health Hub (RGB) */
+  --brick: 140 47 47;
+  --brick-dark: 92 31 31;
+  --brick-tint: 245 230 228;
+  
+  /* neutrals + semantic (RGB) */
+  --linen: 247 246 241;
+  --paper: 255 255 255;
+  --ink: 26 30 27;
+  --moss: 118 127 118;
+  --hairline: 235 232 223;
+  
+  --sig-red: 179 38 30;
+  --sig-green: 46 125 50;
 
   /* Dynamic Theme Default (Master Brand) */
   --theme-primary: var(--navy);
