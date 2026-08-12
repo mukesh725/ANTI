@@ -71,8 +71,8 @@
             "status": "Shop Now"
           },
           {
-            "name": "Pharmacy",
-            "description": "Expert pharmacy care, long-life treatments, and daily health supplements.",
+            "name": "Compounding & Pharmacy",
+            "description": "Expert pharmacy care, custom-made medicines, and daily health supplements.",
             "link": "/pharmacy",
             "status": "Shop Now"
           },
@@ -89,22 +89,16 @@
             "status": "Coming Soon"
           },
           {
-            "name": "Compounding Pharmacy",
-            "description": "Custom-made medicines and allergy-free health mixtures.",
-            "link": "/pharmacy",
-            "status": "Coming Soon"
-          },
-          {
             "name": "IV Therapy",
             "description": "Direct vitamin drips and instant body hydration.",
             "link": "/minute-clinic",
             "status": "Coming Soon"
           },
           {
-            "name": "Digital Health",
-            "description": "Track your health, talk to doctors online, and view your records.",
-            "link": "/",
-            "status": "Coming Soon"
+            "name": "AIRO E-Med",
+            "description": "Virtual consultations, personalized treatments, and home delivery.",
+            "link": "/airo-emed",
+            "status": "Visit Portal"
           }
         ],
         "lifestyleBanner": {
