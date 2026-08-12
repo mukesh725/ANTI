@@ -233,10 +233,10 @@ export default function HomePage() {
               <div className="p-8 md:p-10 flex flex-col flex-grow">
                 <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">AIRO E-Med</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
-                  Virtual Care • Telehealth • Online Prescriptions
+                  Hair & Skin • Doctor-Backed • Direct-To-Door
                 </p>
                 <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
-                  Access premium, clinical-grade care from the comfort of your home. Connect with world-class providers instantly via our secure digital platform.
+                  Personalized, doctor-backed treatment plans for hair loss and dermatology. Get custom Rx formulas (like AIRO Root Start™) delivered discreetly to your door.
                 </p>
                 <Link 
                   href="/airo-emed" 
