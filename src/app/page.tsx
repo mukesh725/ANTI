@@ -344,6 +344,7 @@ export default function HomePage() {
             <Link 
               key={idx} 
               href={cat.link || "/"}
+              {...(cat.link?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="group py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:px-4 silent-luxury-transition"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 flex-1">
