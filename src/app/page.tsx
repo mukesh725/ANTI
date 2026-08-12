@@ -137,7 +137,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
 
             {/* Pillar 1: Essentials */}
             <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
@@ -219,6 +219,34 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
+
+            {/* Pillar 4: AIRO E-Med */}
+            <div className="group relative flex flex-col h-full bg-[#1C1C1E]/[0.03] rounded-[32px] overflow-hidden border border-[#1C1C1E]/5 hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1C1C1E]/5">
+                <ParallaxImage 
+                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800"
+                  alt="AIRO E-Med Virtual Consultation"
+                  className="w-full h-full"
+                  speed={0.06}
+                />
+              </div>
+              <div className="p-8 md:p-10 flex flex-col flex-grow">
+                <h3 className="font-serif text-3xl font-medium text-[#1C1C1E] tracking-tight mb-2">AIRO E-Med</h3>
+                <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#1C1C1E]/40 font-bold mb-6">
+                  Virtual Care • Telehealth • Online Prescriptions
+                </p>
+                <p className="font-sans text-sm text-[#1C1C1E]/60 leading-relaxed font-light mb-8 flex-grow">
+                  Access premium, clinical-grade care from the comfort of your home. Connect with world-class providers instantly via our secure digital platform.
+                </p>
+                <Link 
+                  href="/airo-emed" 
+                  className="mt-auto inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-bold text-[#1C1C1E] hover:text-[#0A84FF] transition-colors"
+                >
+                  Visit Virtual Portal <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
 
           </div>
         </div>
