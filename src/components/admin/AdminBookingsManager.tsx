@@ -757,7 +757,7 @@ export function AdminBookingsManager() {
                               <WaitTimeDisplay checkInTime={booking.checkInTime} />
                             ) : (
                               <span className="text-xs text-gray-500 flex flex-col gap-0.5">
-                                <span>{isNaN(new Date(booking.date).getTime()) ? booking.date : new Date(booking.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                <span>{isNaN(new Date(booking.date).getTime()) ? booking.date : new Date(booking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric' })}</span>
                                 {booking.location && (
                                   <div className="flex items-center gap-1 group relative w-max">
                                     <select
@@ -937,7 +937,7 @@ export function AdminBookingsManager() {
                                   </div>
                                   <div className="flex justify-between border-b border-gray-50 pb-1">
                                     <span className="text-gray-500">Booked on:</span>
-                                    <span className="font-medium">{new Date(booking.createdAt?.toDate?.() || Date.now()).toLocaleDateString()}</span>
+                                    <span className="font-medium">{new Date(booking.createdAt?.toDate?.() || Date.now()).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata', year: 'numeric', month: 'numeric', day: 'numeric' })}</span>
                                   </div>
                                   <div className="pt-2 flex gap-2">
                                     <button className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 border border-gray-200">

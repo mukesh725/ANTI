@@ -431,7 +431,7 @@ export function HealthCheckBooking() {
                       </div>
                       <div>
                         <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Date</p>
-                        <p className="font-medium">{new Date(foundBooking.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                        <p className="font-medium">{new Date(foundBooking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' })}</p>
                       </div>
                       <div>
                         <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Time</p>
@@ -561,7 +561,7 @@ export function HealthCheckBooking() {
                   </div>
                   <div>
                     <p className="text-xs text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Selected Slot</p>
-                    <p className="font-serif font-medium">{new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' })} at {selectedSlot}</p>
+                    <p className="font-serif font-medium">{new Date(selectedDate).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'short', month: 'long', day: 'numeric' })} at {selectedSlot}</p>
                     <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold mt-1">Location: {selectedLocation}</p>
                   </div>
                   <button 
