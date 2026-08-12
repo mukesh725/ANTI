@@ -191,7 +191,7 @@ export default function HomePage() {
                   {pillars?.pharmacy?.description || "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers."}
                 </p>
               </div>
-            </Link
+            </Link>
 
             {/* Pillar 3: Minute Clinic */}
             <Link 
@@ -218,7 +218,7 @@ export default function HomePage() {
                   {pillars?.clinic?.description || "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times."}
                 </p>
               </div>
-            </Link
+            </Link>
 
             {/* Pillar 4: AIRO E-Med */}
             <Link 
@@ -247,7 +247,7 @@ export default function HomePage() {
                   Connect with doctors through secure virtual consultations for personalized treatment. Get your custom prescriptions delivered directly to your door in discreet packaging.
                 </p>
               </div>
-            </Link
+            </Link>
 
 
           </div>
