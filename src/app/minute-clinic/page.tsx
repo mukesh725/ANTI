@@ -6,6 +6,8 @@ import { ArrowRight, Sparkles, Shield } from "lucide-react";
 import Link from "next/link";
 import { useCms } from "@/context/CmsContext";
 
+import { ServicesDirectory } from "@/components/minute-clinic/ServicesDirectory";
+
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
   src, 
@@ -157,6 +159,8 @@ export default function MinuteClinicPage() {
           </div>
         </div>
       </section>
+
+      <ServicesDirectory />
 
       {/* SECTION 3: DESIGNED AROUND PREVENTION (Storytelling Block 2) */}
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto">
