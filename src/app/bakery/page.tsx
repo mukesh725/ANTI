@@ -33,20 +33,20 @@ const MOCK_BAKERY = [
 
 export default function BakeryPage() {
   return (
-    <div className="w-full bg-alabaster min-h-screen text-charcoal">
+    <div className="w-full bg-paper min-h-screen text-ink">
       <div className="px-4 md:px-8 max-w-[1800px] mx-auto">
         
         {/* Header */}
-        <div className="border-b border-charcoal/10 pb-8 pt-16">
+        <div className="border-b border-ink/10 pb-8 pt-16">
           <h1 className="font-sans text-2xl md:text-3xl font-bold tracking-tight mb-4 uppercase">BAKERY</h1>
-          <p className="font-sans text-[11px] md:text-xs text-charcoal/70 max-w-5xl leading-relaxed">
+          <p className="font-sans text-[11px] md:text-xs text-ink/70 max-w-5xl leading-relaxed">
             Fresh-baked fusion items, crafted daily using heirloom grains and ancient fermentation techniques. Our artisanal bakery utilizes exclusively organic, regenerative flours and slow-fermentation processes to ensure uncompromising quality and digestion. Arrive early, quantities are strictly limited.
           </p>
         </div>
 
         {/* Toolbar */}
-        <div className="flex justify-between items-center py-4 border-b border-charcoal/10 text-[10px] md:text-xs font-sans uppercase tracking-wider">
-          <div className="flex items-center gap-2 cursor-pointer w-48 md:w-64 border-r border-charcoal/10">
+        <div className="flex justify-between items-center py-4 border-b border-ink/10 text-[10px] md:text-xs font-sans uppercase tracking-wider">
+          <div className="flex items-center gap-2 cursor-pointer w-48 md:w-64 border-r border-ink/10">
             <SlidersHorizontal className="w-3 h-3" /> HIDE FILTERS
           </div>
           <div className="flex items-center gap-2 cursor-pointer pl-4">
@@ -62,20 +62,20 @@ export default function BakeryPage() {
               <h3 className="font-sans text-[10px] md:text-xs font-bold uppercase mb-4 flex justify-between items-center">
                 Product Type <ChevronUp className="w-3 h-3" />
               </h3>
-              <ul className="space-y-3 text-[11px] font-sans text-charcoal/80">
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Sourdough Breads</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Laminated Pastries</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Gluten-Free</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Savory Baked Goods</li>
+              <ul className="space-y-3 text-[11px] font-sans text-ink/80">
+                <li className="flex items-center gap-3"><input type="checkbox" className="accent-ink" /> Sourdough Breads</li>
+                <li className="flex items-center gap-3"><input type="checkbox" className="accent-ink" /> Laminated Pastries</li>
+                <li className="flex items-center gap-3"><input type="checkbox" className="accent-ink" /> Gluten-Free</li>
+                <li className="flex items-center gap-3"><input type="checkbox" className="accent-ink" /> Savory Baked Goods</li>
               </ul>
             </div>
             <div className="mb-8">
               <h3 className="font-sans text-[10px] md:text-xs font-bold uppercase mb-4 flex justify-between items-center">
                 Availability <ChevronUp className="w-3 h-3" />
               </h3>
-              <ul className="space-y-3 text-[11px] font-sans text-charcoal/80">
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> In Stock Today</li>
-                <li className="flex items-center gap-3"><input type="checkbox" className="accent-charcoal" /> Pre-Order Next Day</li>
+              <ul className="space-y-3 text-[11px] font-sans text-ink/80">
+                <li className="flex items-center gap-3"><input type="checkbox" className="accent-ink" /> In Stock Today</li>
+                <li className="flex items-center gap-3"><input type="checkbox" className="accent-ink" /> Pre-Order Next Day</li>
               </ul>
             </div>
           </aside>

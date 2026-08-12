@@ -3,9 +3,24 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* master brand */
+  --navy: #25225E; --navy-dark: #191742;
+  --navy-soft: #3A3680; --navy-tint: #E9E8F0;
+  /* sub-brand — Essentials */
+  --forest: #173A2B; --forest-dark: #0B241A; --sage: #E8F0EA;
+  --gold: #B98A34; --gold-soft: #D4AF6A; --gold-tint: #F7EDD8;
+  /* sub-brand — Health Hub */
+  --brick: #8C2F2F; --brick-dark: #5C1F1F; --brick-tint: #F5E6E4;
+  /* neutrals + semantic */
+  --linen: #F7F6F1; --paper: #FFFFFF; --ink: #1A1E1B;
+  --moss: #767F76; --hairline: #EBE8DF;
+  --sig-red: #B3261E; --sig-green: #2E7D32;
+}
+
 @layer base {
   body {
-    @apply bg-alabaster text-charcoal font-sans antialiased selection:bg-charcoal selection:text-alabaster;
+    @apply bg-linen text-ink font-sans antialiased selection:bg-ink selection:text-linen;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -27,9 +42,9 @@
     @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-charcoal/20 rounded-full;
+    @apply bg-ink/20 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-charcoal/40;
+    @apply bg-ink/40;
   }
 }

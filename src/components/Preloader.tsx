@@ -36,7 +36,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-alabaster text-charcoal"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-paper text-ink"
         >
           {/* Logo Stage */}
           {stage === "text" && (
@@ -62,7 +62,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -50, scale: 0.8 }}
               transition={{ duration: 0.6, ease: "backOut" }}
-              className="flex items-center gap-8 text-charcoal/80"
+              className="flex items-center gap-8 text-ink/80"
             >
               <motion.div
                 animate={{ y: [0, -10, 0], rotate: [0, -5, 0] }}
@@ -89,7 +89,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute bottom-12 font-sans text-xs tracking-[0.3em] uppercase text-charcoal/40"
+            className="absolute bottom-12 font-sans text-xs tracking-[0.3em] uppercase text-ink/40"
           >
             {isHealthDomain ? "Health Hub Loading" : "Essentials Loading"}
           </motion.div>

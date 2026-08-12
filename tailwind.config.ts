@@ -10,10 +10,40 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        navy: {
+          DEFAULT: "#25225E",
+          dark: "#191742",
+          soft: "#3A3680",
+          tint: "#E9E8F0",
+        },
+        forest: {
+          DEFAULT: "#173A2B",
+          dark: "#0B241A",
+        },
+        sage: "#E8F0EA",
+        gold: {
+          DEFAULT: "#B98A34",
+          soft: "#D4AF6A",
+          tint: "#F7EDD8",
+        },
+        brick: {
+          DEFAULT: "#8C2F2F",
+          dark: "#5C1F1F",
+          tint: "#F5E6E4",
+        },
+        linen: "#F7F6F1",
+        paper: "#FFFFFF",
+        ink: "#1A1E1B",
+        moss: "#767F76",
+        hairline: "#EBE8DF",
+        'sig-red': "#B3261E",
+        'sig-green': "#2E7D32",
+        
+        // Deprecated (keep for backwards compatibility while migrating)
         alabaster: "#FFFFFF",
-        charcoal: "#1C1C1E",
-        background: "#FFFFFF",
-        foreground: "#1C1C1E",
+        charcoal: "#1A1E1B",
+        background: "#F7F6F1",
+        foreground: "#1A1E1B",
       },
       fontFamily: {
         serif: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],

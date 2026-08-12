@@ -30,7 +30,7 @@ export function ProductCard({
         
         {/* Sold Out Badge */}
         {product.soldOut && (
-          <div className="absolute top-0 left-0 bg-charcoal text-white text-[10px] px-2 py-1">
+          <div className="absolute top-0 left-0 bg-ink text-white text-[10px] px-2 py-1">
             Sold Out
           </div>
         )}
@@ -43,16 +43,16 @@ export function ProductCard({
           }}
           className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-sm hover:bg-gray-50 transition-colors"
         >
-          <ShoppingBag size={18} className="text-charcoal" />
+          <ShoppingBag size={18} className="text-ink" />
         </button>
       </Link>
 
       {/* Product Meta */}
       <Link href={`/${product.storeType || 'grocery'}/shop/${product.id}`} className="flex flex-col items-center text-center px-2">
-        <h3 className="font-sans text-[11px] md:text-xs text-charcoal mb-1 tracking-wide">
+        <h3 className="font-sans text-[11px] md:text-xs text-ink mb-1 tracking-wide">
           {product.name}
         </h3>
-        <p className="font-sans text-[11px] md:text-xs text-charcoal/60">
+        <p className="font-sans text-[11px] md:text-xs text-ink/60">
           ₹{product.price.toFixed(2)}
         </p>
       </Link>

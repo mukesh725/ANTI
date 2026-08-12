@@ -38,8 +38,8 @@ export default async function RootLayout({
   const cmsData = await getCmsData();
 
   return (
-    <html lang="en" className="bg-alabaster">
-      <body className="antialiased bg-alabaster text-charcoal min-h-screen flex flex-col">
+    <html lang="en" className="bg-paper">
+      <body className="antialiased bg-paper text-ink min-h-screen flex flex-col">
         <ClientLayoutWrapper cmsData={cmsData}>
           {children}
         </ClientLayoutWrapper>
