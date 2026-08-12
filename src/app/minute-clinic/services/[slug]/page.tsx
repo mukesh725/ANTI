@@ -124,20 +124,6 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* 3. Pricing & Insurance */}
-      <section className="px-6 md:px-16 pb-24 max-w-[1400px] mx-auto">
-        <div className="bg-white border border-[#1C1C1E]/10 rounded-3xl p-8 md:p-12">
-          <h2 className="font-serif text-3xl text-[#1C1C1E] mb-6">Payment Options & Insurance</h2>
-          <p className="text-[#1C1C1E]/70 text-sm leading-relaxed max-w-3xl mb-6">
-            We believe premium healthcare should be accessible. AIRO Minute Clinic accepts most major insurance plans. If you are paying out of pocket, our transparent pricing ensures you know exactly what your visit will cost before you are seen.
-          </p>
-          <ul className="text-sm font-medium text-[#1C1C1E]/80 flex flex-col gap-2">
-            <li>• Most major insurance accepted</li>
-            <li>• Transparent out-of-pocket pricing available</li>
-            <li>• FSA and HSA cards accepted</li>
-          </ul>
-        </div>
-      </section>
 
       {/* 4. Why Choose AIRO MinuteClinic */}
       <section className="px-6 md:px-16 pb-24 max-w-[1400px] mx-auto">
