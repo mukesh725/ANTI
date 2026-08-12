@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Clock, Video, Heart, Sparkles, Scale, Users, Shield, PackageOpen, Stethoscope, Lock, Home } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata = {
   title: "AIRO E-Med | Personalized Healthcare. From Your Home.",
@@ -335,50 +334,77 @@ export default function AiroEMedPage() {
           </h2>
         </div>
         
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="text-left font-serif text-lg">What is AIRO E-Med?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+        <div className="w-full space-y-4">
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              What is AIRO E-Med?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               AIRO E-Med is a telemedicine platform providing personalized treatment for eligible hair-loss, sexual-health, and weight-management concerns for men and women.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger className="text-left font-serif text-lg">Do I speak with a doctor?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+            </div>
+          </details>
+
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              Do I speak with a doctor?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               Yes. AIRO E-Med connects eligible patients with a doctor through a virtual consultation.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger className="text-left font-serif text-lg">Is treatment personalized?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+            </div>
+          </details>
+
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              Is treatment personalized?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               Yes. Treatment recommendations are based on your individual health information and medical evaluation.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-4">
-            <AccordionTrigger className="text-left font-serif text-lg">Do I automatically receive medication?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+            </div>
+          </details>
+
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              Do I automatically receive medication?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               No. A prescription is provided only when a doctor determines that treatment is medically appropriate.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-5">
-            <AccordionTrigger className="text-left font-serif text-lg">Do I need to visit a clinic?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+            </div>
+          </details>
+
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              Do I need to visit a clinic?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               AIRO E-Med is designed to provide care virtually. However, some medical conditions require an in-person evaluation and may not be appropriate for telemedicine.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-6">
-            <AccordionTrigger className="text-left font-serif text-lg">How is my treatment delivered?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+            </div>
+          </details>
+
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              How is my treatment delivered?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               When prescribed and eligible for home delivery, your treatment is shipped directly to your home in discreet packaging.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-7">
-            <AccordionTrigger className="text-left font-serif text-lg">Is my consultation private?</AccordionTrigger>
-            <AccordionContent className="text-[#1C1C1E]/70 leading-relaxed">
+            </div>
+          </details>
+
+          <details className="group bg-white p-6 rounded-2xl shadow-sm border border-[#1C1C1E]/5 open:shadow-md transition-all cursor-pointer">
+            <summary className="font-serif text-lg font-medium text-[#1C1C1E] list-none flex justify-between items-center outline-none">
+              Is my consultation private?
+              <span className="text-blue-600 group-open:rotate-180 transition-transform">↓</span>
+            </summary>
+            <div className="mt-4 text-[#1C1C1E]/70 leading-relaxed text-sm border-t border-[#1C1C1E]/5 pt-4">
               AIRO E-Med is designed to provide a private and convenient way to discuss personal health concerns through virtual care.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+            </div>
+          </details>
+        </div>
       </section>
 
       {/* Medical Disclaimer */}
