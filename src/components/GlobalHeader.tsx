@@ -126,7 +126,7 @@ export function GlobalHeader() {
                 >
                   <button
                     className={`relative flex items-center gap-1 text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
-                      isSubActive || activeDropdown === link.label ? "text-ink" : "text-[#8E8E93] hover:text-white"
+                      isSubActive || activeDropdown === link.label ? "text-ink" : "text-paper/90 hover:text-white"
                     }`}
                   >
                     {(isSubActive || activeDropdown === link.label) && (
@@ -176,7 +176,7 @@ export function GlobalHeader() {
                 key={link.href}
                 href={link.href!}
                 className={`relative text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
-                  isActive ? "text-ink" : "text-[#8E8E93] hover:text-white"
+                  isActive ? "text-ink" : "text-paper/90 hover:text-white"
                 }`}
               >
                 {isActive && (
