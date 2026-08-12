@@ -89,10 +89,10 @@ export function HealthCheckBooking() {
           }}
           className={`h-10 w-10 flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200 ${
             isSelected 
-              ? 'bg-[#1C1C1E] text-white shadow-md transform scale-105' 
+              ? 'bg-theme text-white shadow-md transform scale-105' 
               : isPast 
                 ? 'text-gray-300 cursor-not-allowed pointer-events-none' 
-                : 'text-[#1C1C1E] hover:bg-gray-100'
+                : 'text-ink hover:bg-gray-100'
           }`}
         >
           {i}
@@ -103,16 +103,16 @@ export function HealthCheckBooking() {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     return (
-      <div className="bg-white border border-[#1C1C1E]/10 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+      <div className="bg-white border border-theme/10 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
         <div className="flex items-center justify-between mb-6">
           <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-full transition-colors border border-transparent hover:border-gray-200">
-            <ChevronLeft className="w-5 h-5 text-[#1C1C1E]" />
+            <ChevronLeft className="w-5 h-5 text-ink" />
           </button>
-          <div className="font-bold text-lg text-[#1C1C1E] font-serif tracking-wide">
+          <div className="font-bold text-lg text-ink font-serif tracking-wide">
             {monthNames[month]} {year}
           </div>
           <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-full transition-colors border border-transparent hover:border-gray-200">
-            <ChevronRight className="w-5 h-5 text-[#1C1C1E]" />
+            <ChevronRight className="w-5 h-5 text-ink" />
           </button>
         </div>
         <div className="grid grid-cols-7 gap-2 mb-4 text-center">
@@ -303,19 +303,19 @@ export function HealthCheckBooking() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#1C1C1E]/10 flex flex-col">
+    <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-theme/10 flex flex-col">
       
       {/* TABS */}
-      <div className="flex border-b border-[#1C1C1E]/10">
+      <div className="flex border-b border-theme/10">
         <button 
           onClick={() => { setActiveTab("book"); setError(null); }}
-          className={`flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "book" ? "bg-[#1C1C1E] text-white" : "bg-white text-[#1C1C1E]/50 hover:bg-gray-50"}`}
+          className={`flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "book" ? "bg-theme text-white" : "bg-white text-ink/50 hover:bg-gray-50"}`}
         >
           Book a Scan
         </button>
         <button 
           onClick={() => { setActiveTab("find"); setError(null); }}
-          className={`flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "find" ? "bg-[#1C1C1E] text-white" : "bg-white text-[#1C1C1E]/50 hover:bg-gray-50"}`}
+          className={`flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "find" ? "bg-theme text-white" : "bg-white text-ink/50 hover:bg-gray-50"}`}
         >
           Find My Booking
         </button>
@@ -324,7 +324,7 @@ export function HealthCheckBooking() {
       <div className="grid grid-cols-1 md:grid-cols-3">
         
         {/* LEFT PANEL - INFO */}
-        <div className="bg-[#1C1C1E] text-white p-8 md:p-10 flex flex-col justify-between">
+        <div className="bg-theme text-white p-8 md:p-10 flex flex-col justify-between">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 text-[9px] font-bold tracking-[0.25em] uppercase mb-8">
               Free Assessment
@@ -368,26 +368,26 @@ export function HealthCheckBooking() {
                 exit={{ opacity: 0, x: -20 }}
               >
                 <h4 className="font-bold text-lg mb-4">Find Your Appointment</h4>
-                <p className="text-[#1C1C1E]/60 text-sm mb-6">
+                <p className="text-ink/60 text-sm mb-6">
                   Enter your mobile number, email, or Booking Reference to retrieve your QR code for in-store check-in.
                 </p>
 
                 <form onSubmit={handleSearch} className="mb-8 flex gap-3">
                   <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1C1C1E]/40" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                     <input 
                       required
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="e.g. SCN-XYZ123 or Mobile No."
-                      className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#1C1C1E]"
+                      className="w-full bg-white border border-theme/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-theme"
                     />
                   </div>
                   <button 
                     type="submit"
                     disabled={isSearching}
-                    className="bg-[#1C1C1E] text-white px-6 rounded-xl font-bold uppercase tracking-widest text-xs disabled:opacity-50 flex items-center justify-center min-w-[100px]"
+                    className="bg-theme text-white px-6 rounded-xl font-bold uppercase tracking-widest text-xs disabled:opacity-50 flex items-center justify-center min-w-[100px]"
                   >
                     {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : "Search"}
                   </button>
@@ -403,10 +403,10 @@ export function HealthCheckBooking() {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white border border-[#1C1C1E]/10 rounded-2xl p-6 text-center shadow-sm"
+                    className="bg-white border border-theme/10 rounded-2xl p-6 text-center shadow-sm"
                   >
                     <div className="mb-4">
-                      <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold mb-1">Booking Reference</p>
+                      <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold mb-1">Booking Reference</p>
                       <p className="font-mono text-xl font-bold">{foundBooking.bookingReference}</p>
                     </div>
 
@@ -416,26 +416,26 @@ export function HealthCheckBooking() {
                         alt="QR Code" 
                         className="w-48 h-48 mx-auto mix-blend-multiply" 
                       />
-                      <p className="text-xs text-[#1C1C1E]/60 mt-2">Scan upon arrival</p>
+                      <p className="text-xs text-ink/60 mt-2">Scan upon arrival</p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 text-left border-t border-[#1C1C1E]/10 pt-4">
+                    <div className="grid grid-cols-2 gap-4 text-left border-t border-theme/10 pt-4">
                       <div>
-                        <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Patient</p>
+                        <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Patient</p>
                         <p className="font-medium">{foundBooking.firstName} {foundBooking.lastName}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Status</p>
+                        <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Status</p>
                         <p className="font-medium text-green-600 flex items-center gap-1">
                           <CheckCircle2 className="w-4 h-4" /> {foundBooking.status}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Date</p>
+                        <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Date</p>
                         <p className="font-medium">{new Date(foundBooking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' })}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Time</p>
+                        <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Time</p>
                         <p className="font-medium">{foundBooking.timeSlot}</p>
                       </div>
                     </div>
@@ -455,19 +455,19 @@ export function HealthCheckBooking() {
               >
                 <div>
                   <div className="flex items-center gap-2 mb-4">
-                    <CalendarIcon className="w-5 h-5 text-[#1C1C1E]" /> 
-                    <h4 className="font-bold text-lg text-[#1C1C1E]">Select Location & Date</h4>
+                    <CalendarIcon className="w-5 h-5 text-ink" /> 
+                    <h4 className="font-bold text-lg text-ink">Select Location & Date</h4>
                   </div>
                   
                   <div className="mb-6">
-                    <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50 mb-2 block">Clinic Location</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-ink/50 mb-2 block">Clinic Location</label>
                     <select 
                       value={selectedLocation}
                       onChange={(e) => {
                         setSelectedLocation(e.target.value);
                         setSelectedSlot("");
                       }}
-                      className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 px-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                      className="w-full bg-white border border-theme/20 rounded-xl py-3 px-4 outline-none focus:border-theme transition-colors"
                     >
                       {availableLocations.map(loc => (
                         <option key={loc} value={loc}>{loc}</option>
@@ -489,7 +489,7 @@ export function HealthCheckBooking() {
                     
                     {isLoadingSlots ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="w-6 h-6 animate-spin text-[#1C1C1E]/50" />
+                        <Loader2 className="w-6 h-6 animate-spin text-ink/50" />
                       </div>
                     ) : availableSlots.length === 0 ? (
                       <div className="bg-orange-50 text-orange-800 p-4 rounded-xl border border-orange-200 text-sm">
@@ -503,8 +503,8 @@ export function HealthCheckBooking() {
                             onClick={() => setSelectedSlot(slot)}
                             className={`py-3 px-2 rounded-xl text-sm font-medium border transition-all duration-300 ${
                               selectedSlot === slot
-                                ? "border-[#1C1C1E] bg-[#1C1C1E] text-white"
-                                : "border-[#1C1C1E]/20 bg-white text-[#1C1C1E] hover:border-[#1C1C1E]/50"
+                                ? "border-theme bg-theme text-white"
+                                : "border-theme/20 bg-white text-ink hover:border-theme/50"
                             }`}
                           >
                             {slot}
@@ -540,7 +540,7 @@ export function HealthCheckBooking() {
                       }
                     }}
                     disabled={!selectedDate || !selectedSlot || isReserving}
-                    className="flex items-center gap-2 bg-[#1C1C1E] text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex items-center gap-2 bg-theme text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     {isReserving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Next Step"} <ChevronRight className="w-4 h-4" />
                   </button>
@@ -556,14 +556,14 @@ export function HealthCheckBooking() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
-                <div className="mb-8 flex items-center gap-3 p-4 bg-white rounded-2xl border border-[#1C1C1E]/10">
-                  <div className="w-10 h-10 bg-[#1C1C1E]/5 rounded-xl flex items-center justify-center">
+                <div className="mb-8 flex items-center gap-3 p-4 bg-white rounded-2xl border border-theme/10">
+                  <div className="w-10 h-10 bg-theme/5 rounded-xl flex items-center justify-center">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-[#1C1C1E]/50 uppercase tracking-widest font-bold">Selected Slot</p>
+                    <p className="text-xs text-ink/50 uppercase tracking-widest font-bold">Selected Slot</p>
                     <p className="font-serif font-medium">{new Date(selectedDate).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'short', month: 'long', day: 'numeric' })} at {selectedSlot}</p>
-                    <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold mt-1">Location: {selectedLocation}</p>
+                    <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold mt-1">Location: {selectedLocation}</p>
                   </div>
                   <button 
                     onClick={() => {
@@ -574,7 +574,7 @@ export function HealthCheckBooking() {
                         body: JSON.stringify({ date: selectedDate, timeSlot: selectedSlot, sessionId, location: selectedLocation })
                       }).catch(console.error);
                     }} 
-                    className="ml-auto text-xs underline text-[#1C1C1E]/50"
+                    className="ml-auto text-xs underline text-ink/50"
                   >
                     Edit
                   </button>
@@ -601,29 +601,29 @@ export function HealthCheckBooking() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">First Name</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">First Name</label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1C1C1E]/40" />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                         <input 
                           required
                           type="text"
                           value={formData.firstName}
                           onChange={e => setFormData({...formData, firstName: e.target.value})}
-                          className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                          className="w-full bg-white border border-theme/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-theme transition-colors"
                           placeholder="John"
                         />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Last Name</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Last Name</label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1C1C1E]/40" />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                         <input 
                           required
                           type="text"
                           value={formData.lastName}
                           onChange={e => setFormData({...formData, lastName: e.target.value})}
-                          className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                          className="w-full bg-white border border-theme/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-theme transition-colors"
                           placeholder="Doe"
                         />
                       </div>
@@ -632,23 +632,23 @@ export function HealthCheckBooking() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Date of Birth</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Date of Birth</label>
                       <input 
                         required
                         type="date"
                         value={formData.dob}
                         onChange={e => setFormData({...formData, dob: e.target.value})}
-                        className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 px-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                        className="w-full bg-white border border-theme/20 rounded-xl py-3 px-4 outline-none focus:border-theme transition-colors"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Age</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Age</label>
                       <input 
                         required
                         type="number"
                         value={formData.age}
                         onChange={e => setFormData({...formData, age: e.target.value})}
-                        className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 px-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                        className="w-full bg-white border border-theme/20 rounded-xl py-3 px-4 outline-none focus:border-theme transition-colors"
                         placeholder="e.g. 65"
                       />
                     </div>
@@ -656,7 +656,7 @@ export function HealthCheckBooking() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Sex</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Sex</label>
                       <div className="flex gap-4 pt-3">
                         {['Male', 'Female', 'Other'].map(option => (
                           <label key={option} className="flex items-center gap-2 cursor-pointer text-sm">
@@ -667,7 +667,7 @@ export function HealthCheckBooking() {
                               value={option}
                               checked={formData.sex === option}
                               onChange={e => setFormData({...formData, sex: e.target.value})}
-                              className="w-4 h-4 text-[#1C1C1E] border-gray-300 focus:ring-[#1C1C1E]"
+                              className="w-4 h-4 text-ink border-gray-300 focus:ring-[#1C1C1E]"
                             />
                             {option}
                           </label>
@@ -675,13 +675,13 @@ export function HealthCheckBooking() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Height</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Height</label>
                       <input 
                         required
                         type="text"
                         value={formData.height}
                         onChange={e => setFormData({...formData, height: e.target.value})}
-                        className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 px-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                        className="w-full bg-white border border-theme/20 rounded-xl py-3 px-4 outline-none focus:border-theme transition-colors"
                         placeholder="e.g. 5'10&quot; or 178cm"
                       />
                     </div>
@@ -689,30 +689,30 @@ export function HealthCheckBooking() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Email Address</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Email Address</label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1C1C1E]/40" />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                         <input 
                           required
                           type="email"
                           value={formData.email}
                           onChange={e => setFormData({...formData, email: e.target.value})}
-                          className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                          className="w-full bg-white border border-theme/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-theme transition-colors"
                           placeholder="john@example.com"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50">Mobile Number</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-ink/50">Mobile Number</label>
                       <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1C1C1E]/40" />
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                         <input 
                           required
                           type="tel"
                           value={formData.mobile}
                           onChange={e => setFormData({...formData, mobile: e.target.value})}
-                          className="w-full bg-white border border-[#1C1C1E]/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#1C1C1E] transition-colors"
+                          className="w-full bg-white border border-theme/20 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-theme transition-colors"
                           placeholder="+91 98765 43210"
                         />
                       </div>
@@ -720,15 +720,15 @@ export function HealthCheckBooking() {
                   </div>
 
                   {isVerifyingEmail ? (
-                    <div className="bg-white p-6 rounded-2xl border border-[#1C1C1E]/10 space-y-6">
+                    <div className="bg-white p-6 rounded-2xl border border-theme/10 space-y-6">
                       <div className="text-center">
-                        <div className="w-12 h-12 bg-[#1C1C1E]/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Mail className="w-6 h-6 text-[#1C1C1E]" />
+                        <div className="w-12 h-12 bg-theme/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Mail className="w-6 h-6 text-ink" />
                         </div>
                         <h4 className="font-serif text-xl font-bold mb-2">Check your email</h4>
-                        <p className="text-sm text-[#1C1C1E]/60">
+                        <p className="text-sm text-ink/60">
                           We've sent a 6-digit verification code to <br/>
-                          <span className="font-bold text-[#1C1C1E]">{formData.email}</span>
+                          <span className="font-bold text-ink">{formData.email}</span>
                         </p>
                       </div>
 
@@ -760,7 +760,7 @@ export function HealthCheckBooking() {
                                 document.getElementById(`otp-${index - 1}`)?.focus();
                               }
                             }}
-                            className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1C1C1E] focus:bg-white outline-none transition-all"
+                            className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold bg-gray-50 border border-gray-200 rounded-xl focus:border-theme focus:bg-white outline-none transition-all"
                           />
                         ))}
                       </div>
@@ -770,7 +770,7 @@ export function HealthCheckBooking() {
                           type="button"
                           onClick={handleVerifyOtp}
                           disabled={isVerifyingOtp || otpCode.some(d => !d)}
-                          className="w-full flex items-center justify-center gap-2 bg-[#1C1C1E] text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-black transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                          className="w-full flex items-center justify-center gap-2 bg-theme text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-black transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                           {isVerifyingOtp ? (
                             <><Loader2 className="w-5 h-5 animate-spin" /> Verifying...</>
@@ -783,14 +783,14 @@ export function HealthCheckBooking() {
                           <button 
                             type="button"
                             onClick={() => setIsVerifyingEmail(false)}
-                            className="text-xs text-[#1C1C1E]/50 hover:text-[#1C1C1E] font-bold uppercase tracking-widest underline underline-offset-4"
+                            className="text-xs text-ink/50 hover:text-ink font-bold uppercase tracking-widest underline underline-offset-4"
                           >
                             Back to Details
                           </button>
                           <button 
                             type="button"
                             onClick={(e) => handleSubmit(e as any)}
-                            className="text-xs text-[#1C1C1E]/50 hover:text-[#1C1C1E] font-bold uppercase tracking-widest underline underline-offset-4"
+                            className="text-xs text-ink/50 hover:text-ink font-bold uppercase tracking-widest underline underline-offset-4"
                           >
                             Resend Code
                           </button>
@@ -802,7 +802,7 @@ export function HealthCheckBooking() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full flex items-center justify-center gap-2 bg-[#1C1C1E] text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-black transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-2 bg-theme text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-black transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? (
                           <><Loader2 className="w-5 h-5 animate-spin" /> Sending Verification...</>
@@ -828,12 +828,12 @@ export function HealthCheckBooking() {
                   <CheckCircle2 className="w-8 h-8 text-green-500" />
                 </div>
                 <h3 className="font-serif text-2xl mb-2">Booking Confirmed!</h3>
-                <p className="text-[#1C1C1E]/60 text-sm max-w-sm mb-6">
+                <p className="text-ink/60 text-sm max-w-sm mb-6">
                   We've sent a confirmation email to {formData.email}. Please keep it safe.
                 </p>
 
-                <div className="bg-white border border-[#1C1C1E]/10 rounded-2xl p-6 shadow-sm w-full mb-6">
-                  <p className="text-[10px] text-[#1C1C1E]/50 uppercase tracking-widest font-bold mb-1">Booking Reference</p>
+                <div className="bg-white border border-theme/10 rounded-2xl p-6 shadow-sm w-full mb-6">
+                  <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold mb-1">Booking Reference</p>
                   <p className="font-mono text-xl font-bold mb-4">{bookingReference}</p>
                   
                   <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl inline-block">
@@ -842,7 +842,7 @@ export function HealthCheckBooking() {
                       alt="QR Code" 
                       className="w-40 h-40 mx-auto mix-blend-multiply" 
                     />
-                    <p className="text-[10px] text-[#1C1C1E]/60 mt-2 uppercase tracking-widest font-bold">Scan in-store</p>
+                    <p className="text-[10px] text-ink/60 mt-2 uppercase tracking-widest font-bold">Scan in-store</p>
                   </div>
                 </div>
 
@@ -853,7 +853,7 @@ export function HealthCheckBooking() {
                     setSelectedDate("");
                     setFormData({ firstName: "", lastName: "", email: "", mobile: "", dob: "", age: "", sex: "", height: "" });
                   }}
-                  className="text-xs font-bold uppercase tracking-widest text-[#1C1C1E]/50 hover:text-[#1C1C1E] underline underline-offset-4"
+                  className="text-xs font-bold uppercase tracking-widest text-ink/50 hover:text-ink underline underline-offset-4"
                 >
                   Book Another Slot
                 </button>

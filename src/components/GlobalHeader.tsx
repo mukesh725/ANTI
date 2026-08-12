@@ -92,7 +92,7 @@ export function GlobalHeader() {
   } else {
     logoNode = (
       <span className={`font-serif text-2xl tracking-widest uppercase transition-colors duration-300 ${
-        isScrolled ? "text-[#1C1C1E]" : (pathname === "/" || pathname === "/health" ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
+        isScrolled ? "text-ink" : (pathname === "/" || pathname === "/health" ? "text-paper" : "text-ink")
       }`}>
         AIRO<span className="opacity-50">.</span>
       </span>
@@ -103,7 +103,7 @@ export function GlobalHeader() {
     <>
       <nav className={`fixed top-0 w-full z-30 px-6 md:px-8 flex justify-between items-center transition-all duration-300 ${
         isScrolled 
-          ? "bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#1C1C1E]/5 py-3 md:py-4 shadow-sm" 
+          ? "bg-paper/95 backdrop-blur-md border-b border-theme/5 py-3 md:py-4 shadow-sm" 
           : "bg-transparent border-transparent py-5 md:py-6"
       }`}>
         <div className="flex-1 flex justify-start">
@@ -113,7 +113,7 @@ export function GlobalHeader() {
         </div>
         
         {/* Desktop nav capsule (floating glassmorphism bar) */}
-        <div className="hidden md:flex items-center gap-1 bg-[#1C1C1E]/50 border border-[#FFFFFF]/20 px-1.5 py-1.5 rounded-full backdrop-blur-xl shadow-2xl">
+        <div className="hidden md:flex items-center gap-1 bg-theme/50 border border-paper/20 px-1.5 py-1.5 rounded-full backdrop-blur-xl shadow-2xl">
           {navLinks.map((link) => {
             if (link.subLinks) {
               const isSubActive = link.subLinks.some(sub => pathname === sub.href);
@@ -126,13 +126,13 @@ export function GlobalHeader() {
                 >
                   <button
                     className={`relative flex items-center gap-1 text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
-                      isSubActive || activeDropdown === link.label ? "text-[#1C1C1E]" : "text-[#FFFFFF]/90 hover:text-white"
+                      isSubActive || activeDropdown === link.label ? "text-ink" : "text-paper/90 hover:text-white"
                     }`}
                   >
                     {(isSubActive || activeDropdown === link.label) && (
                       <motion.span
                         layoutId="activeHeaderPill"
-                        className="absolute inset-0 bg-[#FFFFFF] rounded-full -z-10 shadow-sm"
+                        className="absolute inset-0 bg-paper rounded-full -z-10 shadow-sm"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -149,14 +149,14 @@ export function GlobalHeader() {
                         transition={{ duration: 0.2 }}
                         className="absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50"
                       >
-                        <div className="bg-[#FFFFFF] border border-[#1C1C1E]/10 rounded-2xl p-2 shadow-2xl min-w-[200px] flex flex-col gap-1">
+                        <div className="bg-paper border border-theme/10 rounded-2xl p-2 shadow-2xl min-w-[200px] flex flex-col gap-1">
                           {link.subLinks.map(sub => (
                             <Link
                               key={sub.href}
                               href={sub.href}
                               {...(sub.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                               className={`px-4 py-3 rounded-xl text-xs uppercase tracking-widest font-semibold transition-colors duration-300 ${
-                                pathname === sub.href ? "bg-[#1C1C1E] text-white" : "text-[#1C1C1E] hover:bg-[#1C1C1E]/5"
+                                pathname === sub.href ? "bg-theme text-white" : "text-ink hover:bg-theme/5"
                               }`}
                             >
                               {sub.label}
@@ -176,13 +176,13 @@ export function GlobalHeader() {
                 key={link.href}
                 href={link.href!}
                 className={`relative text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
-                  isActive ? "text-[#1C1C1E]" : "text-[#FFFFFF]/90 hover:text-white"
+                  isActive ? "text-ink" : "text-paper/90 hover:text-white"
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="activeHeaderPill"
-                    className="absolute inset-0 bg-[#FFFFFF] rounded-full -z-10 shadow-sm"
+                    className="absolute inset-0 bg-paper rounded-full -z-10 shadow-sm"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -201,7 +201,7 @@ export function GlobalHeader() {
           <Link 
             href={(user || profile) ? "/ecommerce/account" : "/ecommerce/login"}
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
-              isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
+              isScrolled ? "text-ink" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-paper" : "text-ink")
             }`}
           >
             <UserIcon className="w-5 h-5" />
@@ -210,12 +210,12 @@ export function GlobalHeader() {
           <button 
             onClick={() => setIsCartOpen(true)} 
             className={`relative hover:opacity-70 transition-opacity duration-300 ${
-              isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
+              isScrolled ? "text-ink" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-paper" : "text-ink")
             }`}
           >
             <ShoppingBag className="w-5 h-5" />
             {cartItems.length > 0 && (
-              <span className="absolute -top-1 -right-2 bg-[#1C1C1E] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-2 bg-theme text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
                 {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
               </span>
             )}
@@ -225,7 +225,7 @@ export function GlobalHeader() {
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className={`md:hidden p-1 hover:opacity-75 transition-opacity duration-300 ${
-              isScrolled ? "text-[#1C1C1E]" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-[#FFFFFF]" : "text-[#1C1C1E]")
+              isScrolled ? "text-ink" : (["/", "/health", "/health-chair"].includes(pathname) ? "text-paper" : "text-ink")
             }`}
             aria-label="Open menu"
           >
@@ -243,7 +243,7 @@ export function GlobalHeader() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-[#1C1C1E]/20 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-theme/20 backdrop-blur-sm z-40"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -251,16 +251,16 @@ export function GlobalHeader() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-0 right-0 h-full w-full max-w-xs bg-[#FFFFFF] shadow-2xl z-50 flex flex-col border-l border-[#1C1C1E]/10"
+              className="fixed top-0 right-0 h-full w-full max-w-xs bg-paper shadow-2xl z-50 flex flex-col border-l border-theme/10"
             >
               {/* Header */}
-              <div className="flex justify-between items-center p-6 border-b border-[#1C1C1E]/10">
-                <span className="font-serif text-xl tracking-widest uppercase text-[#1C1C1E]">
+              <div className="flex justify-between items-center p-6 border-b border-theme/10">
+                <span className="font-serif text-xl tracking-widest uppercase text-ink">
                   Menu
                 </span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 hover:bg-[#1C1C1E]/5 rounded-full transition-colors duration-300"
+                  className="p-2 hover:bg-theme/5 rounded-full transition-colors duration-300"
                   aria-label="Close menu"
                 >
                   <X className="w-5 h-5" />
@@ -278,10 +278,10 @@ export function GlobalHeader() {
                     >
                       {link.subLinks ? (
                         <div className="px-6 py-4">
-                          <span className="block text-sm tracking-widest uppercase font-bold text-[#1C1C1E]/40 mb-3">
+                          <span className="block text-sm tracking-widest uppercase font-bold text-ink/40 mb-3">
                             {link.label}
                           </span>
-                          <div className="flex flex-col gap-2 pl-4 border-l-2 border-[#1C1C1E]/10">
+                          <div className="flex flex-col gap-2 pl-4 border-l-2 border-theme/10">
                             {link.subLinks.map(sub => (
                               <Link
                                 key={sub.href}
@@ -289,7 +289,7 @@ export function GlobalHeader() {
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 {...(sub.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                                 className={`block py-2 text-sm tracking-widest uppercase font-medium transition-colors duration-300 ${
-                                  pathname === sub.href ? "text-blue-600 font-bold" : "text-[#1C1C1E] hover:text-blue-600"
+                                  pathname === sub.href ? "text-blue-600 font-bold" : "text-ink hover:text-blue-600"
                                 }`}
                               >
                                 {sub.label}
@@ -301,7 +301,7 @@ export function GlobalHeader() {
                         <Link
                           href={link.href!}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="block px-6 py-4 text-sm tracking-widest uppercase font-medium text-[#1C1C1E] hover:bg-[#1C1C1E]/5 transition-colors duration-300"
+                          className="block px-6 py-4 text-sm tracking-widest uppercase font-medium text-ink hover:bg-theme/5 transition-colors duration-300"
                         >
                           {link.label}
                         </Link>

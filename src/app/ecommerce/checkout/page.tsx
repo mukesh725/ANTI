@@ -213,17 +213,17 @@ export default function CheckoutPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#FFFFFF] text-[#1C1C1E] flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-paper text-ink flex flex-col items-center justify-center p-6 text-center">
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="bg-white p-10 sm:p-12 rounded-3xl shadow-2xl max-w-lg border border-[#1C1C1E]/5"
+          className="bg-white p-10 sm:p-12 rounded-3xl shadow-2xl max-w-lg border border-theme/5"
         >
           <div className="w-20 h-20 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg text-white">
             <Check className="w-10 h-10" />
           </div>
           <h1 className="font-serif text-3xl font-bold mb-2">Order Confirmed!</h1>
-          <p className="font-sans text-xs text-[#1C1C1E]/70 mb-6 leading-relaxed">
+          <p className="font-sans text-xs text-ink/70 mb-6 leading-relaxed">
             Thank you for shopping with AIRO. Your order has been received and is being prepared. You have selected Cash on Delivery.
           </p>
 
@@ -236,7 +236,7 @@ export default function CheckoutPage() {
 
           <button 
             onClick={() => router.push(user || profile ? "/ecommerce/account" : "/")}
-            className="bg-[#1C1C1E] text-[#FFFFFF] px-8 py-4 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-[#1C1C1E]/90 transition-colors w-full"
+            className="bg-theme text-paper px-8 py-4 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-theme/90 transition-colors w-full"
           >
             {user || profile ? "View My Orders" : "Return to Home"}
           </button>
@@ -247,12 +247,12 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FFFFFF] flex flex-col items-center justify-center p-6 text-center pt-32">
-        <Package className="w-16 h-16 text-[#1C1C1E]/20 mb-6" />
+      <div className="min-h-screen bg-paper flex flex-col items-center justify-center p-6 text-center pt-32">
+        <Package className="w-16 h-16 text-ink/20 mb-6" />
         <h1 className="font-serif text-3xl mb-4">Your cart is empty</h1>
         <button 
           onClick={() => router.push("/grocery")}
-          className="bg-[#1C1C1E] text-[#FFFFFF] px-8 py-4 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-[#1C1C1E]/90 transition-colors"
+          className="bg-theme text-paper px-8 py-4 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-theme/90 transition-colors"
         >
           Continue Shopping
         </button>
@@ -261,9 +261,9 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1C1C1E] pt-32 pb-16 px-6 md:px-16">
+    <div className="min-h-screen bg-paper text-ink pt-32 pb-16 px-6 md:px-16">
       <div className="max-w-[1200px] mx-auto">
-        <h1 className="font-serif text-4xl mb-8 border-b border-[#1C1C1E]/10 pb-6">Checkout</h1>
+        <h1 className="font-serif text-4xl mb-8 border-b border-theme/10 pb-6">Checkout</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
@@ -275,45 +275,45 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">First Name</label>
-                    <input required name="firstName" value={formData.firstName} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                    <input required name="firstName" value={formData.firstName} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                   </div>
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">Last Name</label>
-                    <input required name="lastName" value={formData.lastName} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                    <input required name="lastName" value={formData.lastName} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">Address</label>
-                  <input required name="address" value={formData.address} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                  <input required name="address" value={formData.address} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">City</label>
-                    <input required name="city" value={formData.city} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                    <input required name="city" value={formData.city} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                   </div>
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">State</label>
-                    <input required name="state" value={formData.state} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                    <input required name="state" value={formData.state} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">Zip Code</label>
-                    <input required name="zip" value={formData.zip} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                    <input required name="zip" value={formData.zip} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                   </div>
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest font-bold mb-2">Phone</label>
-                    <input required name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-[#1C1C1E]/10 rounded-lg text-sm focus:outline-none focus:border-[#1C1C1E]" />
+                    <input required name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-theme/10 rounded-lg text-sm focus:outline-none focus:border-theme" />
                   </div>
                 </div>
 
-                <div className="pt-8 border-t border-[#1C1C1E]/10 mt-8">
+                <div className="pt-8 border-t border-theme/10 mt-8">
                   <h2 className="font-serif text-2xl mb-4 flex items-center gap-2">Payment Method <Shield className="w-5 h-5 text-green-600" /></h2>
-                  <div className="bg-white p-6 border-2 border-[#1C1C1E] rounded-xl flex items-center gap-4 shadow-sm">
-                    <input type="radio" checked readOnly className="w-4 h-4 text-[#1C1C1E]" />
+                  <div className="bg-white p-6 border-2 border-theme rounded-xl flex items-center gap-4 shadow-sm">
+                    <input type="radio" checked readOnly className="w-4 h-4 text-ink" />
                     <div>
                       <h3 className="font-bold text-sm">Cash on Delivery</h3>
-                      <p className="text-xs text-[#1C1C1E]/60">Pay with cash when your order is delivered to your doorstep.</p>
+                      <p className="text-xs text-ink/60">Pay with cash when your order is delivered to your doorstep.</p>
                     </div>
                   </div>
                 </div>
@@ -323,7 +323,7 @@ export default function CheckoutPage() {
 
           {/* Order Summary & AIRO ONE Discount Card */}
           <div className="lg:col-span-5">
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#1C1C1E]/10 shadow-xl sticky top-28 space-y-6">
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-theme/10 shadow-xl sticky top-28 space-y-6">
               <h2 className="font-serif text-2xl">Order Summary</h2>
 
               {/* AIRO ONE MEMBERSHIP DISCOUNT AUTO-SECTION */}
@@ -379,12 +379,12 @@ export default function CheckoutPage() {
                 {items.map(item => (
                   <div key={item.id} className="flex justify-between items-center text-sm pt-3 first:pt-0">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-[#FFFFFF] rounded-md overflow-hidden relative flex-shrink-0 border border-gray-100">
+                      <div className="w-10 h-10 bg-paper rounded-md overflow-hidden relative flex-shrink-0 border border-gray-100">
                         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover mix-blend-multiply" />
                       </div>
                       <div>
                         <p className="font-medium line-clamp-1">{item.name}</p>
-                        <p className="text-xs text-[#1C1C1E]/50">Qty: {item.quantity}</p>
+                        <p className="text-xs text-ink/50">Qty: {item.quantity}</p>
                       </div>
                     </div>
                     <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
@@ -393,8 +393,8 @@ export default function CheckoutPage() {
               </div>
 
               {/* Calculations */}
-              <div className="space-y-3 border-t border-[#1C1C1E]/10 pt-4 text-sm">
-                <div className="flex justify-between text-[#1C1C1E]/70">
+              <div className="space-y-3 border-t border-theme/10 pt-4 text-sm">
+                <div className="flex justify-between text-ink/70">
                   <span>Bag Subtotal</span>
                   <span>₹{rawSubtotal.toFixed(2)}</span>
                 </div>
@@ -408,7 +408,7 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <div className="flex justify-between text-[#1C1C1E]/70">
+                <div className="flex justify-between text-ink/70">
                   <span>Shipping &amp; Delivery</span>
                   <span>
                     {shipping === 0 ? (
@@ -419,7 +419,7 @@ export default function CheckoutPage() {
                   </span>
                 </div>
 
-                <div className="flex justify-between border-t border-[#1C1C1E]/10 pt-4 mt-2">
+                <div className="flex justify-between border-t border-theme/10 pt-4 mt-2">
                   <span className="font-serif text-xl font-bold">Total Payable</span>
                   <span className="font-serif text-xl font-extrabold text-[#006537]">₹{finalTotal.toFixed(2)}</span>
                 </div>
@@ -429,7 +429,7 @@ export default function CheckoutPage() {
                 form="checkout-form"
                 type="submit"
                 disabled={loading}
-                className="w-full mt-6 bg-[#1C1C1E] text-[#FFFFFF] py-4 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-[#1C1C1E]/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                className="w-full mt-6 bg-theme text-paper py-4 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-theme/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
               >
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

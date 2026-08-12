@@ -94,10 +94,10 @@ export default function ProductDetailPage() {
 
   if (loading || !product) {
     return (
-      <main className="min-h-screen bg-[#FFFFFF]">
+      <main className="min-h-screen bg-paper">
         <GlobalHeader />
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="w-8 h-8 border-4 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-theme/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
         </div>
       </main>
     );
@@ -113,21 +113,21 @@ export default function ProductDetailPage() {
   const images = product.galleryImages?.length ? product.galleryImages : [product.image];
 
   return (
-    <main className="min-h-screen bg-[#FFFFFF]">
+    <main className="min-h-screen bg-paper">
       <GlobalHeader />
       
       <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-8">
         
         {/* Breadcrumb & Actions */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2 text-sm text-[#1C1C1E]/60">
-            <button onClick={() => router.back()} className="hover:text-[#1C1C1E] flex items-center gap-1">
+          <div className="flex items-center gap-2 text-sm text-ink/60">
+            <button onClick={() => router.back()} className="hover:text-ink flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> Home
             </button>
             <span>-</span>
-            <span className="text-[#1C1C1E] font-medium">Product details</span>
+            <span className="text-ink font-medium">Product details</span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-[#1C1C1E]">
+          <div className="flex items-center gap-4 text-sm text-ink">
             <span className="cursor-pointer hover:opacity-70">About</span>
             <span className="cursor-pointer hover:opacity-70">FAQs</span>
           </div>
@@ -147,7 +147,7 @@ export default function ProductDetailPage() {
                   <button 
                     key={idx} 
                     onClick={() => setActiveImage(img)}
-                    className={`aspect-square rounded-2xl bg-[#F5F5F7] p-2 flex items-center justify-center overflow-hidden border-2 transition-colors ${activeImage === img ? 'border-[#1C1C1E]' : 'border-transparent'}`}
+                    className={`aspect-square rounded-2xl bg-[#F5F5F7] p-2 flex items-center justify-center overflow-hidden border-2 transition-colors ${activeImage === img ? 'border-theme' : 'border-transparent'}`}
                   >
                     <img src={img} alt="" className="w-full h-full object-contain mix-blend-multiply" />
                   </button>
@@ -159,23 +159,23 @@ export default function ProductDetailPage() {
           {/* RIGHT: DETAILS */}
           <div className="flex flex-col pt-4">
             
-            <div className="inline-block border border-[#1C1C1E]/10 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#1C1C1E]/60 w-fit mb-4">
+            <div className="inline-block border border-theme/10 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-ink/60 w-fit mb-4">
               {product.category}
             </div>
             
-            <h1 className="text-3xl md:text-4xl font-sans font-bold text-[#1C1C1E] mb-3">
+            <h1 className="text-3xl md:text-4xl font-sans font-bold text-ink mb-3">
               {product.name}
             </h1>
             
-            <div className="text-xl font-bold text-[#1C1C1E] mb-6">
+            <div className="text-xl font-bold text-ink mb-6">
               ₹{Number(product.price).toFixed(2)}
             </div>
 
             {/* Delivery Timer */}
-            <div className="flex items-center gap-2 border border-[#1C1C1E]/10 rounded-full py-2 px-4 w-fit mb-8 bg-gray-50 text-sm">
+            <div className="flex items-center gap-2 border border-theme/10 rounded-full py-2 px-4 w-fit mb-8 bg-gray-50 text-sm">
               <Clock className="w-4 h-4 text-gray-400" />
               <span className="text-gray-500">Order in</span>
-              <span className="font-bold text-[#1C1C1E]">{timeRemaining}</span>
+              <span className="font-bold text-ink">{timeRemaining}</span>
               <span className="text-gray-500">to get next day delivery</span>
             </div>
 
@@ -190,7 +190,7 @@ export default function ProductDetailPage() {
                       onClick={() => setSelectedVariant(v)}
                       className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
                         selectedVariant === v 
-                          ? 'bg-[#1C1C1E] text-white' 
+                          ? 'bg-theme text-white' 
                           : 'bg-[#F5F5F7] text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -209,7 +209,7 @@ export default function ProductDetailPage() {
                 className={`flex-1 h-14 rounded-full text-sm font-bold transition-all flex items-center justify-center gap-2 ${
                   added 
                     ? 'bg-emerald-600 text-white' 
-                    : 'bg-[#1C1C1E] text-white hover:bg-black/80'
+                    : 'bg-theme text-white hover:bg-black/80'
                 } ${product.isComingSoon ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {added ? <><Check className="w-5 h-5" /> Added to Cart</> : 'Add to Cart'}
@@ -286,13 +286,13 @@ export default function ProductDetailPage() {
 
         {/* Rating & Reviews */}
         <div className="mb-24">
-          <h2 className="text-xl font-bold text-[#1C1C1E] mb-8">Rating & Reviews</h2>
+          <h2 className="text-xl font-bold text-ink mb-8">Rating & Reviews</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             
             {/* Stats */}
             <div className="flex items-start gap-8">
               <div className="flex flex-col items-center">
-                <div className="text-7xl font-bold text-[#1C1C1E] tracking-tighter">
+                <div className="text-7xl font-bold text-ink tracking-tighter">
                   4,5<span className="text-2xl text-gray-400 font-normal">/5</span>
                 </div>
                 <p className="text-xs text-gray-400 mt-2">(60 New Reviews)</p>
@@ -305,7 +305,7 @@ export default function ProductDetailPage() {
                       <span className="text-xs font-medium text-gray-600">{star}</span>
                     </div>
                     <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#1C1C1E]" style={{ width: star === 5 ? '70%' : star === 4 ? '20%' : '5%' }} />
+                      <div className="h-full bg-theme" style={{ width: star === 5 ? '70%' : star === 4 ? '20%' : '5%' }} />
                     </div>
                   </div>
                 ))}
@@ -337,7 +337,7 @@ export default function ProductDetailPage() {
         {/* RECOMMENDED PRODUCTS */}
         {recommendedProducts.length > 0 && (
           <div className="mb-24">
-            <h2 className="text-2xl font-bold text-[#1C1C1E] mb-8 text-center">You might also like</h2>
+            <h2 className="text-2xl font-bold text-ink mb-8 text-center">You might also like</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {recommendedProducts.map(rec => (
                 <ProductCard key={rec.id} product={{ ...rec, imageUrl: rec.image }} />

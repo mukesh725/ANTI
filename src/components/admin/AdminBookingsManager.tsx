@@ -614,7 +614,7 @@ export function AdminBookingsManager() {
           </button>
           <button 
             onClick={handleExportCSV}
-            className="flex items-center gap-2 bg-[#1C1C1E] text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-black transition-colors"
+            className="flex items-center gap-2 bg-theme text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-black transition-colors"
           >
             <Download className="w-4 h-4" /> Export CSV
           </button>
@@ -731,9 +731,9 @@ export function AdminBookingsManager() {
                     primaryAction = { label: 'Check-In', status: 'Checked-In', icon: CheckCircle2, color: 'bg-[#0A84FF] hover:bg-blue-600 text-white' };
                   } else if (booking.status === 'Checked-In') {
                     if (booking.visitFormat === 'Video') {
-                      primaryAction = { label: 'Join Call', status: 'In Consultation', icon: Video, color: 'bg-[#1C1C1E] hover:bg-black text-white' };
+                      primaryAction = { label: 'Join Call', status: 'In Consultation', icon: Video, color: 'bg-theme hover:bg-black text-white' };
                     } else {
-                      primaryAction = { label: 'Start Consult', status: 'In Consultation', icon: Play, color: 'bg-[#1C1C1E] hover:bg-black text-white' };
+                      primaryAction = { label: 'Start Consult', status: 'In Consultation', icon: Play, color: 'bg-theme hover:bg-black text-white' };
                     }
                   } else if (booking.status === 'In Consultation') {
                     primaryAction = { label: 'Complete', status: 'Completed', icon: CheckCircle2, color: 'bg-green-600 hover:bg-green-700 text-white' };

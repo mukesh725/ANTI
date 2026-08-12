@@ -54,7 +54,7 @@ export default function HealthPage() {
   const buttons = hd.buttons;
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1C1C1E] overflow-x-hidden selection:bg-[#1C1C1E] selection:text-[#FFFFFF]">
+    <div className="min-h-screen bg-paper text-ink overflow-x-hidden selection:bg-theme selection:text-paper">
 
       {/* =========================================================================
           SECTION 1: HERO SECTION (FULL-WIDTH BACKGROUND)
@@ -71,26 +71,26 @@ export default function HealthPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1E] via-[#1C1C1E]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-[1000px] text-[#FFFFFF] pt-12 w-full flex flex-col items-center text-center md:items-start md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FFFFFF]/10 bg-[#FFFFFF]/5 text-[#FFFFFF] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
-            <Activity className="w-3 h-3 text-[#FFFFFF]" /> {healthData.subtitle || "PREVENTATIVE CARE. REDEFINED."}
+        <div className="relative z-10 max-w-[1000px] text-paper pt-12 w-full flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper/10 bg-paper/5 text-paper text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
+            <Activity className="w-3 h-3 text-paper" /> {healthData.subtitle || "PREVENTATIVE CARE. REDEFINED."}
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-[#FFFFFF] mb-6 md:mb-8">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-paper mb-6 md:mb-8">
             {healthData.title.split(' ')[0] || "AIRO"} <br/>
-            <span className="italic font-light text-[#FFFFFF]/80">{healthData.title.split(' ').slice(1).join(' ') || "Health"}</span>
+            <span className="italic font-light text-paper/80">{healthData.title.split(' ').slice(1).join(' ') || "Health"}</span>
           </h1>
           
-          <p className="font-serif text-lg md:text-2xl text-[#FFFFFF]/95 italic max-w-2xl leading-relaxed mb-6">
+          <p className="font-serif text-lg md:text-2xl text-paper/95 italic max-w-2xl leading-relaxed mb-6">
             {hd.tagline || "Clinical-grade prescription care, longevity protocols, minute clinics, and advanced diagnostics."}
           </p>
 
           <div className="flex flex-wrap justify-center md:justify-start gap-4 items-center mt-12 w-full">
             <Link
               href={buttons?.primary?.link || "/pharmacy"}
-              className="w-full sm:w-auto justify-center bg-[#FFFFFF] text-[#1C1C1E] px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto justify-center bg-paper text-ink px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
-              {buttons?.primary?.text || "Pharmacy Portal"} <ArrowRight className="w-4 h-4 text-[#1C1C1E]" />
+              {buttons?.primary?.text || "Pharmacy Portal"} <ArrowRight className="w-4 h-4 text-ink" />
             </Link>
           </div>
         </div>
@@ -99,7 +99,7 @@ export default function HealthPage() {
       {/* =========================================================================
           SECTION 2: HEALTH SCAN
           ========================================================================= */}
-      <section className="bg-[#09120F] text-[#FFFFFF] py-24 md:py-36 px-6 md:px-16 w-full relative">
+      <section className="bg-[#09120F] text-paper py-24 md:py-36 px-6 md:px-16 w-full relative">
         <div className="max-w-[1450px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             
@@ -116,26 +116,26 @@ export default function HealthPage() {
             </div>
 
             <div className="lg:col-span-6 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FFFFFF]/10 bg-[#FFFFFF]/5 text-[#FFFFFF] text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
-                <Cpu className="w-3 h-3 text-[#FFFFFF]/70" /> {praana?.sectionLabel || "Clinical Innovation"}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper/10 bg-paper/5 text-paper text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-8">
+                <Cpu className="w-3 h-3 text-paper/70" /> {praana?.sectionLabel || "Clinical Innovation"}
               </div>
 
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#0A84FF] mb-6 leading-tight">
                 {(praana?.title?.split(' ')[0]) || "AIRO"} <br/>
-                <span className="italic font-light text-[#FFFFFF]/80">{(praana?.title?.split(' ').slice(1).join(' ')) || "Praana"}</span>
+                <span className="italic font-light text-paper/80">{(praana?.title?.split(' ').slice(1).join(' ')) || "Praana"}</span>
               </h2>
 
-              <p className="font-serif text-lg md:text-xl italic text-[#FFFFFF]/90 max-w-xl mb-8 font-light leading-relaxed">
+              <p className="font-serif text-lg md:text-xl italic text-paper/90 max-w-xl mb-8 font-light leading-relaxed">
                 {praana?.description || "A 5-minute diagnostic assessment. A lifetime of longevity insights."}
               </p>
 
-              <p className="font-sans text-xs md:text-sm text-[#FFFFFF]/70 max-w-lg leading-relaxed mb-10 tracking-wide">
+              <p className="font-sans text-xs md:text-sm text-paper/70 max-w-lg leading-relaxed mb-10 tracking-wide">
                 {praana?.bodyText || "Step into the future of diagnostics. The AIRO Smart Assessment Chair captures a comprehensive suite of key physiological indicators in just minutes, establishing a detailed baseline for your personalized care plan."}
               </p>
 
               <Link 
                 href={praana?.buttonLink || "/health-chair"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-[#FFFFFF] hover:text-[#FFFFFF]/60 silent-luxury-transition"
+                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-paper hover:text-paper/60 silent-luxury-transition"
               >
                 {praana?.buttonText || "Learn More"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -150,13 +150,13 @@ export default function HealthPage() {
           SECTION 3: ECOSYSTEM CATEGORIES SHOWCASE
           ========================================================================= */}
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-[#1C1C1E]/10 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-theme/10 gap-6">
           <div>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-4 font-bold">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-ink/50 block mb-4 font-bold">
               {hd.sections?.clinicalSectionLabel || "The Clinic"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight">
-              {(hd.sections?.clinicalSectionTitle || "Clinical Services").split(' ')[0]} <span className="italic font-light text-[#1C1C1E]/80">{(hd.sections?.clinicalSectionTitle || "Clinical Services").split(' ').slice(1).join(' ')}</span>
+              {(hd.sections?.clinicalSectionTitle || "Clinical Services").split(' ')[0]} <span className="italic font-light text-ink/80">{(hd.sections?.clinicalSectionTitle || "Clinical Services").split(' ').slice(1).join(' ')}</span>
             </h2>
           </div>
         </div>
@@ -169,24 +169,24 @@ export default function HealthPage() {
               className="group py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:px-4 silent-luxury-transition"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 flex-1">
-                <span className="font-serif text-lg md:text-xl text-[#1C1C1E]/30 group-hover:text-[#1C1C1E] silent-luxury-transition">
+                <span className="font-serif text-lg md:text-xl text-ink/30 group-hover:text-ink silent-luxury-transition">
                   0{idx + 1}
                 </span>
                 
-                <span className="font-serif text-2xl md:text-3xl text-[#1C1C1E] font-medium tracking-tight w-64">
+                <span className="font-serif text-2xl md:text-3xl text-ink font-medium tracking-tight w-64">
                   {cat.name}
                 </span>
 
-                <span className="font-sans text-xs md:text-sm text-[#1C1C1E]/60 group-hover:text-[#1C1C1E]/80 silent-luxury-transition max-w-xl">
+                <span className="font-sans text-xs md:text-sm text-ink/60 group-hover:text-ink/80 silent-luxury-transition max-w-xl">
                   {cat.description}
                 </span>
               </div>
 
               <div className="flex items-center gap-4 shrink-0">
-                <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#1C1C1E]/40 border border-[#1C1C1E]/10 px-4 py-1.5 rounded-full">
+                <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-ink/40 border border-theme/10 px-4 py-1.5 rounded-full">
                   {cat.status || "Coming Soon"}
                 </span>
-                <div className="w-8 h-8 rounded-full border border-[#1C1C1E]/10 flex items-center justify-center text-[#1C1C1E] group-hover:border-[#1C1C1E] group-hover:bg-[#1C1C1E]/5 silent-luxury-transition">
+                <div className="w-8 h-8 rounded-full border border-theme/10 flex items-center justify-center text-ink group-hover:border-theme group-hover:bg-theme/5 silent-luxury-transition">
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>

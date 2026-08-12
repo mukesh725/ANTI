@@ -35,25 +35,25 @@ function ShopContent() {
     : products.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="w-full bg-[#FFFFFF] text-[#1C1C1E] min-h-screen">
+    <div className="w-full bg-paper text-ink min-h-screen">
       
       {/* Header */}
-      <div className="bg-[#1C1C1E] text-[#FFFFFF] pt-32 pb-16 px-6 md:px-16">
+      <div className="bg-theme text-paper pt-32 pb-16 px-6 md:px-16">
         <div className="max-w-[1500px] mx-auto">
-          <Link href="/grocery" className="inline-flex items-center gap-2 text-[#FFFFFF]/60 hover:text-[#FFFFFF] transition-colors text-[10px] uppercase tracking-widest font-bold mb-8">
+          <Link href="/grocery" className="inline-flex items-center gap-2 text-paper/60 hover:text-paper transition-colors text-[10px] uppercase tracking-widest font-bold mb-8">
             <ArrowLeft className="w-4 h-4" /> Back to Essentials
           </Link>
           <h1 className="font-serif text-5xl md:text-6xl tracking-tight leading-tight mb-4">
-            Shop <span className="italic font-light text-[#FFFFFF]/80">AIRO Essentials</span>
+            Shop <span className="italic font-light text-paper/80">AIRO Essentials</span>
           </h1>
-          <p className="font-sans text-sm text-[#FFFFFF]/70 max-w-xl leading-relaxed tracking-wide">
+          <p className="font-sans text-sm text-paper/70 max-w-xl leading-relaxed tracking-wide">
             Browse our complete catalog of farm-fresh greens, quality meats, and wellness-focused daily staples.
           </p>
         </div>
       </div>
 
       {/* Filter Tabs Bar */}
-      <div className="sticky top-[72px] z-40 bg-[#FFFFFF]/90 backdrop-blur-md border-b border-[#1C1C1E]/10 py-4 px-6 md:px-16">
+      <div className="sticky top-[72px] z-40 bg-paper/90 backdrop-blur-md border-b border-theme/10 py-4 px-6 md:px-16">
         <div className="max-w-[1500px] mx-auto overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-2 min-w-max">
             {categories.map((cat, idx) => (
@@ -62,8 +62,8 @@ function ShopContent() {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-5 py-2.5 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${
                   activeCategory === cat
-                    ? "bg-[#1C1C1E] text-[#FFFFFF] shadow-md"
-                    : "bg-[#1C1C1E]/5 text-[#1C1C1E]/60 hover:bg-[#1C1C1E]/10 hover:text-[#1C1C1E]"
+                    ? "bg-theme text-paper shadow-md"
+                    : "bg-theme/5 text-ink/60 hover:bg-theme/10 hover:text-ink"
                 }`}
               >
                 {cat}
@@ -77,20 +77,20 @@ function ShopContent() {
       <div className="py-16 px-6 md:px-16 max-w-[1500px] mx-auto min-h-[50vh]">
         {/* Check if store is enabled */}
         {cmsData.settings && cmsData.settings.storeEnabled === false ? (
-          <div className="text-center text-[#1C1C1E] py-32 flex flex-col items-center justify-center">
+          <div className="text-center text-ink py-32 flex flex-col items-center justify-center">
             <ShoppingBag className="w-16 h-16 opacity-20 mb-6" />
             <h2 className="font-serif text-3xl md:text-4xl tracking-tight mb-4">Our Store is Currently Updating</h2>
-            <p className="font-sans text-sm text-[#1C1C1E]/60 max-w-md mx-auto leading-relaxed">
+            <p className="font-sans text-sm text-ink/60 max-w-md mx-auto leading-relaxed">
               We are adding exciting new inventory and updating our systems. Please check back later!
             </p>
           </div>
         ) : productsLoading ? (
-          <div className="text-center text-[#1C1C1E]/50 py-24 text-sm tracking-widest uppercase flex flex-col items-center gap-4">
-            <div className="w-6 h-6 border-2 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin" />
+          <div className="text-center text-ink/50 py-24 text-sm tracking-widest uppercase flex flex-col items-center gap-4">
+            <div className="w-6 h-6 border-2 border-theme/20 border-t-[#1C1C1E] rounded-full animate-spin" />
             Loading catalog...
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="text-center text-[#1C1C1E]/50 py-24 text-sm tracking-widest uppercase">
+          <div className="text-center text-ink/50 py-24 text-sm tracking-widest uppercase">
             No products found in this category.
           </div>
         ) : (
@@ -104,9 +104,9 @@ function ShopContent() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
                   key={product.id}
-                  className="group relative overflow-hidden rounded-2xl bg-white border border-[#1C1C1E]/10 shadow-sm flex flex-col"
+                  className="group relative overflow-hidden rounded-2xl bg-white border border-theme/10 shadow-sm flex flex-col"
                 >
-                  <Link href={`/${product.storeType}/shop/${product.id}`} className="relative aspect-[4/5] overflow-hidden bg-[#FFFFFF] block">
+                  <Link href={`/${product.storeType}/shop/${product.id}`} className="relative aspect-[4/5] overflow-hidden bg-paper block">
                     <motion.img 
                       src={product.image}
                       alt={product.name}
@@ -118,12 +118,12 @@ function ShopContent() {
                       <span className="text-[8px] uppercase tracking-widest font-bold text-[#0A84FF] mb-2 block">
                         {product.category}
                       </span>
-                      <h3 className="font-serif text-xl text-[#1C1C1E] mb-2">{product.name}</h3>
-                      <p className="font-sans text-xs text-[#1C1C1E]/70 leading-relaxed tracking-wide mb-4 line-clamp-2">
+                      <h3 className="font-serif text-xl text-ink mb-2">{product.name}</h3>
+                      <p className="font-sans text-xs text-ink/70 leading-relaxed tracking-wide mb-4 line-clamp-2">
                         {product.description}
                       </p>
                     </Link>
-                    <div className="flex items-center justify-between mt-auto border-t border-[#1C1C1E]/10 pt-4">
+                    <div className="flex items-center justify-between mt-auto border-t border-theme/10 pt-4">
                       <span className="font-sans font-medium text-[#0A84FF]">₹{product.price.toFixed(2)}</span>
                       <button 
                         onClick={(e) => {
@@ -131,7 +131,7 @@ function ShopContent() {
                           e.stopPropagation();
                           addItem({ id: product.id, name: product.name, price: product.price, imageUrl: product.image });
                         }}
-                        className="text-[9px] uppercase tracking-widest font-bold bg-[#1C1C1E]/5 hover:bg-[#1C1C1E]/10 text-[#1C1C1E] px-4 py-2 rounded-full transition-colors flex items-center gap-2"
+                        className="text-[9px] uppercase tracking-widest font-bold bg-theme/5 hover:bg-theme/10 text-ink px-4 py-2 rounded-full transition-colors flex items-center gap-2"
                       >
                         <ShoppingBag className="w-3 h-3" /> Add
                       </button>
@@ -150,7 +150,7 @@ function ShopContent() {
 
 export default function GroceryShopPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#FFFFFF] pt-32 text-center text-sm uppercase tracking-widest">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-paper pt-32 text-center text-sm uppercase tracking-widest">Loading...</div>}>
       <ShopContent />
     </Suspense>
   );

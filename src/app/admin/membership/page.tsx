@@ -277,7 +277,7 @@ export default function AdminMembershipDashboard() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006537]/10 text-[#006537] text-xs font-semibold uppercase tracking-wider mb-2">
             <ShieldCheck className="w-3.5 h-3.5" /> Admin Control Panel
           </div>
-          <h1 className="text-3xl font-extrabold text-[#1C1C1E] tracking-tight">AIRO ONE Membership Management</h1>
+          <h1 className="text-3xl font-extrabold text-ink tracking-tight">AIRO ONE Membership Management</h1>
           <p className="text-gray-500 text-sm mt-1">Manage member records, verify manual payments, issue digital cards, resend emails, and export operational reports.</p>
         </div>
         

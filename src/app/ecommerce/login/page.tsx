@@ -47,15 +47,15 @@ export default function EcommerceLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1C1C1E] flex flex-col items-center justify-center pt-24 pb-12 px-6">
+    <div className="min-h-screen bg-paper text-ink flex flex-col items-center justify-center pt-24 pb-12 px-6">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-[#1C1C1E]/5"
+        className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-theme/5"
       >
         <div className="text-center mb-8">
           <h1 className="font-serif text-3xl mb-2">{isLogin ? "Welcome Back" : "Create Account"}</h1>
-          <p className="font-sans text-xs text-[#1C1C1E]/60 tracking-wide">
+          <p className="font-sans text-xs text-ink/60 tracking-wide">
             {isLogin ? "Sign in to access your orders, membership, and saved carts." : "Join AIRO to track your wellness journey and AIRO ONE membership."}
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function EcommerceLogin() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#1C1C1E]/10 rounded-lg focus:outline-none focus:border-[#1C1C1E] text-sm"
+                className="w-full px-4 py-3 bg-paper border border-theme/10 rounded-lg focus:outline-none focus:border-theme text-sm"
                 placeholder="John Doe"
               />
             </div>
@@ -88,7 +88,7 @@ export default function EcommerceLogin() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#1C1C1E]/10 rounded-lg focus:outline-none focus:border-[#1C1C1E] text-sm"
+              className="w-full px-4 py-3 bg-paper border border-theme/10 rounded-lg focus:outline-none focus:border-theme text-sm"
               placeholder="you@example.com"
             />
           </div>
@@ -100,7 +100,7 @@ export default function EcommerceLogin() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#1C1C1E]/10 rounded-lg focus:outline-none focus:border-[#1C1C1E] text-sm"
+              className="w-full px-4 py-3 bg-paper border border-theme/10 rounded-lg focus:outline-none focus:border-theme text-sm"
               placeholder="••••••••"
             />
           </div>
@@ -108,7 +108,7 @@ export default function EcommerceLogin() {
           <button 
             type="submit"
             disabled={loading}
-            className="w-full bg-[#1C1C1E] text-[#FFFFFF] py-3 rounded-lg text-xs uppercase tracking-widest font-bold hover:bg-[#1C1C1E]/90 transition-colors mt-6 disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full bg-theme text-paper py-3 rounded-lg text-xs uppercase tracking-widest font-bold hover:bg-theme/90 transition-colors mt-6 disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -123,7 +123,7 @@ export default function EcommerceLogin() {
         <div className="mt-6 text-center">
           <button 
             onClick={() => setIsLogin(!isLogin)}
-            className="text-xs font-medium text-[#1C1C1E]/60 hover:text-[#1C1C1E] transition-colors"
+            className="text-xs font-medium text-ink/60 hover:text-ink transition-colors"
           >
             {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
           </button>

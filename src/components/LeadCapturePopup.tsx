@@ -77,7 +77,7 @@ export function LeadCapturePopup() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute inset-0 bg-[#1C1C1E]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-theme/60 backdrop-blur-sm"
             onClick={handleDismiss}
           />
 
@@ -87,16 +87,16 @@ export function LeadCapturePopup() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="relative w-full max-w-md bg-[#1C1C1E] border border-[#2C2C2E] rounded-3xl shadow-2xl overflow-hidden"
+            className="relative w-full max-w-md bg-theme border border-[#2C2C2E] rounded-3xl shadow-2xl overflow-hidden"
           >
             {/* Subtle glow effects */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#0A84FF]/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#FFFFFF]/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-paper/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
 
             <button
               type="button"
               onClick={handleDismiss}
-              className="absolute top-4 right-4 z-[100] p-2 text-[#FFFFFF]/50 hover:text-[#FFFFFF] transition-colors rounded-full hover:bg-white/10"
+              className="absolute top-4 right-4 z-[100] p-2 text-paper/50 hover:text-paper transition-colors rounded-full hover:bg-white/10"
               aria-label="Close"
             >
               <X className="w-6 h-6" />
@@ -112,8 +112,8 @@ export function LeadCapturePopup() {
                   <div className="w-16 h-16 bg-[#0A84FF]/10 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-8 h-8 text-[#0A84FF]" />
                   </div>
-                  <h3 className="font-serif text-2xl text-[#FFFFFF] mb-2 tracking-wide">Welcome to AIRO</h3>
-                  <p className="text-sm text-[#FFFFFF]/60 leading-relaxed">
+                  <h3 className="font-serif text-2xl text-paper mb-2 tracking-wide">Welcome to AIRO</h3>
+                  <p className="text-sm text-paper/60 leading-relaxed">
                     You have successfully joined the waitlist. Keep an eye out for our exclusive invitations.
                   </p>
                 </motion.div>
@@ -123,10 +123,10 @@ export function LeadCapturePopup() {
                     <Sparkles className="w-5 h-5 text-[#0A84FF]" />
                   </div>
                   
-                  <h3 className="font-serif text-2xl text-[#FFFFFF] mb-3 tracking-wide">
+                  <h3 className="font-serif text-2xl text-paper mb-3 tracking-wide">
                     Join the AIRO Waitlist
                   </h3>
-                  <p className="text-sm text-[#FFFFFF]/60 leading-relaxed mb-8">
+                  <p className="text-sm text-paper/60 leading-relaxed mb-8">
                     Enter your details to receive early access to the Minute Clinic, exclusive organic grocery drops, and personalized wellness insights.
                   </p>
 
@@ -136,7 +136,7 @@ export function LeadCapturePopup() {
                       placeholder="Full Name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-[#FFFFFF]/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-[#FFFFFF] placeholder-[#FFFFFF]/30 transition-all"
+                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
                       required
                     />
                     <input
@@ -144,7 +144,7 @@ export function LeadCapturePopup() {
                       placeholder="Email Address"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-[#FFFFFF]/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-[#FFFFFF] placeholder-[#FFFFFF]/30 transition-all"
+                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
                       required
                     />
                     <input
@@ -152,16 +152,16 @@ export function LeadCapturePopup() {
                       placeholder="Phone Number (Optional)"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-[#FFFFFF]/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-[#FFFFFF] placeholder-[#FFFFFF]/30 transition-all"
+                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
                     />
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full mt-2 bg-[#FFFFFF] text-[#1C1C1E] hover:bg-white rounded-xl py-3.5 px-6 font-bold text-[10px] tracking-widest uppercase flex items-center justify-center space-x-2 transition-all shadow-lg shadow-white/5 active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
+                      className="w-full mt-2 bg-paper text-ink hover:bg-white rounded-xl py-3.5 px-6 font-bold text-[10px] tracking-widest uppercase flex items-center justify-center space-x-2 transition-all shadow-lg shadow-white/5 active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
                     >
                       {isSubmitting ? (
-                        <div className="w-4 h-4 border-2 border-[#1C1C1E]/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
+                        <div className="w-4 h-4 border-2 border-theme/20 border-t-[#1C1C1E] rounded-full animate-spin"></div>
                       ) : (
                         <>
                           <span>Request Access</span>
@@ -174,12 +174,12 @@ export function LeadCapturePopup() {
                   <button
                     type="button"
                     onClick={handleDismiss}
-                    className="mt-4 text-[#FFFFFF]/50 hover:text-[#FFFFFF] text-[10px] uppercase tracking-widest font-bold underline decoration-[#FFFFFF]/30 underline-offset-4 transition-colors"
+                    className="mt-4 text-paper/50 hover:text-paper text-[10px] uppercase tracking-widest font-bold underline decoration-[#FFFFFF]/30 underline-offset-4 transition-colors"
                   >
                     Not interested right now
                   </button>
                   
-                  <p className="text-[9px] text-[#FFFFFF]/30 mt-6 tracking-wide">
+                  <p className="text-[9px] text-paper/30 mt-6 tracking-wide">
                     By submitting, you agree to our Privacy Policy & Terms of Service.
                   </p>
                 </>
