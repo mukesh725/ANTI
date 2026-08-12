@@ -83,6 +83,7 @@ export function HealthCheckBooking() {
           key={i}
           disabled={isPast}
           onClick={() => {
+            if (isPast) return;
             setSelectedDate(dateString);
             setSelectedSlot("");
           }}
@@ -90,7 +91,7 @@ export function HealthCheckBooking() {
             isSelected 
               ? 'bg-[#1C1C1E] text-white shadow-md transform scale-105' 
               : isPast 
-                ? 'text-gray-300 cursor-not-allowed' 
+                ? 'text-gray-300 cursor-not-allowed pointer-events-none' 
                 : 'text-[#1C1C1E] hover:bg-gray-100'
           }`}
         >
