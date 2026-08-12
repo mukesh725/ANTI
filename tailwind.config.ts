@@ -31,6 +31,10 @@ const config: Config = {
           dark: "#5C1F1F",
           tint: "#F5E6E4",
         },
+        theme: {
+          DEFAULT: "var(--theme-primary)",
+          dark: "var(--theme-dark)",
+        },
         linen: "#F7F6F1",
         paper: "#FFFFFF",
         ink: "#1A1E1B",

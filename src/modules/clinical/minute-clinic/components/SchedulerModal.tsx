@@ -41,7 +41,7 @@ export function SchedulerModal({ isOpen, onClose }: SchedulerModalProps) {
             className="relative bg-paper w-full max-w-2xl shadow-2xl rounded-sm overflow-hidden flex flex-col md:flex-row"
           >
             {/* Left Col: Info */}
-            <div className="bg-ink text-paper p-8 md:w-2/5 flex flex-col justify-between">
+            <div className="bg-theme text-paper p-8 md:w-2/5 flex flex-col justify-between">
               <div>
                 <span className="text-[10px] tracking-widest uppercase text-paper/60 mb-4 block">AIRO Clinical</span>
                 <h2 className="font-serif text-3xl mb-4 leading-tight">MinuteClinic<br/>Consultation</h2>
@@ -80,8 +80,8 @@ export function SchedulerModal({ isOpen, onClose }: SchedulerModalProps) {
                       onClick={() => setSelectedDate(date)}
                       className={`w-12 h-12 rounded-full flex flex-col items-center justify-center border silent-luxury-transition ${
                         selectedDate === date 
-                          ? "bg-ink text-paper border-ink" 
-                          : "border-ink/20 hover:border-ink text-ink"
+                          ? "bg-theme text-paper border-theme" 
+                          : "border-theme/20 hover:border-theme text-theme"
                       }`}
                     >
                       <span className="text-xs font-serif">{date}</span>
@@ -100,8 +100,8 @@ export function SchedulerModal({ isOpen, onClose }: SchedulerModalProps) {
                       onClick={() => setSelectedTime(time)}
                       className={`py-3 px-4 border text-sm font-sans tracking-wide silent-luxury-transition rounded-sm ${
                         selectedTime === time
-                          ? "border-ink bg-ink/5 text-ink font-medium"
-                          : "border-ink/10 hover:border-ink/30 text-ink/70"
+                          ? "border-theme bg-theme/5 text-theme font-medium"
+                          : "border-theme/10 hover:border-theme/30 text-theme/70"
                       }`}
                     >
                       {time}
@@ -112,7 +112,7 @@ export function SchedulerModal({ isOpen, onClose }: SchedulerModalProps) {
 
               <button 
                 disabled={!selectedDate || !selectedTime}
-                className="w-full py-4 bg-ink text-paper tracking-widest uppercase text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-ink/90 silent-luxury-transition rounded-sm"
+                className="w-full py-4 bg-theme text-paper tracking-widest uppercase text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-theme/90 silent-luxury-transition rounded-sm"
               >
                 Confirm Appointment
               </button>

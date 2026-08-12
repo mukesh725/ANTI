@@ -30,7 +30,7 @@ export function ProductCard({
         
         {/* Sold Out Badge */}
         {product.soldOut && (
-          <div className="absolute top-0 left-0 bg-ink text-white text-[10px] px-2 py-1">
+          <div className="absolute top-0 left-0 bg-theme text-white text-[10px] px-2 py-1">
             Sold Out
           </div>
         )}
@@ -41,9 +41,9 @@ export function ProductCard({
             e.preventDefault();
             // Add cart logic here
           }}
-          className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-sm hover:bg-gray-50 transition-colors"
+          className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-sm hover:bg-gray-50 transition-colors group-hover:text-theme"
         >
-          <ShoppingBag size={18} className="text-ink" />
+          <ShoppingBag size={18} className="text-theme" />
         </button>
       </Link>
 

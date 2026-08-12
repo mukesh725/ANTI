@@ -16,6 +16,21 @@
   --linen: #F7F6F1; --paper: #FFFFFF; --ink: #1A1E1B;
   --moss: #767F76; --hairline: #EBE8DF;
   --sig-red: #B3261E; --sig-green: #2E7D32;
+
+  /* Dynamic Theme Default (Master Brand) */
+  --theme-primary: var(--navy);
+  --theme-dark: var(--navy-dark);
+}
+
+/* Dynamic Vertical Rule Themes */
+.theme-essentials {
+  --theme-primary: var(--forest);
+  --theme-dark: var(--forest-dark);
+}
+
+.theme-health {
+  --theme-primary: var(--brick);
+  --theme-dark: var(--brick-dark);
 }
 
 @layer base {

@@ -134,6 +134,26 @@ export function ClientLayoutWrapper({
     link.href = isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png';
   }, []);
 
+  // Compute dynamic brand theme based on pathname
+  let themeClass = "";
+  if (
+    pathname.startsWith("/grocery") || 
+    pathname.startsWith("/bakery") || 
+    pathname.startsWith("/ice-cream") || 
+    pathname.startsWith("/ecommerce") ||
+    pathname.startsWith("/essentials")
+  ) {
+    themeClass = "theme-essentials";
+  } else if (
+    pathname.startsWith("/health") || 
+    pathname.startsWith("/pharmacy") || 
+    pathname.startsWith("/minute-clinic") ||
+    pathname.startsWith("/book-health-scan") ||
+    pathname.startsWith("/membership")
+  ) {
+    themeClass = "theme-health";
+  }
+
   return (
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
@@ -142,7 +162,7 @@ export function ClientLayoutWrapper({
         <CartProvider>
           <CmsProvider initialData={cmsData}>
             {/* Hide content until loading is done to prevent flash */}
-            <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'} ${themeClass}`}>
               {!pathname.startsWith('/admin') && <GlobalHeader />}
               <main className={`flex-grow flex flex-col min-h-screen ${pathname.startsWith('/admin') ? '' : (pathname === '/' || pathname === '/health' ? '' : 'pt-28')}`}>
                 {children}
