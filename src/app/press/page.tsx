@@ -158,14 +158,14 @@ export default function PressPage() {
 
         <div className="bg-theme text-paper rounded-3xl p-8 border border-[#2C2C2E] shadow-lg flex flex-col justify-between">
           <div className="space-y-4">
-            <h3 className="font-serif text-xl tracking-wide text-[#0A84FF]">Media & Investor Relations</h3>
+            <h3 className="font-serif text-xl tracking-wide text-theme">Media & Investor Relations</h3>
             <p className="text-xs text-paper/85 leading-relaxed">
               If you are a member of the press, an investor, or a medical partner and want to arrange a clinical interview or corporate query, please contact our relations desk:
             </p>
           </div>
           <div className="mt-6 border-t border-paper/10 pt-6 space-y-2 text-xs">
-            <p><strong>Email:</strong> <a href="mailto:concierge@airohealth.com" className="text-[#0A84FF] hover:underline">concierge@airohealth.com</a></p>
-            <p><strong>Investor Desk:</strong> <a href="mailto:clinical@airohealth.com" className="text-[#0A84FF] hover:underline">clinical@airohealth.com</a></p>
+            <p><strong>Email:</strong> <a href="mailto:concierge@airohealth.com" className="text-theme hover:underline">concierge@airohealth.com</a></p>
+            <p><strong>Investor Desk:</strong> <a href="mailto:clinical@airohealth.com" className="text-theme hover:underline">clinical@airohealth.com</a></p>
             <p><strong>Phone:</strong> +1 (800) 555-2476</p>
           </div>
         </div>

@@ -471,7 +471,7 @@ export function AiraChatbot() {
             >
               <MessageSquare className="w-6 h-6" />
               {/* Notification dot */}
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#0A84FF] rounded-full border-2 border-theme"></span>
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-theme rounded-full border-2 border-theme"></span>
             </motion.div>
           )}
         </AnimatePresence>

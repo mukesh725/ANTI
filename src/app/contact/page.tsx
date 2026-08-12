@@ -168,12 +168,12 @@ export default function ContactPage() {
           {/* Connected Care Info Card */}
           <div className="bg-theme text-paper p-8 rounded-2xl relative overflow-hidden shadow-lg border border-[#2C2C2E]">
             <div className="absolute top-0 right-0 w-32 h-32 bg-paper/5 rounded-full blur-2xl transform translate-x-1/3 -translate-y-1/3"></div>
-            <Sparkles className="w-8 h-8 text-[#0A84FF] mb-5 animate-pulse" />
+            <Sparkles className="w-8 h-8 text-theme mb-5 animate-pulse" />
             <h3 className="font-serif text-xl mb-3 tracking-wide">Rapid Health Screening</h3>
             <p className="text-xs text-paper/80 leading-relaxed mb-4">
               Our flagship wellness assessment starts with the 5-Minute Health Chair Scan. Capture real-time vitals, ECG, SpO2, and key physiological biomarkers to kickstart your personalized medical programs.
             </p>
-            <div className="text-xs font-semibold uppercase tracking-widest text-[#0A84FF]">
+            <div className="text-xs font-semibold uppercase tracking-widest text-theme">
               Available walk-in at all sites
             </div>
           </div>

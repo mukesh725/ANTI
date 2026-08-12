@@ -90,7 +90,7 @@ export function LeadCapturePopup() {
             className="relative w-full max-w-md bg-theme border border-[#2C2C2E] rounded-3xl shadow-2xl overflow-hidden"
           >
             {/* Subtle glow effects */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0A84FF]/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-theme/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-paper/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
 
             <button
@@ -109,8 +109,8 @@ export function LeadCapturePopup() {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex flex-col items-center py-8"
                 >
-                  <div className="w-16 h-16 bg-[#0A84FF]/10 rounded-full flex items-center justify-center mb-6">
-                    <CheckCircle2 className="w-8 h-8 text-[#0A84FF]" />
+                  <div className="w-16 h-16 bg-theme/10 rounded-full flex items-center justify-center mb-6">
+                    <CheckCircle2 className="w-8 h-8 text-theme" />
                   </div>
                   <h3 className="font-serif text-2xl text-paper mb-2 tracking-wide">Welcome to AIRO</h3>
                   <p className="text-sm text-paper/60 leading-relaxed">
@@ -120,7 +120,7 @@ export function LeadCapturePopup() {
               ) : (
                 <>
                   <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
-                    <Sparkles className="w-5 h-5 text-[#0A84FF]" />
+                    <Sparkles className="w-5 h-5 text-theme" />
                   </div>
                   
                   <h3 className="font-serif text-2xl text-paper mb-3 tracking-wide">
@@ -136,7 +136,7 @@ export function LeadCapturePopup() {
                       placeholder="Full Name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
+                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-theme/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
                       required
                     />
                     <input
@@ -144,7 +144,7 @@ export function LeadCapturePopup() {
                       placeholder="Email Address"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
+                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-theme/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
                       required
                     />
                     <input
@@ -152,7 +152,7 @@ export function LeadCapturePopup() {
                       placeholder="Phone Number (Optional)"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF]/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
+                      className="w-full bg-paper/5 border border-[#2C2C2E] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-theme/50 text-paper placeholder-[#FFFFFF]/30 transition-all"
                     />
 
                     <button

@@ -53,7 +53,7 @@ export default function AboutPage() {
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {trustFramework.pillars.map((pillar: any, index: number) => {
               const IconComp = iconMap[pillar.title] || Shield;
-              const iconColor = pillar.title === "Compounding Purity" ? "text-[#0A84FF]" : "text-ink";
+              const iconColor = pillar.title === "Compounding Purity" ? "text-theme" : "text-ink";
               return (
                 <div key={index} className="bg-white border border-[#E6DFD5] p-8 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
                   <div>
@@ -94,7 +94,7 @@ export default function AboutPage() {
           <div className="lg:col-span-7 grid grid-cols-2 gap-4">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {metrics.stats.map((stat: any, index: number) => {
-              const valueColor = stat.value === "Zero" ? "text-[#0A84FF]" : "text-ink";
+              const valueColor = stat.value === "Zero" ? "text-theme" : "text-ink";
               return (
                 <div key={index} className="border border-theme/10 bg-white/40 p-8 rounded-2xl text-center space-y-2">
                   <span className={`font-serif text-4xl md:text-5xl ${valueColor} font-medium block`}>{stat.value}</span>
@@ -119,10 +119,10 @@ export default function AboutPage() {
             <h2 className="font-serif text-3xl md:text-5xl tracking-tight leading-tight">
               {leadership.name}
             </h2>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-[#0A84FF]">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-theme">
               {leadership.role}
             </h4>
-            <div className="h-0.5 w-16 bg-[#0A84FF]"></div>
+            <div className="h-0.5 w-16 bg-theme"></div>
             <p className="text-sm text-ink/85 leading-relaxed">
               {leadership.bio1}
             </p>
@@ -138,7 +138,7 @@ export default function AboutPage() {
           <div className="lg:col-span-6 bg-theme text-paper rounded-3xl p-10 md:p-12 border border-[#2C2C2E] shadow-xl relative overflow-hidden flex flex-col justify-between h-[450px]">
             <div className="absolute top-0 right-0 w-64 h-64 bg-paper/5 rounded-full blur-3xl transform translate-x-1/4 -translate-y-1/4"></div>
             <div>
-              <span className="font-serif text-lg tracking-widest text-[#0A84FF]">AIRO.</span>
+              <span className="font-serif text-lg tracking-widest text-theme">AIRO.</span>
               <h3 className="font-serif text-3xl mt-6 tracking-wide max-w-sm">
                 {leadership.name}
               </h3>
@@ -149,7 +149,7 @@ export default function AboutPage() {
               <p className="text-xs text-paper/80 leading-relaxed">
                 {leadership.cardDescription}
               </p>
-              <div className="text-[10px] tracking-widest uppercase font-semibold text-[#0A84FF]">
+              <div className="text-[10px] tracking-widest uppercase font-semibold text-theme">
                 {leadership.cardBadge}
               </div>
             </div>

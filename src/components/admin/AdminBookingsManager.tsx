@@ -45,8 +45,8 @@ export interface Booking {
 
 // Sub-components
 const InitialsAvatar = ({ first, last }: { first: string, last: string }) => (
-  <div className="w-10 h-10 rounded-full bg-[#0A84FF]/10 flex items-center justify-center flex-shrink-0 border border-[#0A84FF]/20">
-    <span className="text-sm font-bold text-[#0A84FF]">
+  <div className="w-10 h-10 rounded-full bg-theme/10 flex items-center justify-center flex-shrink-0 border border-theme/20">
+    <span className="text-sm font-bold text-theme">
       {(first?.[0] || '') + (last?.[0] || '')}
     </span>
   </div>
@@ -479,7 +479,7 @@ export function AdminBookingsManager() {
               placeholder="e.g. Banjara Hills"
               value={newLocationName}
               onChange={(e) => setNewLocationName(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF] transition-colors mb-6"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-theme transition-colors mb-6"
             />
             <div className="flex gap-3">
               <button 
@@ -491,7 +491,7 @@ export function AdminBookingsManager() {
               <button 
                 onClick={handleAddNewLocation}
                 disabled={!newLocationName.trim() || isSavingLocation}
-                className="flex-1 py-3 bg-[#0A84FF] text-white font-bold text-sm rounded-xl hover:bg-[#0A84FF]/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 py-3 bg-theme text-paper font-bold text-sm rounded-xl hover:bg-theme/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isSavingLocation ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Location"}
               </button>
@@ -574,7 +574,7 @@ export function AdminBookingsManager() {
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#0A84FF]/20 text-[#0A84FF] text-[10px] font-bold uppercase tracking-widest shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-theme/20 text-theme text-[10px] font-bold uppercase tracking-widest shadow-sm">
               Clinical EHR
             </div>
           </div>
@@ -608,7 +608,7 @@ export function AdminBookingsManager() {
           </button>
           <button 
             onClick={() => setShowScanner(true)}
-            className="flex items-center gap-2 bg-white border border-[#0A84FF] text-[#0A84FF] px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm hover:bg-[#0A84FF]/5 transition-colors"
+            className="flex items-center gap-2 bg-white border border-theme text-theme px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm hover:bg-theme/5 transition-colors"
           >
             <Camera className="w-4 h-4" /> Scan
           </button>
@@ -654,7 +654,7 @@ export function AdminBookingsManager() {
           <select 
             value={selectedLocationFilter}
             onChange={e => setSelectedLocationFilter(e.target.value)}
-            className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 focus:outline-none focus:border-[#0A84FF] transition-colors"
+            className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 focus:outline-none focus:border-theme transition-colors"
           >
             <option value="All Locations">All Locations</option>
             {availableLocations.map(loc => (
@@ -728,7 +728,7 @@ export function AdminBookingsManager() {
                   // Primary Action Logic
                   let primaryAction = null;
                   if (['Confirmed', 'Booked', 'Rescheduled'].includes(booking.status)) {
-                    primaryAction = { label: 'Check-In', status: 'Checked-In', icon: CheckCircle2, color: 'bg-[#0A84FF] hover:bg-blue-600 text-white' };
+                    primaryAction = { label: 'Check-In', status: 'Checked-In', icon: CheckCircle2, color: 'bg-theme hover:bg-blue-600 text-white' };
                   } else if (booking.status === 'Checked-In') {
                     if (booking.visitFormat === 'Video') {
                       primaryAction = { label: 'Join Call', status: 'In Consultation', icon: Video, color: 'bg-theme hover:bg-black text-white' };
@@ -748,10 +748,10 @@ export function AdminBookingsManager() {
                           <div className="flex items-start gap-3">
                             <InitialsAvatar first={booking.firstName} last={booking.lastName} />
                             <div>
-                              <p className="font-bold text-gray-900 text-sm flex items-center gap-1.5 cursor-pointer hover:text-[#0A84FF]" onClick={() => setExpandedRow(isExpanded ? null : booking.id)}>
+                              <p className="font-bold text-gray-900 text-sm flex items-center gap-1.5 cursor-pointer hover:text-theme" onClick={() => setExpandedRow(isExpanded ? null : booking.id)}>
                                 {booking.firstName} {booking.lastName}
                                 {booking.isMember && (
-                                  <ShieldCheck className="w-3.5 h-3.5 text-[#0A84FF]" />
+                                  <ShieldCheck className="w-3.5 h-3.5 text-theme" />
                                 )}
                               </p>
                               <div className="text-xs text-gray-500 mt-1 flex flex-wrap gap-x-2 gap-y-1">
@@ -786,13 +786,13 @@ export function AdminBookingsManager() {
                                     <select
                                       value={booking.location}
                                       onChange={(e) => handleUpdateStatus(booking.id, booking.status, { location: e.target.value })}
-                                      className="font-bold text-[#0A84FF] bg-transparent border-none focus:outline-none appearance-none cursor-pointer py-0 pl-0 pr-4 text-xs hover:underline"
+                                      className="font-bold text-theme bg-transparent border-none focus:outline-none appearance-none cursor-pointer py-0 pl-0 pr-4 text-xs hover:underline"
                                     >
                                       {availableLocations.map(loc => (
                                         <option key={loc} value={loc} className="text-gray-900">{loc}</option>
                                       ))}
                                     </select>
-                                    <ChevronDown className="w-3 h-3 text-[#0A84FF] absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    <ChevronDown className="w-3 h-3 text-theme absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
                                   </div>
                                 )}
                               </span>
@@ -960,7 +960,7 @@ export function AdminBookingsManager() {
                                     <span className="text-gray-500">Ref ID:</span>
                                     <span className="font-mono font-bold flex items-center gap-1">
                                       {booking.bookingReference}
-                                      <button onClick={() => copyToClipboard(booking.bookingReference)} className="text-[#0A84FF] hover:bg-blue-50 p-1 rounded">
+                                      <button onClick={() => copyToClipboard(booking.bookingReference)} className="text-theme hover:bg-blue-50 p-1 rounded">
                                         <Copy className="w-3 h-3" />
                                       </button>
                                     </span>

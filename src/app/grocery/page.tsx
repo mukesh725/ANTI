@@ -235,7 +235,7 @@ export default function EssentialsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E] via-[#1C1C1E]/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-80" />
                   
                   <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-start">
-                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#0A84FF] mb-3">
+                    <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-theme mb-3">
                       Category {String(index + 1).padStart(2, '0')}
                     </span>
                     <h3 className="font-serif text-3xl md:text-4xl text-paper mb-2">{category.title}</h3>
@@ -251,7 +251,7 @@ export default function EssentialsPage() {
           <div className="mt-16 flex justify-center z-20 relative">
             <Link 
               href={catalogSection?.shopAllButtonLink || "/grocery/shop"}
-              className="bg-[#0A84FF] text-ink text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-paper transition-colors duration-300 shadow-lg flex items-center gap-3"
+              className="bg-theme text-paper text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-paper transition-colors duration-300 shadow-lg flex items-center gap-3"
             >
               {catalogSection?.shopAllButtonText || "Shop All Essentials"} <ArrowRight className="w-4 h-4" />
             </Link>

@@ -89,7 +89,7 @@ export default function TermsPage() {
 
         <div className="space-y-4 bg-theme text-paper p-6 rounded-2xl">
           <h2 className="font-serif text-xl tracking-wide flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#0A84FF]" />
+            <FileText className="w-5 h-5 text-theme" />
             5. Governing Law & Dispute Resolution
           </h2>
           <p className="text-paper/80 text-sm">

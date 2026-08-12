@@ -115,7 +115,7 @@ function ShopContent() {
                   </Link>
                   <div className="flex-1 p-6 flex flex-col justify-between z-10 bg-white">
                     <Link href={`/${product.storeType}/shop/${product.id}`} className="block hover:opacity-80 transition-opacity">
-                      <span className="text-[8px] uppercase tracking-widest font-bold text-[#0A84FF] mb-2 block">
+                      <span className="text-[8px] uppercase tracking-widest font-bold text-theme mb-2 block">
                         {product.category}
                       </span>
                       <h3 className="font-serif text-xl text-ink mb-2">{product.name}</h3>
@@ -124,7 +124,7 @@ function ShopContent() {
                       </p>
                     </Link>
                     <div className="flex items-center justify-between mt-auto border-t border-theme/10 pt-4">
-                      <span className="font-sans font-medium text-[#0A84FF]">₹{product.price.toFixed(2)}</span>
+                      <span className="font-sans font-medium text-theme">₹{product.price.toFixed(2)}</span>
                       <button 
                         onClick={(e) => {
                           e.preventDefault();

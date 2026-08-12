@@ -156,7 +156,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   {pillars?.essentials?.subtitle || "Fresh • Organic • Local • Wellness Retail"}
                 </p>
@@ -183,7 +183,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   {pillars?.pharmacy?.subtitle || "Prescriptions • Supplements • Custom Compounding"}
                 </p>
@@ -210,7 +210,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   {pillars?.clinic?.subtitle || "Preventive Care • Walk-In Clinics • Screenings"}
                 </p>
@@ -239,7 +239,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-[#0A84FF] transition-colors duration-300">AIRO E-Med</h3>
+                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">AIRO E-Med</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   Hair Loss • Sexual Health • Weight Management
                 </p>

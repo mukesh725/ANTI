@@ -582,13 +582,13 @@ export function HealthCheckBooking() {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {error === "DUPLICATE_BOOKING" ? (
-                    <div className="bg-[#0A84FF]/10 p-5 rounded-2xl border border-[#0A84FF]/20 text-center">
+                    <div className="bg-theme/10 p-5 rounded-2xl border border-theme/20 text-center">
                       <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
-                        <AlertCircle className="w-6 h-6 text-[#0A84FF]" />
+                        <AlertCircle className="w-6 h-6 text-theme" />
                       </div>
                       <h4 className="font-serif text-lg text-gray-900 mb-2">You've already claimed your free scan!</h4>
                       <p className="text-sm text-gray-600 mb-4">Want more check-ups? Try out our membership benefits to get unlimited access.</p>
-                      <a href="https://airoessentials.com/membership" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-[#0A84FF] text-white px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#0070E0] transition-colors">
+                      <a href="https://airoessentials.com/membership" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-theme text-paper px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-theme-dark transition-colors">
                         View Membership Plans
                       </a>
                     </div>

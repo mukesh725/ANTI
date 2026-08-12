@@ -58,10 +58,10 @@ export default function RefundPolicyPage() {
 
         <div className="bg-theme text-paper border border-[#2C2C2E] p-8 rounded-2xl md:col-span-2 flex flex-col md:flex-row items-center gap-8">
           <div className="bg-[#2C2C2E] p-4 rounded-full shrink-0">
-            <CreditCard className="w-8 h-8 text-[#0A84FF]" />
+            <CreditCard className="w-8 h-8 text-theme" />
           </div>
           <div>
-            <h3 className="font-serif text-xl mb-2 text-[#0A84FF]">Refund Processing (5-7 Business Days)</h3>
+            <h3 className="font-serif text-xl mb-2 text-theme">Refund Processing (5-7 Business Days)</h3>
             <p className="text-sm text-paper/80 leading-relaxed">
               Approved refunds will be initiated within 24 hours of confirmation or receipt of the returned item. As per standard RBI guidelines and payment gateway SLAs, the refunded amount will reflect in your original source of payment (Bank Account, UPI, or Credit Card) within <strong>5 to 7 business days</strong>.
             </p>

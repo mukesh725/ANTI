@@ -142,7 +142,7 @@ export function AdminTeamManager() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#0A84FF]" />
+        <Loader2 className="w-8 h-8 animate-spin text-theme" />
       </div>
     );
   }

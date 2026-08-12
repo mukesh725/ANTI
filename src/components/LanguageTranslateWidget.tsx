@@ -66,8 +66,8 @@ export function LanguageTranslateWidget() {
       />
 
       {/* Our Custom, Beautiful UI */}
-      <div className="relative flex items-center bg-theme/80 border border-[#2C2C2E] rounded-full overflow-hidden hover:border-[#0A84FF]/50 transition-colors">
-        <div className="pl-3 pr-1 text-[#0A84FF] pointer-events-none flex items-center">
+      <div className="relative flex items-center bg-theme/80 border border-[#2C2C2E] rounded-full overflow-hidden hover:border-theme/50 transition-colors">
+        <div className="pl-3 pr-1 text-theme pointer-events-none flex items-center">
           <Globe className="w-3.5 h-3.5" />
         </div>
         <select

@@ -98,7 +98,7 @@ export function CmsEditor() {
               <textarea
                 value={value}
                 onChange={(e) => updateField(fullPath, e.target.value)}
-                className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#0A84FF]/50 focus:ring-1 focus:ring-emerald-200 transition-all resize-y min-h-[100px]"
+                className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-theme/50 focus:ring-1 focus:ring-emerald-200 transition-all resize-y min-h-[100px]"
               />
             ) : isImage ? (
               <div className="flex items-center gap-4">
@@ -106,7 +106,7 @@ export function CmsEditor() {
                   type="text"
                   value={value}
                   onChange={(e) => updateField(fullPath, e.target.value)}
-                  className="flex-1 bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#0A84FF]/50 focus:ring-1 focus:ring-emerald-200 transition-all"
+                  className="flex-1 bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-theme/50 focus:ring-1 focus:ring-emerald-200 transition-all"
                 />
                 <label className="relative cursor-pointer bg-emerald-600 text-white px-4 py-3 rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors shrink-0">
                   {uploadingState[fullPath.join(".")] ? "Uploading..." : "Upload"}
@@ -128,7 +128,7 @@ export function CmsEditor() {
                 type="text"
                 value={value}
                 onChange={(e) => updateField(fullPath, e.target.value)}
-                className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-[#0A84FF]/50 focus:ring-1 focus:ring-emerald-200 transition-all"
+                className="w-full bg-[#F4F7F6] border border-emerald-100 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-theme/50 focus:ring-1 focus:ring-emerald-200 transition-all"
               />
             )}
           </div>
@@ -185,7 +185,7 @@ export function CmsEditor() {
           className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold transition-all shadow-lg ${
             saveStatus === "success" 
               ? "bg-emerald-500 text-gray-800" 
-              : "bg-[#0A84FF] hover:bg-[#B8962E] text-gray-800"
+              : "bg-theme hover:bg-theme-dark text-gray-800"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           {isSaving ? (
@@ -210,7 +210,7 @@ export function CmsEditor() {
                   onClick={() => setActiveCategory(cat)}
                   className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
                     activeCategory === cat
-                      ? "bg-[#0A84FF]/10 text-emerald-600 border border-[#0A84FF]/20 font-bold"
+                      ? "bg-theme/10 text-emerald-600 border border-theme/20 font-bold"
                       : "text-gray-500 hover:bg-white/5 hover:text-gray-900 border border-transparent"
                   }`}
                 >
@@ -228,7 +228,7 @@ export function CmsEditor() {
                   onClick={() => setActiveCategory(cat)}
                   className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
                     activeCategory === cat
-                      ? "bg-[#0A84FF]/10 text-emerald-600 border border-[#0A84FF]/20 font-bold"
+                      ? "bg-theme/10 text-emerald-600 border border-theme/20 font-bold"
                       : "text-gray-500 hover:bg-white/5 hover:text-gray-900 border border-transparent"
                   }`}
                 >
@@ -245,7 +245,7 @@ export function CmsEditor() {
                 onClick={() => setActiveCategory("settings" as any)}
                 className={`w-full text-left px-4 py-3 rounded-xl text-xs tracking-wider uppercase transition-all ${
                   activeCategory === "settings" as any
-                    ? "bg-[#0A84FF]/10 text-emerald-600 border border-[#0A84FF]/20 font-bold"
+                    ? "bg-theme/10 text-emerald-600 border border-theme/20 font-bold"
                     : "text-gray-500 hover:bg-white/5 hover:text-gray-900 border border-transparent"
                 }`}
               >

@@ -191,7 +191,7 @@ export default function AdminCustomersManager() {
               {loading ? (
                 <tr>
                   <td colSpan={5} className="py-12 text-center text-gray-500">
-                    <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-[#0A84FF]" />
+                    <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-theme" />
                     <p>Syncing customer data...</p>
                   </td>
                 </tr>
@@ -259,7 +259,7 @@ export default function AdminCustomersManager() {
                           <span key={src} className={`px-2 py-1 text-[10px] font-bold rounded ${
                             src === 'Membership' 
                               ? 'bg-emerald-100 text-emerald-800'
-                              : 'bg-[#0A84FF]/10 text-[#0A84FF]'
+                              : 'bg-theme/10 text-theme'
                           }`}>
                             {src}
                           </span>
@@ -277,7 +277,7 @@ export default function AdminCustomersManager() {
         <div className="md:hidden divide-y divide-gray-100">
           {loading ? (
             <div className="p-8 text-center text-gray-500">
-              <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-[#0A84FF]" />
+              <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-theme" />
               <p>Syncing customer data...</p>
             </div>
           ) : filteredCustomers.length === 0 ? (
@@ -297,7 +297,7 @@ export default function AdminCustomersManager() {
                       <div className="flex gap-1 mt-1">
                         {c.sources.map(src => (
                           <span key={src} className={`px-1.5 py-0.5 text-[9px] font-bold rounded ${
-                            src === 'Membership' ? 'bg-emerald-100 text-emerald-800' : 'bg-[#0A84FF]/10 text-[#0A84FF]'
+                            src === 'Membership' ? 'bg-emerald-100 text-emerald-800' : 'bg-theme/10 text-theme'
                           }`}>
                             {src}
                           </span>

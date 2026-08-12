@@ -120,7 +120,7 @@ export default function HealthPage() {
                 <Cpu className="w-3 h-3 text-paper/70" /> {praana?.sectionLabel || "Clinical Innovation"}
               </div>
 
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#0A84FF] mb-6 leading-tight">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-theme mb-6 leading-tight">
                 {(praana?.title?.split(' ')[0]) || "AIRO"} <br/>
                 <span className="italic font-light text-paper/80">{(praana?.title?.split(' ').slice(1).join(' ')) || "Praana"}</span>
               </h2>

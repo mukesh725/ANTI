@@ -255,7 +255,7 @@ export default function AdminDashboardPage() {
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-[#0A84FF]"></div>
+                      <div className="w-2 h-2 rounded-full bg-theme"></div>
                       <span className="text-xs text-gray-600">AIRO Hydrate</span>
                     </div>
                     <span className="text-xs font-medium">1 16.6%</span>
@@ -330,7 +330,7 @@ export default function AdminDashboardPage() {
                       <td className="py-4 px-6">
                         <button 
                           onClick={() => setSelectedLead(lead)}
-                          className="text-xs text-[#0A84FF] hover:text-[#0A84FF]/80 font-medium"
+                          className="text-xs text-theme hover:text-theme/80 font-medium"
                         >
                           View Details
                         </button>
@@ -375,7 +375,7 @@ export default function AdminDashboardPage() {
         <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-2xl font-bold tracking-tight text-white">AIRO</span>
-            <span className="text-[10px] font-bold text-[#0A84FF] uppercase tracking-widest bg-[#0A84FF]/10 px-2 py-1 rounded">Admin</span>
+            <span className="text-[10px] font-bold text-theme uppercase tracking-widest bg-theme/10 px-2 py-1 rounded">Admin</span>
           </div>
           <button 
             className="md:hidden text-gray-400 hover:text-white"
@@ -404,11 +404,11 @@ export default function AdminDashboardPage() {
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
                 activeTab === item.id
-                  ? "bg-[#0A84FF]/10 text-[#0A84FF] border border-[#0A84FF]/30"
+                  ? "bg-theme/10 text-theme border border-theme/30"
                   : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
               }`}
             >
-              <item.icon className={`w-4 h-4 ${activeTab === item.id ? "text-[#0A84FF]" : "text-gray-500"}`} />
+              <item.icon className={`w-4 h-4 ${activeTab === item.id ? "text-theme" : "text-gray-500"}`} />
               {item.label}
             </button>
           ))}

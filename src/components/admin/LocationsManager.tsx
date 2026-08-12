@@ -90,7 +90,7 @@ export function LocationsManager() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-[#0A84FF] text-white px-6 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-[#0A84FF]/90 transition-colors disabled:opacity-50"
+          className="bg-theme text-paper px-6 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-theme/90 transition-colors disabled:opacity-50"
         >
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
           Save Changes
@@ -116,7 +116,7 @@ export function LocationsManager() {
             value={newLocation}
             onChange={(e) => setNewLocation(e.target.value)}
             placeholder="e.g. Banjara Hills"
-            className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0A84FF] transition-colors"
+            className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-theme transition-colors"
           />
           <button
             type="submit"
@@ -136,7 +136,7 @@ export function LocationsManager() {
               {locations.map((loc, idx) => (
                 <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 group">
                   <div className="flex items-center gap-3">
-                    <MapPin className="w-4 h-4 text-[#0A84FF]" />
+                    <MapPin className="w-4 h-4 text-theme" />
                     <span className="font-medium text-gray-900">{loc}</span>
                   </div>
                   <button
