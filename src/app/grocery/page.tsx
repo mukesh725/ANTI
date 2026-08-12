@@ -251,7 +251,7 @@ export default function EssentialsPage() {
           <div className="mt-16 flex justify-center z-20 relative">
             <Link 
               href={catalogSection?.shopAllButtonLink || "/grocery/shop"}
-              className="bg-theme text-paper text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-paper transition-colors duration-300 shadow-lg flex items-center gap-3"
+              className="bg-paper text-theme text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-white/90 transition-colors duration-300 shadow-lg flex items-center gap-3"
             >
               {catalogSection?.shopAllButtonText || "Shop All Essentials"} <ArrowRight className="w-4 h-4" />
             </Link>
