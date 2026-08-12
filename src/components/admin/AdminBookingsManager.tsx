@@ -349,6 +349,29 @@ export function AdminBookingsManager() {
     }
   };
 
+  const handleResendEmail = async (id: string) => {
+    setUpdatingId(id);
+    try {
+      const response = await fetch('/api/bookings/resend-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: id })
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert("Email resent successfully!");
+      } else {
+        alert("Failed to resend email: " + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error("Error resending email:", error);
+      alert("Error resending email");
+    } finally {
+      setUpdatingId(null);
+      setOpenMenuId(null);
+    }
+  };
+
   const handleDeleteBooking = async (id: string) => {
     if (!confirm("Are you sure you want to delete this booking? This action cannot be undone.")) return;
     
@@ -848,6 +871,13 @@ export function AdminBookingsManager() {
                                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
                               >
                                 <X className="w-4 h-4 text-red-500" /> Cancel Booking
+                              </button>
+
+                              <button 
+                                onClick={() => handleResendEmail(booking.id)}
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                              >
+                                <Mail className="w-4 h-4 text-gray-400" /> Resend Email
                               </button>
 
                               <button 
