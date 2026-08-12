@@ -20,7 +20,7 @@ const allLinks: NavLink[] = [
       { href: "/pharmacy", label: "Pharmacy" },
       { href: "/minute-clinic", label: "Minute Clinic" },
       { href: "/health-chair", label: "AIRO Praana" },
-      { href: "/airo-emed", label: "AIRO E-Med" }
+      { href: "https://airoemed.com", label: "AIRO E-Med" }
     ]
   },
   { href: "/membership", label: "Membership" },
@@ -154,6 +154,7 @@ export function GlobalHeader() {
                             <Link
                               key={sub.href}
                               href={sub.href}
+                              {...(sub.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                               className={`px-4 py-3 rounded-xl text-xs uppercase tracking-widest font-semibold transition-colors duration-300 ${
                                 pathname === sub.href ? "bg-[#1C1C1E] text-white" : "text-[#1C1C1E] hover:bg-[#1C1C1E]/5"
                               }`}
@@ -286,6 +287,7 @@ export function GlobalHeader() {
                                 key={sub.href}
                                 href={sub.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
+                                {...(sub.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                                 className={`block py-2 text-sm tracking-widest uppercase font-medium transition-colors duration-300 ${
                                   pathname === sub.href ? "text-blue-600 font-bold" : "text-[#1C1C1E] hover:text-blue-600"
                                 }`}
