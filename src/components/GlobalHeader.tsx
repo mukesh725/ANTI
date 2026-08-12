@@ -3,30 +3,37 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, User as UserIcon, ShoppingBag } from "lucide-react";
+import { Menu, X, User as UserIcon, ShoppingBag, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer } from "@/modules/retail/shared/components/SmartCartDrawer";
 import { LanguageTranslateWidget } from "./LanguageTranslateWidget";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
-const allLinks = [
+type NavLink = { href?: string; label: string; subLinks?: { href: string; label: string }[] };
+const allLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/grocery", label: "Essentials" },
-  { href: "/pharmacy", label: "Pharmacy" },
-  { href: "/minute-clinic", label: "MinuteClinic" },
-  { href: "/health-chair", label: "AIRO Praana" },
+  { href: "/grocery", label: "AIRO Essentials" },
+  {
+    label: "AIRO Health",
+    subLinks: [
+      { href: "/pharmacy", label: "Pharmacy" },
+      { href: "/minute-clinic", label: "Minute Clinic" },
+      { href: "/health-chair", label: "AIRO Praana" },
+      { href: "/airo-emed", label: "AIRO E-Med" }
+    ]
+  },
   { href: "/membership", label: "Membership" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" }
 ];
 
-const healthLinks = [
+const healthLinks: NavLink[] = [
   { href: "/health", label: "Health Home" },
   { href: "/pharmacy", label: "Pharmacy" },
   { href: "/minute-clinic", label: "Minute Clinic" },
   { href: "/health-chair", label: "AIRO Praana" },
-  { href: "/membership", label: "Membership" },
+  { href: "/membership", label: "Membership" }
 ];
 
 export function GlobalHeader() {
@@ -34,6 +41,7 @@ export function GlobalHeader() {
   const { user, profile } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   // Use state to detect domain to prevent hydration mismatch
@@ -107,11 +115,65 @@ export function GlobalHeader() {
         {/* Desktop nav capsule (floating glassmorphism bar) */}
         <div className="hidden md:flex items-center gap-1 bg-[#1C1C1E]/50 border border-[#FFFFFF]/20 px-1.5 py-1.5 rounded-full backdrop-blur-xl shadow-2xl">
           {navLinks.map((link) => {
+            if (link.subLinks) {
+              const isSubActive = link.subLinks.some(sub => pathname === sub.href);
+              return (
+                <div 
+                  key={link.label}
+                  className="relative group"
+                  onMouseEnter={() => setActiveDropdown(link.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <button
+                    className={`relative flex items-center gap-1 text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
+                      isSubActive || activeDropdown === link.label ? "text-[#1C1C1E]" : "text-[#FFFFFF]/90 hover:text-white"
+                    }`}
+                  >
+                    {(isSubActive || activeDropdown === link.label) && (
+                      <motion.span
+                        layoutId="activeHeaderPill"
+                        className="absolute inset-0 bg-[#FFFFFF] rounded-full -z-10 shadow-sm"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{link.label}</span>
+                    <ChevronDown className="w-3 h-3 relative z-10" />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {activeDropdown === link.label && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50"
+                      >
+                        <div className="bg-[#FFFFFF] border border-[#1C1C1E]/10 rounded-2xl p-2 shadow-2xl min-w-[200px] flex flex-col gap-1">
+                          {link.subLinks.map(sub => (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              className={`px-4 py-3 rounded-xl text-xs uppercase tracking-widest font-semibold transition-colors duration-300 ${
+                                pathname === sub.href ? "bg-[#1C1C1E] text-white" : "text-[#1C1C1E] hover:bg-[#1C1C1E]/5"
+                              }`}
+                            >
+                              {sub.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
+
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
-                href={link.href}
+                href={link.href!}
                 className={`relative text-[10px] tracking-[0.15em] uppercase font-bold px-5 py-2.5 rounded-full transition-colors duration-300 ${
                   isActive ? "text-[#1C1C1E]" : "text-[#FFFFFF]/90 hover:text-white"
                 }`}
@@ -207,19 +269,41 @@ export function GlobalHeader() {
               {/* Links */}
               <div className="flex flex-col py-4">
                 {navLinks.map((link, idx) => (
-                  <div key={link.href}>
+                  <div key={link.label || link.href}>
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + idx * 0.05, duration: 0.3 }}
                     >
-                      <Link
-                        href={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="block px-6 py-4 text-sm tracking-widest uppercase font-medium text-[#1C1C1E] hover:bg-[#1C1C1E]/5 transition-colors duration-300"
-                      >
-                        {link.label}
-                      </Link>
+                      {link.subLinks ? (
+                        <div className="px-6 py-4">
+                          <span className="block text-sm tracking-widest uppercase font-bold text-[#1C1C1E]/40 mb-3">
+                            {link.label}
+                          </span>
+                          <div className="flex flex-col gap-2 pl-4 border-l-2 border-[#1C1C1E]/10">
+                            {link.subLinks.map(sub => (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`block py-2 text-sm tracking-widest uppercase font-medium transition-colors duration-300 ${
+                                  pathname === sub.href ? "text-blue-600 font-bold" : "text-[#1C1C1E] hover:text-blue-600"
+                                }`}
+                              >
+                                {sub.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <Link
+                          href={link.href!}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block px-6 py-4 text-sm tracking-widest uppercase font-medium text-[#1C1C1E] hover:bg-[#1C1C1E]/5 transition-colors duration-300"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </motion.div>
                   </div>
                 ))}
