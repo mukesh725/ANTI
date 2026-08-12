@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ChevronDown, Clock, ShieldCheck, Stethoscope } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Clock, ShieldCheck, Stethoscope, ArrowRight } from "lucide-react";
 import { minuteClinicServices } from "@/data/minuteClinicServices";
 
 export function generateStaticParams() {
@@ -60,6 +60,48 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1E]/40 to-transparent" />
+          </div>
+        </div>
+      </section>
+
+      
+      {/* 1.5 Problem Information */}
+      <section className="px-6 md:px-16 pb-24 max-w-[1400px] mx-auto">
+        <div className="bg-white border border-[#1C1C1E]/10 rounded-3xl p-8 md:p-12 shadow-sm">
+          <h2 className="font-serif text-3xl md:text-4xl text-[#1C1C1E] mb-8">About {service.title}</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-sm uppercase tracking-widest font-bold text-[#1C1C1E]/50 mb-4">What is it?</h3>
+              <p className="text-[#1C1C1E]/80 leading-relaxed mb-8">
+                {service.problemInformation.whatIsIt}
+              </p>
+              
+              <h3 className="text-sm uppercase tracking-widest font-bold text-[#1C1C1E]/50 mb-4">Causes</h3>
+              <ul className="space-y-3">
+                {service.problemInformation.causes.map((cause, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-[#1C1C1E]/80">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>{cause}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="bg-[#FAFAFA] p-8 rounded-2xl border border-[#1C1C1E]/5">
+              <h3 className="text-sm uppercase tracking-widest font-bold text-[#1C1C1E]/50 mb-4">Common Symptoms</h3>
+              <ul className="space-y-4">
+                {service.problemInformation.symptoms.map((symptom, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-[#1C1C1E]/80 bg-white p-4 rounded-xl shadow-sm border border-[#1C1C1E]/5">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" />
+                    <span className="font-medium">{symptom}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 p-4 bg-blue-50 text-blue-800 text-sm rounded-xl border border-blue-100">
+                <strong>Note:</strong> If you are experiencing severe symptoms, please visit an emergency room immediately.
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -177,6 +219,50 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                 {faq.answer}
               </div>
             </details>
+          ))}
+        </div>
+      </section>
+
+
+      {/* 7. Common Health Services Carousel */}
+      <section className="px-6 md:px-16 py-24 max-w-[1400px] mx-auto overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <h2 className="font-serif text-3xl md:text-4xl text-[#1C1C1E] mb-4">Common Health Services</h2>
+            <p className="text-[#1C1C1E]/70 max-w-2xl">
+              From strep tests to hypertension management and everything in between, our board-certified health care providers are here to help.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <button className="w-12 h-12 rounded-full border border-[#1C1C1E]/20 flex items-center justify-center hover:bg-white transition-colors">
+              <ChevronLeft className="w-5 h-5 text-[#1C1C1E]/60" />
+            </button>
+            <button className="w-12 h-12 rounded-full border border-[#1C1C1E]/20 flex items-center justify-center hover:bg-white transition-colors">
+              <ChevronRight className="w-5 h-5 text-[#1C1C1E]/60" />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex gap-6 overflow-x-auto pb-8 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          {minuteClinicServices.slice(0, 8).map((s) => (
+            <Link 
+              key={s.id} 
+              href={`/minute-clinic/services/${s.id}`}
+              className="min-w-[280px] md:min-w-[320px] max-w-[320px] bg-white rounded-2xl overflow-hidden border border-[#1C1C1E]/10 hover:shadow-xl transition-all group snap-start flex flex-col"
+            >
+              <div className="h-48 overflow-hidden">
+                <img src={s.imageUrl} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="font-serif text-xl text-[#1C1C1E] mb-3">{s.title}</h3>
+                <p className="text-[#1C1C1E]/60 text-sm line-clamp-3 mb-6">
+                  {s.shortDescription}
+                </p>
+                <div className="mt-auto flex items-center text-blue-600 font-semibold text-sm hover:text-blue-700 transition-colors">
+                  Book your appointment now <ArrowRight className="w-4 h-4 ml-2" />
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </section>

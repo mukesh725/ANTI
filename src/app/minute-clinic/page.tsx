@@ -85,16 +85,19 @@ export default function MinuteClinicPage() {
               {pc.heroDescription || "AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles, making it easier to access trusted medical support whenever you need it."}
             </p>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 w-full sm:w-auto">
               <Link 
                 href="/book-health-scan"
-                className="text-[10px] tracking-[0.25em] uppercase font-bold text-[#FFFFFF] bg-[#1C1C1E] px-6 py-3 rounded-full border border-[#1C1C1E] hover:bg-[#2C2C2E] transition-all"
+                className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#FFFFFF] bg-[#1C1C1E] px-8 py-4 rounded-full border border-[#1C1C1E] hover:bg-blue-600 hover:border-blue-600 transition-all shadow-lg text-center w-full sm:w-auto flex-1 whitespace-nowrap"
               >
-                {pc.heroButtonText || "Book Free Health Scan"}
+                In-Person Visits
               </Link>
-              <span className="text-[10px] tracking-[0.15em] uppercase font-semibold text-[#1C1C1E]/50 flex items-center gap-2">
-                <Shield className="w-4 h-4" /> 10-Minute Assessment
-              </span>
+              <Link 
+                href="/book-health-scan"
+                className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#1C1C1E] bg-white px-8 py-4 rounded-full border border-[#1C1C1E]/20 hover:border-[#1C1C1E] hover:bg-gray-50 transition-all shadow-sm text-center w-full sm:w-auto flex-1 whitespace-nowrap"
+              >
+                Virtual Consultation
+              </Link>
             </div>
           </div>
 

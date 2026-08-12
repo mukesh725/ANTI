@@ -4,6 +4,12 @@ export type ServiceFaq = {
   answer: string;
 };
 
+export type ProblemInformation = {
+  whatIsIt: string;
+  symptoms: string[];
+  causes: string[];
+};
+
 export type MinuteClinicService = {
   id: string;
   title: string;
@@ -11,6 +17,7 @@ export type MinuteClinicService = {
   subCategory: string;
   shortDescription: string;
   fullDescription: string;
+  problemInformation: ProblemInformation;
   benefits: string[];
   faqs: ServiceFaq[];
   imageUrl: string;
@@ -23,7 +30,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Routine Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for flu vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for flu vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for flu vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Flu Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -52,7 +74,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Routine Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for covid-19 vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for covid-19 vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for covid-19 vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "COVID-19 Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -81,7 +118,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Routine Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for tdap vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tdap vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tdap vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Tdap Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -110,7 +162,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Routine Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for tetanus vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tetanus vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tetanus vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Tetanus Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -139,7 +206,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Routine Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for dtap vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for dtap vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for dtap vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "DTaP Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -168,7 +250,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Childhood Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for chickenpox vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for chickenpox vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for chickenpox vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Chickenpox Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -197,7 +294,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Childhood Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for mmr vaccine (measles, mumps, rubella).",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mmr vaccine (measles, mumps, rubella). Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mmr vaccine (measles, mumps, rubella). Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "MMR Vaccine (Measles, Mumps, Rubella) refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -226,7 +338,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Childhood Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for hepatitis a vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis a vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis a vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Hepatitis A Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -255,7 +382,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Childhood Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for hepatitis b vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis b vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis b vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Hepatitis B Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -284,7 +426,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Adult Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for shingles vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for shingles vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for shingles vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Shingles Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -313,7 +470,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Adult Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for pneumonia vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pneumonia vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pneumonia vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pneumonia Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -342,7 +514,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Adult Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for hpv vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hpv vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hpv vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "HPV Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -371,7 +558,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Travel Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for typhoid vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for typhoid vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for typhoid vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Typhoid Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -400,7 +602,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Travel Vaccines",
     "shortDescription": "Professional, clinical-grade care and evaluation for meningitis vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for meningitis vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for meningitis vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Meningitis Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -429,7 +646,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Vaccine Related Services",
     "shortDescription": "Professional, clinical-grade care and evaluation for vaccine consultation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vaccine consultation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vaccine consultation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Vaccine Consultation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -458,7 +690,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Vaccine Related Services",
     "shortDescription": "Professional, clinical-grade care and evaluation for titer testing (immunity testing).",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for titer testing (immunity testing). Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for titer testing (immunity testing). Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Titer Testing (Immunity Testing) refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -487,7 +734,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Immunization Services",
     "subCategory": "Vaccine Related Services",
     "shortDescription": "Professional, clinical-grade care and evaluation for post-vaccination side effects treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for post-vaccination side effects treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for post-vaccination side effects treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Post-Vaccination Side Effects Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -516,7 +778,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Allergies",
     "shortDescription": "Professional, clinical-grade care and evaluation for allergy treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for allergy treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for allergy treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Allergy Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -545,7 +822,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Mouth & Oral Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for canker sore treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for canker sore treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for canker sore treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Canker Sore Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -574,7 +866,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Mouth & Oral Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for cold sore treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cold sore treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cold sore treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Cold Sore Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -603,7 +910,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Mouth & Oral Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for mouth pain & discomfort treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mouth pain & discomfort treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mouth pain & discomfort treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Mouth Pain & Discomfort Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -632,7 +954,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for cold & upper respiratory infection evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cold & upper respiratory infection evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cold & upper respiratory infection evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Cold & Upper Respiratory Infection Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -661,7 +998,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for sinus infection evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sinus infection evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sinus infection evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Sinus Infection Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -690,7 +1042,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for congestion treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for congestion treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for congestion treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Congestion Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -719,7 +1086,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for cough & bronchitis evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cough & bronchitis evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cough & bronchitis evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Cough & Bronchitis Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -748,7 +1130,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for flu-like symptoms evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for flu-like symptoms evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for flu-like symptoms evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Flu-like Symptoms Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -777,7 +1174,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for mono evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mono evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mono evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Mono Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -806,7 +1218,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for sore throat evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sore throat evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sore throat evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Sore Throat Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -835,7 +1262,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Cold, Flu & Respiratory Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for strep throat testing & treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for strep throat testing & treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for strep throat testing & treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Strep Throat Testing & Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -864,7 +1306,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "COVID-19 Care",
     "shortDescription": "Professional, clinical-grade care and evaluation for covid-19 testing.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for covid-19 testing. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for covid-19 testing. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "COVID-19 Testing refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -893,7 +1350,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "COVID-19 Care",
     "shortDescription": "Professional, clinical-grade care and evaluation for covid-19 treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for covid-19 treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for covid-19 treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "COVID-19 Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -922,7 +1394,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Ear Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for ear infection evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for ear infection evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for ear infection evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Ear Infection Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -951,7 +1438,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Ear Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for earwax removal.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for earwax removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for earwax removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Earwax Removal refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -980,7 +1482,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Eye Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for pink eye treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pink eye treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pink eye treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pink Eye Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1009,7 +1526,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Eye Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for stye treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for stye treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for stye treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Stye Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1038,7 +1570,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Post-Vaccination Care",
     "shortDescription": "Professional, clinical-grade care and evaluation for post-vaccination side effects treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for post-vaccination side effects treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for post-vaccination side effects treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Post-Vaccination Side Effects Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1067,7 +1614,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Skin & Nail Infections",
     "shortDescription": "Professional, clinical-grade care and evaluation for athlete's foot treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for athlete's foot treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for athlete's foot treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Athlete's Foot Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1096,7 +1658,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Skin & Nail Infections",
     "shortDescription": "Professional, clinical-grade care and evaluation for chickenpox treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for chickenpox treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for chickenpox treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Chickenpox Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1125,7 +1702,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Skin & Nail Infections",
     "shortDescription": "Professional, clinical-grade care and evaluation for impetigo treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for impetigo treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for impetigo treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Impetigo Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1154,7 +1746,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Skin & Nail Infections",
     "shortDescription": "Professional, clinical-grade care and evaluation for nail infection treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for nail infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for nail infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Nail Infection Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1183,7 +1790,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Skin & Nail Infections",
     "shortDescription": "Professional, clinical-grade care and evaluation for ringworm treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for ringworm treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for ringworm treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Ringworm Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1212,7 +1834,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Skin & Nail Infections",
     "shortDescription": "Professional, clinical-grade care and evaluation for shingles treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for shingles treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for shingles treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Shingles Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1241,7 +1878,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Digestive Issues",
     "shortDescription": "Professional, clinical-grade care and evaluation for constipation treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for constipation treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for constipation treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Constipation Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1270,7 +1922,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Digestive Issues",
     "shortDescription": "Professional, clinical-grade care and evaluation for heartburn & indigestion treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for heartburn & indigestion treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for heartburn & indigestion treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Heartburn & Indigestion Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1299,7 +1966,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Digestive Issues",
     "shortDescription": "Professional, clinical-grade care and evaluation for nausea, vomiting & diarrhea treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for nausea, vomiting & diarrhea treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for nausea, vomiting & diarrhea treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Nausea, Vomiting & Diarrhea Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1328,7 +2010,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Urinary Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for urinary tract infection treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for urinary tract infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for urinary tract infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Urinary Tract Infection Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1357,7 +2054,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Illnesses & Infections",
     "subCategory": "Urinary Conditions",
     "shortDescription": "Professional, clinical-grade care and evaluation for bladder infection treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for bladder infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for bladder infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Bladder Infection Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1386,7 +2098,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for arthritis evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for arthritis evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for arthritis evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Arthritis Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1415,7 +2142,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for back pain evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for back pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for back pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Back Pain Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1444,7 +2186,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for gout treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for gout treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for gout treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Gout Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1473,7 +2230,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for headache & migraine evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for headache & migraine evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for headache & migraine evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Headache & Migraine Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1502,7 +2274,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for irritable bowel syndrome evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for irritable bowel syndrome evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for irritable bowel syndrome evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Irritable Bowel Syndrome Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1531,7 +2318,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for pelvic pain evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pelvic pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pelvic pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pelvic Pain Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1560,7 +2362,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for sprain & strain treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sprain & strain treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sprain & strain treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Sprain & Strain Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1589,7 +2406,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for joint pain treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for joint pain treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for joint pain treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Joint Pain Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1618,7 +2450,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for swollen veins & leg pain treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for swollen veins & leg pain treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for swollen veins & leg pain treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Swollen Veins & Leg Pain Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1647,7 +2494,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Aches & Pain",
     "shortDescription": "Professional, clinical-grade care and evaluation for testicular pain evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for testicular pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for testicular pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Testicular Pain Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1676,7 +2538,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Burns, Blisters & Wounds",
     "shortDescription": "Professional, clinical-grade care and evaluation for burn treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for burn treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for burn treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Burn Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1705,7 +2582,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Burns, Blisters & Wounds",
     "shortDescription": "Professional, clinical-grade care and evaluation for cut & wound treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cut & wound treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cut & wound treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Cut & Wound Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1734,7 +2626,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Burns, Blisters & Wounds",
     "shortDescription": "Professional, clinical-grade care and evaluation for abscess treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for abscess treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for abscess treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Abscess Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1763,7 +2670,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Burns, Blisters & Wounds",
     "shortDescription": "Professional, clinical-grade care and evaluation for sunburn treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sunburn treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sunburn treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Sunburn Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1792,7 +2714,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Minor Procedures",
     "shortDescription": "Professional, clinical-grade care and evaluation for splinter removal.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for splinter removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for splinter removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Splinter Removal refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1821,7 +2758,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Minor Procedures",
     "shortDescription": "Professional, clinical-grade care and evaluation for stitch removal.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for stitch removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for stitch removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Stitch Removal refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1850,7 +2802,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Injuries & Pain",
     "subCategory": "Minor Procedures",
     "shortDescription": "Professional, clinical-grade care and evaluation for staple removal.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for staple removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for staple removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Staple Removal refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1879,7 +2846,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Acne, Rosacea & Psoriasis",
     "shortDescription": "Professional, clinical-grade care and evaluation for acne treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for acne treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for acne treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Acne Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1908,7 +2890,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Acne, Rosacea & Psoriasis",
     "shortDescription": "Professional, clinical-grade care and evaluation for psoriasis treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for psoriasis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for psoriasis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Psoriasis Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1937,7 +2934,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Acne, Rosacea & Psoriasis",
     "shortDescription": "Professional, clinical-grade care and evaluation for rosacea treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for rosacea treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for rosacea treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Rosacea Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1966,7 +2978,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Growths & Skin Tags",
     "shortDescription": "Professional, clinical-grade care and evaluation for skin tag removal.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for skin tag removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for skin tag removal. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Skin Tag Removal refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -1995,7 +3022,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Growths & Skin Tags",
     "shortDescription": "Professional, clinical-grade care and evaluation for wart treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for wart treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for wart treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Wart Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2024,7 +3066,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Growths & Skin Tags",
     "shortDescription": "Professional, clinical-grade care and evaluation for skin growth treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for skin growth treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for skin growth treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Skin Growth Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2053,7 +3110,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Hair Care",
     "shortDescription": "Professional, clinical-grade care and evaluation for hair loss evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hair loss evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hair loss evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Hair Loss Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2082,7 +3154,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Hair Care",
     "shortDescription": "Professional, clinical-grade care and evaluation for hair loss treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hair loss treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hair loss treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Hair Loss Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2111,7 +3198,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for athlete’s foot treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for athlete’s foot treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for athlete’s foot treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Athlete’s Foot Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2140,7 +3242,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for bug bite & sting treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for bug bite & sting treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for bug bite & sting treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Bug Bite & Sting Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2169,7 +3286,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for dermatitis treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for dermatitis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for dermatitis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Dermatitis Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2198,7 +3330,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for rash treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for rash treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for rash treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Rash Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2227,7 +3374,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for skin irration treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for skin irration treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for skin irration treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Skin Irration Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2256,7 +3418,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for lice treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for lice treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for lice treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Lice Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2285,7 +3462,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for poison ivy / plant rash treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for poison ivy / plant rash treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for poison ivy / plant rash treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Poison Ivy / Plant Rash Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2314,7 +3506,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for ringworm treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for ringworm treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for ringworm treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Ringworm Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2343,7 +3550,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for shingles treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for shingles treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for shingles treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Shingles Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2372,7 +3594,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Skin, Hair & Nail Care",
     "subCategory": "Rashes & Skin Irritations",
     "shortDescription": "Professional, clinical-grade care and evaluation for tick bite treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tick bite treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tick bite treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Tick Bite Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2401,7 +3638,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Men’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for enlarged prostate treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for enlarged prostate treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for enlarged prostate treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Enlarged Prostate Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2430,7 +3682,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Men’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for erectile dysfunction treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for erectile dysfunction treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for erectile dysfunction treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Erectile Dysfunction Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2459,7 +3726,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Men’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for testicular pain evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for testicular pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for testicular pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Testicular Pain Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2488,7 +3770,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Men’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for vitamin b12 injection.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vitamin b12 injection. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vitamin b12 injection. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Vitamin B12 Injection refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2517,7 +3814,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Men’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for yearly wellness physical.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for yearly wellness physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for yearly wellness physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Yearly Wellness Physical refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2546,7 +3858,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for birth control consultation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for birth control consultation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for birth control consultation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Birth Control Consultation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2575,7 +3902,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for birth control injection.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for birth control injection. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for birth control injection. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Birth Control Injection refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2604,7 +3946,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for irregular period evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for irregular period evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for irregular period evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Irregular Period Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2633,7 +3990,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for mastitis treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mastitis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mastitis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Mastitis Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2662,7 +4034,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for menopause treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for menopause treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for menopause treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Menopause Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2691,7 +4078,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for pelvic pain evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pelvic pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pelvic pain evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pelvic Pain Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2720,7 +4122,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for pms & pmdd treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pms & pmdd treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pms & pmdd treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "PMS & PMDD Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2749,7 +4166,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for pregnancy test.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pregnancy test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pregnancy test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pregnancy Test refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2778,7 +4210,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for vaginal discharge treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vaginal discharge treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vaginal discharge treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Vaginal Discharge Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2807,7 +4254,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for vaginosis treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vaginosis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for vaginosis treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Vaginosis Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2836,7 +4298,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for yeast infection treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for yeast infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for yeast infection treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Yeast Infection Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2865,7 +4342,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Urinary & Sexual Health",
     "subCategory": "Women’s Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for annual well woman exam.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for annual well woman exam. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for annual well woman exam. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Annual Well Woman Exam refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2894,7 +4386,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Physical Exams",
     "shortDescription": "Professional, clinical-grade care and evaluation for camp physical.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for camp physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for camp physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Camp Physical refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2923,7 +4430,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Physical Exams",
     "shortDescription": "Professional, clinical-grade care and evaluation for college physical.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for college physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for college physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "College Physical refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2952,7 +4474,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Physical Exams",
     "shortDescription": "Professional, clinical-grade care and evaluation for general medical exam.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for general medical exam. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for general medical exam. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "General Medical Exam refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -2981,7 +4518,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Physical Exams",
     "shortDescription": "Professional, clinical-grade care and evaluation for sports physical.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sports physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sports physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Sports Physical refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3010,7 +4562,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Physical Exams",
     "shortDescription": "Professional, clinical-grade care and evaluation for annual wellness physical.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for annual wellness physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for annual wellness physical. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Annual Wellness Physical refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3039,7 +4606,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for colorectal cancer screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for colorectal cancer screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for colorectal cancer screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Colorectal Cancer Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3068,7 +4650,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for copd screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for copd screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for copd screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "COPD Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3097,7 +4694,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for diabetes screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for diabetes screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for diabetes screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Diabetes Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3126,7 +4738,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for fatigue evaluation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for fatigue evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for fatigue evaluation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Fatigue Evaluation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3155,7 +4782,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for food sensitivity test.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for food sensitivity test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for food sensitivity test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Food Sensitivity Test refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3184,7 +4826,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for hepatitis b screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis b screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis b screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Hepatitis B Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3213,7 +4870,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for hepatitis c screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis c screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hepatitis c screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Hepatitis C Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3242,7 +4914,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for blood pressure screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for blood pressure screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for blood pressure screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Blood Pressure Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3271,7 +4958,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for cholesterol screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cholesterol screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cholesterol screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Cholesterol Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3300,7 +5002,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for hiv screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hiv screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for hiv screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "HIV Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3329,7 +5046,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for osteoporosis screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for osteoporosis screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for osteoporosis screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Osteoporosis Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3358,7 +5090,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for thyroid disease screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for thyroid disease screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for thyroid disease screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Thyroid Disease Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3387,7 +5134,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for parathyroid disorder screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for parathyroid disorder screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for parathyroid disorder screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Parathyroid Disorder Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3416,7 +5178,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for pregnancy test.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pregnancy test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pregnancy test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pregnancy Test refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3445,7 +5222,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for preventive health screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for preventive health screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for preventive health screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Preventive Health Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3474,7 +5266,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for sti screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sti screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sti screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "STI Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3503,7 +5310,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for tuberculosis (tb) test.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tuberculosis (tb) test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for tuberculosis (tb) test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Tuberculosis (TB) Test refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3532,7 +5354,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Tests, Screenings & Physicals",
     "subCategory": "Tests & Screenings",
     "shortDescription": "Professional, clinical-grade care and evaluation for titer test.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for titer test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for titer test. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Titer Test refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3561,7 +5398,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for asthma monitoring.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for asthma monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for asthma monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Asthma Monitoring refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3590,7 +5442,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for diabetes monitoring & treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for diabetes monitoring & treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for diabetes monitoring & treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Diabetes Monitoring & Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3619,7 +5486,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for congestive heart failure monitoring.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for congestive heart failure monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for congestive heart failure monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Congestive Heart Failure Monitoring refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3648,7 +5530,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for high blood pressure monitoring.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for high blood pressure monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for high blood pressure monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "High Blood Pressure Monitoring refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3677,7 +5574,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for cholesterol management.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cholesterol management. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for cholesterol management. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Cholesterol Management refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3706,7 +5618,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for osteoporosis monitoring.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for osteoporosis monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for osteoporosis monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Osteoporosis Monitoring refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3735,7 +5662,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for copd monitoring.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for copd monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for copd monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "COPD Monitoring refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3764,7 +5706,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Chronic Condition Management",
     "subCategory": "Chronic Condition Management",
     "shortDescription": "Professional, clinical-grade care and evaluation for thyroid disorder monitoring.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for thyroid disorder monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for thyroid disorder monitoring. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Thyroid Disorder Monitoring refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3793,7 +5750,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Sleep Disorders",
     "subCategory": "Sleep Disorders",
     "shortDescription": "Professional, clinical-grade care and evaluation for insomnia treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for insomnia treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for insomnia treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Insomnia Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3822,7 +5794,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Sleep Disorders",
     "subCategory": "Sleep Disorders",
     "shortDescription": "Professional, clinical-grade care and evaluation for sleep apnea screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sleep apnea screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for sleep apnea screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Sleep Apnea Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3851,7 +5838,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Behavioral Health & Wellness",
     "subCategory": "Behavioral Health & Wellness",
     "shortDescription": "Professional, clinical-grade care and evaluation for depression screening.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for depression screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for depression screening. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Depression Screening refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3880,7 +5882,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Behavioral Health & Wellness",
     "subCategory": "Behavioral Health & Wellness",
     "shortDescription": "Professional, clinical-grade care and evaluation for mental health counseling.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mental health counseling. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for mental health counseling. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Mental Health Counseling refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3909,7 +5926,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Behavioral Health & Wellness",
     "subCategory": "Behavioral Health & Wellness",
     "shortDescription": "Professional, clinical-grade care and evaluation for medication management.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for medication management. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for medication management. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Medication Management refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3938,7 +5970,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Travel Health",
     "subCategory": "Travel Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for pre-travel health consultation.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pre-travel health consultation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for pre-travel health consultation. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Pre-Travel Health Consultation refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3967,7 +6014,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Travel Health",
     "subCategory": "Travel Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for malaria prevention.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for malaria prevention. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for malaria prevention. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Malaria Prevention refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -3996,7 +6058,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Travel Health",
     "subCategory": "Travel Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for motion sickness prevention.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for motion sickness prevention. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for motion sickness prevention. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Motion Sickness Prevention refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -4025,7 +6102,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Travel Health",
     "subCategory": "Travel Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for traveler’s diarrhea treatment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for traveler’s diarrhea treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for traveler’s diarrhea treatment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Traveler’s Diarrhea Treatment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -4054,7 +6146,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Travel Health",
     "subCategory": "Travel Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for typhoid vaccine.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for typhoid vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for typhoid vaccine. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Typhoid Vaccine refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
@@ -4083,7 +6190,22 @@ export const minuteClinicServices: MinuteClinicService[] = [
     "mainCategory": "Travel Health",
     "subCategory": "Travel Health",
     "shortDescription": "Professional, clinical-grade care and evaluation for zika risk assessment.",
-    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for zika risk assessment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan. Whether you need immediate relief or a long-term management strategy, our team is here to support your health journey.",
+    "fullDescription": "At AIRO Minute Clinic, we provide prompt, comprehensive care for zika risk assessment. Our board-certified healthcare professionals use state-of-the-art diagnostic tools to evaluate your condition and provide a personalized treatment plan.",
+    "problemInformation": {
+      "whatIsIt": "Zika Risk Assessment refers to a medical condition or need that requires professional evaluation and management. Our clinic provides comprehensive care to address this issue effectively.",
+      "symptoms": [
+        "Varies depending on the specific condition",
+        "Discomfort or pain in the affected area",
+        "General feeling of unwellness or fatigue",
+        "Visible signs of irritation or inflammation"
+      ],
+      "causes": [
+        "Viral or bacterial infections",
+        "Environmental factors or allergies",
+        "Physical strain or injury",
+        "Underlying chronic health conditions"
+      ]
+    },
     "benefits": [
       "Same-day visits available",
       "The right treatment right away",
