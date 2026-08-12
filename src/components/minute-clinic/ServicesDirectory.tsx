@@ -4,18 +4,28 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
-import { minuteClinicServices, categories } from "@/data/minuteClinicServices";
+import { minuteClinicServices, mainCategories } from "@/data/minuteClinicServices";
 
 export function ServicesDirectory() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredServices = minuteClinicServices.filter(service => {
-    const matchesCategory = selectedCategory === "All" || service.category === selectedCategory;
+    const matchesCategory = selectedCategory === "All" || service.mainCategory === selectedCategory;
     const matchesSearch = service.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          service.category.toLowerCase().includes(searchQuery.toLowerCase());
+                          service.mainCategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          service.subCategory.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  // Group by subcategory
+  const groupedServices = filteredServices.reduce((acc, service) => {
+    if (!acc[service.subCategory]) {
+      acc[service.subCategory] = [];
+    }
+    acc[service.subCategory].push(service);
+    return acc;
+  }, {} as Record<string, typeof minuteClinicServices>);
 
   return (
     <section className="py-24 px-6 md:px-16 max-w-[1400px] mx-auto w-full bg-[#FAFAFA] rounded-3xl my-12" id="services">
@@ -49,7 +59,7 @@ export function ServicesDirectory() {
           >
             All Services
           </button>
-          {categories.map((category) => (
+          {mainCategories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -65,34 +75,43 @@ export function ServicesDirectory() {
         </div>
       </div>
 
-      {/* Services Grid */}
-      <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <AnimatePresence>
-          {filteredServices.map((service) => (
-            <motion.div
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              key={service.id}
-            >
-              <Link 
-                href={`/minute-clinic/services/${service.id}`}
-                className="group flex items-center justify-between p-5 bg-white border border-[#1C1C1E]/10 rounded-2xl hover:border-[#1C1C1E]/30 hover:shadow-lg transition-all h-full"
-              >
-                <div className="flex flex-col gap-1 pr-4">
-                  <span className="text-[9px] uppercase tracking-widest text-[#1C1C1E]/40 font-bold">{service.category}</span>
-                  <span className="text-sm font-semibold text-[#1C1C1E] group-hover:text-blue-600 transition-colors">{service.title}</span>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-[#FAFAFA] flex items-center justify-center flex-shrink-0 group-hover:bg-blue-50 transition-colors">
-                  <ArrowRight className="w-3.5 h-3.5 text-[#1C1C1E]/60 group-hover:text-blue-600 transition-colors" />
-                </div>
-              </Link>
+      {/* Services Grouped by Subcategory */}
+      <div className="flex flex-col gap-12">
+        {Object.entries(groupedServices).map(([subCategory, services]) => (
+          <div key={subCategory} className="flex flex-col gap-6">
+            <h3 className="font-serif text-2xl text-[#1C1C1E] border-b border-[#1C1C1E]/10 pb-4">
+              {subCategory}
+            </h3>
+            <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <AnimatePresence>
+                {services.map((service) => (
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    key={service.id}
+                  >
+                    <Link 
+                      href={`/minute-clinic/services/${service.id}`}
+                      className="group flex flex-col justify-between p-5 bg-white border border-[#1C1C1E]/10 rounded-2xl hover:border-[#1C1C1E]/30 hover:shadow-lg transition-all h-full min-h-[100px]"
+                    >
+                      <div className="flex flex-col gap-1 pr-4 mb-4">
+                        <span className="text-[9px] uppercase tracking-widest text-[#1C1C1E]/40 font-bold">{service.mainCategory}</span>
+                        <span className="text-sm font-semibold text-[#1C1C1E] group-hover:text-blue-600 transition-colors">{service.title}</span>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-[#FAFAFA] flex items-center justify-center flex-shrink-0 group-hover:bg-blue-50 transition-colors self-end mt-auto">
+                        <ArrowRight className="w-3.5 h-3.5 text-[#1C1C1E]/60 group-hover:text-blue-600 transition-colors" />
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+          </div>
+        ))}
+      </div>
       
       {filteredServices.length === 0 && (
         <div className="py-12 text-center">

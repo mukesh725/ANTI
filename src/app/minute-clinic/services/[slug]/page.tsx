@@ -26,7 +26,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Services
           </Link>
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#1C1C1E]/50 block mb-4 font-bold">
-            {service.category}
+            {service.mainCategory}
           </span>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-[4rem] tracking-tight leading-[1.1] text-[#1C1C1E] mb-6">
             {service.title}
