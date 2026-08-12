@@ -73,25 +73,28 @@ export async function sendBookingConfirmationEmail(bookingDetails: {
               </td>
             </tr>
             <tr>
-              <td style="padding: 8px 0;">
+              <td style="padding: 8px 0; border-bottom: 1px solid #f5f5f7;">
                 <span style="color: #86868b; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Location</span><br/>
                 <span style="color: #1d1d1f; font-size: 16px; font-weight: 500;">AIRO Store - ${location}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0 0 0;">
+                <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">Please arrive 5 minutes early for your appointment. If any further information or rescheduling required, please connect with our support team.</p>
               </td>
             </tr>
           </table>
         </div>
 
-        <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid #e5e5ea;">
-          <h3 style="color: #1d1d1f; font-size: 16px; font-weight: 600; margin: 0 0 15px 0;">Arrival & Support</h3>
-          
+        <div style="margin-top: 25px; padding-top: 25px; border-top: 1px solid #e5e5ea;">
           <div style="margin-bottom: 15px;">
             <p style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1d1d1f;">📍 Directions</p>
-            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">When you arrive at the <strong>${location}</strong> store, please head towards the pharmacy counter and present your QR code to our AIRO Health Associate. We request you to arrive 5 minutes early. <br/><a href="${mapLink}" style="color: #0A84FF; text-decoration: none; font-weight: 500;">Open in Google Maps &rarr;</a></p>
+            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;"><a href="${mapLink}" style="color: #0A84FF; text-decoration: none; font-weight: 500;">Open in Google Maps &rarr;</a></p>
           </div>
 
           <div style="margin-bottom: 15px;">
             <p style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1d1d1f;">📞 Contact Us</p>
-            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;">Need to reschedule? Call us at <a href="tel:+9190000182121" style="color: #0A84FF; text-decoration: none;">+91 90000182121</a></p>
+            <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.5;"><a href="tel:+9190000182121" style="color: #0A84FF; text-decoration: none;">+91 90000 182121</a></p>
           </div>
           
           <div>
