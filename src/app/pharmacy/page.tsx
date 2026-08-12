@@ -121,7 +121,7 @@ export default function PharmacyPage() {
       </section>
 
       {/* SECTION 2: A DIFFERENT KIND OF PHARMACY (Storytelling Block 1) */}
-      <section className="bg-theme text-paper py-24 md:py-36 px-6 md:px-16">
+      <section className="bg-gradient-to-b from-theme to-theme-dark text-paper py-24 md:py-36 px-6 md:px-16">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
@@ -201,7 +201,7 @@ export default function PharmacyPage() {
       </section>
 
       {/* SECTION 4: PERSONALIZED CARE STARTS HERE (Storytelling Block 3) */}
-      <section className="bg-theme text-paper py-24 md:py-36 px-6 md:px-16">
+      <section className="bg-gradient-to-b from-theme to-theme-dark text-paper py-24 md:py-36 px-6 md:px-16">
         <div className="max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             
@@ -216,16 +216,16 @@ export default function PharmacyPage() {
               <p className="font-serif text-xl md:text-2xl text-paper/90 italic mb-8 max-w-xl font-normal leading-relaxed">
                 {compounding.description.split('.')[0]}.
               </p>
-              <p className="font-sans text-xs md:text-sm text-paper/70 max-w-lg leading-relaxed tracking-wide">
+              <p className="font-sans text-xs md:text-sm text-paper/70 max-w-lg leading-relaxed tracking-wide mb-10">
                 {compounding.description.split('.').slice(1).join('.')}
               </p>
 
               {/* Compounding teaser box */}
               <div className="border border-paper/10 bg-paper/5 p-6 rounded-2xl max-w-md backdrop-blur-sm">
-                <span className="inline-block bg-paper text-ink text-[8px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full mb-3">
+                <span className="inline-block bg-paper text-ink text-[10px] font-bold tracking-[0.2em] uppercase px-4 py-2 rounded-full mb-4">
                   {compounding.previewBadge || "COMPLETED APOTHECARY PREVIEW"}
                 </span>
-                <p className="font-sans text-[11px] text-paper/80 leading-relaxed">
+                <p className="font-sans text-xs text-paper/80 leading-relaxed">
                   {compounding.previewText || "Compounding allows us to design allergen-free alternatives, tailor dosages to the microgram, and merge multiple supplements into a single daily biological protocol."}
                 </p>
               </div>
@@ -233,14 +233,15 @@ export default function PharmacyPage() {
 
             {/* Visual element */}
             <div className="lg:col-span-7">
-              <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl bg-theme">
                 <ParallaxImage 
                   src={compounding.image} 
                   alt="Premium wellness compounds apothecary" 
-                  className="w-full h-full"
+                  className="w-full h-full mix-blend-luminosity opacity-80"
                   speed={0.1}
                 />
-                <div className="absolute inset-0 bg-theme/15" />
+                <div className="absolute inset-0 bg-gradient-to-t from-theme-dark/80 via-theme/20 to-transparent" />
+                <div className="absolute inset-0 bg-theme/20 mix-blend-color" />
               </div>
             </div>
 
