@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
 import { useCms } from "@/context/CmsContext";
+import HeroSlider from "@/components/HeroSlider";
 
 // Custom Parallax Image component for smooth, luxury page scroll animations
 function ParallaxImage({ 
@@ -77,11 +78,13 @@ export default function HomePage() {
       <section ref={heroRef} className="relative min-h-[100dvh] md:min-h-[95vh] w-full flex items-center justify-center px-6 md:px-16 overflow-hidden">
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
-          <ParallaxImage 
-            src={heroImage || "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000"} 
-            alt="AIRO Connected Wellness"
-            className="w-full h-full"
-            speed={0.1}
+          <HeroSlider 
+            images={[
+              heroImage || "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000",
+              "/uploads/home-hero-slide-2.png", // NOTE: Replace this path with the photo you uploaded!
+              "/clinic-connected.jpg"
+            ]} 
+            interval={1000} // Changes every 1 second as requested
           />
           {/* Subtle light overlay to ensure dark text readability on any image, though the image itself is white in the center */}
           <div className="absolute inset-0 bg-white/30 md:bg-transparent" />
