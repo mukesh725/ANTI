@@ -39,10 +39,10 @@ function ShopContent() {
       <div className="bg-paper text-ink pt-32 pb-16 px-6 md:px-16 border-b border-theme/10">
         <div className="max-w-[1500px] mx-auto">
           <Link href="/pharmacy" className="inline-flex items-center gap-2 text-ink/60 hover:text-ink transition-colors text-[10px] uppercase tracking-widest font-bold mb-8">
-            <ArrowLeft className="w-4 h-4" /> Back to Pharmacy
+            <ArrowLeft className="w-4 h-4" /> Back to Pharmacy & Compounding
           </Link>
           <h1 className="font-serif text-5xl md:text-6xl tracking-tight leading-tight mb-4">
-            Shop <span className="italic font-light text-ink/80">AIRO Pharmacy</span>
+            Shop <span className="italic font-light text-ink/80">AIRO Pharmacy & Compounding</span>
           </h1>
           <p className="font-sans text-sm text-ink/70 max-w-xl leading-relaxed tracking-wide">
             Every item is compounded for optimal bioavailability and targeted efficacy.

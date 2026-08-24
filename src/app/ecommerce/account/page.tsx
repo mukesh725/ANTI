@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { 
   LogOut, ShieldCheck, Star, ShoppingBag, Calendar,
-  Download, Share2, Wallet, ExternalLink, ArrowRight,
+  Download, Share2, Wallet, ExternalLink, ArrowRight, X,
   FileText, HeartPulse, Medal, MapPin, Heart, User, Bell, Headset, Gift
 } from "lucide-react";
 import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { MemberRecord } from "@/types/membership";
 
 interface Order {
@@ -26,12 +26,76 @@ export default function AccountPage() {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
+  const [healthBookings, setHealthBookings] = useState<any[]>([]);
 
   // Membership State
   const [membership, setMembership] = useState<MemberRecord | null>(null);
   const [membershipLoading, setMembershipLoading] = useState(true);
 
   const activeEmail = profile?.email || user?.email;
+
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [editForm, setEditForm] = useState({
+    firstName: "", lastName: "", mobile: "", dob: "", gender: "", 
+    address: "", city: "", stateText: "", zip: ""
+  });
+
+  const openEditProfile = () => {
+    setEditForm({
+      firstName: profile?.firstName || membership?.firstName || "",
+      lastName: profile?.lastName || membership?.lastName || "",
+      mobile: profile?.mobile || membership?.mobile || "",
+      dob: profile?.dob || membership?.dob || "",
+      gender: profile?.gender || membership?.gender || "",
+      address: profile?.address || membership?.address || "",
+      city: profile?.city || "",
+      stateText: profile?.stateText || "",
+      zip: profile?.zip || "",
+    });
+    setIsEditProfileOpen(true);
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingProfile(true);
+    try {
+      if (profile?.uid) {
+        const userRef = doc(db, "users", profile.uid);
+        await updateDoc(userRef, {
+          firstName: editForm.firstName,
+          lastName: editForm.lastName,
+          name: `${editForm.firstName} ${editForm.lastName}`.trim(),
+          mobile: editForm.mobile,
+          dob: editForm.dob,
+          gender: editForm.gender,
+          address: editForm.address,
+          city: editForm.city,
+          stateText: editForm.stateText,
+          zip: editForm.zip,
+        });
+      }
+      if (membership?.id) {
+        const memberRef = doc(db, "Members", membership.id);
+        await updateDoc(memberRef, {
+          firstName: editForm.firstName,
+          lastName: editForm.lastName,
+          mobile: editForm.mobile,
+          dob: editForm.dob,
+          gender: editForm.gender,
+          address: editForm.address,
+        });
+      }
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("Failed to update profile", err);
+      alert("Failed to update profile.");
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
 
   useEffect(() => {
     if (!loading && !user && !profile) {
@@ -102,6 +166,26 @@ export default function AccountPage() {
         console.error("Failed to fetch membership:", err);
       } finally {
         setMembershipLoading(false);
+      }
+
+      // 3. Fetch Health Bookings (Minute Clinic)
+      try {
+        const cleanEmail = activeEmail.trim().toLowerCase();
+        const qBookings = query(
+          collection(db, "minute_clinic_bookings"),
+          where("email", "==", cleanEmail)
+        );
+        const bookingSnap = await getDocs(qBookings);
+        const fetchedBookings = bookingSnap.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as any[];
+        
+        // Sort by timestamp desc
+        fetchedBookings.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        setHealthBookings(fetchedBookings);
+      } catch (err) {
+        console.error("Failed to fetch health bookings:", err);
       }
     }
 
@@ -308,11 +392,73 @@ export default function AccountPage() {
 
         </div>
 
+        {/* Health Bookings & Reports Section */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="font-bold text-lg text-gray-900">Health Bookings & Reports</h2>
+          </div>
+
+          <div className="flex-1 flex flex-col gap-4">
+            {healthBookings.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border border-dashed border-gray-200 rounded-xl">
+                <Calendar className="w-8 h-8 text-gray-300 mb-3" />
+                <p className="text-sm font-medium text-gray-900 mb-1">No Health Bookings</p>
+                <p className="text-xs text-gray-500">You haven't booked any Minute Clinic sessions yet.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {healthBookings.map(booking => (
+                  <div key={booking.id} className="p-5 rounded-xl border border-gray-100 bg-gray-50/50 flex flex-col">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-bold text-gray-900 text-sm">{booking.service}</h3>
+                        <p className="text-xs text-gray-500 mt-1 capitalize">{booking.careOption} • {booking.date} at {booking.time}</p>
+                      </div>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        booking.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-700'
+                      }`}>
+                        {booking.status || 'Pending'}
+                      </span>
+                    </div>
+
+                    {/* Reports Section inside booking */}
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">Attached Reports & Prescriptions</p>
+                      {booking.reports && booking.reports.length > 0 ? (
+                        <div className="space-y-2">
+                          {booking.reports.map((report: any, idx: number) => (
+                            <div key={idx} className="flex items-center justify-between bg-white p-2.5 rounded-lg border border-gray-200">
+                              <div className="flex items-center gap-2">
+                                {report.type === 'prescription' ? <FileText className="w-4 h-4 text-blue-500"/> : <Activity className="w-4 h-4 text-emerald-500"/>}
+                                <span className="text-xs font-medium text-gray-900 truncate max-w-[150px]">{report.name}</span>
+                              </div>
+                              <a 
+                                href={report.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                              >
+                                <Download className="w-3.5 h-3.5" /> View
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-gray-500 italic">No reports available yet.</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* 8 Grid Menu Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           
           {/* Prescriptions */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={() => alert("Prescriptions module coming soon!")} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center mb-4 group-hover:bg-green-100 transition-colors">
                 <FileText className="w-5 h-5 text-green-600" />
@@ -336,7 +482,7 @@ export default function AccountPage() {
           </div>
 
           {/* Rewards */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={() => alert("Rewards module coming soon!")} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center mb-4 group-hover:bg-orange-100 transition-colors">
                 <Medal className="w-5 h-5 text-orange-500" />
@@ -348,7 +494,7 @@ export default function AccountPage() {
           </div>
 
           {/* Addresses */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={openEditProfile} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
                 <MapPin className="w-5 h-5 text-blue-500" />
@@ -360,7 +506,7 @@ export default function AccountPage() {
           </div>
 
           {/* Wishlist */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={() => alert("Wishlist module coming soon!")} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center mb-4 group-hover:bg-rose-100 transition-colors">
                 <Heart className="w-5 h-5 text-rose-500" />
@@ -372,7 +518,7 @@ export default function AccountPage() {
           </div>
 
           {/* Profile */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={openEditProfile} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors">
                 <User className="w-5 h-5 text-purple-500" />
@@ -384,7 +530,7 @@ export default function AccountPage() {
           </div>
 
           {/* Notifications */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={() => alert("Notifications module coming soon!")} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center mb-4 group-hover:bg-yellow-100 transition-colors">
                 <Bell className="w-5 h-5 text-yellow-600" />
@@ -396,7 +542,7 @@ export default function AccountPage() {
           </div>
 
           {/* Support */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          <div onClick={() => router.push("/contact")} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center mb-4 group-hover:bg-teal-100 transition-colors">
                 <Headset className="w-5 h-5 text-teal-600" />
@@ -427,6 +573,84 @@ export default function AccountPage() {
         </div>
 
       </div>
+
+      {/* Edit Profile Modal */}
+      {isEditProfileOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 md:p-8 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Edit Profile</h2>
+                <p className="text-sm text-gray-500 mt-1">Update your personal information. These details will be used across your AIRO account.</p>
+              </div>
+              <button onClick={() => setIsEditProfileOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <X className="w-6 h-6 text-gray-500" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveProfile} className="p-6 md:p-8 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">First Name</label>
+                  <input type="text" value={editForm.firstName} onChange={e => setEditForm({...editForm, firstName: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Last Name</label>
+                  <input type="text" value={editForm.lastName} onChange={e => setEditForm({...editForm, lastName: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Mobile Number</label>
+                  <input type="tel" value={editForm.mobile} onChange={e => setEditForm({...editForm, mobile: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Date of Birth</label>
+                  <input type="date" value={editForm.dob} onChange={e => setEditForm({...editForm, dob: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Legal Sex</label>
+                  <select value={editForm.gender} onChange={e => setEditForm({...editForm, gender: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors">
+                    <option value="">Select...</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Prefer not to answer">Prefer not to answer</option>
+                  </select>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-4">Address Information</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-900 mb-2">Street Address</label>
+                    <input type="text" value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">City</label>
+                      <input type="text" value={editForm.city} onChange={e => setEditForm({...editForm, city: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">State</label>
+                      <input type="text" value={editForm.stateText} onChange={e => setEditForm({...editForm, stateText: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">ZIP Code</label>
+                      <input type="text" value={editForm.zip} onChange={e => setEditForm({...editForm, zip: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition-colors" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-6 flex justify-end gap-4">
+                <button type="button" onClick={() => setIsEditProfileOpen(false)} className="px-6 py-3 font-semibold text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" disabled={isSavingProfile} className="bg-[#006537] text-white px-8 py-3 rounded-xl font-bold shadow-sm hover:bg-[#004e2a] transition-colors disabled:opacity-50">
+                  {isSavingProfile ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

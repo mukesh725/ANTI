@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
+import HeroSlider from "@/components/HeroSlider";
 import { useCms } from "@/context/CmsContext";
 
 // Custom Parallax Image component for smooth, luxury page scroll animations
@@ -41,6 +42,12 @@ function ParallaxImage({
   );
 }
 
+// Stable references for images to prevent HeroSlider interval resets
+const healthSliderImages = [
+  "/uploads/health-hero-new.jpg",
+  "/uploads/health-hero-new-2.jpg"
+];
+
 export default function HealthPage() {
   const cmsData = useCms();
 
@@ -62,35 +69,32 @@ export default function HealthPage() {
       <section ref={heroRef} className="relative min-h-[100dvh] md:min-h-[95vh] w-full flex items-center justify-start px-6 md:px-16 overflow-hidden">
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
-          <ParallaxImage 
-            src={hd.heroImage || "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000"} 
-            alt="AIRO Connected Wellness"
-            className="w-full h-full"
-            speed={0.1}
+          <HeroSlider 
+            images={healthSliderImages} 
+            interval={3000}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1E] via-[#1C1C1E]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-[1000px] text-paper pt-12 w-full flex flex-col items-center text-center md:items-start md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper/10 bg-paper/5 text-paper text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
-            <Activity className="w-3 h-3 text-paper" /> {healthData.subtitle || "PREVENTATIVE CARE. REDEFINED."}
+        <div className="relative z-10 max-w-[1000px] text-ink pt-12 w-full flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-ink/10 bg-ink/5 text-ink text-[9px] font-bold tracking-[0.25em] uppercase w-fit mx-auto md:mx-0 mb-6 md:mb-8">
+            <Activity className="w-3 h-3 text-ink" /> {healthData.subtitle || "PREVENTATIVE CARE. REDEFINED."}
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-paper mb-6 md:mb-8">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-ink mb-6 md:mb-8">
             {healthData.title.split(' ')[0] || "AIRO"} <br/>
-            <span className="italic font-light text-paper/80">{healthData.title.split(' ').slice(1).join(' ') || "Health"}</span>
+            <span className="italic font-light text-ink/80">{healthData.title.split(' ').slice(1).join(' ') || "Health"}</span>
           </h1>
           
-          <p className="font-serif text-lg md:text-2xl text-paper/95 italic max-w-2xl leading-relaxed mb-6">
+          <p className="font-serif text-lg md:text-2xl text-ink/90 italic max-w-2xl leading-relaxed mb-6">
             {hd.tagline || "Clinical-grade prescription care, longevity protocols, minute clinics, and advanced diagnostics."}
           </p>
 
           <div className="flex flex-wrap justify-center md:justify-start gap-4 items-center mt-12 w-full">
             <Link
               href={buttons?.primary?.link || "/pharmacy"}
-              className="w-full sm:w-auto justify-center bg-paper text-ink px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto justify-center bg-ink text-paper px-10 py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:bg-theme silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
             >
-              {buttons?.primary?.text || "Pharmacy Portal"} <ArrowRight className="w-4 h-4 text-ink" />
+              {buttons?.primary?.text || "Pharmacy Portal"} <ArrowRight className="w-4 h-4 text-paper" />
             </Link>
           </div>
         </div>
@@ -106,7 +110,7 @@ export default function HealthPage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src={praana?.image || "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000"} 
+                  src={praana?.image || "/health-scan-chair.png"} 
                   alt={praana?.title || "AIRO Praana"} 
                   className="w-full h-full"
                   speed={0.1}

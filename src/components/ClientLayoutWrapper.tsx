@@ -138,8 +138,6 @@ export function ClientLayoutWrapper({
   let themeClass = "";
   if (
     pathname.startsWith("/grocery") || 
-    pathname.startsWith("/bakery") || 
-    pathname.startsWith("/ice-cream") || 
     pathname.startsWith("/ecommerce") ||
     pathname.startsWith("/essentials")
   ) {

@@ -432,11 +432,19 @@ export function HealthCheckBooking() {
                       </div>
                       <div>
                         <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Date</p>
-                        <p className="font-medium">{new Date(foundBooking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                        <p className="font-medium">
+                          {foundBooking.location?.includes("Kondapur") 
+                            ? "Postponed (Date TBD)" 
+                            : new Date(foundBooking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' })}
+                        </p>
                       </div>
                       <div>
                         <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Time</p>
-                        <p className="font-medium">{foundBooking.timeSlot}</p>
+                        <p className="font-medium">
+                          {foundBooking.location?.includes("Kondapur") 
+                            ? "TBD" 
+                            : foundBooking.timeSlot}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -475,10 +483,17 @@ export function HealthCheckBooking() {
                     </select>
                   </div>
                   
-                  {renderCustomCalendar()}
+                  {selectedLocation === "Kondapur" ? (
+                    <div className="bg-orange-50 text-orange-800 p-6 rounded-xl border border-orange-200 text-sm mt-4 text-center">
+                      <p className="font-bold mb-2">Opening Postponed!</p>
+                      <p>Our Kondapur clinic's opening date has been postponed. New bookings are temporarily suspended until we announce our grand opening date. Existing bookings remain valid.</p>
+                    </div>
+                  ) : (
+                    renderCustomCalendar()
+                  )}
                 </div>
 
-                {selectedDate && (
+                {selectedLocation !== "Kondapur" && selectedDate && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}

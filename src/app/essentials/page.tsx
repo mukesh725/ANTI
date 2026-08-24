@@ -45,18 +45,6 @@ const essentialsCategories = [
     desc: "Organic produce, superfoods, and clean pantry essentials.", 
     href: "/grocery", 
     image: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800"
-  },
-  { 
-    name: "Bakery", 
-    desc: "Artisanal breads, gluten-free options, and fresh pastries.", 
-    href: "/bakery", 
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800"
-  },
-  { 
-    name: "Ice Cream", 
-    desc: "Dairy-free, sugar-conscious, and functional frozen treats.", 
-    href: "/ice-cream", 
-    image: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=800"
   }
 ];
 

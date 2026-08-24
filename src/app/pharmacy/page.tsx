@@ -79,11 +79,11 @@ export default function PharmacyPage() {
             </h1>
             
             <p className="font-serif text-lg md:text-2xl text-ink/80 italic max-w-xl leading-relaxed mb-6">
-              {pc.heroTagline || "Healthcare is evolving. Your pharmacy should too."}
+              {pc.heroTagline || "Healthcare is evolving. Your pharmacy & compounding should too."}
             </p>
             
             <p className="font-sans text-xs md:text-sm text-ink/70 max-w-lg leading-relaxed mb-10 tracking-wide">
-              {pc.heroDescription || "AIRO Pharmacy combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health."}
+              {pc.heroDescription || "AIRO Pharmacy & Compounding combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health."}
             </p>
 
             <div className="flex items-center gap-4">
@@ -101,7 +101,7 @@ export default function PharmacyPage() {
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
                 src={hero.image} 
-                alt="AIRO Pharmacy Services"
+                alt="AIRO Pharmacy & Compounding Services"
                 className="w-full h-full"
                 speed={0.12}
               />
@@ -131,13 +131,13 @@ export default function PharmacyPage() {
                 {philosophySection?.sectionLabel || "Philosophy"}
               </span>
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-8 text-paper">
-                {(philosophySection?.title || "A Different Kind of Pharmacy").split('Kind')[0]}Kind <br/>of <span className="italic font-light text-paper/80">{(philosophySection?.title || "A Different Kind of Pharmacy").split('of').slice(1).join('of')}</span>
+                {(philosophySection?.title || "A Different Kind of Pharmacy & Compounding").split('Kind')[0]}Kind <br/>of <span className="italic font-light text-paper/80">{(philosophySection?.title || "A Different Kind of Pharmacy & Compounding").split('of').slice(1).join('of')}</span>
               </h2>
               <p className="font-serif text-xl md:text-2xl text-paper/90 italic mb-8 max-w-xl font-normal leading-relaxed">
                 {philosophySection?.tagline || "Most pharmacies focus on transactions. We focus on people."}
               </p>
               <p className="font-sans text-xs md:text-sm text-paper/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-                {philosophySection?.description || "At AIRO Pharmacy, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better."}
+                {philosophySection?.description || "At AIRO Pharmacy & Compounding, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better."}
               </p>
               <p className="font-sans text-xs md:text-sm text-paper/70 max-w-lg leading-relaxed tracking-wide">
                 {philosophySection?.bodyText || "Whether you're managing a chronic condition, optimizing daily wellness, or exploring preventive healthcare solutions, our team is here to support your journey."}
@@ -149,7 +149,7 @@ export default function PharmacyPage() {
               <div className="relative aspect-[16/10] md:aspect-[16/11] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <ParallaxImage 
                   src={philosophySection?.image || "/pharmacy-checkout.jpg"} 
-                  alt="AIRO Pharmacy Checkout" 
+                  alt="AIRO Pharmacy & Compounding Checkout" 
                   className="w-full h-full"
                   speed={0.1}
                 />
@@ -190,7 +190,7 @@ export default function PharmacyPage() {
               {ecosystemSection?.tagline || "Today's health challenges require more than medication alone."}
             </p>
             <p className="font-sans text-xs md:text-sm text-ink/70 max-w-lg leading-relaxed mb-6 tracking-wide">
-              {ecosystemSection?.description || "That's why AIRO Pharmacy is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments."}
+              {ecosystemSection?.description || "That's why AIRO Pharmacy & Compounding is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments."}
             </p>
             <p className="font-sans text-xs md:text-sm text-ink/70 max-w-lg leading-relaxed tracking-wide font-medium italic">
               {ecosystemSection?.closingLine || "Because better outcomes happen when healthcare works together."}
@@ -293,7 +293,7 @@ export default function PharmacyPage() {
               {catalogSection?.sectionLabel || "The Catalog"}
             </span>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-tight text-ink">
-              {(catalogSection?.sectionTitle || "Explore AIRO Pharmacy").split(' ')[0]} <span className="italic font-light text-ink/80">{(catalogSection?.sectionTitle || "Explore AIRO Pharmacy").split(' ').slice(1).join(' ')}</span>
+              {(catalogSection?.sectionTitle || "Explore AIRO Pharmacy & Compounding").split(' ')[0]} <span className="italic font-light text-ink/80">{(catalogSection?.sectionTitle || "Explore AIRO Pharmacy & Compounding").split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="font-sans text-xs text-ink/60 mt-4 leading-relaxed tracking-wide">
               {catalogSection?.sectionDescription || "Every category is built as a targeted pathway to clinical-grade care and longevity protocols."}
@@ -339,7 +339,7 @@ export default function PharmacyPage() {
               href={catalogSection?.shopAllButtonLink || "/pharmacy/shop"}
               className="bg-paper text-theme text-[10px] font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:bg-white/90 transition-colors duration-300 shadow-lg flex items-center gap-3"
             >
-              {catalogSection?.shopAllButtonText || "Shop All Pharmacy"} <ArrowRight className="w-4 h-4" />
+              {catalogSection?.shopAllButtonText || "Shop All Pharmacy & Compounding"} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

@@ -12,6 +12,12 @@ export interface UserProfile {
   mobile?: string;
   firstName?: string;
   lastName?: string;
+  dob?: string;
+  gender?: string;
+  address?: string;
+  city?: string;
+  stateText?: string;
+  zip?: string;
 }
 
 interface AuthContextType {
@@ -129,6 +135,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         mobile: data.mobile,
         firstName: data.firstName,
         lastName: data.lastName,
+        dob: data.dob,
+        gender: data.gender,
+        address: data.address,
+        city: data.city,
+        stateText: data.stateText,
+        zip: data.zip,
       };
       setProfile(uProfile);
       localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));
@@ -189,6 +201,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: data.email || cleanEmail,
         name: name || data.name || cleanEmail.split("@")[0],
         mobile: data.mobile,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        dob: data.dob,
+        gender: data.gender,
+        address: data.address,
+        city: data.city,
+        stateText: data.stateText,
+        zip: data.zip,
       };
       setProfile(uProfile);
       localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));

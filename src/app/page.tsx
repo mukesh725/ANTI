@@ -1,23 +1,29 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, Activity, Cpu } from "lucide-react";
 import Link from "next/link";
 import { useCms } from "@/context/CmsContext";
 import HeroSlider from "@/components/HeroSlider";
 
+import Image from "next/image";
+
+const MotionImage = motion(Image);
+
 // Custom Parallax Image component for smooth, luxury page scroll animations
 function ParallaxImage({ 
   src, 
   alt, 
   className = "", 
-  speed = 0.1 
+  speed = 0.1,
+  priority = false
 }: { 
   src: string; 
   alt: string; 
   className?: string; 
   speed?: number;
+  priority?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -31,16 +37,25 @@ function ParallaxImage({
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
-      <motion.img
+      <MotionImage
         src={src}
         alt={alt}
         style={{ y, scale }}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        priority={priority}
+        className="object-cover"
         transition={{ type: "spring", stiffness: 30, damping: 15 }}
       />
     </div>
   );
 }
+
+// Stable references for images to prevent HeroSlider interval resets
+const healthSliderImages = [
+  "/uploads/health-hero-1.jpg",
+  "/uploads/health-hero-2.jpg"
+];
 
 export default function HomePage() {
   const cmsData = useCms();
@@ -48,6 +63,7 @@ export default function HomePage() {
   const homeData = cmsData.pages.home;
   const heroRef = useRef<HTMLDivElement>(null);
   const [isHealthSite, setIsHealthSite] = useState(false);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -78,9 +94,16 @@ export default function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const heroImage = (homeData as any)?.heroImage;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const heroAltText = (homeData as any)?.heroAltText || "AIRO Essentials";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const homeTagline = (homeData as any)?.tagline;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const homeDescription = (homeData as any)?.description;
+
+  const essentialsSliderImages = useMemo(() => [
+    heroImage || "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000",
+    "/uploads/home-hero-slide-2.png"
+  ], [heroImage]);
 
   return (
     <div className="min-h-screen bg-paper text-ink overflow-x-hidden selection:bg-theme selection:text-paper">
@@ -92,20 +115,16 @@ export default function HomePage() {
         {/* Full-width Background Image with Parallax & Slow Zoom */}
         <div className="absolute inset-0 w-full h-full">
           {isHealthSite ? (
-            <ParallaxImage 
-              src={heroImage || "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000"} 
-              alt="AIRO Connected Wellness"
-              className="w-full h-full"
-              speed={0.1}
+            <HeroSlider 
+              images={healthSliderImages} 
+              interval={3000}
+              onSlideChange={setCurrentSlideIndex}
             />
           ) : (
             <HeroSlider 
-              images={[
-                heroImage || "https://images.unsplash.com/photo-1601600576337-c1d8a0d1373c?q=80&w=2000",
-                "/uploads/home-hero-slide-2.png", // NOTE: Replace this path with the photo you uploaded!
-                "/clinic-connected.jpg"
-              ]} 
-              interval={1000} // Changes every 1 second as requested
+              images={essentialsSliderImages} 
+              interval={3000}
+              onSlideChange={setCurrentSlideIndex}
             />
           )}
           {/* Subtle light overlay to ensure dark text readability on any image, though the image itself is white in the center */}
@@ -118,31 +137,27 @@ export default function HomePage() {
             <Sparkles className="w-3 h-3 text-ink" /> {homeData.subtitle || "A Connected Wellness Ecosystem"}
           </div>
           
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-ink mb-6 md:mb-8">
-            {homeData.title.split(' ')[0] || "The Future of"} <br/>
-            <span className="italic font-light text-ink/80">{homeData.title.split(' ').slice(1).join(' ') || "Preventive Healthcare."}</span>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] tracking-tight leading-[1.02] text-ink mb-6 md:mb-8 transition-colors duration-500">
+            AIRO <br/>
+            <span className={`italic font-light transition-colors duration-500 ${isHealthSite ? 'text-red-600' : (currentSlideIndex === 1 ? 'text-red-600' : 'text-green-600')}`}>
+              {isHealthSite ? 'Health.' : (currentSlideIndex === 1 ? 'Health.' : 'Essentials.')}
+            </span>
           </h1>
           
           <p className="font-serif text-lg md:text-2xl text-ink/90 italic max-w-2xl leading-relaxed mb-6">
-            {homeTagline || "An ecosystem uniting nutrition, diagnostics, pharmacy, clinical care, and digital health."}
+            {homeTagline || "A complete health network connecting healthy food, clinics, pharmacy & compounding, and online care."}
           </p>
           
           <p className="font-sans text-xs md:text-sm text-ink/70 max-w-lg leading-relaxed mb-8 md:mb-12 tracking-wide mx-auto">
-            {homeDescription || "At AIRO, we believe healthcare shouldn't be reactive. By integrating clinical precision with daily wellness, we build a connected environment designed to optimize your biology, ensure longevity, and prevent illness before it starts."}
+            {homeDescription || "At AIRO, we believe in preventing illness before it happens. We bring together expert medical care and daily wellness to help you live a longer, healthier life."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
             <Link
-              href={buttons?.primary?.link || "/grocery"}
-              className="w-full sm:w-auto justify-center bg-theme text-paper px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+              href={isHealthSite ? "/health" : (currentSlideIndex === 1 ? "/health" : "/grocery")}
+              className="w-full sm:w-auto justify-center bg-theme text-paper px-8 md:px-10 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold hover:opacity-90 silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3 transition-colors duration-500"
             >
-              {buttons?.primary?.text || "Explore Essentials"} <ArrowRight className="w-4 h-4 text-paper" />
-            </Link>
-            <Link
-              href={buttons?.secondary?.link || "/pharmacy"}
-              className="w-full sm:w-auto text-center border border-theme/20 text-ink hover:bg-theme/5 px-8 py-4 md:py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full"
-            >
-              {buttons?.secondary?.text || "Join Compounding Waitlist"}
+              {isHealthSite ? "Explore Health" : (currentSlideIndex === 1 ? "Explore Health" : "Explore Essentials")} <ArrowRight className="w-4 h-4 text-paper" />
             </Link>
           </div>
         </div>
@@ -158,15 +173,14 @@ export default function HomePage() {
               {pillars?.sectionLabel || "The Foundations"}
             </span>
             <h2 className="font-serif text-5xl md:text-6xl font-medium tracking-tight leading-tight">
-              {(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.')[0]}. <span className="italic font-light text-ink/60">{(pillars?.sectionTitle || "Unified Care. Three Pillars.").split('.').slice(1).join('.')}</span>
+              {((pillars?.sectionTitle || "Unified Care. Four Pillars.").replace("Three", "Four")).split('.')[0]}. <span className="italic font-light text-ink/60">{((pillars?.sectionTitle || "Unified Care. Four Pillars.").replace("Three", "Four")).split('.').slice(1).join('.')}</span>
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
 
             {/* Pillar 1: Essentials */}
-            <Link 
-              href={pillars?.essentials?.buttonLink || "/grocery"}
+            <div 
               className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-theme/5">
@@ -189,17 +203,16 @@ export default function HomePage() {
                   {pillars?.essentials?.description || "A carefully curated market featuring organic produce, functional groceries, and premium health goods selected to nourish your biology from the inside out."}
                 </p>
               </div>
-            </Link>
+            </div>
 
             {/* Pillar 2: Pharmacy */}
-            <Link 
-              href={pillars?.pharmacy?.buttonLink || "/pharmacy"}
+            <div 
               className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-theme/5">
                 <ParallaxImage 
                   src={pillars?.pharmacy?.image || "/pharmacy-hero.jpg"}
-                  alt={pillars?.pharmacy?.title || "AIRO Pharmacy"}
+                  alt={pillars?.pharmacy?.title || "AIRO Pharmacy & Compounding"}
                   className="w-full h-full"
                   speed={0.06}
                 />
@@ -208,7 +221,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.pharmacy?.title || "AIRO Pharmacy"}</h3>
+                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.pharmacy?.title || "AIRO Pharmacy & Compounding"}</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   {pillars?.pharmacy?.subtitle || "Prescriptions • Supplements • Custom Compounding"}
                 </p>
@@ -216,11 +229,10 @@ export default function HomePage() {
                   {pillars?.pharmacy?.description || "Expert prescription management coupled with precision bio-available supplements and clinical wellness advice tailored to your personal biomarkers."}
                 </p>
               </div>
-            </Link>
+            </div>
 
             {/* Pillar 3: Minute Clinic */}
-            <Link 
-              href={pillars?.clinic?.buttonLink || "/minute-clinic"}
+            <div 
               className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-theme/5">
@@ -243,13 +255,10 @@ export default function HomePage() {
                   {pillars?.clinic?.description || "Frictionless in-store and virtual medical services. Get immunizations, treatment, and proactive diagnostics with minimal wait times."}
                 </p>
               </div>
-            </Link>
+            </div>
 
             {/* Pillar 4: AIRO E-Med */}
-            <Link 
-              href="https://airoemed.com"
-              target="_blank" 
-              rel="noopener noreferrer"
+            <div 
               className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-theme/5">
@@ -272,7 +281,7 @@ export default function HomePage() {
                   Connect with doctors through secure virtual consultations for personalized treatment. Get your custom prescriptions delivered directly to your door in discreet packaging.
                 </p>
               </div>
-            </Link>
+            </div>
 
 
           </div>
@@ -290,7 +299,7 @@ export default function HomePage() {
             <div className="lg:col-span-6 flex justify-center">
               <div className="relative w-full aspect-[2/1] sm:aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden bg-[#09120F] flex items-center justify-center shadow-2xl">
                 <ParallaxImage 
-                  src={praana?.image || "/airo-praana-hero.png"} 
+                  src={praana?.image || "/health-scan-chair.png"} 
                   alt={praana?.title || "AIRO Praana"} 
                   className="w-full h-full"
                   speed={0.1}

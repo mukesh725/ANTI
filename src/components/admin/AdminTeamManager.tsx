@@ -15,12 +15,26 @@ interface AdminUser {
   allowedModules: string[];
 }
 
-const PREDEFINED_ROLES = [
+const ROLES = [
   { id: "super_admin", label: "Super admin — full access to everything", roleName: "Super admin", modules: ["all"] },
-  { id: "admin", label: "Admin", roleName: "Admin", modules: ["dashboard", "orders", "products", "customers", "leads", "cms", "settings", "admin-team", "membership"] },
-  { id: "membership_manager", label: "Membership Manager — Membership tab access only", roleName: "Membership Manager", modules: ["membership"] },
-  { id: "warehouse_manager", label: "Warehouse Manager", roleName: "Warehouse Manager", modules: ["orders", "inventory"] },
-  { id: "health_intakes_manager", label: "Health Intakes Manager — Health Intakes tab access only", roleName: "Health Intakes Manager", modules: ["bookings"] },
+  { id: "custom", label: "Custom Admin — select specific tabs", roleName: "Admin", modules: [] },
+];
+
+const AVAILABLE_MODULES = [
+  { id: "dashboard", label: "Dashboard" },
+  { id: "bookings", label: "Health Intakes" },
+  { id: "membership", label: "Memberships" },
+  { id: "orders", label: "Orders" },
+  { id: "payments", label: "Payments" },
+  { id: "products", label: "Products" },
+  { id: "categories", label: "Categories" },
+  { id: "inventory", label: "Inventory" },
+  { id: "customers", label: "Customers" },
+  { id: "leads", label: "Leads" },
+  { id: "locations", label: "Locations" },
+  { id: "cms", label: "CMS" },
+  { id: "coupons", label: "Coupons" },
+  { id: "settings", label: "Settings" }
 ];
 
 export function AdminTeamManager() {
@@ -35,7 +49,9 @@ export function AdminTeamManager() {
     name: "",
     email: "",
     password: "",
-    roleId: "super_admin"
+    roleId: "super_admin",
+    customRoleName: "",
+    allowedModules: [] as string[]
   });
 
   useEffect(() => {
@@ -68,14 +84,22 @@ export function AdminTeamManager() {
 
   const openAddModal = () => {
     setEditingUser(null);
-    setFormData({ name: "", email: "", password: "", roleId: "super_admin" });
+    setFormData({ name: "", email: "", password: "", roleId: "super_admin", customRoleName: "", allowedModules: [] });
     setIsModalOpen(true);
   };
 
   const openEditModal = (user: AdminUser) => {
     setEditingUser(user);
-    const roleId = PREDEFINED_ROLES.find(r => r.roleName === user.role)?.id || "super_admin";
-    setFormData({ name: user.name, email: user.email, password: "", roleId });
+    const roleId = user.role === "Super admin" ? "super_admin" : "custom";
+    const customRoleName = user.role === "Super admin" ? "" : (user.role === "Admin" ? "" : user.role);
+    setFormData({ 
+      name: user.name, 
+      email: user.email, 
+      password: "", 
+      roleId,
+      customRoleName,
+      allowedModules: user.allowedModules || []
+    });
     setIsModalOpen(true);
   };
 
@@ -88,14 +112,11 @@ export function AdminTeamManager() {
     setIsSubmitting(true);
     
     try {
-      const selectedRole = PREDEFINED_ROLES.find(r => r.id === formData.roleId);
-      if (!selectedRole) throw new Error("Invalid role selected");
-
       const userData: Record<string, unknown> = {
         name: formData.name,
         email: formData.email.toLowerCase().trim(),
-        role: selectedRole.roleName,
-        allowedModules: selectedRole.modules,
+        role: formData.roleId === "super_admin" ? "Super admin" : (formData.customRoleName || "Admin"),
+        allowedModules: formData.roleId === "super_admin" ? ["all"] : formData.allowedModules,
       };
 
       if (formData.password) {
@@ -351,7 +372,7 @@ export function AdminTeamManager() {
 
                 <div className="pt-2">
                   <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Role</label>
-                  <div className="relative">
+                  <div className="relative mb-4">
                     <select 
                       value={formData.roleId}
                       onChange={(e) => setFormData({...formData, roleId: e.target.value})}
@@ -361,7 +382,7 @@ export function AdminTeamManager() {
                         color: formData.roleId === "super_admin" ? "white" : "#111827",
                       }}
                     >
-                      {PREDEFINED_ROLES.map(role => (
+                      {ROLES.map(role => (
                         <option key={role.id} value={role.id} className="bg-white text-gray-900">
                           {role.label}
                         </option>
@@ -373,6 +394,45 @@ export function AdminTeamManager() {
                       </svg>
                     </div>
                   </div>
+
+                  {formData.roleId === "custom" && (
+                    <div className="space-y-4 pt-4 border-t border-gray-100">
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Custom Job Title (Optional)</label>
+                        <input 
+                          type="text" 
+                          value={formData.customRoleName}
+                          onChange={(e) => setFormData({...formData, customRoleName: e.target.value})}
+                          className="w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 text-gray-900 placeholder-gray-400"
+                          placeholder="e.g. Warehouse Manager"
+                        />
+                        <p className="text-xs text-gray-400 mt-1.5">If left blank, user will be labeled as 'Admin'.</p>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Allowed Tabs</label>
+                        <div className="grid grid-cols-2 gap-3 mt-2">
+                          {AVAILABLE_MODULES.map(module => (
+                            <label key={module.id} className="flex items-center gap-2 cursor-pointer group">
+                              <input 
+                                type="checkbox" 
+                                checked={formData.allowedModules.includes(module.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setFormData({...formData, allowedModules: [...formData.allowedModules, module.id]});
+                                  } else {
+                                    setFormData({...formData, allowedModules: formData.allowedModules.filter(id => id !== module.id)});
+                                  }
+                                }}
+                                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                              />
+                              <span className="text-sm text-gray-700 group-hover:text-gray-900">{module.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
               </div>

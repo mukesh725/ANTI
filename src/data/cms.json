@@ -11,9 +11,12 @@
     "home": {
       "title": "AIRO Essentials",
       "subtitle": "YOUR COMPLETE HEALTH & WELLNESS PARTNER",
-      "tagline": "A complete health network connecting healthy food, clinics, pharmacy, and online care.",
+      "tagline": "A complete health network connecting healthy food, clinics, pharmacy & compounding, and online care.",
       "description": "At AIRO, we believe in preventing illness before it happens. We bring together expert medical care and daily wellness to help you live a longer, healthier life.",
       "heroImage": "/uploads/home-hero.png",
+      "heroAltText": "AIRO Essentials Organic Groceries and Fresh Food",
+      "seoTitle": "AIRO Essentials - Healthy Groceries & Wellness",
+      "seoDescription": "At AIRO, we believe in preventing illness before it happens. Shop fresh organic food and discover expert medical care all in one place.",
       "buttons": {
         "primary": {
           "text": "Explore Essentials",
@@ -37,7 +40,7 @@
             "buttonLink": "/grocery"
           },
           "pharmacy": {
-            "title": "AIRO Compounding & Pharmacy",
+            "title": "AIRO Pharmacy & Compounding",
             "subtitle": "Medicines \u2022 Supplements \u2022 Custom Pharmacy",
             "description": "Expert pharmacy services with custom medicines, daily supplements, and health advice made just for you.",
             "image": "/pharmacy-hero.jpg",
@@ -55,7 +58,7 @@
         },
         "praana": {
           "title": "AIRO Praana",
-          "image": "/airo-praana-hero.png",
+          "image": "/health-scan-chair.png",
           "sectionLabel": "Clinical Innovation",
           "tagline": "A 5-minute health check. A lifetime of good health.",
           "description": "Experience the future of health checks. The AIRO Smart Chair measures your body's important health signs in just minutes, helping doctors create a personal health plan for you.",
@@ -71,7 +74,7 @@
             "status": "Shop Now"
           },
           {
-            "name": "Compounding & Pharmacy",
+            "name": "Pharmacy & Compounding",
             "description": "Expert pharmacy care, custom-made medicines, and daily health supplements.",
             "link": "/pharmacy",
             "status": "Shop Now"
@@ -124,14 +127,14 @@
       "heroImage": "/clinic-connected.jpg",
       "buttons": {
         "primary": {
-          "text": "Pharmacy Portal",
+          "text": "Pharmacy & Compounding Portal",
           "link": "/pharmacy"
         }
       },
       "sections": {
         "praana": {
           "title": "AIRO Praana",
-          "image": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=2000",
+          "image": "/health-scan-chair.png",
           "description": "A 5-minute health check. A lifetime of good health.",
           "sectionLabel": "Clinical Innovation",
           "bodyText": "Experience the future of health checks. The AIRO Smart Chair measures your body's important health signs in just minutes, helping doctors create a personal health plan for you.",
@@ -140,7 +143,7 @@
         },
         "clinicalCategories": [
           {
-            "name": "Pharmacy",
+            "name": "Pharmacy & Compounding",
             "description": "Clinical-grade prescription care, longevity protocols, and supplements.",
             "link": "/pharmacy",
             "status": "Coming Soon"
@@ -157,12 +160,7 @@
             "link": "/minute-clinic",
             "status": "Coming Soon"
           },
-          {
-            "name": "Compounding Pharmacy",
-            "description": "Custom-made dosages, allergen-free formulations, and bespoke wellness tinctures.",
-            "link": "/pharmacy",
-            "status": "Coming Soon"
-          },
+
           {
             "name": "AIRO Praana",
             "description": "Real-time vitals tracking, comprehensive body scans.",
@@ -170,10 +168,10 @@
             "status": "Coming Soon"
           },
           {
-            "name": "Membership",
-            "description": "Premium access to all health services and priority booking.",
-            "link": "/membership",
-            "status": "Coming Soon"
+            "name": "AIRO E-Med",
+            "description": "Virtual consultations, personalized treatments, and home delivery.",
+            "link": "https://airoemed.com",
+            "status": "Visit Portal"
           }
         ],
         "clinicalSectionLabel": "The Clinic",
@@ -320,7 +318,10 @@
         "hero": {
           "title": "Quick Health Check",
           "description": "Simple tests to keep you healthy and strong",
-          "image": "https://plus.unsplash.com/premium_photo-1675686363422-7d7ab88ee530?q=80&w=1600"
+          "image": "/minute-clinic-hero.png",
+          "heroAltText": "AIRO Minute Clinic Biomarkers & Diagnostics",
+          "seoTitle": "AIRO Minute Clinic - Walk-in Care & Longevity Scans",
+          "seoDescription": "AIRO Minute Clinic delivers convenient healthcare designed around modern lifestyles. Get your health scan and diagnostics today."
         },
         "friction": {
           "title": "Healthcare Without the Wait",
@@ -362,11 +363,11 @@
       }
     },
     "pharmacy": {
-      "title": "Your Trusted Pharmacy.",
+      "title": "Your Trusted Pharmacy & Compounding.",
       "subtitle": "Care You Can Count On.",
       "heroBadge": "Coming Soon",
-      "heroTagline": "Healthcare is evolving. Your pharmacy should too.",
-      "heroDescription": "AIRO Pharmacy combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health.",
+      "heroTagline": "Healthcare is evolving. Your pharmacy & compounding should too.",
+      "heroDescription": "AIRO Pharmacy & Compounding combines trusted prescription care, advanced wellness solutions, personalized compounding, and expert guidance in one elevated experience designed around your health.",
       "heroButtonText": "Compounding Portal Closed",
       "heroButtonLabel": "Opening Winter 2026",
       "sections": {
@@ -377,9 +378,9 @@
         },
         "philosophy": {
           "sectionLabel": "Philosophy",
-          "title": "A Different Kind of Pharmacy",
+          "title": "A Different Kind of Pharmacy & Compounding",
           "tagline": "Most pharmacies focus on transactions. We focus on people.",
-          "description": "At AIRO Pharmacy, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better.",
+          "description": "At AIRO Pharmacy & Compounding, every product, recommendation, and service is chosen with one goal: helping individuals live healthier, longer, and better.",
           "bodyText": "Whether you're managing a chronic condition, optimizing daily wellness, or exploring preventive healthcare solutions, our team is here to support your journey.",
           "image": "/pharmacy-checkout.jpg"
         },
@@ -387,13 +388,13 @@
           "sectionLabel": "Ecosystem",
           "title": "Healthcare Beyond Prescriptions",
           "tagline": "Today's health challenges require more than medication alone.",
-          "description": "That's why AIRO Pharmacy is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments.",
+          "description": "That's why AIRO Pharmacy & Compounding is designed as part of a connected healthcare ecosystem, bringing together pharmacy services, diagnostics, clinical care, wellness programs, and personalized treatments.",
           "closingLine": "Because better outcomes happen when healthcare works together.",
           "image": "https://images.unsplash.com/photo-1576602975754-efdf313b9342?q=80&w=1600"
         },
         "compounding": {
           "title": "Special Medicines Just For You",
-          "description": "Sometimes normal tablets don't work for everyone. AIRO Pharmacy makes special mixed medicines, custom skin creams, and proper dosages exactly the way your doctor ordered.",
+          "description": "Sometimes normal tablets don't work for everyone. AIRO Pharmacy & Compounding makes special mixed medicines, custom skin creams, and proper dosages exactly the way your doctor ordered.",
           "image": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?q=80&w=1600",
           "sectionLabel": "Tailored Biology",
           "previewBadge": "COMPLETED APOTHECARY PREVIEW",
@@ -401,21 +402,21 @@
         },
         "everyday": {
           "title": "Easy Medicine Refills",
-          "description": "Taking daily medicines should be simple. With AIRO Pharmacy, you get genuine medicines on time, clear advice from expert pharmacists, and total peace of mind for your family's health.",
+          "description": "Taking daily medicines should be simple. With AIRO Pharmacy & Compounding, you get genuine medicines on time, clear advice from expert pharmacists, and total peace of mind for your family's health.",
           "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=1600",
           "sectionLabel": "Proactive Care"
         },
         "catalogSection": {
           "sectionLabel": "The Catalog",
-          "sectionTitle": "Explore AIRO Pharmacy",
+          "sectionTitle": "Explore AIRO Pharmacy & Compounding",
           "sectionDescription": "Every category is built as a targeted pathway to clinical-grade care and longevity protocols.",
-          "shopAllButtonText": "Shop All Pharmacy",
+          "shopAllButtonText": "Shop All Pharmacy & Compounding",
           "shopAllButtonLink": "/pharmacy/shop"
         },
         "closingSection": {
           "sectionLabel": "Join The Future",
           "sectionTitle": "Trusted. Accessible. Connected.",
-          "sectionDescription": "At AIRO Pharmacy, we believe healthcare should feel simpler, more human, and more accessible.",
+          "sectionDescription": "At AIRO Pharmacy & Compounding, we believe healthcare should feel simpler, more human, and more accessible.",
           "sectionTagline": "A place where expert care, innovative solutions, and everyday wellness come together.",
           "waitlistTitle": "The Compounding Waitlist",
           "waitlistSubtitle": "Secure priority consultation access",
@@ -449,7 +450,7 @@
       "title": "Know Your Body.",
       "subtitle": "In Just 5 Minutes.",
       "heroBadge": "Proactive Longevity",
-      "heroImage": "/airo-praana-hero.png",
+      "heroImage": "/health-scan-chair.png",
       "description": "The AIRO 5-Minute Health Chair offers a frictionless, clinical-grade metabolic assessment. Sit down, scan your biometrics, and receive actionable insights into your health span instantly.",
       "metrics": "Blood Pressure, Heart Rate & ECG, SpO\u2082, Respiratory Rate, Temperature, Weight & BMI",
       "sections": {
@@ -498,7 +499,7 @@
         },
         "connectedEcosystem": {
           "title": "Connected To The Entire AIRO Ecosystem",
-          "nodes": "Health Scan, AIRO App, Minute Clinic, Doctor Consult, Pharmacy"
+          "nodes": "Health Scan, AIRO App, Minute Clinic, Doctor Consult, Pharmacy & Compounding"
         },
         "preventiveSection": {
           "title": "Know Earlier. Act Sooner.",
@@ -530,7 +531,7 @@
           },
           {
             "title": "Compounding Purity",
-            "description": "Our pharmacy makes custom medicines in highly clean and safe rooms, following strict international quality and safety rules.",
+            "description": "Our pharmacy & compounding makes custom medicines in highly clean and safe rooms, following strict international quality and safety rules.",
             "badge": "Strictly Quality Checked"
           },
           {

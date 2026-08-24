@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
 import { minuteClinicServices, mainCategories } from "@/data/minuteClinicServices";
+import { getSearchKeywords } from "@/lib/searchSynonyms";
 
 export function ServicesDirectory() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -12,9 +13,13 @@ export function ServicesDirectory() {
 
   const filteredServices = minuteClinicServices.filter(service => {
     const matchesCategory = selectedCategory === "All" || service.mainCategory === selectedCategory;
-    const matchesSearch = service.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          service.mainCategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          service.subCategory.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (!searchQuery) return matchesCategory;
+    
+    const queryKeywords = getSearchKeywords(searchQuery);
+    const serviceText = `${service.title} ${service.mainCategory} ${service.subCategory}`.toLowerCase();
+    const matchesSearch = queryKeywords.some(kw => serviceText.includes(kw));
+    
     return matchesCategory && matchesSearch;
   });
 
@@ -94,7 +99,7 @@ export function ServicesDirectory() {
                     key={service.id}
                   >
                     <Link 
-                      href={`/minute-clinic/services/${service.id}`}
+                      href={`/minute-clinic/booking?service=${service.id}`}
                       className="group flex flex-col justify-between p-5 bg-white border border-theme/10 rounded-2xl hover:border-theme/30 hover:shadow-lg transition-all h-full min-h-[100px]"
                     >
                       <div className="flex flex-col gap-1 pr-4 mb-4">

@@ -8,17 +8,23 @@ import { useCms } from "@/context/CmsContext";
 
 import { ServicesDirectory } from "@/components/minute-clinic/ServicesDirectory";
 
+import Image from "next/image";
+
+const MotionImage = motion(Image);
+
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
   src, 
   alt, 
   className = "", 
-  speed = 0.1 
+  speed = 0.1,
+  priority = false
 }: { 
   src: string; 
   alt: string; 
   className?: string; 
   speed?: number;
+  priority?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -32,11 +38,14 @@ function ParallaxImage({
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
-      <motion.img
+      <MotionImage
         src={src}
         alt={alt}
         style={{ y, scale }}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        priority={priority}
+        className="object-cover"
         transition={{ type: "spring", stiffness: 30, damping: 15 }}
       />
     </div>
@@ -87,13 +96,13 @@ export default function MinuteClinicPage() {
 
             <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 w-full sm:w-auto">
               <Link 
-                href="/book-health-scan"
+                href="/minute-clinic/booking?type=in-person"
                 className="text-[10px] tracking-[0.2em] uppercase font-bold text-paper bg-theme px-8 py-4 rounded-full border border-theme hover:bg-blue-600 hover:border-blue-600 transition-all shadow-lg text-center w-full sm:w-auto flex-1 whitespace-nowrap"
               >
                 In-Person Visits
               </Link>
               <Link 
-                href="/book-health-scan"
+                href="/minute-clinic/booking?type=virtual"
                 className="text-[10px] tracking-[0.2em] uppercase font-bold text-ink bg-white px-8 py-4 rounded-full border border-theme/20 hover:border-theme hover:bg-gray-50 transition-all shadow-sm text-center w-full sm:w-auto flex-1 whitespace-nowrap"
               >
                 Virtual Consultation
@@ -106,9 +115,10 @@ export default function MinuteClinicPage() {
             <div className="relative aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4] w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl">
               <ParallaxImage 
                 src={hero.image} 
-                alt="AIRO Clinic Biomarkers & Diagnostics"
+                alt={hero.heroAltText || "AIRO Clinic Biomarkers & Diagnostics"}
                 className="w-full h-full"
                 speed={0.1}
+                priority={true}
               />
               <div className="absolute inset-0 bg-theme/10 mix-blend-multiply" />
               <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-paper/90 border border-theme/10 p-6 rounded-xl text-left">
@@ -164,6 +174,36 @@ export default function MinuteClinicPage() {
       </section>
 
       <ServicesDirectory />
+
+      {/* SECTION 2.5: FREE HEALTH CHECKUP (Full Screen CTA) */}
+      <section className="relative w-full py-32 md:py-48 px-6 md:px-16 flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ParallaxImage 
+            src="/health-scan-chair.png" 
+            alt="AIRO Health Scan" 
+            className="w-full h-full"
+            speed={0.15}
+          />
+          <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-theme/80 to-transparent" />
+        </div>
+        
+        <div className="relative z-10 max-w-[800px] mx-auto flex flex-col items-center text-center">
+          <Shield className="w-12 h-12 mb-8 text-white/90" />
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight mb-6 text-white drop-shadow-lg">
+            Free Comprehensive <br/><span className="italic font-light text-white/90">Health Checkup</span>
+          </h2>
+          <p className="font-sans text-sm md:text-base text-white/90 leading-relaxed mb-10 max-w-lg mx-auto drop-shadow-md">
+            Take control of your health today. Book a free, comprehensive health scan at our Minute Clinic to understand your baseline metrics and start your journey towards optimal longevity.
+          </p>
+          <a 
+            href="https://www.airoessentials.com/book-health-scan"
+            className="text-[10px] tracking-[0.2em] uppercase font-bold text-ink bg-white px-10 py-5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-3"
+          >
+            Book Free Scan <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+      </section>
 
       {/* SECTION 3: DESIGNED AROUND PREVENTION (Storytelling Block 2) */}
       <section className="py-24 md:py-36 px-6 md:px-16 max-w-[1400px] mx-auto">
@@ -281,8 +321,6 @@ export default function MinuteClinicPage() {
         </div>
       </section>
 
-      {/* SECTION 6: THE NEW STANDARD & BOOKING WAITLIST (Storytelling Block 6) */}
-      
     </div>
   );
 }

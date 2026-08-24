@@ -127,7 +127,7 @@ export default function HealthChairPage() {
               className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight leading-none mb-6 text-white"
             >
               {pageContent.title.split(' ')[0]}<br/>
-              <span className="italic font-light">{pageContent.title.split(' ')[1]}</span>
+              <span className="italic font-light">{pageContent.title.split(' ').slice(1).join(' ')}</span>
             </motion.h1>
             
             <motion.p 

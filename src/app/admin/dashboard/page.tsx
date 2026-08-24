@@ -8,7 +8,7 @@ import {
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
   Settings, ShieldAlert, LogOut, ArrowRight,
   TrendingUp, TrendingDown, DollarSign, Activity,
-  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin
+  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
@@ -21,6 +21,7 @@ import AdminCustomersManager from "@/components/admin/AdminCustomersManager";
 import { AdminBookingsManager } from "@/components/admin/AdminBookingsManager";
 import AdminMembershipDashboard from "@/app/admin/membership/page";
 import { LocationsManager } from "@/components/admin/LocationsManager";
+import { AdminMinuteClinicManager } from "@/components/admin/AdminMinuteClinicManager";
 import Image from "next/image";
 
 // Types
@@ -51,6 +52,7 @@ interface Lead {
 
 const SIDEBAR_NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "minute-clinic", label: "Minute Clinic", icon: Stethoscope },
   { id: "bookings", label: "Health Intakes", icon: Ticket }, // Using Ticket/Calendar-like icon
   { id: "membership", label: "Memberships", icon: ShieldCheck },
   { id: "orders", label: "Orders", icon: ShoppingBag },
@@ -76,6 +78,10 @@ export default function AdminDashboardPage() {
   const [pageViews, setPageViews] = useState<Record<string, number>>({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{id?: string, name: string, email: string, role: string, allowedModules: string[]} | null>(null);
+
+  const [totalMemberships, setTotalMemberships] = useState(0);
+  const [totalHealthCheckups, setTotalHealthCheckups] = useState(0);
+  const [healthCheckupLocations, setHealthCheckupLocations] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const auth = localStorage.getItem("airo_admin_auth");
@@ -127,6 +133,27 @@ export default function AdminDashboardPage() {
     } catch (error) {
       console.error("Error loading analytics data:", error);
     }
+
+    try {
+      const qMembers = query(collection(db, "Members"));
+      const snapMembers = await getDocs(qMembers);
+      setTotalMemberships(snapMembers.size);
+      
+      const qBookings = query(collection(db, "healthBookings"));
+      const snapBookings = await getDocs(qBookings);
+      setTotalHealthCheckups(snapBookings.size);
+      
+      const locations: Record<string, number> = {};
+      snapBookings.forEach((doc) => {
+        const data = doc.data();
+        if (data.location) {
+          locations[data.location] = (locations[data.location] || 0) + 1;
+        }
+      });
+      setHealthCheckupLocations(locations);
+    } catch (error) {
+      console.error("Error loading dashboard stats:", error);
+    }
   };
 
   const handleLogout = () => {
@@ -138,6 +165,7 @@ export default function AdminDashboardPage() {
 
   const totalPageViews = Object.values(pageViews).reduce((a, b) => a + b, 0) + 1450; 
   const uniqueVisitors = Math.round(totalPageViews * 0.42);
+  const totalCustomers = totalMemberships + totalHealthCheckups;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -145,141 +173,95 @@ export default function AdminDashboardPage() {
         return (
           <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-6">
             <div className="mb-8">
-              <h1 className="text-xl text-gray-800 font-medium">Good afternoon, here is your sales overview</h1>
+              <h1 className="text-xl text-gray-800 font-medium">Good afternoon, here is your AIRO overview</h1>
               <p className="text-sm text-gray-500">Overview of AIRO platform operations</p>
             </div>
 
             {/* Top Cards Row */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Revenue</span>
-                <div className="text-2xl font-semibold text-gray-800">₹1,539</div>
-                <div className="text-xs text-gray-400 mt-1">7 past orders</div>
-                <div className="absolute top-4 right-4 text-emerald-500 bg-emerald-50 p-1.5 rounded-lg">
-                  <TrendingUp className="w-4 h-4" />
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Total Orders</span>
-                <div className="text-2xl font-semibold text-gray-800">7</div>
-                <div className="text-xs text-gray-400 mt-1">All orders placed</div>
-                <div className="absolute top-4 right-4 text-emerald-500 bg-emerald-50 p-1.5 rounded-lg">
-                  <ShoppingBag className="w-4 h-4" />
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">New Users</span>
-                <div className="text-2xl font-semibold text-gray-800">21</div>
-                <div className="text-xs text-gray-400 mt-1">Registered users</div>
-                <div className="absolute top-4 right-4 text-amber-500 bg-amber-50 p-1.5 rounded-lg">
-                  <Users className="w-4 h-4" />
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Active Products</span>
-                <div className="text-2xl font-semibold text-gray-800">13</div>
-                <div className="text-xs text-gray-400 mt-1">In catalogues</div>
-                <div className="absolute top-4 right-4 text-emerald-500 bg-emerald-50 p-1.5 rounded-lg">
-                  <Package className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-
-            {/* Second Cards Row */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Visitors/Sessions</span>
+                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Total Visitors</span>
                 <div className="text-2xl font-semibold text-gray-800">{uniqueVisitors}</div>
-                <div className="text-xs text-gray-400 mt-1">Last 30 days</div>
+                <div className="text-xs text-gray-400 mt-1">Unique site sessions (Simulated)</div>
                 <div className="absolute top-4 right-4 text-indigo-500 bg-indigo-50 p-1.5 rounded-lg">
                   <Activity className="w-4 h-4" />
                 </div>
               </div>
 
               <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Average Order Value</span>
-                <div className="text-2xl font-semibold text-gray-800">₹662</div>
-                <div className="text-xs text-gray-400 mt-1">Last 30 days</div>
+                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Total Customers</span>
+                <div className="text-2xl font-semibold text-gray-800">{totalCustomers}</div>
+                <div className="text-xs text-gray-400 mt-1">Total active users</div>
                 <div className="absolute top-4 right-4 text-emerald-500 bg-emerald-50 p-1.5 rounded-lg">
-                  <TrendingUp className="w-4 h-4" />
+                  <Users className="w-4 h-4" />
                 </div>
               </div>
 
               <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Return Rate</span>
-                <div className="text-2xl font-semibold text-gray-800">1%</div>
-                <div className="text-xs text-gray-400 mt-1">Today</div>
+                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Memberships</span>
+                <div className="text-2xl font-semibold text-gray-800">{totalMemberships}</div>
+                <div className="text-xs text-gray-400 mt-1">Registered members</div>
                 <div className="absolute top-4 right-4 text-amber-500 bg-amber-50 p-1.5 rounded-lg">
-                  <TrendingDown className="w-4 h-4" />
+                  <ShieldCheck className="w-4 h-4" />
                 </div>
               </div>
 
               <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col relative overflow-hidden">
-                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Bounce Rate</span>
-                <div className="text-2xl font-semibold text-gray-800">13%</div>
-                <div className="text-xs text-gray-400 mt-1">Today</div>
+                <span className="text-[10px] text-gray-400 font-bold tracking-wider uppercase mb-2">Health Checkups</span>
+                <div className="text-2xl font-semibold text-gray-800">{totalHealthCheckups}</div>
+                <div className="text-xs text-gray-400 mt-1">Free registrations</div>
                 <div className="absolute top-4 right-4 text-emerald-500 bg-emerald-50 p-1.5 rounded-lg">
-                  <TrendingUp className="w-4 h-4" />
+                  <Ticket className="w-4 h-4" />
                 </div>
               </div>
             </div>
 
             {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-100 shadow-sm min-h-[300px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm min-h-[300px]">
                 <div className="flex justify-between items-center mb-6">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-800">Revenue</h3>
-                    <p className="text-xs text-gray-400">Last 14 days - auto updated</p>
+                    <h3 className="text-sm font-medium text-gray-800">Health Checkups by Location</h3>
+                    <p className="text-xs text-gray-400">Distribution of free scan registrations</p>
                   </div>
                   <span className="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full font-medium flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE
                   </span>
                 </div>
-                {/* Chart Placeholder */}
-                <div className="w-full h-48 border-b border-l border-gray-100 flex items-end justify-between px-2 relative">
-                  <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                    <Activity className="w-32 h-32 text-gray-900" />
+                
+                {Object.keys(healthCheckupLocations).length > 0 ? (
+                  <div className="flex flex-col gap-4 mt-8">
+                    {Object.entries(healthCheckupLocations)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([location, count], idx) => {
+                        const colors = ['bg-theme', 'bg-emerald-500', 'bg-amber-500', 'bg-indigo-500', 'bg-blue-500'];
+                        const colorClass = colors[idx % colors.length];
+                        const percentage = ((count / totalHealthCheckups) * 100).toFixed(1);
+                        return (
+                          <div key={location} className="flex flex-col gap-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-gray-600 font-medium">{location}</span>
+                              <span className="text-xs font-semibold">{count} ({percentage}%)</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                              <div className={`${colorClass} h-1.5 rounded-full`} style={{ width: `${percentage}%` }}></div>
+                            </div>
+                          </div>
+                        );
+                    })}
                   </div>
-                  {[40, 20, 60, 40, 80, 50, 90, 70, 30, 60, 40, 80, 60, 100].map((h, i) => (
-                    <div key={i} className="w-4 bg-gradient-to-t from-[#0A84FF] to-[#0A84FF]/40 rounded-t-sm" style={{ height: `${h}%` }}></div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                <h3 className="text-sm font-medium text-gray-800 mb-6">Top products</h3>
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-theme"></div>
-                      <span className="text-xs text-gray-600">AIRO Hydrate</span>
-                    </div>
-                    <span className="text-xs font-medium">1 16.6%</span>
+                ) : (
+                  <div className="flex items-center justify-center h-48 text-gray-400 text-sm">
+                    No location data available yet
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                      <span className="text-xs text-gray-600">AIRO Energy</span>
-                    </div>
-                    <span className="text-xs font-medium">1 16.6%</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                      <span className="text-xs text-gray-600">AIRO Energy - 12 Pack</span>
-                    </div>
-                    <span className="text-xs font-medium">2 33.3%</span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             
           </div>
         );
+      case "minute-clinic":
+        return <AdminMinuteClinicManager />;
       case "bookings":
         return <AdminBookingsManager />;
       case "membership":

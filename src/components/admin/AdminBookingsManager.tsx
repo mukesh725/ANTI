@@ -570,6 +570,79 @@ export function AdminBookingsManager() {
         </div>
       )}
 
+      {/* Reschedule Modal */}
+      {rescheduleModalBooking && (
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div className="p-6">
+              <h3 className="font-bold text-gray-900 mb-2">Reschedule Booking</h3>
+              <p className="text-sm text-gray-500 mb-4">Select a new date and time for {rescheduleModalBooking.firstName}'s appointment.</p>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">New Date</label>
+                  <input 
+                    type="date"
+                    min={new Date().toISOString().split('T')[0]}
+                    value={rescheduleDate}
+                    onChange={(e) => {
+                      setRescheduleDate(e.target.value);
+                      setSelectedRescheduleSlot(""); // Reset slot when date changes
+                    }}
+                    className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:border-theme"
+                  />
+                </div>
+
+                {rescheduleDate && (
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Available Times</label>
+                    {rescheduleSlots.length > 0 ? (
+                      <div className="grid grid-cols-3 gap-2">
+                        {rescheduleSlots.map(slot => (
+                          <button
+                            key={slot}
+                            onClick={() => setSelectedRescheduleSlot(slot)}
+                            className={`p-2 text-xs font-medium rounded-lg border ${
+                              selectedRescheduleSlot === slot 
+                                ? 'bg-theme text-white border-theme' 
+                                : 'bg-white text-gray-700 border-gray-200 hover:border-theme'
+                            }`}
+                          >
+                            {slot}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500 italic">No available slots for this date.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-3 mt-6">
+                <button 
+                  onClick={() => { 
+                    setRescheduleModalBooking(null); 
+                    setRescheduleDate(""); 
+                    setSelectedRescheduleSlot(""); 
+                  }}
+                  className="px-4 py-2 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button 
+                  disabled={!rescheduleDate || !selectedRescheduleSlot}
+                  onClick={handleConfirmReschedule}
+                  className="px-4 py-2 text-sm font-bold bg-theme text-white hover:bg-theme/90 rounded-lg disabled:opacity-50"
+                >
+                  Confirm Reschedule
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
         <div className="flex-1">
@@ -811,13 +884,6 @@ export function AdminBookingsManager() {
                           }`}>
                             {booking.status}
                           </span>
-                          {booking.paymentStatus === 'Unpaid' && (
-                            <div className="mt-1.5">
-                              <span className="text-[10px] font-bold uppercase text-red-600 flex items-center gap-1">
-                                <AlertCircle className="w-3 h-3" /> Unpaid
-                              </span>
-                            </div>
-                          )}
                         </td>
 
                         {/* 5. Actions Column */}

@@ -116,6 +116,54 @@ export default function AdminCustomersManager() {
         }
       });
 
+      // 3. Fetch from Users (App Accounts / Profile Updates)
+      const usersRef = collection(db, "users");
+      const usersSnapshot = await getDocs(usersRef);
+
+      usersSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const email = data.email?.toLowerCase().trim();
+        const mobile = data.mobile?.trim();
+        const key = email || mobile;
+
+        if (!key) return;
+        
+        const dateObj = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+
+        let addressStr = "";
+        if (data.address || data.city || data.stateText || data.zip) {
+          addressStr = `${data.address || ''} ${data.city || ''} ${data.stateText || ''} ${data.zip || ''}`.trim();
+        }
+
+        if (customersMap.has(key)) {
+          const existing = customersMap.get(key)!;
+          if (!existing.sources.includes("App Account")) {
+            existing.sources.push("App Account");
+          }
+          if (existing.lastActive < dateObj) existing.lastActive = dateObj;
+          if (!existing.address && addressStr) existing.address = addressStr;
+          if (!existing.gender && data.gender) existing.gender = data.gender;
+          if (!existing.dob && data.dob) existing.dob = data.dob;
+          if (!existing.firstName && data.firstName) existing.firstName = data.firstName;
+          if (!existing.lastName && data.lastName) existing.lastName = data.lastName;
+        } else {
+          customersMap.set(key, {
+            id: `u_${doc.id}`,
+            firstName: data.firstName || data.name?.split(' ')[0] || "",
+            lastName: data.lastName || data.name?.split(' ').slice(1).join(' ') || "",
+            email: email || "",
+            mobile: mobile || "",
+            dob: data.dob,
+            gender: data.gender,
+            address: addressStr,
+            sources: ["App Account"],
+            lastActive: dateObj
+          });
+        }
+      });
+
+
+
       // Convert map to array and sort by latest activity
       const allCustomers = Array.from(customersMap.values());
       allCustomers.sort((a, b) => b.lastActive.getTime() - a.lastActive.getTime());
