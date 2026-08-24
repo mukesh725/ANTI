@@ -110,7 +110,7 @@ export default function ContactPage() {
         {/* Left Side: Contact Information & Cards */}
         <div className="lg:col-span-5 space-y-10">
           <div className="border-b border-[#E6DFD5] pb-8">
-            <h2 className="font-serif text-2xl mb-6 tracking-wide">Concierge Offices</h2>
+            <h2 className="font-serif text-2xl mb-6 tracking-wide">Contact Us</h2>
             
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
@@ -122,7 +122,7 @@ export default function ContactPage() {
                   <p className="text-sm font-semibold hover:text-ink/70 transition-colors">
                     {details.phone}
                   </p>
-                  <p className="text-xs text-ink/60 mt-0.5">Toll-free across North America</p>
+                  <p className="text-xs text-ink/60 mt-0.5">Toll-free</p>
                 </div>
               </div>
 
@@ -148,7 +148,7 @@ export default function ContactPage() {
                   <p className="text-sm font-semibold">
                     {details.address}
                   </p>
-                  <p className="text-xs text-ink/60 mt-0.5">Integrated clinic, laboratory, and pharmacy center</p>
+                  <p className="text-xs text-ink/60 mt-0.5"></p>
                 </div>
               </div>
 
