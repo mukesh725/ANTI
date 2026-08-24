@@ -118,7 +118,7 @@ export default function ContactPage() {
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call AIRO Concierge</h4>
+                  <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call</h4>
                   <p className="text-sm font-semibold hover:text-ink/70 transition-colors">
                     {details.phone}
                   </p>
