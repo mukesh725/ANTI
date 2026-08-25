@@ -117,6 +117,9 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png',
       shortcut: isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png',
     },
+    verification: {
+      google: !isHealth ? "MMmKD7sRUv2PaDkSZsna0nnJrknvi1AXh0MuZob40mo" : undefined,
+    }
   };
 }
 
