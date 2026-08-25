@@ -8,7 +8,7 @@ import {
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
   Settings, ShieldAlert, LogOut, ArrowRight,
   TrendingUp, TrendingDown, DollarSign, Activity,
-  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope
+  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope, FileText
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
@@ -22,6 +22,7 @@ import { AdminBookingsManager } from "@/components/admin/AdminBookingsManager";
 import AdminMembershipDashboard from "@/app/admin/membership/page";
 import { LocationsManager } from "@/components/admin/LocationsManager";
 import { AdminMinuteClinicManager } from "@/components/admin/AdminMinuteClinicManager";
+import { AdminBlogManager } from "@/components/admin/AdminBlogManager";
 import Image from "next/image";
 
 // Types
@@ -63,6 +64,7 @@ const SIDEBAR_NAV = [
   { id: "customers", label: "Customers", icon: Users },
   { id: "leads", label: "Leads", icon: UserPlus },
   { id: "locations", label: "Locations", icon: MapPin },
+  { id: "blog", label: "Blog", icon: FileText },
   { id: "cms", label: "CMS", icon: Database },
   { id: "coupons", label: "Coupons", icon: Ticket },
   { id: "settings", label: "Settings", icon: Settings },
@@ -270,6 +272,8 @@ export default function AdminDashboardPage() {
         return <EcomManager />;
       case "products":
         return <ProductManager />;
+      case "blog":
+        return <AdminBlogManager />;
       case "cms":
         return <CmsEditor />;
       case "customers":
