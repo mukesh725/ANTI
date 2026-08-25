@@ -22,6 +22,7 @@
     "jspdf": "^4.2.1",
     "lucide-react": "^1.14.0",
     "next": "14.2.35",
+    "openai": "^6.49.0",
     "qrcode": "^1.5.4",
     "razorpay": "^2.9.8",
     "react": "^18",
