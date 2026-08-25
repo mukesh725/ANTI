@@ -24,6 +24,7 @@ const allLinks: NavLink[] = [
     ]
   },
   { href: "/membership", label: "Membership" },
+  { href: "/blog", label: "Journal" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" }
 ];
@@ -33,7 +34,8 @@ const healthLinks: NavLink[] = [
   { href: "/pharmacy", label: "Pharmacy & Compounding" },
   { href: "/minute-clinic", label: "Minute Clinic" },
   { href: "/health-chair", label: "AIRO Praana" },
-  { href: "/membership", label: "Membership" }
+  { href: "/membership", label: "Membership" },
+  { href: "/blog", label: "Journal" }
 ];
 
 // Apple Design Spring (Critically damped - no overshoot)

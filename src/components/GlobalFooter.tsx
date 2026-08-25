@@ -95,6 +95,17 @@ export function GlobalFooter() {
                 </motion.span>
               </Link>
             </li>
+            <li>
+              <Link href="/blog" className="inline-block">
+                <motion.span 
+                  whileTap={{ scale: 0.96 }}
+                  transition={springDefault}
+                  className="block hover:text-paper transition-colors"
+                >
+                  Journal & Insights
+                </motion.span>
+              </Link>
+            </li>
           </ul>
         </div>
 
