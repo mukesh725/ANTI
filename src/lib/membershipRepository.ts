@@ -221,10 +221,34 @@ export async function getAllMembers(
         new Date(a.registrationDate || 0).getTime()
     );
 
-    // Apply search query (Mobile, Email, Registration ID, ONE ID, Name)
+    // Apply search query (Mobile, Email, Registration ID, ONE ID, Name, or Dependent details)
     if (searchQuery && searchQuery.trim().length > 0) {
       const q = searchQuery.trim().toLowerCase();
       const qClean = q.replace(/[^a-zA-Z0-9]/g, '');
+
+      // 1. Check if the search matches any dependents
+      const patientsRef = collection(db, 'patients');
+      const patientsSnap = await getDocs(patientsRef);
+      const matchedAccountIds = new Set<string>();
+
+      patientsSnap.docs.forEach((docSnap) => {
+        const p = docSnap.data();
+        if (p.role === 'dependent') {
+          const pName = `${p.firstName || ''} ${p.lastName || ''}`.toLowerCase();
+          const pPhone = p.phone || '';
+          const pEmail = p.email?.toLowerCase() || '';
+          
+          if (
+            pName.includes(q) ||
+            pPhone.includes(q) ||
+            pEmail.includes(q) ||
+            p.id.toLowerCase().includes(q)
+          ) {
+            if (p.accountId) matchedAccountIds.add(p.accountId);
+          }
+        }
+      });
+
       list = list.filter((m) => {
         const fullName = `${m.firstName} ${m.lastName}`.toLowerCase();
         const mIdClean = (m.memberId || '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
@@ -236,7 +260,8 @@ export async function getAllMembers(
           m.mobile?.includes(q) ||
           m.registrationId?.toLowerCase().includes(q) ||
           m.memberId?.toLowerCase().includes(q) ||
-          (qClean.length > 3 && (mIdClean.includes(qClean) || regIdClean.includes(qClean)))
+          (qClean.length > 3 && (mIdClean.includes(qClean) || regIdClean.includes(qClean))) ||
+          (m.mobile && matchedAccountIds.has(m.mobile))
         );
       });
     }
