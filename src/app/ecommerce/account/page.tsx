@@ -179,8 +179,24 @@ export default function AccountPage() {
                 const depsRes = await fetch(`/api/membership/dependents/list?accountId=${encodeURIComponent(finalMember.mobile)}`);
                 const depsData = await depsRes.json();
                 if (depsData.success && depsData.patients) {
-                   setDependents(depsData.patients);
-                   if (depsData.patients.length > 0) setActivePatientId(depsData.patients[0].id);
+                   let patientsList = [...depsData.patients];
+                   // Handle un-migrated flat accounts: Inject a mock primary patient so the switcher works
+                   if (patientsList.length === 0) {
+                      patientsList.push({
+                         id: finalMember.id,
+                         accountId: finalMember.mobile,
+                         firstName: finalMember.firstName || "Primary",
+                         lastName: finalMember.lastName || "Member",
+                         dob: finalMember.dob || "1980-01-01",
+                         gender: finalMember.gender || "Not Specified",
+                         mobile: finalMember.mobile,
+                         role: "primary",
+                         status: "active",
+                         clinicalAccessAllowed: true
+                      } as PatientRecord & { clinicalAccessAllowed: boolean });
+                   }
+                   setDependents(patientsList);
+                   if (patientsList.length > 0) setActivePatientId(patientsList[0].id);
                 }
              } catch(e) {
                 console.error("Failed fetching dependents", e);
