@@ -18,19 +18,36 @@ export async function POST(req: Request) {
     // 1. Verify Account Exists
     const accountRef = doc(db, 'accounts', data.accountId);
     const accountSnap = await getDoc(accountRef);
+    let maxMembers = 1;
 
     if (!accountSnap.exists()) {
-      return NextResponse.json({ error: 'Account not found' }, { status: 404 });
+      // Fallback: Check if they are a legacy un-migrated member in the 'Members' collection
+      const membersQuery = query(collection(db, 'Members'), where('mobile', '==', data.accountId));
+      const membersSnap = await getDocs(membersQuery);
+      
+      if (membersSnap.empty) {
+        return NextResponse.json({ error: 'Account not found. Please register as a primary member first.' }, { status: 404 });
+      }
+      
+      const legacyMember = membersSnap.docs[0].data();
+      const planName = (legacyMember.membershipPlan || '').toLowerCase();
+      if (planName.includes('signature')) {
+        maxMembers = 5;
+      } else if (planName.includes('preferred')) {
+        maxMembers = 3;
+      }
+    } else {
+      const accountData = accountSnap.data() as AccountRecord;
+      maxMembers = accountData.maxMembers || 1;
     }
-    const accountData = accountSnap.data() as AccountRecord;
 
     // 2. Enforce Max Members Limit
     const patientsRef = collection(db, 'patients');
     const q = query(patientsRef, where('accountId', '==', data.accountId));
     const patientsSnap = await getDocs(q);
 
-    if (patientsSnap.size >= accountData.maxMembers) {
-      return NextResponse.json({ error: `Member limit reached. Max members allowed: ${accountData.maxMembers}` }, { status: 400 });
+    if (patientsSnap.size >= maxMembers) {
+      return NextResponse.json({ error: `Member limit reached. Max members allowed: ${maxMembers}` }, { status: 400 });
     }
 
     // 3. Handle Phone Constraints (If provided)

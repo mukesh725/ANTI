@@ -34,7 +34,7 @@ export default function AddMemberModal({ isOpen, onClose, accountId, onSuccess }
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accountId,
-          dependentData: formData,
+          ...formData,
         }),
       });
 
