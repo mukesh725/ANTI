@@ -1,5 +1,6 @@
 "use client";
 
+import * as import_react from 'react';
 import { useState, useEffect } from 'react';
 import { 
   Search, 
@@ -35,8 +36,7 @@ export default function AdminMembershipDashboard() {
   const [members, setMembers] = useState<MemberRecord[]>([]);
   const [dependents, setDependents] = useState<PatientRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingDependents, setLoadingDependents] = useState(false);
-  const [activeTab, setActiveTab] = useState<'members' | 'dependents' | 'templates'>('members');
+  const [activeTab, setActiveTab] = useState<'members' | 'templates'>('members');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
@@ -105,6 +105,13 @@ export default function AdminMembershipDashboard() {
       if (data.success) {
         setMembers(data.members || []);
       }
+      
+      // Fetch dependents to display underneath primary members
+      const depRes = await fetch('/api/admin/dependents');
+      const depData = await depRes.json();
+      if (depData.success) {
+        setDependents(depData.dependents || []);
+      }
     } catch (err) {
       console.error('Failed to fetch members:', err);
     } finally {
@@ -112,26 +119,9 @@ export default function AdminMembershipDashboard() {
     }
   };
 
-  const fetchDependents = async () => {
-    setLoadingDependents(true);
-    try {
-      const res = await fetch('/api/admin/dependents');
-      const data = await res.json();
-      if (data.success) {
-        setDependents(data.dependents || []);
-      }
-    } catch (err) {
-      console.error('Failed to fetch dependents:', err);
-    } finally {
-      setLoadingDependents(false);
-    }
-  };
-
   useEffect(() => {
     if (activeTab === 'members') {
       fetchMembers();
-    } else if (activeTab === 'dependents') {
-      fetchDependents();
     }
   }, [search, statusFilter, activeTab]);
 
@@ -336,12 +326,6 @@ export default function AdminMembershipDashboard() {
           Members List
         </button>
         <button 
-          onClick={() => setActiveTab('dependents')}
-          className={`pb-3 px-1 text-sm font-bold border-b-2 transition-colors ${activeTab === 'dependents' ? 'border-[#006537] text-[#006537]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-        >
-          Family Members
-        </button>
-        <button 
           onClick={() => setActiveTab('templates')}
           className={`pb-3 px-1 text-sm font-bold border-b-2 transition-colors ${activeTab === 'templates' ? 'border-[#006537] text-[#006537]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
@@ -349,75 +333,9 @@ export default function AdminMembershipDashboard() {
         </button>
       </div>
       
-      {activeTab === 'templates' && <CardTemplateManager />}
-
-      {activeTab === 'dependents' && (
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="p-5 border-b border-gray-100 bg-gray-50/50">
-            <h2 className="text-lg font-bold text-gray-900">Family Members (Dependents)</h2>
-            <p className="text-sm text-gray-500">List of all added family members across all accounts.</p>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[800px]">
-              <thead>
-                <tr className="bg-gray-100/70 text-gray-500 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
-                  <th className="p-4">Patient ID</th>
-                  <th className="p-4">Member Name</th>
-                  <th className="p-4">Primary Account (Mobile)</th>
-                  <th className="p-4">Contact</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4 text-right">Added On</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 text-sm">
-                {loadingDependents ? (
-                  <tr>
-                    <td colSpan={6} className="p-12 text-center text-gray-500">
-                      <div className="flex justify-center items-center gap-2">
-                        <div className="w-5 h-5 border-2 border-[#006537] border-t-transparent rounded-full animate-spin" />
-                        Loading family members...
-                      </div>
-                    </td>
-                  </tr>
-                ) : dependents.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} className="p-12 text-center text-gray-400">
-                      No family members found.
-                    </td>
-                  </tr>
-                ) : (
-                  dependents.map((dep) => (
-                    <tr key={dep.id} className="hover:bg-gray-50/80 transition-colors">
-                      <td className="p-4 font-mono font-bold text-gray-900">{dep.id}</td>
-                      <td className="p-4 font-bold text-gray-900">{dep.firstName} {dep.lastName}</td>
-                      <td className="p-4 text-gray-600">{dep.accountId}</td>
-                      <td className="p-4 text-gray-600">
-                        {dep.phone && <div className="text-xs flex items-center gap-1"><Phone className="w-3 h-3 text-gray-400"/> {dep.phone}</div>}
-                        {dep.email && <div className="text-xs flex items-center gap-1 mt-0.5"><Mail className="w-3 h-3 text-gray-400"/> {dep.email}</div>}
-                        {!dep.phone && !dep.email && <span className="text-xs text-gray-400">Managed (No Contact)</span>}
-                      </td>
-                      <td className="p-4">
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          dep.status === 'active' ? 'bg-emerald-100 text-emerald-800' :
-                          dep.status === 'invited' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {dep.status}
-                        </span>
-                      </td>
-                      <td className="p-4 text-right text-gray-500 text-xs">
-                        {new Date(dep.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'members' && (
+      {activeTab === 'templates' ? (
+        <CardTemplateManager />
+      ) : (
       <>
 
 
@@ -493,9 +411,12 @@ export default function AdminMembershipDashboard() {
                   const isPending = m.membershipStatus === 'Pending Activation';
                   const isActive = m.membershipStatus === 'Active';
                   const isEmailSending = sendingEmailId === (m.memberId || m.id || m.registrationId);
+                  
+                  const memberDependents = dependents.filter(d => d.accountId === m.mobile);
 
                   return (
-                    <tr key={m.id || m.registrationId} className="hover:bg-gray-50/80 transition-colors group">
+                    <import_react.Fragment key={m.id || m.registrationId}>
+                      <tr className="hover:bg-gray-50/80 transition-colors group">
                       
                       {/* Registration ID & Member ID */}
                       <td className="p-4 font-mono">
@@ -622,7 +543,45 @@ export default function AdminMembershipDashboard() {
                         </div>
                       </td>
 
-                    </tr>
+                      </tr>
+                      {/* Nested Dependents Row */}
+                      {memberDependents.length > 0 && (
+                        <tr className="bg-gray-50/50">
+                          <td colSpan={7} className="p-4 border-b border-gray-100">
+                            <div className="pl-14 border-l-2 border-[#006537]/30 py-2">
+                              <h4 className="text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-wider">
+                                Family Members ({memberDependents.length})
+                              </h4>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+                                {memberDependents.map(dep => (
+                                  <div key={dep.id} className="bg-white p-3 rounded-xl shadow-sm border border-gray-100 text-xs flex justify-between items-start">
+                                    <div>
+                                      <div className="font-bold text-gray-900">{dep.firstName} {dep.lastName}</div>
+                                      <div className="text-gray-500 font-mono text-[10px] mt-0.5">{dep.id}</div>
+                                      
+                                      <div className="mt-2 space-y-1">
+                                        {dep.phone && <div className="text-gray-600 flex items-center gap-1"><Phone className="w-3 h-3 text-gray-400"/> {dep.phone}</div>}
+                                        {dep.email && <div className="text-gray-600 flex items-center gap-1"><Mail className="w-3 h-3 text-gray-400"/> {dep.email}</div>}
+                                        {!dep.phone && !dep.email && <div className="text-gray-400 flex items-center gap-1"><ShieldCheck className="w-3 h-3"/> Managed (No Login)</div>}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                                        dep.status === 'active' ? 'bg-emerald-100 text-emerald-800' :
+                                        dep.status === 'invited' ? 'bg-blue-100 text-blue-800' :
+                                        'bg-gray-100 text-gray-800'
+                                      }`}>
+                                        {dep.status}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </import_react.Fragment>
                   );
                 })
               )}
@@ -646,6 +605,8 @@ export default function AdminMembershipDashboard() {
               const isPending = m.membershipStatus === 'Pending Activation';
               const isActive = m.membershipStatus === 'Active';
               const isEmailSending = sendingEmailId === (m.memberId || m.id || m.registrationId);
+              
+              const memberDependents = dependents.filter(d => d.accountId === m.mobile);
 
               return (
                 <div key={m.id || m.registrationId} className="p-4 space-y-4 bg-white hover:bg-gray-50 transition-colors">
