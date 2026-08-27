@@ -11,7 +11,9 @@ import {
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
-import { MemberRecord } from "@/types/membership";
+import { MemberRecord, PatientRecord } from "@/types/membership";
+import MemberSwitcher from "@/components/membership/MemberSwitcher";
+import AddMemberModal from "@/components/membership/AddMemberModal";
 
 interface Order {
   id: string;
@@ -31,6 +33,11 @@ export default function AccountPage() {
   // Membership State
   const [membership, setMembership] = useState<MemberRecord | null>(null);
   const [membershipLoading, setMembershipLoading] = useState(true);
+
+  // Multi-Member State
+  const [dependents, setDependents] = useState<(PatientRecord & { clinicalAccessAllowed?: boolean })[]>([]);
+  const [activePatientId, setActivePatientId] = useState<string | null>(null);
+  const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
 
   const activeEmail = profile?.email || user?.email;
 
@@ -145,6 +152,7 @@ export default function AccountPage() {
           memSnapshot = await getDocs(qMobile);
         }
 
+        let finalMember: any = null;
         if (memSnapshot.empty) {
           // Scan fallback for case variations or spaces
           const allMemSnap = await getDocs(collection(db, "Members"));
@@ -156,11 +164,28 @@ export default function AccountPage() {
           });
 
           if (matchedDoc) {
-            setMembership({ id: matchedDoc.id, ...(matchedDoc.data() as Omit<MemberRecord, 'id'>) });
+            finalMember = { id: matchedDoc.id, ...matchedDoc.data() };
           }
         } else {
           const docSnap = memSnapshot.docs[0];
-          setMembership({ id: docSnap.id, ...(docSnap.data() as Omit<MemberRecord, 'id'>) });
+          finalMember = { id: docSnap.id, ...docSnap.data() };
+        }
+
+        if (finalMember) {
+          setMembership(finalMember as MemberRecord);
+          // Fetch dependents using the primary's mobile as the accountId
+          if (finalMember.mobile) {
+             try {
+                const depsRes = await fetch(`/api/membership/dependents/list?accountId=${encodeURIComponent(finalMember.mobile)}`);
+                const depsData = await depsRes.json();
+                if (depsData.success && depsData.patients) {
+                   setDependents(depsData.patients);
+                   if (depsData.patients.length > 0) setActivePatientId(depsData.patients[0].id);
+                }
+             } catch(e) {
+                console.error("Failed fetching dependents", e);
+             }
+          }
         }
       } catch (err) {
         console.error("Failed to fetch membership:", err);
@@ -214,7 +239,20 @@ export default function AccountPage() {
           <div>
             <p className="text-gray-500 font-medium mb-1">Welcome back,</p>
             <h1 className="font-bold text-3xl md:text-4xl text-gray-900 mb-2">{displayName}</h1>
-            <p className="text-sm text-gray-500">Here's what's happening with your account today.</p>
+            <p className="text-sm text-gray-500 mb-4">Here's what's happening with your account today.</p>
+
+            {dependents.length > 0 && (
+              <MemberSwitcher 
+                dependents={dependents}
+                activePatientId={activePatientId}
+                onSelect={setActivePatientId}
+                onAddClick={() => setIsAddMemberOpen(true)}
+                maxMembers={
+                  membership?.membershipPlan?.includes('Signature') ? 5 :
+                  membership?.membershipPlan?.includes('Preferred') ? 3 : 1
+                }
+              />
+            )}
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full xl:w-auto">
@@ -650,6 +688,16 @@ export default function AccountPage() {
           </div>
         </div>
       )}
+
+      {/* Add Member Modal */}
+      <AddMemberModal 
+        isOpen={isAddMemberOpen}
+        onClose={() => setIsAddMemberOpen(false)}
+        accountId={membership?.mobile || ''}
+        onSuccess={() => {
+          if (typeof window !== 'undefined') window.location.reload();
+        }}
+      />
 
     </div>
   );
