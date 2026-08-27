@@ -67,7 +67,7 @@ export async function POST(req: Request) {
 
     // 4. Create Patient Record
     const patientId = generatePatientId();
-    const patientRecord: PatientRecord = {
+    const patientRecord: any = {
       id: patientId,
       accountId: data.accountId,
       role: 'dependent',
@@ -76,10 +76,13 @@ export async function POST(req: Request) {
       lastName: data.lastName,
       dob: data.dob,
       gender: data.gender,
-      phone: data.phone || undefined,
       createdAt: new Date().toISOString(),
       lastUpdated: new Date().toISOString()
     };
+
+    if (data.phone) {
+      patientRecord.phone = data.phone;
+    }
 
     await setDoc(doc(db, 'patients', patientId), patientRecord);
 
