@@ -19,6 +19,7 @@ export default function AddMemberModal({ isOpen, onClose, accountId, onSuccess }
     dob: "",
     gender: "Male",
     phone: "", // Optional. If blank => 'managed'. If provided => 'invited'
+    email: "", // Optional.
   });
 
   if (!isOpen) return null;
@@ -113,6 +114,19 @@ export default function AddMemberModal({ isOpen, onClose, accountId, onSuccess }
               />
             </div>
             <p className="text-[10px] text-gray-500 mt-1">Leave blank for minors or dependents without phones.</p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Email Address (Optional)</label>
+            <div className="relative">
+              <input
+                type="email"
+                placeholder="dependent@example.com"
+                value={formData.email}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#006537]"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">

@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       id: patientId,
       accountId: data.accountId,
       role: 'dependent',
-      status: data.phone ? 'invited' : 'managed',
+      status: (data.phone || data.email) ? 'invited' : 'managed',
       firstName: data.firstName,
       lastName: data.lastName,
       dob: data.dob,
@@ -83,19 +83,25 @@ export async function POST(req: Request) {
     if (data.phone) {
       patientRecord.phone = data.phone;
     }
+    if (data.email) {
+      patientRecord.email = data.email;
+    }
 
     await setDoc(doc(db, 'patients', patientId), patientRecord);
 
-    // 5. Mock SMS/WhatsApp Invite (In real world, integrate MSG91 or Twilio here)
+    // 5. Mock SMS/WhatsApp/Email Invite (In real world, integrate MSG91 or Twilio/SendGrid here)
     if (data.phone) {
       console.log(`[MOCK SMS] Sent to ${data.phone}: "You've been invited to join the AIRO ONE Membership by your primary account holder! Download the app and login with your phone number to activate your private profile."`);
+    }
+    if (data.email) {
+      console.log(`[MOCK EMAIL] Sent to ${data.email}: "You've been invited to join the AIRO ONE Membership by your primary account holder! Click here to activate your private profile."`);
     }
 
     return NextResponse.json({ 
       success: true, 
       patientId: patientId, 
       status: patientRecord.status,
-      message: data.phone ? 'Invite sent successfully via SMS' : 'Managed member added successfully'
+      message: (data.phone || data.email) ? 'Invite sent successfully' : 'Managed member added successfully'
     });
 
   } catch (error: any) {

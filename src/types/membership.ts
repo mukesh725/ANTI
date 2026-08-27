@@ -98,6 +98,7 @@ export interface PatientRecord {
   dob: string;
   gender: string;
   phone?: string; // Optional: If provided, this user can log in independently
+  email?: string; // Optional: Also allows them to receive an invite and log in
   qrCodeUrl?: string | null;
   digitalCardUrl?: string | null;
   lastUpdated: string;
@@ -114,4 +115,5 @@ export interface InviteDependentInput {
   dob: string;
   gender: string;
   phone?: string; // If provided -> invited. If null -> managed.
+  email?: string; // If provided -> invited.
 }
