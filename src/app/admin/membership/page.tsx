@@ -27,14 +27,16 @@ import {
   Save
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MemberRecord, PaymentMethodType } from '@/types/membership';
+import { MemberRecord, PaymentMethodType, PatientRecord } from '@/types/membership';
 import { useRef, FormEvent } from 'react';
 import { CardTemplateManager } from '@/components/admin/CardTemplateManager';
 
 export default function AdminMembershipDashboard() {
   const [members, setMembers] = useState<MemberRecord[]>([]);
+  const [dependents, setDependents] = useState<PatientRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'members' | 'templates'>('members');
+  const [loadingDependents, setLoadingDependents] = useState(false);
+  const [activeTab, setActiveTab] = useState<'members' | 'dependents' | 'templates'>('members');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
@@ -110,9 +112,28 @@ export default function AdminMembershipDashboard() {
     }
   };
 
+  const fetchDependents = async () => {
+    setLoadingDependents(true);
+    try {
+      const res = await fetch('/api/admin/dependents');
+      const data = await res.json();
+      if (data.success) {
+        setDependents(data.dependents || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch dependents:', err);
+    } finally {
+      setLoadingDependents(false);
+    }
+  };
+
   useEffect(() => {
-    fetchMembers();
-  }, [search, statusFilter]);
+    if (activeTab === 'members') {
+      fetchMembers();
+    } else if (activeTab === 'dependents') {
+      fetchDependents();
+    }
+  }, [search, statusFilter, activeTab]);
 
   const handleActivateClick = (member: MemberRecord) => {
     setSelectedMemberToActivate(member);
@@ -315,6 +336,12 @@ export default function AdminMembershipDashboard() {
           Members List
         </button>
         <button 
+          onClick={() => setActiveTab('dependents')}
+          className={`pb-3 px-1 text-sm font-bold border-b-2 transition-colors ${activeTab === 'dependents' ? 'border-[#006537] text-[#006537]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+        >
+          Family Members
+        </button>
+        <button 
           onClick={() => setActiveTab('templates')}
           className={`pb-3 px-1 text-sm font-bold border-b-2 transition-colors ${activeTab === 'templates' ? 'border-[#006537] text-[#006537]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
@@ -322,9 +349,75 @@ export default function AdminMembershipDashboard() {
         </button>
       </div>
       
-      {activeTab === 'templates' ? (
-        <CardTemplateManager />
-      ) : (
+      {activeTab === 'templates' && <CardTemplateManager />}
+
+      {activeTab === 'dependents' && (
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="p-5 border-b border-gray-100 bg-gray-50/50">
+            <h2 className="text-lg font-bold text-gray-900">Family Members (Dependents)</h2>
+            <p className="text-sm text-gray-500">List of all added family members across all accounts.</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[800px]">
+              <thead>
+                <tr className="bg-gray-100/70 text-gray-500 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                  <th className="p-4">Patient ID</th>
+                  <th className="p-4">Member Name</th>
+                  <th className="p-4">Primary Account (Mobile)</th>
+                  <th className="p-4">Contact</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Added On</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 text-sm">
+                {loadingDependents ? (
+                  <tr>
+                    <td colSpan={6} className="p-12 text-center text-gray-500">
+                      <div className="flex justify-center items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-[#006537] border-t-transparent rounded-full animate-spin" />
+                        Loading family members...
+                      </div>
+                    </td>
+                  </tr>
+                ) : dependents.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="p-12 text-center text-gray-400">
+                      No family members found.
+                    </td>
+                  </tr>
+                ) : (
+                  dependents.map((dep) => (
+                    <tr key={dep.id} className="hover:bg-gray-50/80 transition-colors">
+                      <td className="p-4 font-mono font-bold text-gray-900">{dep.id}</td>
+                      <td className="p-4 font-bold text-gray-900">{dep.firstName} {dep.lastName}</td>
+                      <td className="p-4 text-gray-600">{dep.accountId}</td>
+                      <td className="p-4 text-gray-600">
+                        {dep.phone && <div className="text-xs flex items-center gap-1"><Phone className="w-3 h-3 text-gray-400"/> {dep.phone}</div>}
+                        {dep.email && <div className="text-xs flex items-center gap-1 mt-0.5"><Mail className="w-3 h-3 text-gray-400"/> {dep.email}</div>}
+                        {!dep.phone && !dep.email && <span className="text-xs text-gray-400">Managed (No Contact)</span>}
+                      </td>
+                      <td className="p-4">
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          dep.status === 'active' ? 'bg-emerald-100 text-emerald-800' :
+                          dep.status === 'invited' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {dep.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-right text-gray-500 text-xs">
+                        {new Date(dep.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'members' && (
       <>
 
 
