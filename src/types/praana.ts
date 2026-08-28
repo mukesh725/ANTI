@@ -21,6 +21,11 @@ export interface PraanaVitalRecord {
   chairSignalQuality: number;     // e.g. 0.99
   stressScore?: number;           // 1-100
   notes?: string;
+  doctorNotes?: string;           // Doctor's clinical observation & recommendation
+  doctorReviewed?: boolean;       // Reviewed by clinic doctor/cardiologist
+  reviewedByDoctorName?: string;  // e.g. "Dr. Ananya Sharma, MD"
+  reviewedAt?: string;            // Timestamp when doctor reviewed
+  membershipId?: string;          // e.g. "AIRO-1000007"
   recordedBy: string;             // Clinic Staff / Praana Station ID
   createdAt: string;
 }

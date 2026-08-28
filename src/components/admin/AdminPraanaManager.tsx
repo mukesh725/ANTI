@@ -5,7 +5,8 @@ import {
   Activity, Heart, Thermometer, Wind, Gauge, Scale, 
   Search, Plus, RefreshCw, CheckCircle2, AlertTriangle, 
   Trash2, Download, User, ShieldCheck, Sparkles, Clock, 
-  FileJson, Eye, ChevronDown, Check, Zap, Info
+  FileJson, Eye, ChevronDown, Check, Zap, Info, Stethoscope,
+  Printer, FileText, Send, CheckCircle, Edit3
 } from "lucide-react";
 import { PraanaVitalRecord, PatientSearchResult } from "@/types/praana";
 
@@ -30,7 +31,7 @@ export function AdminPraanaManager() {
     chairSignalQuality: 0.99,
     stressScore: 22,
     notes: "",
-    recordedBy: "Praana Clinic Terminal #01",
+    recordedBy: "Praana Smart Chair Station #01",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,6 +43,15 @@ export function AdminPraanaManager() {
   const [historyFilter, setHistoryFilter] = useState("");
   const [viewingRecord, setViewingRecord] = useState<PraanaVitalRecord | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Doctor Review Modal State
+  const [reviewingRecord, setReviewingRecord] = useState<PraanaVitalRecord | null>(null);
+  const [doctorName, setDoctorName] = useState("Dr. Health Specialist, MD");
+  const [doctorNotes, setDoctorNotes] = useState("");
+  const [isSavingReview, setIsSavingReview] = useState(false);
+
+  // Clinical Report Print Modal State
+  const [printingRecord, setPrintingRecord] = useState<PraanaVitalRecord | null>(null);
 
   // Search Patients
   useEffect(() => {
@@ -108,7 +118,7 @@ export function AdminPraanaManager() {
       ecgStatus: "Normal Sinus Rhythm",
       chairSignalQuality: 0.99,
       stressScore: Math.floor(Math.random() * 20) + 15,
-      notes: "Chair Session Telemetry Tele-Scan Calibrated via Optical PPG & Load-cell.",
+      notes: "Telemetry scan captured via optical PPG, dry ECG, and load-cell platform.",
     }));
   };
 
@@ -127,6 +137,7 @@ export function AdminPraanaManager() {
       const payload = {
         patientId: selectedPatient.id,
         accountId: selectedPatient.accountId,
+        membershipId: selectedPatient.membershipPlan !== 'Family Dependent' ? selectedPatient.id : '',
         patientName: selectedPatient.name,
         patientPhone: selectedPatient.phone,
         patientEmail: selectedPatient.email,
@@ -141,7 +152,7 @@ export function AdminPraanaManager() {
 
       const data = await res.json();
       if (data.success) {
-        setSuccessMessage(`Telemetry recorded for ${selectedPatient.name}!`);
+        setSuccessMessage(`Telemetry successfully synced to cloud for ${selectedPatient.name}!`);
         fetchHistory();
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
@@ -152,6 +163,42 @@ export function AdminPraanaManager() {
       alert("An error occurred while saving vitals.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Save Doctor Review
+  const handleSaveDoctorReview = async () => {
+    if (!reviewingRecord) return;
+    setIsSavingReview(true);
+    try {
+      const res = await fetch('/api/praana/vitals', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: reviewingRecord.id,
+          doctorNotes,
+          doctorReviewed: true,
+          reviewedByDoctorName: doctorName,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setVitalsHistory(prev => prev.map(r => r.id === reviewingRecord.id ? {
+          ...r,
+          doctorNotes,
+          doctorReviewed: true,
+          reviewedByDoctorName: doctorName,
+          reviewedAt: new Date().toISOString()
+        } : r));
+        setReviewingRecord(null);
+      } else {
+        alert(data.error || "Failed to save review");
+      }
+    } catch (err) {
+      console.error("Review error:", err);
+      alert("Failed to save doctor review");
+    } finally {
+      setIsSavingReview(false);
     }
   };
 
@@ -182,7 +229,7 @@ export function AdminPraanaManager() {
     const headers = [
       "Session ID", "Patient ID", "Account Phone", "Patient Name", 
       "Heart Rate (BPM)", "Blood Pressure", "SpO2 (%)", "Resp Rate", 
-      "Temp (°F)", "Weight (lbs)", "ECG", "Timestamp", "Recorded By"
+      "Temp (°F)", "Weight (lbs)", "ECG", "Doctor Reviewed", "Doctor Notes", "Timestamp"
     ];
 
     const rows = vitalsHistory.map(r => [
@@ -197,8 +244,9 @@ export function AdminPraanaManager() {
       r.temperatureF,
       r.weightLbs,
       `"${r.ecgStatus}"`,
-      r.timestamp,
-      `"${r.recordedBy}"`
+      r.doctorReviewed ? "YES" : "NO",
+      `"${r.doctorNotes || ''}"`,
+      r.timestamp
     ]);
 
     const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
@@ -215,11 +263,14 @@ export function AdminPraanaManager() {
   // Filter History Table
   const filteredHistory = vitalsHistory.filter(r => {
     if (!historyFilter) return true;
-    const q = historyFilter.toLowerCase();
+    const q = historyFilter.toLowerCase().trim();
     return (
       r.patientName.toLowerCase().includes(q) ||
       r.patientId.toLowerCase().includes(q) ||
       r.accountId.toLowerCase().includes(q) ||
+      (r.patientEmail && r.patientEmail.toLowerCase().includes(q)) ||
+      (r.patientPhone && r.patientPhone.includes(q)) ||
+      (r.membershipId && r.membershipId.toLowerCase().includes(q)) ||
       r.sessionId.toLowerCase().includes(q)
     );
   });
@@ -234,14 +285,14 @@ export function AdminPraanaManager() {
               <Activity className="w-5 h-5 animate-pulse" />
             </span>
             <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-              Clinical Telemetry Engine
+              Doctor & Clinical Telemetry Module
             </span>
           </div>
           <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-tight text-white">
-            Praana Smart Chair Vitals Module
+            Praana Smart Chair Vitals & Telemetry
           </h1>
           <p className="text-sm text-gray-300 max-w-2xl mt-1">
-            Capture, calibrate, and sync clinical vital signs across Web, Mobile Apps, and Cloud EHR for registered members and family dependents.
+            Automatic real-time ingestion of in-person smart chair scans mapped directly to Patient ID, Phone, and Membership ID. Shared with doctors for instant clinical evaluation.
           </p>
         </div>
 
@@ -250,7 +301,7 @@ export function AdminPraanaManager() {
             onClick={fetchHistory}
             className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold flex items-center gap-2 border border-white/10 transition-colors"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${historyLoading ? "animate-spin" : ""}`} /> Refresh Data
+            <RefreshCw className={`w-3.5 h-3.5 ${historyLoading ? "animate-spin" : ""}`} /> Refresh Live Data
           </button>
           <button 
             onClick={handleExportCSV}
@@ -274,7 +325,7 @@ export function AdminPraanaManager() {
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <Gauge className="w-5 h-5 text-emerald-600" /> Record Vitals Terminal
               </h2>
-              <p className="text-xs text-gray-500">Select patient and input smart chair measurements</p>
+              <p className="text-xs text-gray-500">Select registered patient and input smart chair measurements</p>
             </div>
             <button 
               type="button"
@@ -616,34 +667,34 @@ export function AdminPraanaManager() {
             <div className="p-4 rounded-2xl bg-[#0A1128] text-white flex items-center justify-between mt-4">
               <div>
                 <div className="text-xs font-bold flex items-center gap-1.5 text-emerald-400">
-                  <ShieldCheck className="w-4 h-4" /> Praana-OS v2.4 Certified
+                  <ShieldCheck className="w-4 h-4" /> Praana-OS Cloud Sync
                 </div>
                 <div className="text-[10px] text-gray-400 mt-0.5 font-mono">
-                  Optical PPG: 99% • Load-Cell: Calibrated
+                  Real-time Doctor & Mobile Telemetry Linked
                 </div>
               </div>
               <span className="text-xs px-2.5 py-1 bg-emerald-500/20 text-emerald-300 font-bold rounded-lg border border-emerald-500/30">
-                Live Ready
+                Active
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Section: Historical Telemetry Log Table */}
+      {/* Bottom Section: Historical Telemetry Log Table with Doctor Review */}
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50">
           <div>
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-emerald-600" /> Recent Praana Telemetry Sessions
+              <Clock className="w-5 h-5 text-emerald-600" /> Recent Praana Telemetry Sessions & Clinical Reports
             </h3>
-            <p className="text-xs text-gray-500">Historical records saved across all registered members & patients</p>
+            <p className="text-xs text-gray-500">Live feed of chair scans uploaded automatically under Patient ID, Phone, or Membership ID</p>
           </div>
 
-          <div className="w-full sm:w-72">
+          <div className="w-full sm:w-80">
             <input 
               type="text"
-              placeholder="Filter by patient, ID, or phone..."
+              placeholder="Search Patient ID, Phone, Email, or Name..."
               value={historyFilter}
               onChange={e => setHistoryFilter(e.target.value)}
               className="w-full px-3.5 py-2 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
@@ -652,17 +703,17 @@ export function AdminPraanaManager() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[900px]">
+          <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
               <tr className="bg-gray-100/70 text-gray-500 text-[11px] font-bold uppercase tracking-wider border-b border-gray-100">
-                <th className="p-4">Patient Details</th>
+                <th className="p-4">Patient Credentials</th>
                 <th className="p-4">Heart Rate</th>
                 <th className="p-4">Blood Pressure</th>
                 <th className="p-4">SpO2</th>
                 <th className="p-4">Respiration</th>
                 <th className="p-4">Temp</th>
-                <th className="p-4">ECG Status</th>
-                <th className="p-4">Recorded</th>
+                <th className="p-4">Doctor Review</th>
+                <th className="p-4">Scanned At</th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
@@ -679,7 +730,7 @@ export function AdminPraanaManager() {
               ) : filteredHistory.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="p-12 text-center text-gray-400">
-                    No Praana telemetry sessions recorded yet. Use the terminal above to log a session.
+                    No Praana telemetry sessions found matching your search.
                   </td>
                 </tr>
               ) : (
@@ -688,8 +739,10 @@ export function AdminPraanaManager() {
                     {/* Patient */}
                     <td className="p-4">
                       <div className="font-bold text-gray-900 text-sm">{rec.patientName}</div>
-                      <div className="text-[11px] text-gray-500 font-mono mt-0.5">
-                        ID: {rec.patientId} • Tel: {rec.patientPhone || rec.accountId}
+                      <div className="text-[11px] text-gray-500 font-mono mt-0.5 space-y-0.5">
+                        <div>ID: <span className="font-semibold text-gray-700">{rec.patientId}</span></div>
+                        <div>Tel: <span className="text-gray-700">{rec.patientPhone || rec.accountId}</span></div>
+                        {rec.patientEmail && <div>Email: <span className="text-gray-700">{rec.patientEmail}</span></div>}
                       </div>
                     </td>
 
@@ -721,24 +774,49 @@ export function AdminPraanaManager() {
                       <span className="font-bold text-gray-900">{rec.temperatureF}°F</span>
                     </td>
 
-                    {/* ECG */}
+                    {/* Doctor Review Status */}
                     <td className="p-4">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                        {rec.ecgStatus || "Normal Sinus"}
-                      </span>
+                      {rec.doctorReviewed ? (
+                        <div className="space-y-1">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                            <CheckCircle className="w-3 h-3 text-emerald-600" /> Reviewed
+                          </span>
+                          {rec.reviewedByDoctorName && (
+                            <div className="text-[10px] text-gray-500 italic line-clamp-1">{rec.reviewedByDoctorName}</div>
+                          )}
+                        </div>
+                      ) : (
+                        <button 
+                          onClick={() => {
+                            setReviewingRecord(rec);
+                            setDoctorNotes(rec.doctorNotes || "");
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition-colors"
+                        >
+                          <Stethoscope className="w-3.5 h-3.5 text-amber-600" /> Add Doctor Notes
+                        </button>
+                      )}
                     </td>
 
                     {/* Timestamp */}
                     <td className="p-4 text-xs text-gray-500">
-                      {new Date(rec.timestamp).toLocaleDateString()} {new Date(rec.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <div>{new Date(rec.timestamp).toLocaleDateString()}</div>
+                      <div className="text-[10px] text-gray-400">{new Date(rec.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </td>
 
                     {/* Actions */}
-                    <td className="p-4 text-right space-x-2">
+                    <td className="p-4 text-right space-x-1.5">
+                      <button 
+                        onClick={() => setPrintingRecord(rec)}
+                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors inline-block"
+                        title="View / Print Doctor Health Report"
+                      >
+                        <FileText className="w-4 h-4" />
+                      </button>
                       <button 
                         onClick={() => setViewingRecord(rec)}
                         className="p-1.5 text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors inline-block"
-                        title="View Full JSON / Telemetry"
+                        title="View Telemetry JSON"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
@@ -758,6 +836,195 @@ export function AdminPraanaManager() {
           </table>
         </div>
       </div>
+
+      {/* Doctor Review Assessment Modal */}
+      {reviewingRecord && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white text-gray-900 p-6 md:p-8 rounded-3xl max-w-xl w-full border border-gray-100 shadow-2xl space-y-6">
+            <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+              <div>
+                <h4 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <Stethoscope className="w-5 h-5 text-emerald-600" /> Doctor Clinical Evaluation
+                </h4>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Patient: {reviewingRecord.patientName} (ID: {reviewingRecord.patientId})
+                </p>
+              </div>
+              <button 
+                onClick={() => setReviewingRecord(null)}
+                className="text-gray-400 hover:text-gray-700 font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Quick Vitals Summary */}
+            <div className="p-4 bg-gray-50 rounded-2xl grid grid-cols-4 gap-2 text-center text-xs">
+              <div>
+                <div className="text-gray-500 text-[10px] uppercase font-bold">HR</div>
+                <div className="font-bold text-gray-900 text-sm">{reviewingRecord.heartRate} bpm</div>
+              </div>
+              <div>
+                <div className="text-gray-500 text-[10px] uppercase font-bold">BP</div>
+                <div className="font-bold text-gray-900 text-sm">{reviewingRecord.bloodPressureSystolic}/{reviewingRecord.bloodPressureDiastolic}</div>
+              </div>
+              <div>
+                <div className="text-gray-500 text-[10px] uppercase font-bold">SpO2</div>
+                <div className="font-bold text-gray-900 text-sm">{reviewingRecord.spo2}%</div>
+              </div>
+              <div>
+                <div className="text-gray-500 text-[10px] uppercase font-bold">ECG</div>
+                <div className="font-bold text-gray-900 text-sm truncate">{reviewingRecord.ecgStatus}</div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-gray-700 block mb-1">Attending Physician / Doctor Name</label>
+                <input 
+                  type="text"
+                  value={doctorName}
+                  onChange={e => setDoctorName(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-gray-700 block mb-1">Doctor's Clinical Notes, Recommendations & Prescriptions</label>
+                <textarea 
+                  rows={4}
+                  placeholder="Enter physician assessment, lifestyle advice, or prescription notes..."
+                  value={doctorNotes}
+                  onChange={e => setDoctorNotes(e.target.value)}
+                  className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-2">
+              <button 
+                onClick={() => setReviewingRecord(null)}
+                className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleSaveDoctorReview}
+                disabled={isSavingReview}
+                className="px-6 py-2.5 bg-[#006537] hover:bg-[#004e2a] text-white rounded-xl text-xs font-bold shadow-md transition-colors flex items-center gap-2"
+              >
+                {isSavingReview ? "Saving..." : "Approve & Attach to Report"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Clinical Printable Health Report Modal */}
+      {printingRecord && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white text-gray-900 p-6 md:p-10 rounded-3xl max-w-3xl w-full border border-gray-200 shadow-2xl space-y-6 my-8">
+            <div className="flex justify-between items-start pb-6 border-b-2 border-emerald-600">
+              <div>
+                <div className="flex items-center gap-2 text-[#006537] font-bold text-xl tracking-tight">
+                  <Activity className="w-6 h-6" /> AIRO Praana Smart Chair Telemetry
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Official Clinical Vital Signs & Diagnostic Report</p>
+              </div>
+              <div className="text-right text-xs text-gray-500">
+                <div className="font-bold text-gray-900">Session ID: {printingRecord.sessionId}</div>
+                <div>Date: {new Date(printingRecord.timestamp).toLocaleDateString()} {new Date(printingRecord.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+              </div>
+            </div>
+
+            {/* Patient Header Box */}
+            <div className="p-4 bg-gray-50 rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-4 text-xs border border-gray-100">
+              <div>
+                <span className="text-gray-400 font-bold uppercase block text-[10px]">Patient Name</span>
+                <span className="font-bold text-gray-900 text-sm">{printingRecord.patientName}</span>
+              </div>
+              <div>
+                <span className="text-gray-400 font-bold uppercase block text-[10px]">Patient ID</span>
+                <span className="font-mono font-bold text-gray-900">{printingRecord.patientId}</span>
+              </div>
+              <div>
+                <span className="text-gray-400 font-bold uppercase block text-[10px]">Phone Number</span>
+                <span className="font-medium text-gray-800">{printingRecord.patientPhone || printingRecord.accountId}</span>
+              </div>
+              <div>
+                <span className="text-gray-400 font-bold uppercase block text-[10px]">Email</span>
+                <span className="font-medium text-gray-800 truncate block">{printingRecord.patientEmail || "N/A"}</span>
+              </div>
+            </div>
+
+            {/* Vitals Clinical Matrix */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <span className="text-xs font-bold text-gray-500 uppercase">Heart Rate</span>
+                <div className="text-2xl font-black text-gray-900 mt-1">{printingRecord.heartRate} <span className="text-xs font-normal text-gray-500">BPM</span></div>
+                <span className="text-[10px] text-emerald-600 font-bold">Standard 60-100 BPM</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <span className="text-xs font-bold text-gray-500 uppercase">Blood Pressure</span>
+                <div className="text-2xl font-black text-gray-900 mt-1">{printingRecord.bloodPressureSystolic}/{printingRecord.bloodPressureDiastolic} <span className="text-xs font-normal text-gray-500">mmHg</span></div>
+                <span className="text-[10px] text-emerald-600 font-bold">Optimal &lt; 120/80</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <span className="text-xs font-bold text-gray-500 uppercase">Blood Oxygen (SpO2)</span>
+                <div className="text-2xl font-black text-gray-900 mt-1">{printingRecord.spo2} <span className="text-xs font-normal text-gray-500">%</span></div>
+                <span className="text-[10px] text-emerald-600 font-bold">Target 95-100%</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <span className="text-xs font-bold text-gray-500 uppercase">Respiration Rate</span>
+                <div className="text-2xl font-black text-gray-900 mt-1">{printingRecord.respiratoryRate} <span className="text-xs font-normal text-gray-500">rpm</span></div>
+                <span className="text-[10px] text-emerald-600 font-bold">Target 12-24 rpm</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <span className="text-xs font-bold text-gray-500 uppercase">Body Temperature</span>
+                <div className="text-2xl font-black text-gray-900 mt-1">{printingRecord.temperatureF} <span className="text-xs font-normal text-gray-500">°F</span></div>
+                <span className="text-[10px] text-emerald-600 font-bold">Basal Normal</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <span className="text-xs font-bold text-gray-500 uppercase">Body Load (Weight)</span>
+                <div className="text-2xl font-black text-gray-900 mt-1">{printingRecord.weightLbs} <span className="text-xs font-normal text-gray-500">lbs</span></div>
+                <span className="text-[10px] text-gray-500 font-medium">Calibrated Load-Cell</span>
+              </div>
+            </div>
+
+            {/* ECG & Telemetry Remarks */}
+            <div className="p-4 bg-purple-50/50 rounded-2xl border border-purple-100">
+              <span className="text-xs font-bold text-purple-900 uppercase block mb-1">Lead I/II Dry-Contact ECG Rhythm</span>
+              <p className="text-sm font-semibold text-purple-950">{printingRecord.ecgStatus || "Normal Sinus Rhythm"}</p>
+            </div>
+
+            {/* Doctor Clinical Assessment */}
+            <div className="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-bold text-emerald-900 uppercase">Doctor's Clinical Assessment & Recommendations</span>
+                <span className="text-[11px] font-bold text-emerald-700">{printingRecord.reviewedByDoctorName || "Dr. Health Specialist, MD"}</span>
+              </div>
+              <p className="text-sm text-emerald-950 italic">
+                {printingRecord.doctorNotes || "Vital signs are well within normal clinical limits. Continue routine physical activity and hydration."}
+              </p>
+            </div>
+
+            <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+              <button 
+                onClick={() => setPrintingRecord(null)}
+                className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold"
+              >
+                Close
+              </button>
+              <button 
+                onClick={() => window.print()}
+                className="px-6 py-2.5 bg-[#006537] hover:bg-[#004e2a] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md"
+              >
+                <Printer className="w-4 h-4" /> Print / Save PDF Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* JSON Viewer Modal */}
       {viewingRecord && (

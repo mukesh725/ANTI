@@ -5,10 +5,10 @@ import {
   doc, 
   setDoc, 
   getDocs, 
+  getDoc,
+  updateDoc,
   query, 
   where, 
-  orderBy, 
-  limit, 
   deleteDoc 
 } from 'firebase/firestore';
 import { PraanaVitalRecord } from '@/types/praana';
@@ -21,6 +21,8 @@ export async function GET(req: Request) {
     const patientId = searchParams.get('patientId');
     const accountId = searchParams.get('accountId');
     const phone = searchParams.get('phone');
+    const email = searchParams.get('email');
+    const membershipId = searchParams.get('membershipId');
     const maxLimit = parseInt(searchParams.get('limit') || '50', 10);
 
     const vitalsRef = collection(db, 'praana_vitals');
@@ -32,6 +34,10 @@ export async function GET(req: Request) {
       q = query(vitalsRef, where('accountId', '==', accountId));
     } else if (phone) {
       q = query(vitalsRef, where('patientPhone', '==', phone));
+    } else if (email) {
+      q = query(vitalsRef, where('patientEmail', '==', email.toLowerCase().trim()));
+    } else if (membershipId) {
+      q = query(vitalsRef, where('membershipId', '==', membershipId));
     } else {
       q = query(vitalsRef);
     }
@@ -78,9 +84,10 @@ export async function POST(req: Request) {
       sessionId,
       patientId: body.patientId,
       accountId: body.accountId || body.patientPhone || body.patientId,
+      membershipId: body.membershipId || '',
       patientName: body.patientName,
       patientPhone: body.patientPhone || '',
-      patientEmail: body.patientEmail || '',
+      patientEmail: body.patientEmail ? body.patientEmail.toLowerCase().trim() : '',
       timestamp,
 
       respiratoryRate: Number(body.respiratoryRate ?? 16),
@@ -95,7 +102,11 @@ export async function POST(req: Request) {
       chairSignalQuality: Number(body.chairSignalQuality ?? 0.99),
       stressScore: body.stressScore ? Number(body.stressScore) : 25,
       notes: body.notes || '',
-      recordedBy: body.recordedBy || 'Admin Clinical Station',
+      doctorNotes: body.doctorNotes || '',
+      doctorReviewed: Boolean(body.doctorReviewed || false),
+      reviewedByDoctorName: body.reviewedByDoctorName || '',
+      reviewedAt: body.reviewedAt || '',
+      recordedBy: body.recordedBy || 'Praana Smart Chair Station',
       createdAt: new Date().toISOString(),
     };
 
@@ -104,13 +115,46 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Praana vitals recorded successfully',
+      message: 'Praana vitals recorded & synced successfully',
       record,
     });
   } catch (error: any) {
     console.error('Error saving Praana vitals:', error);
     return NextResponse.json(
       { error: error?.message || 'Failed to save vitals' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+    const { id, doctorNotes, doctorReviewed, reviewedByDoctorName } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing vital record ID' }, { status: 400 });
+    }
+
+    const docRef = doc(db, 'praana_vitals', id);
+    const updates: Partial<PraanaVitalRecord> = {
+      doctorNotes: doctorNotes || '',
+      doctorReviewed: doctorReviewed ?? true,
+      reviewedByDoctorName: reviewedByDoctorName || 'Dr. Clinical Staff, MD',
+      reviewedAt: new Date().toISOString(),
+    };
+
+    await updateDoc(docRef, updates as any);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Doctor assessment attached successfully',
+      updates,
+    });
+  } catch (error: any) {
+    console.error('Error updating doctor assessment:', error);
+    return NextResponse.json(
+      { error: error?.message || 'Failed to update doctor assessment' },
       { status: 500 }
     );
   }
