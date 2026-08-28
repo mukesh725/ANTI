@@ -7,11 +7,13 @@ import { motion } from "framer-motion";
 import { 
   LogOut, ShieldCheck, Star, ShoppingBag, Calendar,
   Download, Share2, Wallet, ExternalLink, ArrowRight, X,
-  FileText, HeartPulse, Medal, MapPin, Heart, User, Bell, Headset, Gift
+  FileText, HeartPulse, Medal, MapPin, Heart, User, Bell, Headset, Gift,
+  Activity, Thermometer, Wind, Zap, Gauge, Sparkles, Scale, CheckCircle2
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { MemberRecord, PatientRecord } from "@/types/membership";
+import { PraanaVitalRecord } from "@/types/praana";
 import MemberSwitcher from "@/components/membership/MemberSwitcher";
 import AddMemberModal from "@/components/membership/AddMemberModal";
 
@@ -38,6 +40,10 @@ export default function AccountPage() {
   const [dependents, setDependents] = useState<(PatientRecord & { clinicalAccessAllowed?: boolean })[]>([]);
   const [activePatientId, setActivePatientId] = useState<string | null>(null);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+
+  // Praana Vitals Telemetry State
+  const [praanaVitals, setPraanaVitals] = useState<PraanaVitalRecord[]>([]);
+  const [vitalsLoading, setVitalsLoading] = useState(false);
 
   const activeEmail = profile?.email || user?.email;
 
@@ -228,10 +234,37 @@ export default function AccountPage() {
       } catch (err) {
         console.error("Failed to fetch health bookings:", err);
       }
-    }
+    };
 
-    fetchUserData();
-  }, [activeEmail, user, profile]);
+    fetchAccountData();
+  }, [user, profile, activeEmail]);
+
+  // Fetch Praana Vitals for Active Patient
+  useEffect(() => {
+    const fetchPatientVitals = async () => {
+      if (!activePatientId && !membership?.mobile && !profile?.mobile) return;
+      setVitalsLoading(true);
+      try {
+        let url = `/api/praana/vitals?limit=5`;
+        if (activePatientId) {
+          url += `&patientId=${encodeURIComponent(activePatientId)}`;
+        } else if (membership?.mobile || profile?.mobile) {
+          url += `&accountId=${encodeURIComponent(membership?.mobile || profile?.mobile || '')}`;
+        }
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.success) {
+          setPraanaVitals(data.vitals || []);
+        }
+      } catch (e) {
+        console.error("Failed fetching Praana vitals", e);
+      } finally {
+        setVitalsLoading(false);
+      }
+    };
+
+    fetchPatientVitals();
+  }, [activePatientId, membership?.mobile, profile?.mobile]);
 
   if (loading) return <div className="min-h-screen bg-[#F9FAFB] pt-32 text-center text-sm font-medium">Loading Account...</div>;
   if (!user && !profile) return null;
@@ -506,6 +539,162 @@ export default function AccountPage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Praana Smart Chair Telemetry & Vitals Card */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm flex flex-col space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-gray-100">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg">
+                  <Activity className="w-4 h-4" />
+                </span>
+                <h2 className="font-bold text-lg text-gray-900">Praana Smart Chair Vitals & Telemetry</h2>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Clinical telemetry measurements synchronized across Smart Chair, Web, and Mobile App
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-bold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/60 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Praana Sync Active
+              </span>
+            </div>
+          </div>
+
+          {vitalsLoading ? (
+            <div className="p-12 text-center text-sm text-gray-400 flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+              Loading smart chair telemetry...
+            </div>
+          ) : praanaVitals.length === 0 ? (
+            <div className="p-8 text-center bg-gray-50/60 rounded-2xl border border-dashed border-gray-200 space-y-3">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-gray-100 text-emerald-600">
+                <Gauge className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-gray-900">No Praana Scans Recorded Yet</h4>
+                <p className="text-xs text-gray-500 max-w-md mx-auto mt-1">
+                  Visit any AIRO Health Hub or clinic to complete your Praana Smart Chair scan. Your cardiovascular, respiratory, and optical PPG vitals will automatically sync here and in your mobile app.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Latest Reading Highlights */}
+              {praanaVitals[0] && (
+                <div>
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                    <span className="font-bold uppercase tracking-wider text-gray-400">
+                      Latest Scan ({new Date(praanaVitals[0].timestamp).toLocaleDateString()} at {new Date(praanaVitals[0].timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})})
+                    </span>
+                    <span className="font-mono text-[11px] text-gray-400">
+                      Session: {praanaVitals[0].sessionId}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    {/* Heart Rate */}
+                    <div className="p-4 bg-rose-50/50 rounded-2xl border border-rose-100">
+                      <span className="text-[10px] font-bold text-rose-700 uppercase">Heart Rate</span>
+                      <div className="mt-1">
+                        <span className="text-2xl font-black text-rose-950">{praanaVitals[0].heartRate}</span>
+                        <span className="text-[10px] text-rose-700 font-bold ml-1">BPM</span>
+                      </div>
+                      <span className="text-[10px] text-rose-600 font-medium mt-1 block">Normal Sinus</span>
+                    </div>
+
+                    {/* Blood Pressure */}
+                    <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
+                      <span className="text-[10px] font-bold text-blue-700 uppercase">Blood Pressure</span>
+                      <div className="mt-1">
+                        <span className="text-2xl font-black text-blue-950">
+                          {praanaVitals[0].bloodPressureSystolic}/{praanaVitals[0].bloodPressureDiastolic}
+                        </span>
+                        <span className="text-[10px] text-blue-700 font-bold ml-1">mmHg</span>
+                      </div>
+                      <span className="text-[10px] text-blue-600 font-medium mt-1 block">Hemodynamics</span>
+                    </div>
+
+                    {/* SpO2 */}
+                    <div className="p-4 bg-cyan-50/50 rounded-2xl border border-cyan-100">
+                      <span className="text-[10px] font-bold text-cyan-700 uppercase">Blood Oxygen</span>
+                      <div className="mt-1">
+                        <span className="text-2xl font-black text-cyan-950">{praanaVitals[0].spo2}</span>
+                        <span className="text-[10px] text-cyan-700 font-bold ml-1">%</span>
+                      </div>
+                      <span className="text-[10px] text-cyan-600 font-medium mt-1 block">Arterial Sat</span>
+                    </div>
+
+                    {/* Respiration */}
+                    <div className="p-4 bg-teal-50/50 rounded-2xl border border-teal-100">
+                      <span className="text-[10px] font-bold text-teal-700 uppercase">Respiration</span>
+                      <div className="mt-1">
+                        <span className="text-2xl font-black text-teal-950">{praanaVitals[0].respiratoryRate}</span>
+                        <span className="text-[10px] text-teal-700 font-bold ml-1">rpm</span>
+                      </div>
+                      <span className="text-[10px] text-teal-600 font-medium mt-1 block">Breaths/min</span>
+                    </div>
+
+                    {/* Temperature */}
+                    <div className="p-4 bg-amber-50/50 rounded-2xl border border-amber-100">
+                      <span className="text-[10px] font-bold text-amber-700 uppercase">Temperature</span>
+                      <div className="mt-1">
+                        <span className="text-2xl font-black text-amber-950">{praanaVitals[0].temperatureF}</span>
+                        <span className="text-[10px] text-amber-700 font-bold ml-1">°F</span>
+                      </div>
+                      <span className="text-[10px] text-amber-600 font-medium mt-1 block">Basal Rhythm</span>
+                    </div>
+
+                    {/* ECG */}
+                    <div className="p-4 bg-purple-50/50 rounded-2xl border border-purple-100">
+                      <span className="text-[10px] font-bold text-purple-700 uppercase">ECG Conduction</span>
+                      <div className="mt-1">
+                        <span className="text-sm font-bold text-purple-950 line-clamp-1">
+                          {praanaVitals[0].ecgStatus || 'Normal'}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-purple-600 font-medium mt-1 block">Lead I/II Dry Lead</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Scan History Table */}
+              {praanaVitals.length > 1 && (
+                <div className="pt-4 border-t border-gray-100">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Past Smart Chair Sessions</h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead>
+                        <tr className="text-gray-400 border-b border-gray-100 pb-2">
+                          <th className="py-2">Date & Time</th>
+                          <th className="py-2">Heart Rate</th>
+                          <th className="py-2">Blood Pressure</th>
+                          <th className="py-2">SpO2</th>
+                          <th className="py-2">Temp</th>
+                          <th className="py-2">Station / Location</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-50">
+                        {praanaVitals.slice(1).map(v => (
+                          <tr key={v.id} className="text-gray-700">
+                            <td className="py-2 font-medium">{new Date(v.timestamp).toLocaleDateString()} {new Date(v.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                            <td className="py-2 font-bold">{v.heartRate} bpm</td>
+                            <td className="py-2 font-bold">{v.bloodPressureSystolic}/{v.bloodPressureDiastolic} mmHg</td>
+                            <td className="py-2 font-bold">{v.spo2}%</td>
+                            <td className="py-2 font-bold">{v.temperatureF}°F</td>
+                            <td className="py-2 text-gray-500">{v.recordedBy}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 8 Grid Menu Section */}

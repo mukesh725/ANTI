@@ -23,6 +23,7 @@ import AdminMembershipDashboard from "@/app/admin/membership/page";
 import { LocationsManager } from "@/components/admin/LocationsManager";
 import { AdminMinuteClinicManager } from "@/components/admin/AdminMinuteClinicManager";
 import { AdminBlogManager } from "@/components/admin/AdminBlogManager";
+import { AdminPraanaManager } from "@/components/admin/AdminPraanaManager";
 import Image from "next/image";
 
 // Types
@@ -53,6 +54,7 @@ interface Lead {
 
 const SIDEBAR_NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "praana", label: "Praana Vitals", icon: Activity },
   { id: "minute-clinic", label: "Minute Clinic", icon: Stethoscope },
   { id: "bookings", label: "Health Intakes", icon: Ticket }, // Using Ticket/Calendar-like icon
   { id: "membership", label: "Memberships", icon: ShieldCheck },
@@ -262,6 +264,8 @@ export default function AdminDashboardPage() {
             
           </div>
         );
+      case "praana":
+        return <AdminPraanaManager />;
       case "minute-clinic":
         return <AdminMinuteClinicManager />;
       case "bookings":
