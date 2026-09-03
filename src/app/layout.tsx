@@ -135,7 +135,8 @@ export default async function RootLayout({
   const forwardedHost = headersList.get("x-forwarded-host");
   const hostHeader = headersList.get("host");
   const host = forwardedHost || hostHeader || "airoessentials.com";
-  const isHealth = host.includes("airohealthhub");
+  const isHealth = host.includes("airohealthhub") || host.includes("health.airo");
+  const gaId = isHealth ? "G-N1J08R1PX3" : "G-FVSS2Q6SGL";
 
   // AIO/GEO Structured Data
   const baseOrganizationSchema = {
@@ -192,6 +193,18 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-paper">
       <head>
+        {/* Google tag (gtag.js) */}
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gaId}');
+            `,
+          }}
+        />
         <SchemaOrg schema={schema} />
       </head>
       <body className="antialiased bg-paper text-ink min-h-screen flex flex-col">

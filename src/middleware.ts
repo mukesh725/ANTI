@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
 
   // Determine domains
-  const isHealthDomain = host.includes('airohealth') || host.includes('health.airo') || host.includes('localhost:3001');
+  const isHealthDomain = host.includes('airohealth') || host.includes('health.airo') || host.includes('health.airoone') || host.includes('localhost:3001');
   const isAdminDomain = host.startsWith('admin.');
 
   // 1. Admin Subdomain Routing
