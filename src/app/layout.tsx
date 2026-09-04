@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = host.includes("localhost") ? "http" : "https";
   const baseUrl = `${protocol}://${host}`;
 
-  const isHealth = host.includes("airohealthhub");
+  const isHealth = host.includes("airohealthhub") || host.includes("health.airo");
   
   const cmsData = await getCmsData();
   const homeData = cmsData.pages.home;
