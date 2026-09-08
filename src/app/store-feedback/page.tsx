@@ -35,12 +35,80 @@ const STORE_ASPECTS = [
   { id: "checkoutSpeed", label: "Billing Speed", icon: Clock },
 ];
 
+const RATING_LEVELS: {
+  level: RatingLevel;
+  label: string;
+  emoji: string;
+  color: string;
+  fillHex: string;
+  bgLight: string;
+  borderClass: string;
+  glowShadow: string;
+  sentiment: SentimentType;
+}[] = [
+  {
+    level: 1,
+    label: "Poor",
+    emoji: "😡",
+    color: "text-red-500",
+    fillHex: "#EF4444",
+    bgLight: "bg-red-50",
+    borderClass: "border-red-200",
+    glowShadow: "drop-shadow-[0_2px_8px_rgba(239,68,68,0.4)]",
+    sentiment: "poor",
+  },
+  {
+    level: 2,
+    label: "Average",
+    emoji: "🙁",
+    color: "text-orange-500",
+    fillHex: "#F97316",
+    bgLight: "bg-orange-50",
+    borderClass: "border-orange-200",
+    glowShadow: "drop-shadow-[0_2px_8px_rgba(249,115,22,0.4)]",
+    sentiment: "average",
+  },
+  {
+    level: 3,
+    label: "Good",
+    emoji: "🙂",
+    color: "text-amber-500",
+    fillHex: "#F59E0B",
+    bgLight: "bg-amber-50",
+    borderClass: "border-amber-200",
+    glowShadow: "drop-shadow-[0_2px_8px_rgba(245,158,11,0.4)]",
+    sentiment: "good",
+  },
+  {
+    level: 4,
+    label: "Very Good",
+    emoji: "😊",
+    color: "text-lime-600",
+    fillHex: "#84CC16",
+    bgLight: "bg-lime-50",
+    borderClass: "border-lime-200",
+    glowShadow: "drop-shadow-[0_2px_8px_rgba(132,204,22,0.4)]",
+    sentiment: "very_good",
+  },
+  {
+    level: 5,
+    label: "Excellent",
+    emoji: "🤩",
+    color: "text-emerald-500",
+    fillHex: "#10B981",
+    bgLight: "bg-emerald-50",
+    borderClass: "border-emerald-200",
+    glowShadow: "drop-shadow-[0_2px_8px_rgba(16,185,129,0.4)]",
+    sentiment: "excellent",
+  },
+];
+
 function StoreFeedbackContent() {
   const searchParams = useSearchParams();
   const locationParam = searchParams.get("location");
 
   const [availableStores, setAvailableStores] = useState<string[]>(STORE_LOCATIONS);
-  const [rating, setRating] = useState<RatingLevel>(5);
+  const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const [feedbackType, setFeedbackType] = useState<"Idea" | "Complaint" | "Suggestion" | "Compliment">("Suggestion");
   const [comment, setComment] = useState("");
@@ -103,6 +171,11 @@ function StoreFeedbackContent() {
     e.preventDefault();
     setErrorMsg("");
 
+    if (!rating || rating === 0) {
+      setErrorMsg("Please select your experience rating.");
+      return;
+    }
+
     if (!name.trim()) {
       setErrorMsg("Please enter your name.");
       return;
@@ -121,6 +194,7 @@ function StoreFeedbackContent() {
     setIsSubmitting(true);
 
     try {
+      const activeLevel = RATING_LEVELS[rating - 1];
       const response = await fetch("/api/feedback/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -128,7 +202,7 @@ function StoreFeedbackContent() {
           name: name.trim(),
           phone: phone.trim(),
           rating,
-          sentiment: SENTIMENT_MAP[rating].sentiment,
+          sentiment: activeLevel?.sentiment || "good",
           feedbackType,
           storeLocation,
           comment: comment.trim(),
@@ -152,7 +226,7 @@ function StoreFeedbackContent() {
   };
 
   const resetForm = () => {
-    setRating(5);
+    setRating(0);
     setHoverRating(null);
     setFeedbackType("Suggestion");
     setComment("");
@@ -168,6 +242,7 @@ function StoreFeedbackContent() {
   };
 
   const currentDisplayRating = hoverRating !== null ? hoverRating : rating;
+  const activeLevelConfig = currentDisplayRating > 0 ? RATING_LEVELS[currentDisplayRating - 1] : null;
 
   return (
     <div className="w-full max-w-[420px] relative z-10">
@@ -190,35 +265,91 @@ function StoreFeedbackContent() {
 
             {/* Form Body */}
             <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
-              {/* Store Rating Prompt & Stars */}
-              <div className="text-center space-y-2">
+              {/* Store Rating Prompt, Emojis & Stars */}
+              <div className="text-center space-y-2.5">
                 <p className="text-xs sm:text-sm font-medium text-slate-600">
                   How would you rate our service?
                 </p>
+
+                {/* Interactive Star Row */}
                 <div className="flex items-center justify-center gap-2">
-                  {[1, 2, 3, 4, 5].map((starVal) => {
-                    const isFilled = starVal <= currentDisplayRating;
+                  {RATING_LEVELS.map((item) => {
+                    const isFilled = item.level <= currentDisplayRating;
+                    const fillHex = activeLevelConfig ? activeLevelConfig.fillHex : "#F59E0B";
+
                     return (
                       <motion.button
-                        key={starVal}
+                        key={item.level}
                         type="button"
-                        whileHover={{ scale: 1.15 }}
+                        whileHover={{ scale: 1.18 }}
                         whileTap={{ scale: 0.85 }}
-                        onMouseEnter={() => setHoverRating(starVal)}
+                        onMouseEnter={() => setHoverRating(item.level)}
                         onMouseLeave={() => setHoverRating(null)}
-                        onClick={() => setRating(starVal as RatingLevel)}
+                        onClick={() => setRating(item.level)}
                         className="p-1 focus:outline-none transition-transform"
                       >
                         <Star
-                          className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
+                          style={{
+                            fill: isFilled ? fillHex : "transparent",
+                            color: isFilled ? fillHex : "#CBD5E1",
+                          }}
+                          className={`w-7 h-7 sm:w-8 sm:h-8 transition-all ${
                             isFilled
-                              ? "fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_2px_8px_rgba(245,158,11,0.3)]"
-                              : "fill-transparent text-[#F59E0B]/50 stroke-[1.5]"
+                              ? (activeLevelConfig?.glowShadow || "drop-shadow-sm")
+                              : "stroke-[1.5]"
                           }`}
                         />
                       </motion.button>
                     );
                   })}
+                </div>
+
+                {/* Red-to-Green Emoji Reaction Faces */}
+                <div className="flex items-center justify-center gap-2 pt-0.5">
+                  {RATING_LEVELS.map((item) => {
+                    const isSelected = item.level === currentDisplayRating;
+                    return (
+                      <motion.button
+                        key={item.level}
+                        type="button"
+                        whileHover={{ scale: 1.25 }}
+                        whileTap={{ scale: 0.9 }}
+                        onMouseEnter={() => setHoverRating(item.level)}
+                        onMouseLeave={() => setHoverRating(null)}
+                        onClick={() => setRating(item.level)}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-lg sm:text-xl transition-all ${
+                          isSelected
+                            ? `${item.bgLight} scale-110 ring-2 ring-offset-1 ring-current ${item.color} shadow-xs`
+                            : "opacity-40 grayscale hover:grayscale-0 hover:opacity-100 bg-slate-50"
+                        }`}
+                        title={item.label}
+                      >
+                        <span>{item.emoji}</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Sentiment Label Banner */}
+                <div className="h-5 flex items-center justify-center">
+                  <AnimatePresence mode="wait">
+                    {activeLevelConfig ? (
+                      <motion.div
+                        key={activeLevelConfig.level}
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 4 }}
+                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold ${activeLevelConfig.bgLight} ${activeLevelConfig.color} border ${activeLevelConfig.borderClass}`}
+                      >
+                        <span>{activeLevelConfig.emoji}</span>
+                        <span>{activeLevelConfig.label}</span>
+                      </motion.div>
+                    ) : (
+                      <span className="text-[11px] text-slate-400 font-medium">
+                        Tap a star or emoji to rate
+                      </span>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
