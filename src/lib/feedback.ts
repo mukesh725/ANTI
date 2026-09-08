@@ -41,7 +41,7 @@ export interface StoreFeedback {
   recommendScore?: number; // 1-10 NPS optional
   isPublished: boolean; // Publish on public website
   isFeatured: boolean;
-  status: "pending" | "published" | "follow_up" | "resolved" | "archived";
+  status: "completed" | "follow_up" | "resolved" | "pending" | "published" | "archived";
   source: "in_store_kiosk" | "qr_scan" | "website" | "manual_entry";
   createdAt: string; // ISO string
   updatedAt?: string;
@@ -75,6 +75,12 @@ export async function submitStoreFeedback(feedback: Omit<StoreFeedback, "id" | "
   isFeatured?: boolean;
 }): Promise<string> {
   try {
+    // Auto-determine initial follow-up status based on customer experience:
+    // 4-5 Stars (Good / Excellent) -> No follow-up needed ("completed")
+    // 1-3 Stars (Poor / Average) or Complaints -> Action required ("follow_up")
+    const isNegativeOrComplaint = feedback.rating <= 3 || feedback.feedbackType === "Complaint";
+    const defaultStatus: StoreFeedback["status"] = isNegativeOrComplaint ? "follow_up" : "completed";
+
     const feedbackData: Omit<StoreFeedback, "id"> = {
       name: feedback.name.trim(),
       phone: feedback.phone.trim(),
@@ -88,7 +94,7 @@ export async function submitStoreFeedback(feedback: Omit<StoreFeedback, "id" | "
       recommendScore: feedback.recommendScore || (feedback.rating >= 4 ? 10 : feedback.rating * 2),
       isPublished: feedback.isPublished ?? false,
       isFeatured: feedback.isFeatured ?? false,
-      status: feedback.status ?? "pending",
+      status: feedback.status ?? defaultStatus,
       source: feedback.source || "in_store_kiosk",
       createdAt: new Date().toISOString(),
     };

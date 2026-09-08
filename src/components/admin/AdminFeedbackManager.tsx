@@ -407,6 +407,8 @@ export function AdminFeedbackManager() {
         selectedStatusFilter === "all" ||
         (selectedStatusFilter === "published" && item.isPublished) ||
         (selectedStatusFilter === "featured" && item.isFeatured) ||
+        (selectedStatusFilter === "follow_up" && (item.status === "follow_up" || (item.rating <= 3 && item.status !== "resolved"))) ||
+        (selectedStatusFilter === "completed" && (item.status === "completed" || (item.rating >= 4 && item.status !== "follow_up"))) ||
         item.status === selectedStatusFilter;
 
       return matchesSearch && matchesRating && matchesLocation && matchesStatus;
@@ -617,12 +619,12 @@ export function AdminFeedbackManager() {
           onChange={(e) => setSelectedStatusFilter(e.target.value)}
           className="w-full md:w-auto px-3.5 py-2.5 bg-gray-50/70 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none cursor-pointer"
         >
-          <option value="all">All Statuses</option>
-          <option value="published">Published to Web</option>
-          <option value="featured">Featured On Homepage</option>
-          <option value="pending">Pending Review</option>
-          <option value="follow_up">Needs Follow-Up</option>
-          <option value="resolved">Resolved</option>
+          <option value="all">All Reviews</option>
+          <option value="follow_up">⚠️ Needs Follow-Up (Poor / Avg)</option>
+          <option value="completed">✅ No Follow-Up Needed (4-5 Stars)</option>
+          <option value="resolved">🟢 Resolved</option>
+          <option value="published">🌐 Published on Web</option>
+          <option value="featured">⭐ Featured on Homepage</option>
         </select>
       </div>
 
@@ -785,25 +787,39 @@ export function AdminFeedbackManager() {
 
                       {/* Status Dropdown */}
                       <td className="py-4 px-6" onClick={(e) => e.stopPropagation()}>
-                        <select
-                          value={item.status}
-                          onChange={(e) => handleStatusChange(item.id!, e.target.value as StoreFeedback["status"])}
-                          className={`text-xs font-semibold px-2.5 py-1 rounded-lg border focus:outline-none cursor-pointer ${
-                            item.status === "follow_up"
-                              ? "bg-rose-50 border-rose-200 text-rose-700"
-                              : item.status === "resolved"
-                              ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                              : item.status === "published"
-                              ? "bg-teal-50 border-teal-200 text-teal-700"
-                              : "bg-amber-50 border-amber-200 text-amber-700"
-                          }`}
-                        >
-                          <option value="pending">Pending</option>
-                          <option value="follow_up">Needs Follow-Up</option>
-                          <option value="resolved">Resolved</option>
-                          <option value="published">Published</option>
-                          <option value="archived">Archived</option>
-                        </select>
+                        {item.rating <= 3 || item.feedbackType === "Complaint" || item.status === "follow_up" ? (
+                          <select
+                            value={item.status === "pending" ? "follow_up" : item.status}
+                            onChange={(e) => handleStatusChange(item.id!, e.target.value as StoreFeedback["status"])}
+                            className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border focus:outline-none cursor-pointer transition-all ${
+                              item.status === "resolved"
+                                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                : "bg-rose-50 border-rose-300 text-rose-700"
+                            }`}
+                          >
+                            <option value="follow_up">⚠️ Needs Follow-Up</option>
+                            <option value="resolved">🟢 Resolved</option>
+                            <option value="completed">✅ Mark Completed</option>
+                            <option value="archived">📦 Archived</option>
+                          </select>
+                        ) : (
+                          <select
+                            value={item.status === "pending" ? "completed" : item.status}
+                            onChange={(e) => handleStatusChange(item.id!, e.target.value as StoreFeedback["status"])}
+                            className={`text-[11px] font-medium px-2.5 py-1 rounded-lg border focus:outline-none cursor-pointer ${
+                              item.status === "resolved"
+                                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                : item.status === "follow_up"
+                                ? "bg-rose-50 border-rose-300 text-rose-700 font-bold"
+                                : "bg-teal-50/80 border-teal-200 text-teal-800"
+                            }`}
+                          >
+                            <option value="completed">✅ No Follow-Up Needed</option>
+                            <option value="follow_up">⚠️ Follow-Up</option>
+                            <option value="resolved">🟢 Resolved</option>
+                            <option value="archived">📦 Archived</option>
+                          </select>
+                        )}
                       </td>
 
                       {/* Action buttons */}
