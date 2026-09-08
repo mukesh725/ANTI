@@ -6,23 +6,17 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, phone, email, rating, sentiment, feedbackType, storeLocation, comment, aspects, recommendScore, source } = body;
 
-    // Basic validation
-    if (!name || typeof name !== "string" || name.trim().length === 0) {
-      return NextResponse.json({ error: "Customer name is required" }, { status: 400 });
-    }
-
-    if (!phone || typeof phone !== "string" || phone.trim().length < 8) {
-      return NextResponse.json({ error: "A valid contact number is required" }, { status: 400 });
-    }
-
     const numRating = Number(rating);
     if (!numRating || numRating < 1 || numRating > 5) {
       return NextResponse.json({ error: "Rating must be between 1 and 5" }, { status: 400 });
     }
 
+    const cleanName = (typeof name === "string" && name.trim()) ? name.trim() : "Guest Customer";
+    const cleanPhone = (typeof phone === "string" && phone.trim()) ? phone.trim() : "";
+
     const feedbackId = await submitStoreFeedback({
-      name: name.trim(),
-      phone: phone.trim(),
+      name: cleanName,
+      phone: cleanPhone,
       email: email?.trim() || "",
       rating: numRating as RatingLevel,
       sentiment: (sentiment as SentimentType) || (numRating >= 4 ? "excellent" : numRating === 3 ? "good" : numRating === 2 ? "average" : "poor"),

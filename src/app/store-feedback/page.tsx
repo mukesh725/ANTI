@@ -176,21 +176,6 @@ function StoreFeedbackContent() {
       return;
     }
 
-    if (!name.trim()) {
-      setErrorMsg("Please enter your name.");
-      return;
-    }
-
-    if (!phone.trim() || phone.trim().length < 8) {
-      setErrorMsg("Please enter a valid contact number.");
-      return;
-    }
-
-    if (!comment.trim()) {
-      setErrorMsg("Please share a few words about your experience.");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -199,8 +184,8 @@ function StoreFeedbackContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name.trim(),
-          phone: phone.trim(),
+          name: name.trim() || "Guest Customer",
+          phone: phone.trim() || "",
           rating,
           sentiment: activeLevel?.sentiment || "good",
           feedbackType,
@@ -438,16 +423,14 @@ function StoreFeedbackContent() {
                 <div className="grid grid-cols-2 gap-2">
                   <input
                     type="text"
-                    required
-                    placeholder="Your Name *"
+                    placeholder="Your Name (Optional)"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
                   />
                   <input
                     type="tel"
-                    required
-                    placeholder="Contact Number *"
+                    placeholder="Contact Number (Optional)"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
