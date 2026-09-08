@@ -446,7 +446,7 @@ function StoreFeedbackContent() {
               {/* Experience Text Prompt & Area */}
               <div className="space-y-1.5 text-center">
                 <label className="block text-xs sm:text-sm font-medium text-slate-600">
-                  Describe your experience
+                  Describe your store experience
                 </label>
                 <div className="relative">
                   <textarea
