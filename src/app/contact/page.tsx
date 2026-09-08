@@ -17,7 +17,7 @@ export default function ContactPage() {
     type: "General Inquiry",
     message: ""
   });
-  
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,7 +31,7 @@ export default function ContactPage() {
       // 1. Send Email Notification via Formspree
       const res = await fetch('https://formspree.io/f/xpqegewy', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -90,7 +90,7 @@ export default function ContactPage() {
 
   return (
     <div className="w-full bg-paper text-ink min-h-screen overflow-x-hidden selection:bg-theme selection:text-paper">
-      
+
       {/* Editorial Header */}
       <section className="relative px-6 md:px-12 pt-16 pb-12 md:py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
         <span className="text-[10px] tracking-[0.25em] uppercase text-ink/60 mb-4 font-semibold block">
@@ -106,12 +106,12 @@ export default function ContactPage() {
 
       {/* Main Grid */}
       <section className="px-6 md:px-12 pb-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-        
+
         {/* Left Side: Contact Information & Cards */}
         <div className="lg:col-span-5 space-y-10">
           <div className="border-b border-[#E6DFD5] pb-8">
             <h2 className="font-serif text-2xl mb-6 tracking-wide">Contact Us</h2>
-            
+
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
                 <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5]">
@@ -298,7 +298,7 @@ export default function ContactPage() {
                 <div className="w-16 h-16 bg-theme text-paper rounded-full flex items-center justify-center border border-[#2C2C2E] shadow-md">
                   <Check className="w-8 h-8" />
                 </div>
-                
+
                 <div className="space-y-3">
                   <h3 className="font-serif text-3xl text-ink tracking-wide">Inquiry Logged</h3>
                   <p className="text-ink/80 text-sm max-w-md leading-relaxed">
@@ -319,7 +319,7 @@ export default function ContactPage() {
       </section>
 
       {/* Minimal Footer */}
-      
+
     </div>
   );
 }

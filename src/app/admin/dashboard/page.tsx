@@ -8,7 +8,7 @@ import {
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
   Settings, ShieldAlert, LogOut, ArrowRight,
   TrendingUp, TrendingDown, DollarSign, Activity,
-  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope, FileText
+  Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope, FileText, Star
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit } from "firebase/firestore";
@@ -24,6 +24,7 @@ import { LocationsManager } from "@/components/admin/LocationsManager";
 import { AdminMinuteClinicManager } from "@/components/admin/AdminMinuteClinicManager";
 import { AdminBlogManager } from "@/components/admin/AdminBlogManager";
 import { AdminPraanaManager } from "@/components/admin/AdminPraanaManager";
+import { AdminFeedbackManager } from "@/components/admin/AdminFeedbackManager";
 import Image from "next/image";
 
 // Types
@@ -65,6 +66,7 @@ const SIDEBAR_NAV = [
   { id: "inventory", label: "Inventory", icon: Boxes },
   { id: "customers", label: "Customers", icon: Users },
   { id: "leads", label: "Leads", icon: UserPlus },
+  { id: "feedback", label: "Store Reviews", icon: Star },
   { id: "locations", label: "Locations", icon: MapPin },
   { id: "blog", label: "Blog", icon: FileText },
   { id: "cms", label: "CMS", icon: Database },
@@ -340,6 +342,8 @@ export default function AdminDashboardPage() {
         );
       case "admin-team":
         return <AdminTeamManager />;
+      case "feedback":
+        return <AdminFeedbackManager />;
       case "locations":
         return <LocationsManager />;
       default:

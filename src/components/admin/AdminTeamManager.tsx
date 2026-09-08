@@ -31,6 +31,7 @@ const AVAILABLE_MODULES = [
   { id: "inventory", label: "Inventory" },
   { id: "customers", label: "Customers" },
   { id: "leads", label: "Leads" },
+  { id: "feedback", label: "Store Reviews" },
   { id: "locations", label: "Locations" },
   { id: "cms", label: "CMS" },
   { id: "coupons", label: "Coupons" },
