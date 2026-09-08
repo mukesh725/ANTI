@@ -56,24 +56,48 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing payment details' }, { status: 400 });
     }
 
-    // Verify Signature
-    if (!razorpay_order_id.startsWith('dummy_')) {
-      const secret = process.env.RAZORPAY_KEY_SECRET || 'dummy_secret';
-      const generated_signature = crypto.createHmac('sha256', secret)
-        .update(razorpay_order_id + "|" + razorpay_payment_id)
-        .digest('hex');
-
-      if (generated_signature !== razorpay_signature) {
-        await updateDoc(doc(db, 'membershipPayments', paymentRecordId), { status: 'FAILED' });
-        return NextResponse.json({ error: 'Payment verification failed' }, { status: 400 });
-      }
-    }
-
     // Check if user exists
     const usersRef = collection(db, 'users');
     const userSnapshot = await getDocs(query(usersRef, where('mobile', '==', decoded.mobile)));
     if (userSnapshot.empty) return NextResponse.json({ error: 'User not found' }, { status: 404 });
     const user = { id: userSnapshot.docs[0].id, ...userSnapshot.docs[0].data() } as any;
+
+    // Verify Payment Record exists and belongs to this user
+    const paymentDocRef = doc(db, 'membershipPayments', paymentRecordId);
+    const paymentDocSnap = await getDoc(paymentDocRef);
+    if (!paymentDocSnap.exists()) {
+      return NextResponse.json({ error: 'Payment record not found' }, { status: 404 });
+    }
+    const paymentData = paymentDocSnap.data();
+    if (paymentData.userId !== user.id) {
+      return NextResponse.json({ error: 'Payment authorization mismatch' }, { status: 403 });
+    }
+    if (paymentData.status === 'CAPTURED') {
+      return NextResponse.json({ error: 'Payment has already been processed' }, { status: 400 });
+    }
+
+    // Verify Signature
+    const isProduction = process.env.NODE_ENV === 'production';
+    if (isProduction && razorpay_order_id.startsWith('dummy_')) {
+      return NextResponse.json({ error: 'Simulated payments are disabled in production' }, { status: 400 });
+    }
+
+    if (!razorpay_order_id.startsWith('dummy_')) {
+      const secret = process.env.RAZORPAY_KEY_SECRET;
+      if (!secret) {
+        console.error('RAZORPAY_KEY_SECRET is missing');
+        return NextResponse.json({ error: 'Payment gateway configuration error' }, { status: 500 });
+      }
+
+      const generated_signature = crypto.createHmac('sha256', secret)
+        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+        .digest('hex');
+
+      if (generated_signature !== razorpay_signature) {
+        await updateDoc(paymentDocRef, { status: 'FAILED' });
+        return NextResponse.json({ error: 'Payment verification failed' }, { status: 400 });
+      }
+    }
 
     // Check for existing membership
     const membershipsRef = collection(db, 'memberships');

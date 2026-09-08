@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { doc, setDoc } from 'firebase/firestore';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,8 +28,11 @@ export async function GET(req: Request) {
   try {
     // 1. Verify Authorization
     const authHeader = req.headers.get('authorization');
-    if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const cronSecret = process.env.CRON_SECRET;
+    const isAuthorized = (cronSecret && authHeader === `Bearer ${cronSecret}`) || verifyAdminAuth(req);
+
+    if (!isAuthorized) {
+      return NextResponse.json({ error: 'Unauthorized cron access' }, { status: 401 });
     }
 
     if (!openai) {

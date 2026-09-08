@@ -335,9 +335,13 @@ export function AdminBookingsManager() {
         additionalFields.endTime = Date.now();
       }
 
+      const adminToken = localStorage.getItem('airo_admin_token') || '';
       await fetch('/api/bookings/update-status', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
         body: JSON.stringify({ bookingId: id, status: newStatus, ...additionalFields })
       });
     } catch (error) {
@@ -352,9 +356,13 @@ export function AdminBookingsManager() {
   const handleResendEmail = async (id: string) => {
     setUpdatingId(id);
     try {
+      const adminToken = localStorage.getItem('airo_admin_token') || '';
       const response = await fetch('/api/bookings/resend-email', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
         body: JSON.stringify({ bookingId: id })
       });
       const data = await response.json();
@@ -377,9 +385,13 @@ export function AdminBookingsManager() {
     
     setUpdatingId(id);
     try {
+      const adminToken = localStorage.getItem('airo_admin_token') || '';
       await fetch('/api/bookings/delete', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
         body: JSON.stringify({ bookingId: id })
       });
     } catch (error) {

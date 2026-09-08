@@ -2,13 +2,19 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { sendBookingConfirmationEmail } from '@/lib/bookingEmailService';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
 
 export async function POST(request: Request) {
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized administrative access' }, { status: 401 });
+    }
+
     const { bookingId } = await request.json();
 
-    if (!bookingId) {
-      return NextResponse.json({ error: 'Missing booking ID' }, { status: 400 });
+    if (!bookingId || typeof bookingId !== 'string') {
+      return NextResponse.json({ error: 'Missing or invalid booking ID' }, { status: 400 });
     }
 
     const bookingRef = doc(db, 'healthBookings', bookingId);

@@ -24,9 +24,13 @@ export function CmsEditor() {
     setIsSaving(true);
     setSaveStatus("idle");
     try {
+      const token = localStorage.getItem("airo_admin_token") || "";
       const res = await fetch("/api/cms/update", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(formData as Record<string, unknown>),
       });
 

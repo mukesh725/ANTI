@@ -2,9 +2,15 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { revalidateTag } from "next/cache";
+import { verifyAdminAuth } from "@/lib/membershipAuth";
 
 export async function POST(request: Request) {
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json({ error: "Unauthorized administrative access" }, { status: 401 });
+    }
+
     const data = await request.json();
 
     // 1. Save directly to Firestore

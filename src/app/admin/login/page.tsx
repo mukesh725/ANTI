@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Shield, Eye, EyeOff, AlertCircle } from "lucide-react";
-import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -26,68 +25,28 @@ export default function AdminLoginPage() {
     setIsLoading(true);
 
     try {
-      // 1. Check Super Admin Fallback
-      if (email === "admin@airo.dev" && password === "airohealthadmin2026") {
-        const superAdminUser = {
-          id: "super_admin",
-          name: "Super Admin",
-          email: "admin@airo.dev",
-          role: "Super Admin",
-          allowedModules: ["all"],
-          status: "active"
-        };
-        localStorage.setItem("airo_admin_auth", "true");
-        localStorage.setItem("airo_admin_user", JSON.stringify(superAdminUser));
-        router.push("/admin/dashboard");
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setError(data.error || "Invalid administrative credentials.");
         return;
       }
 
-      // 2. Query Firestore for Team Members
-      const q = query(
-        collection(db, "admin_users"), 
-        where("email", "==", email.toLowerCase().trim()),
-        where("password", "==", password)
-      );
-      
-      const querySnapshot = await getDocs(q);
-      
-      if (!querySnapshot.empty) {
-        // User found
-        interface AdminUser {
-          id: string;
-          status?: string;
-          name?: string;
-          username?: string;
-          email?: string;
-          role?: string;
-          allowedModules?: string[];
-        }
+      // Store authenticated session and token
+      localStorage.setItem("airo_admin_auth", "true");
+      localStorage.setItem("airo_admin_token", data.token);
+      localStorage.setItem("airo_admin_user", JSON.stringify(data.user));
 
-        const userDoc = querySnapshot.docs[0];
-        const userData = { id: userDoc.id, ...userDoc.data() } as AdminUser;
-        
-        if (userData.status === "disabled") {
-          setError("Your account has been disabled. Contact an administrator.");
-          return;
-        }
-
-        localStorage.setItem("airo_admin_auth", "true");
-        localStorage.setItem("airo_admin_user", JSON.stringify({
-          id: userData.id,
-          name: userData.name || userData.username, // Fallback to username for legacy docs
-          email: userData.email,
-          role: userData.role,
-          allowedModules: userData.allowedModules || [],
-          status: userData.status || "active"
-        }));
-        
-        router.push("/admin/dashboard");
-      } else {
-        setError("Invalid administrative credentials.");
-      }
+      router.push("/admin/dashboard");
     } catch (err) {
       console.error("Login error:", err);
-      setError("System error during authentication. Please try again.");
+      setError("Network or system error during authentication. Please try again.");
     } finally {
       setIsLoading(false);
     }

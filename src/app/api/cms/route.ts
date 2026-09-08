@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import { verifyAdminAuth } from "@/lib/membershipAuth";
 
 const cmsFilePath = path.join(process.cwd(), "src", "data", "cms.json");
 
@@ -15,6 +16,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json({ error: "Unauthorized administrative access" }, { status: 401 });
+    }
+
     const data = await request.json();
     await fs.writeFile(cmsFilePath, JSON.stringify(data, null, 2));
     return NextResponse.json({ success: true });

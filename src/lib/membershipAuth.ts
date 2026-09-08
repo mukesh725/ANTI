@@ -6,10 +6,29 @@ export function signToken(payload: any) {
   return jwt.sign(payload, JWT_SECRET, { algorithm: 'HS256', expiresIn: '30d' });
 }
 
+export function signAdminToken(payload: any) {
+  return jwt.sign({ ...payload, isAdmin: true }, JWT_SECRET, { algorithm: 'HS256', expiresIn: '7d' });
+}
+
 export function verifyToken(token: string) {
   try {
     // VAPT item 23: Enforce strict algorithm verification to prevent 'none' / algorithm confusion attacks
     return jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
+  } catch (e) {
+    return null;
+  }
+}
+
+export function verifyAdminAuth(request: Request): { email: string; role: string; allowedModules?: string[] } | null {
+  try {
+    const authHeader = request.headers.get('authorization') || request.headers.get('x-admin-token');
+    if (!authHeader) return null;
+    const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
+    const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as any;
+    if (decoded && decoded.isAdmin) {
+      return decoded;
+    }
+    return null;
   } catch (e) {
     return null;
   }
