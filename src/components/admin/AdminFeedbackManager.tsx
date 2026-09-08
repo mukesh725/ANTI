@@ -36,6 +36,8 @@ import {
   Printer,
 } from "lucide-react";
 import QRCode from "qrcode";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import {
   getAllStoreFeedbacks,
   updateStoreFeedback,
@@ -49,6 +51,7 @@ import {
 } from "@/lib/feedback";
 
 export function AdminFeedbackManager() {
+  const [availableStores, setAvailableStores] = useState<string[]>(STORE_LOCATIONS);
   const [feedbacks, setFeedbacks] = useState<StoreFeedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -137,6 +140,18 @@ export function AdminFeedbackManager() {
       setLoading(true);
       const data = await getAllStoreFeedbacks();
       setFeedbacks(data);
+
+      // Fetch dynamic store locations
+      try {
+        const docRef = doc(db, "settings", "locations");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().list && Array.isArray(docSnap.data().list) && docSnap.data().list.length > 0) {
+          setAvailableStores(docSnap.data().list);
+          setQrLocation(docSnap.data().list[0]);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic locations:", err);
+      }
     } catch (error) {
       console.error("Failed to load feedbacks:", error);
     } finally {
@@ -589,7 +604,7 @@ export function AdminFeedbackManager() {
           className="w-full md:w-auto px-3.5 py-2.5 bg-gray-50/70 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none cursor-pointer"
         >
           <option value="all">All Store Locations</option>
-          {STORE_LOCATIONS.map((loc) => (
+          {availableStores.map((loc) => (
             <option key={loc} value={loc}>
               {loc}
             </option>
@@ -1026,7 +1041,7 @@ export function AdminFeedbackManager() {
                     onChange={(e) => setManualForm({ ...manualForm, storeLocation: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 focus:outline-none"
                   >
-                    {STORE_LOCATIONS.map((loc) => (
+                    {availableStores.map((loc) => (
                       <option key={loc} value={loc}>
                         {loc}
                       </option>
@@ -1131,7 +1146,7 @@ export function AdminFeedbackManager() {
                   }}
                   className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
                 >
-                  {STORE_LOCATIONS.map((loc) => (
+                  {availableStores.map((loc) => (
                     <option key={loc} value={loc}>
                       {loc}
                     </option>

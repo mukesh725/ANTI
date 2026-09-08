@@ -152,6 +152,9 @@ export function ClientLayoutWrapper({
     themeClass = "theme-health";
   }
 
+  const isFeedbackPage = pathname.startsWith("/store-feedback") || pathname.startsWith("/feedback");
+  const isStandalonePage = pathname.startsWith("/admin") || isFeedbackPage;
+
   return (
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
@@ -161,12 +164,12 @@ export function ClientLayoutWrapper({
           <CmsProvider initialData={cmsData}>
             {/* Hide content until loading is done to prevent flash */}
             <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'} ${themeClass}`}>
-              {!pathname.startsWith('/admin') && <GlobalHeader />}
-              <main className={`flex-grow flex flex-col min-h-screen ${pathname.startsWith('/admin') ? '' : (pathname === '/' || pathname === '/health' ? '' : 'pt-28')}`}>
+              {!isStandalonePage && <GlobalHeader />}
+              <main className={`flex-grow flex flex-col min-h-screen ${isStandalonePage ? '' : (pathname === '/' || pathname === '/health' ? '' : 'pt-28')}`}>
                 {children}
-                {!pathname.startsWith('/admin') && <GlobalFooter />}
+                {!isStandalonePage && <GlobalFooter />}
               </main>
-              {!pathname.startsWith('/admin') && (
+              {!isStandalonePage && (
                 <>
                   <AiraChatbot />
                   <CookieBanner />

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Star,
@@ -17,6 +18,8 @@ import {
   X,
 } from "lucide-react";
 import { STORE_LOCATIONS, SENTIMENT_MAP, RatingLevel, SentimentType } from "@/lib/feedback";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const FEEDBACK_TYPES: ("Idea" | "Complaint" | "Suggestion" | "Compliment")[] = [
   "Idea",
@@ -32,14 +35,17 @@ const STORE_ASPECTS = [
   { id: "checkoutSpeed", label: "Billing Speed", icon: Clock },
 ];
 
-export default function StoreFeedbackPage() {
+function StoreFeedbackContent() {
+  const searchParams = useSearchParams();
+  const locationParam = searchParams.get("location");
+
+  const [availableStores, setAvailableStores] = useState<string[]>(STORE_LOCATIONS);
   const [rating, setRating] = useState<RatingLevel>(5);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const [feedbackType, setFeedbackType] = useState<"Idea" | "Complaint" | "Suggestion" | "Compliment">("Suggestion");
   const [comment, setComment] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [storeLocation, setStoreLocation] = useState(STORE_LOCATIONS[0]);
   const [showAspects, setShowAspects] = useState(false);
   const [selectedAspects, setSelectedAspects] = useState<Record<string, boolean>>({
@@ -50,6 +56,41 @@ export default function StoreFeedbackPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Fetch real-time available stores from Firestore/API
+  useEffect(() => {
+    async function loadStores() {
+      try {
+        const docRef = doc(db, "settings", "locations");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().list && Array.isArray(docSnap.data().list) && docSnap.data().list.length > 0) {
+          const list = docSnap.data().list as string[];
+          setAvailableStores(list);
+          if (locationParam && list.includes(locationParam)) {
+            setStoreLocation(locationParam);
+          } else {
+            setStoreLocation(list[0]);
+          }
+        } else {
+          // Fallback to /api/locations
+          const res = await fetch("/api/locations");
+          const data = await res.json();
+          if (data.locations && data.locations.length > 0) {
+            setAvailableStores(data.locations);
+            if (locationParam && data.locations.includes(locationParam)) {
+              setStoreLocation(locationParam);
+            } else {
+              setStoreLocation(data.locations[0]);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic store locations, using defaults", err);
+      }
+    }
+
+    loadStores();
+  }, [locationParam]);
 
   const toggleAspect = (id: string) => {
     setSelectedAspects((prev) => ({
@@ -86,7 +127,6 @@ export default function StoreFeedbackPage() {
         body: JSON.stringify({
           name: name.trim(),
           phone: phone.trim(),
-          email: email.trim(),
           rating,
           sentiment: SENTIMENT_MAP[rating].sentiment,
           feedbackType,
@@ -118,7 +158,6 @@ export default function StoreFeedbackPage() {
     setComment("");
     setName("");
     setPhone("");
-    setEmail("");
     setShowAspects(false);
     setSelectedAspects({
       staffHospitality: true,
@@ -131,291 +170,298 @@ export default function StoreFeedbackPage() {
   const currentDisplayRating = hoverRating !== null ? hoverRating : rating;
 
   return (
+    <div className="w-full max-w-[420px] relative z-10">
+      <AnimatePresence mode="wait">
+        {!isSubmitted ? (
+          <motion.div
+            key="feedback-card"
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className="bg-white rounded-[32px] shadow-2xl border border-white/20 overflow-hidden flex flex-col"
+          >
+            {/* Header */}
+            <div className="pt-6 pb-4 px-6 text-center border-b border-slate-100">
+              <h1 className="text-xl sm:text-2xl font-bold text-[#1E3A5F] tracking-tight">
+                Give us your feedback
+              </h1>
+            </div>
+
+            {/* Form Body */}
+            <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
+              {/* Store Rating Prompt & Stars */}
+              <div className="text-center space-y-2">
+                <p className="text-xs sm:text-sm font-medium text-slate-600">
+                  How would you rate our service?
+                </p>
+                <div className="flex items-center justify-center gap-2">
+                  {[1, 2, 3, 4, 5].map((starVal) => {
+                    const isFilled = starVal <= currentDisplayRating;
+                    return (
+                      <motion.button
+                        key={starVal}
+                        type="button"
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.85 }}
+                        onMouseEnter={() => setHoverRating(starVal)}
+                        onMouseLeave={() => setHoverRating(null)}
+                        onClick={() => setRating(starVal as RatingLevel)}
+                        className="p-1 focus:outline-none transition-transform"
+                      >
+                        <Star
+                          className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
+                            isFilled
+                              ? "fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_2px_8px_rgba(245,158,11,0.3)]"
+                              : "fill-transparent text-[#F59E0B]/50 stroke-[1.5]"
+                          }`}
+                        />
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Segmented Pill Selector (Idea | Complaint | Suggestion | Compliment) */}
+              <div className="bg-[#DCE4EC] p-1 rounded-2xl flex items-center gap-1">
+                {FEEDBACK_TYPES.map((type) => {
+                  const isSelected = feedbackType === type;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setFeedbackType(type)}
+                      className={`flex-1 py-2 px-1 rounded-xl text-xs font-semibold transition-all duration-200 text-center ${
+                        isSelected
+                          ? "bg-[#1E3A5F] text-white shadow-sm"
+                          : "bg-transparent text-slate-600 hover:text-slate-900"
+                      }`}
+                    >
+                      {type}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Experience Text Prompt & Area */}
+              <div className="space-y-1.5 text-center">
+                <label className="block text-xs sm:text-sm font-medium text-slate-600">
+                  Describe your experience
+                </label>
+                <div className="relative">
+                  <textarea
+                    rows={3}
+                    required
+                    placeholder="Share your thoughts about your visit today..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="w-full p-3.5 bg-slate-50/70 border border-slate-200 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F] transition-all resize-none shadow-xs"
+                  />
+                </div>
+              </div>
+
+              {/* Quick Aspect Tags Drawer (Toggleable via paperclip) */}
+              {showAspects && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
+                      Store Experience Tags
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setShowAspects(false)}
+                      className="text-slate-400 hover:text-slate-600"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {STORE_ASPECTS.map((aspect) => {
+                      const isChecked = Boolean(selectedAspects[aspect.id]);
+                      return (
+                        <button
+                          key={aspect.id}
+                          type="button"
+                          onClick={() => toggleAspect(aspect.id)}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
+                            isChecked
+                              ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
+                              : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                          }`}
+                        >
+                          {aspect.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Customer Details Inputs */}
+              <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    required
+                    placeholder="Your Name *"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
+                  />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Contact Number *"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
+                  />
+                </div>
+
+                {/* Available Stores Selector */}
+                <div className="relative">
+                  <select
+                    value={storeLocation}
+                    onChange={(e) => setStoreLocation(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F] cursor-pointer appearance-none"
+                  >
+                    {availableStores.map((loc) => (
+                      <option key={loc} value={loc}>
+                        📍 {loc}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-xs">
+                    ▼
+                  </div>
+                </div>
+              </div>
+
+              {/* Error message */}
+              {errorMsg && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs text-center font-medium"
+                >
+                  {errorMsg}
+                </motion.div>
+              )}
+
+              {/* Action Row: Paperclip Aspect Toggle + Submit Button */}
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowAspects((prev) => !prev)}
+                  title="Add Experience Tags"
+                  className={`p-3 rounded-2xl border transition-all ${
+                    showAspects
+                      ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
+                      : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                  }`}
+                >
+                  <Paperclip className="w-5 h-5" />
+                </button>
+
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 py-3 px-6 rounded-2xl bg-[#1E3A5F] hover:bg-[#162C47] text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <span>Submit</span>
+                  )}
+                </motion.button>
+              </div>
+            </form>
+
+            {/* Card Footer */}
+            <div className="pb-4 pt-1 text-center">
+              <span className="text-[11px] text-slate-400 font-medium tracking-wide">
+                By AIRO
+              </span>
+            </div>
+          </motion.div>
+        ) : (
+          /* Thank-You Delight Screen */
+          <motion.div
+            key="thank-you-card"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className="bg-white rounded-[32px] shadow-2xl border border-white/20 p-8 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
+              className="w-16 h-16 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4"
+            >
+              <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
+            </motion.div>
+
+            <h2 className="text-xl font-bold text-[#1E3A5F] mb-1">
+              Thank You, {name.split(" ")[0]}!
+            </h2>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto mb-6">
+              Your review has been logged to AIRO Core. We appreciate your valuable feedback!
+            </p>
+
+            <div className="bg-slate-50 rounded-2xl p-3 text-left text-xs text-slate-600 space-y-1 mb-6 border border-slate-100">
+              <div className="flex justify-between">
+                <span>Rating:</span>
+                <span className="font-semibold text-amber-500">{"★".repeat(rating)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Type:</span>
+                <span className="font-semibold text-slate-800">{feedbackType}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Store:</span>
+                <span className="font-medium text-slate-700 truncate max-w-[170px]">{storeLocation}</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={resetForm}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#1E3A5F] text-white text-xs font-semibold hover:bg-[#162C47] transition-all"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Submit Another Feedback</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function StoreFeedbackPage() {
+  return (
     <main className="min-h-screen bg-[#1E3A5F] flex flex-col items-center justify-center p-3 sm:p-6 font-sans relative overflow-hidden selection:bg-[#1E3A5F]/20">
       {/* Soft Ambient Background Glows */}
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-sky-400/10 blur-[100px] pointer-events-none" />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none" />
 
-      <div className="w-full max-w-[420px] relative z-10">
-        <AnimatePresence mode="wait">
-          {!isSubmitted ? (
-            <motion.div
-              key="feedback-card"
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="bg-white rounded-[32px] shadow-2xl border border-white/20 overflow-hidden flex flex-col"
-            >
-              {/* Header */}
-              <div className="pt-6 pb-4 px-6 text-center border-b border-slate-100">
-                <h1 className="text-xl sm:text-2xl font-bold text-[#1E3A5F] tracking-tight">
-                  Give us your feedback
-                </h1>
-              </div>
-
-              {/* Form Body */}
-              <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
-                {/* Store Rating Prompt & Stars */}
-                <div className="text-center space-y-2">
-                  <p className="text-xs sm:text-sm font-medium text-slate-600">
-                    How would you rate our service?
-                  </p>
-                  <div className="flex items-center justify-center gap-2">
-                    {[1, 2, 3, 4, 5].map((starVal) => {
-                      const isFilled = starVal <= currentDisplayRating;
-                      return (
-                        <motion.button
-                          key={starVal}
-                          type="button"
-                          whileHover={{ scale: 1.15 }}
-                          whileTap={{ scale: 0.85 }}
-                          onMouseEnter={() => setHoverRating(starVal)}
-                          onMouseLeave={() => setHoverRating(null)}
-                          onClick={() => setRating(starVal as RatingLevel)}
-                          className="p-1 focus:outline-none transition-transform"
-                        >
-                          <Star
-                            className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
-                              isFilled
-                                ? "fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_2px_8px_rgba(245,158,11,0.3)]"
-                                : "fill-transparent text-[#F59E0B]/50 stroke-[1.5]"
-                            }`}
-                          />
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Segmented Pill Selector (Idea | Complaint | Suggestion | Compliment) */}
-                <div className="bg-[#DCE4EC] p-1 rounded-2xl flex items-center gap-1">
-                  {FEEDBACK_TYPES.map((type) => {
-                    const isSelected = feedbackType === type;
-                    return (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => setFeedbackType(type)}
-                        className={`flex-1 py-2 px-1 rounded-xl text-xs font-semibold transition-all duration-200 text-center ${
-                          isSelected
-                            ? "bg-[#1E3A5F] text-white shadow-sm"
-                            : "bg-transparent text-slate-600 hover:text-slate-900"
-                        }`}
-                      >
-                        {type}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Experience Text Prompt & Area */}
-                <div className="space-y-1.5 text-center">
-                  <label className="block text-xs sm:text-sm font-medium text-slate-600">
-                    Describe your experience
-                  </label>
-                  <div className="relative">
-                    <textarea
-                      rows={3}
-                      required
-                      placeholder="Share your thoughts about your visit today..."
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                      className="w-full p-3.5 bg-slate-50/70 border border-slate-200 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F] transition-all resize-none shadow-xs"
-                    />
-                  </div>
-                </div>
-
-                {/* Quick Aspect Tags Drawer (Toggleable via paperclip) */}
-                {showAspects && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
-                        Store Experience Tags
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setShowAspects(false)}
-                        className="text-slate-400 hover:text-slate-600"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {STORE_ASPECTS.map((aspect) => {
-                        const isChecked = Boolean(selectedAspects[aspect.id]);
-                        return (
-                          <button
-                            key={aspect.id}
-                            type="button"
-                            onClick={() => toggleAspect(aspect.id)}
-                            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
-                              isChecked
-                                ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
-                                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
-                            }`}
-                          >
-                            {aspect.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Customer Details Inputs */}
-                <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your Name *"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
-                    />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Contact Number *"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
-                    />
-                  </div>
-
-                  <input
-                    type="email"
-                    placeholder="Email (Optional)"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
-                  />
-
-                  {/* Store Location */}
-                  <div className="relative">
-                    <select
-                      value={storeLocation}
-                      onChange={(e) => setStoreLocation(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F] cursor-pointer"
-                    >
-                      {STORE_LOCATIONS.map((loc) => (
-                        <option key={loc} value={loc}>
-                          📍 {loc}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Error message */}
-                {errorMsg && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs text-center font-medium"
-                  >
-                    {errorMsg}
-                  </motion.div>
-                )}
-
-                {/* Action Row: Paperclip Aspect Toggle + Submit Button */}
-                <div className="flex items-center gap-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setShowAspects((prev) => !prev)}
-                    title="Add Experience Tags"
-                    className={`p-3 rounded-2xl border transition-all ${
-                      showAspects
-                        ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
-                        : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
-                    }`}
-                  >
-                    <Paperclip className="w-5 h-5" />
-                  </button>
-
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex-1 py-3 px-6 rounded-2xl bg-[#1E3A5F] hover:bg-[#162C47] text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin text-white" />
-                        <span>Submitting...</span>
-                      </>
-                    ) : (
-                      <span>Submit</span>
-                    )}
-                  </motion.button>
-                </div>
-              </form>
-
-              {/* Card Footer */}
-              <div className="pb-4 pt-1 text-center">
-                <span className="text-[11px] text-slate-400 font-medium tracking-wide">
-                  By AIRO
-                </span>
-              </div>
-            </motion.div>
-          ) : (
-            /* Thank-You Delight Screen */
-            <motion.div
-              key="thank-you-card"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="bg-white rounded-[32px] shadow-2xl border border-white/20 p-8 text-center"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
-                className="w-16 h-16 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4"
-              >
-                <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
-              </motion.div>
-
-              <h2 className="text-xl font-bold text-[#1E3A5F] mb-1">
-                Thank You, {name.split(" ")[0]}!
-              </h2>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto mb-6">
-                Your review has been logged to AIRO Core. We appreciate your valuable feedback!
-              </p>
-
-              <div className="bg-slate-50 rounded-2xl p-3 text-left text-xs text-slate-600 space-y-1 mb-6 border border-slate-100">
-                <div className="flex justify-between">
-                  <span>Rating:</span>
-                  <span className="font-semibold text-amber-500">{"★".repeat(rating)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Type:</span>
-                  <span className="font-semibold text-slate-800">{feedbackType}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Store:</span>
-                  <span className="font-medium text-slate-700 truncate max-w-[170px]">{storeLocation}</span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={resetForm}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#1E3A5F] text-white text-xs font-semibold hover:bg-[#162C47] transition-all"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Submit Another Feedback</span>
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <Suspense fallback={
+        <div className="bg-white rounded-[32px] p-8 text-center text-slate-400 shadow-2xl">
+          <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#1E3A5F]" />
+        </div>
+      }>
+        <StoreFeedbackContent />
+      </Suspense>
     </main>
   );
 }
