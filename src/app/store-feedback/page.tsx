@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,6 +16,10 @@ import {
   Clock,
   ThumbsUp,
   X,
+  Camera,
+  Image as ImageIcon,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import { STORE_LOCATIONS, SENTIMENT_MAP, RatingLevel, SentimentType } from "@/lib/feedback";
 import { db } from "@/lib/firebase";
@@ -103,9 +107,49 @@ const RATING_LEVELS: {
   },
 ];
 
+// Helper to compress customer photos for instant Firestore storage
+const compressPhoto = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_DIM = 1000;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_DIM) {
+            height = Math.round((height * MAX_DIM) / width);
+            width = MAX_DIM;
+          }
+        } else {
+          if (height > MAX_DIM) {
+            width = Math.round((width * MAX_DIM) / height);
+            height = MAX_DIM;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        resolve(dataUrl);
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+};
+
 function StoreFeedbackContent() {
   const searchParams = useSearchParams();
   const locationParam = searchParams.get("location");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [availableStores, setAvailableStores] = useState<string[]>(STORE_LOCATIONS);
   const [rating, setRating] = useState<number>(0);
@@ -114,6 +158,8 @@ function StoreFeedbackContent() {
   const [comment, setComment] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [isProcessingPhoto, setIsProcessingPhoto] = useState(false);
   const [storeLocation, setStoreLocation] = useState(STORE_LOCATIONS[0]);
   const [showAspects, setShowAspects] = useState(false);
   const [selectedAspects, setSelectedAspects] = useState<Record<string, boolean>>({
@@ -167,6 +213,42 @@ function StoreFeedbackContent() {
     }));
   };
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    if (photos.length + files.length > 4) {
+      setErrorMsg("You can attach up to 4 photos.");
+      return;
+    }
+
+    setIsProcessingPhoto(true);
+    setErrorMsg("");
+
+    try {
+      const newPhotos: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (file.type.startsWith("image/")) {
+          const compressed = await compressPhoto(file);
+          newPhotos.push(compressed);
+        }
+      }
+      setPhotos((prev) => [...prev, ...newPhotos].slice(0, 4));
+      setShowAspects(true); // Open drawer so customer sees their photos
+    } catch (err) {
+      console.error("Failed to process photo:", err);
+      setErrorMsg("Could not process image. Please try a different photo.");
+    } finally {
+      setIsProcessingPhoto(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const removePhoto = (index: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
@@ -192,6 +274,7 @@ function StoreFeedbackContent() {
           storeLocation,
           comment: comment.trim(),
           aspects: selectedAspects,
+          photos: photos,
           source: "in_store_kiosk",
         }),
       });
@@ -217,6 +300,7 @@ function StoreFeedbackContent() {
     setComment("");
     setName("");
     setPhone("");
+    setPhotos([]);
     setShowAspects(false);
     setSelectedAspects({
       staffHospitality: true,
@@ -375,45 +459,107 @@ function StoreFeedbackContent() {
                   />
                 </div>
               </div>
+              {/* Hidden File Input for Photos */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handlePhotoUpload}
+                className="hidden"
+              />
 
-              {/* Quick Aspect Tags Drawer (Toggleable via paperclip) */}
+              {/* Quick Attachments & Tags Drawer (Toggleable via paperclip) */}
               {showAspects && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2"
+                  className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-3"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
+                  {/* Photos Section */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                        <Camera className="w-3.5 h-3.5 text-[#1E3A5F]" />
+                        Attach Photos ({photos.length}/4)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setShowAspects(false)}
+                        className="text-slate-400 hover:text-slate-600 p-0.5"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Photo Thumbnails & Upload Button */}
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                      {photos.map((imgSrc, idx) => (
+                        <div
+                          key={idx}
+                          className="relative w-14 h-14 rounded-xl overflow-hidden border border-slate-200 bg-white flex-shrink-0 group shadow-2xs"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={imgSrc}
+                            alt={`Attachment ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(idx)}
+                            className="absolute top-1 right-1 w-4 h-4 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-rose-600 transition-colors"
+                          >
+                            <X className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+                      ))}
+
+                      {photos.length < 4 && (
+                        <button
+                          type="button"
+                          disabled={isProcessingPhoto}
+                          onClick={() => fileInputRef.current?.click()}
+                          className="w-14 h-14 rounded-xl border-2 border-dashed border-slate-300 hover:border-[#1E3A5F] bg-white flex flex-col items-center justify-center text-slate-400 hover:text-[#1E3A5F] transition-all flex-shrink-0"
+                        >
+                          {isProcessingPhoto ? (
+                            <Loader2 className="w-4 h-4 animate-spin text-[#1E3A5F]" />
+                          ) : (
+                            <>
+                              <Plus className="w-4 h-4" />
+                              <span className="text-[9px] font-medium mt-0.5">Photo</span>
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Experience Tags Section */}
+                  <div className="pt-2 border-t border-slate-200/70 space-y-1.5">
+                    <span className="text-[11px] font-semibold text-slate-700 uppercase tracking-wider block">
                       Store Experience Tags
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => setShowAspects(false)}
-                      className="text-slate-400 hover:text-slate-600"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {STORE_ASPECTS.map((aspect) => {
-                      const isChecked = Boolean(selectedAspects[aspect.id]);
-                      return (
-                        <button
-                          key={aspect.id}
-                          type="button"
-                          onClick={() => toggleAspect(aspect.id)}
-                          className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
-                            isChecked
-                              ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
-                              : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
-                          }`}
-                        >
-                          {aspect.label}
-                        </button>
-                      );
-                    })}
+                    <div className="flex flex-wrap gap-1.5">
+                      {STORE_ASPECTS.map((aspect) => {
+                        const isChecked = Boolean(selectedAspects[aspect.id]);
+                        return (
+                          <button
+                            key={aspect.id}
+                            type="button"
+                            onClick={() => toggleAspect(aspect.id)}
+                            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
+                              isChecked
+                                ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
+                                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                            }`}
+                          >
+                            {aspect.label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -456,6 +602,23 @@ function StoreFeedbackContent() {
                 </div>
               </div>
 
+              {/* Photos Attached Indicator Preview if Drawer is Closed */}
+              {!showAspects && photos.length > 0 && (
+                <div className="flex items-center justify-between p-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Camera className="w-3.5 h-3.5 text-[#1E3A5F]" />
+                    {photos.length} photo{photos.length > 1 ? "s" : ""} attached
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowAspects(true)}
+                    className="text-[11px] font-semibold text-[#1E3A5F] hover:underline"
+                  >
+                    View / Edit
+                  </button>
+                </div>
+              )}
+
               {/* Error message */}
               {errorMsg && (
                 <motion.div
@@ -472,14 +635,19 @@ function StoreFeedbackContent() {
                 <button
                   type="button"
                   onClick={() => setShowAspects((prev) => !prev)}
-                  title="Add Experience Tags"
-                  className={`p-3 rounded-2xl border transition-all ${
-                    showAspects
+                  title="Attach Photos & Store Tags"
+                  className={`relative p-3 rounded-2xl border transition-all ${
+                    showAspects || photos.length > 0
                       ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
                       : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
                   }`}
                 >
                   <Paperclip className="w-5 h-5" />
+                  {photos.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white">
+                      {photos.length}
+                    </span>
+                  )}
                 </button>
 
                 <motion.button
@@ -490,7 +658,7 @@ function StoreFeedbackContent() {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Submitting...</span>
                     </>
                   ) : (

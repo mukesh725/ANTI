@@ -751,8 +751,13 @@ export function AdminFeedbackManager() {
                         <p className="text-gray-800 line-clamp-2 italic font-serif text-[13px]">
                           {item.comment ? `"${item.comment}"` : <span className="text-gray-400 not-italic">No written comments</span>}
                         </p>
-                        {aspectCount > 0 && (
+                        {(aspectCount > 0 || (item.photos && item.photos.length > 0)) && (
                           <div className="flex flex-wrap gap-1 mt-1.5">
+                            {item.photos && item.photos.length > 0 && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-semibold border border-blue-100">
+                                <Camera className="w-2.5 h-2.5" /> {item.photos.length} Photo{item.photos.length > 1 ? "s" : ""}
+                              </span>
+                            )}
                             {item.aspects?.staffHospitality && (
                               <span className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px]">Staff Care</span>
                             )}
@@ -946,6 +951,32 @@ export function AdminFeedbackManager() {
                     {activeReview.comment ? `"${activeReview.comment}"` : "No comment written by customer."}
                   </div>
                 </div>
+
+                {/* Attached Customer Photos */}
+                {activeReview.photos && activeReview.photos.length > 0 && (
+                  <div>
+                    <h5 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <Camera className="w-3.5 h-3.5 text-[#1E3A5F]" /> Attached Photos ({activeReview.photos.length})
+                    </h5>
+                    <div className="grid grid-cols-2 gap-2">
+                      {activeReview.photos.map((photoSrc, idx) => (
+                        <a
+                          key={idx}
+                          href={photoSrc}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 bg-gray-100 group block hover:opacity-90 transition-opacity"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={photoSrc} alt={`Customer Attachment ${idx + 1}`} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[11px] font-medium transition-opacity">
+                            🔍 View Full Photo
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Manager Internal Notes */}
                 <div>
