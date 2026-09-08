@@ -698,11 +698,26 @@ export function AdminFeedbackManager() {
                         </div>
                       </td>
 
-                      {/* Rating */}
+                      {/* Rating & Type */}
                       <td className="py-4 px-6">
-                        <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold ${ratingInfo.bg} ${ratingInfo.color}`}>
-                          <span>{ratingInfo.emoji}</span>
-                          <span>{item.rating} ★ {ratingInfo.label}</span>
+                        <div className="flex flex-col items-start gap-1">
+                          <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold ${ratingInfo.bg} ${ratingInfo.color}`}>
+                            <span>{ratingInfo.emoji}</span>
+                            <span>{item.rating} ★ {ratingInfo.label}</span>
+                          </div>
+                          {item.feedbackType && (
+                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+                              item.feedbackType === "Complaint"
+                                ? "bg-rose-100 text-rose-700"
+                                : item.feedbackType === "Idea"
+                                ? "bg-indigo-100 text-indigo-700"
+                                : item.feedbackType === "Compliment"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-sky-100 text-sky-700"
+                            }`}>
+                              {item.feedbackType}
+                            </span>
+                          )}
                         </div>
                       </td>
 
@@ -866,6 +881,11 @@ export function AdminFeedbackManager() {
                     <span className="text-xs font-semibold text-gray-500 uppercase">
                       {SENTIMENT_MAP[activeReview.rating].label}
                     </span>
+                    {activeReview.feedbackType && (
+                      <span className="block text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-0.5">
+                        Type: {activeReview.feedbackType}
+                      </span>
+                    )}
                   </div>
                 </div>
 

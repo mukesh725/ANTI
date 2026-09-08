@@ -1,114 +1,52 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Sparkles,
-  Store,
-  User,
-  Phone,
-  MessageSquare,
+  Star,
+  Paperclip,
   CheckCircle2,
-  ChevronRight,
-  ArrowLeft,
   RotateCcw,
+  Loader2,
+  Sparkles,
+  MapPin,
   HeartHandshake,
+  Store,
   Clock,
   ThumbsUp,
-  MapPin,
-  ShieldCheck,
-  Star,
-  Send,
-  Loader2,
+  X,
 } from "lucide-react";
 import { STORE_LOCATIONS, SENTIMENT_MAP, RatingLevel, SentimentType } from "@/lib/feedback";
 
-const RATINGS_OPTIONS: {
-  level: RatingLevel;
-  label: string;
-  sublabel: string;
-  sentiment: SentimentType;
-  emoji: string;
-  color: string;
-  activeBg: string;
-  borderActive: string;
-  glow: string;
-}[] = [
-  {
-    level: 1,
-    label: "Poor",
-    sublabel: "Needs Attention",
-    sentiment: "poor",
-    emoji: "😞",
-    color: "text-rose-500",
-    activeBg: "bg-rose-500/10",
-    borderActive: "border-rose-500 ring-4 ring-rose-500/20",
-    glow: "rgba(244, 63, 94, 0.2)",
-  },
-  {
-    level: 2,
-    label: "Average",
-    sublabel: "Could Be Better",
-    sentiment: "average",
-    emoji: "😐",
-    color: "text-amber-500",
-    activeBg: "bg-amber-500/10",
-    borderActive: "border-amber-500 ring-4 ring-amber-500/20",
-    glow: "rgba(245, 158, 11, 0.2)",
-  },
-  {
-    level: 3,
-    label: "Good",
-    sublabel: "Met Expectations",
-    sentiment: "good",
-    emoji: "🙂",
-    color: "text-sky-500",
-    activeBg: "bg-sky-500/10",
-    borderActive: "border-sky-500 ring-4 ring-sky-500/20",
-    glow: "rgba(14, 165, 233, 0.2)",
-  },
-  {
-    level: 4,
-    label: "Very Good",
-    sublabel: "Pleasant Visit",
-    sentiment: "very_good",
-    emoji: "😊",
-    color: "text-emerald-500",
-    activeBg: "bg-emerald-500/10",
-    borderActive: "border-emerald-500 ring-4 ring-emerald-500/20",
-    glow: "rgba(16, 185, 129, 0.2)",
-  },
-  {
-    level: 5,
-    label: "Excellent",
-    sublabel: "Exceptional Service",
-    sentiment: "excellent",
-    emoji: "🤩",
-    color: "text-[#00c988]",
-    activeBg: "bg-[#00c988]/10",
-    borderActive: "border-[#00c988] ring-4 ring-[#00c988]/20",
-    glow: "rgba(0, 201, 136, 0.25)",
-  },
+const FEEDBACK_TYPES: ("Idea" | "Complaint" | "Suggestion" | "Compliment")[] = [
+  "Idea",
+  "Complaint",
+  "Suggestion",
+  "Compliment",
 ];
 
 const STORE_ASPECTS = [
-  { id: "staffHospitality", label: "Staff Hospitality & Care", icon: HeartHandshake },
-  { id: "storeAmbiance", label: "Store Ambiance & Cleanliness", icon: Sparkles },
-  { id: "productAvailability", label: "Product Range & Display", icon: Store },
-  { id: "checkoutSpeed", label: "Fast & Smooth Billing", icon: Clock },
-  { id: "healthScanExperience", label: "Health Check / Clinic Care", icon: ThumbsUp },
+  { id: "staffHospitality", label: "Staff Hospitality", icon: HeartHandshake },
+  { id: "storeAmbiance", label: "Store Ambiance", icon: Sparkles },
+  { id: "productAvailability", label: "Product Range", icon: Store },
+  { id: "checkoutSpeed", label: "Billing Speed", icon: Clock },
 ];
 
 export default function StoreFeedbackPage() {
-  const [selectedRating, setSelectedRating] = useState<RatingLevel | null>(5);
+  const [rating, setRating] = useState<RatingLevel>(5);
+  const [hoverRating, setHoverRating] = useState<number | null>(null);
+  const [feedbackType, setFeedbackType] = useState<"Idea" | "Complaint" | "Suggestion" | "Compliment">("Suggestion");
+  const [comment, setComment] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [storeLocation, setStoreLocation] = useState(STORE_LOCATIONS[0]);
+  const [showAspects, setShowAspects] = useState(false);
   const [selectedAspects, setSelectedAspects] = useState<Record<string, boolean>>({
     staffHospitality: true,
     storeAmbiance: true,
   });
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [storeLocation, setStoreLocation] = useState(STORE_LOCATIONS[0]);
-  const [comment, setComment] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -120,26 +58,22 @@ export default function StoreFeedbackPage() {
     }));
   };
 
-  const handleRatingSelect = (level: RatingLevel) => {
-    setSelectedRating(level);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
 
-    if (!selectedRating) {
-      setErrorMsg("Please select an overall rating for your store experience.");
-      return;
-    }
-
     if (!name.trim()) {
-      setErrorMsg("Please provide your name.");
+      setErrorMsg("Please enter your name.");
       return;
     }
 
     if (!phone.trim() || phone.trim().length < 8) {
-      setErrorMsg("Please provide a valid contact number.");
+      setErrorMsg("Please enter a valid contact number.");
+      return;
+    }
+
+    if (!comment.trim()) {
+      setErrorMsg("Please share a few words about your experience.");
       return;
     }
 
@@ -152,8 +86,10 @@ export default function StoreFeedbackPage() {
         body: JSON.stringify({
           name: name.trim(),
           phone: phone.trim(),
-          rating: selectedRating,
-          sentiment: SENTIMENT_MAP[selectedRating].sentiment,
+          email: email.trim(),
+          rating,
+          sentiment: SENTIMENT_MAP[rating].sentiment,
+          feedbackType,
           storeLocation,
           comment: comment.trim(),
           aspects: selectedAspects,
@@ -162,7 +98,6 @@ export default function StoreFeedbackPage() {
       });
 
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || "Failed to submit feedback");
       }
@@ -177,293 +112,309 @@ export default function StoreFeedbackPage() {
   };
 
   const resetForm = () => {
-    setSelectedRating(5);
+    setRating(5);
+    setHoverRating(null);
+    setFeedbackType("Suggestion");
+    setComment("");
+    setName("");
+    setPhone("");
+    setEmail("");
+    setShowAspects(false);
     setSelectedAspects({
       staffHospitality: true,
       storeAmbiance: true,
     });
-    setName("");
-    setPhone("");
-    setComment("");
     setIsSubmitted(false);
     setErrorMsg("");
   };
 
+  const currentDisplayRating = hoverRating !== null ? hoverRating : rating;
+
   return (
-    <main className="min-h-screen bg-[#070B14] text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-10 relative overflow-hidden selection:bg-[#00c988]/30">
-      {/* Dynamic Apple-Style Ambient Backdrops */}
-      <div className="absolute top-[-15%] left-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-600/10 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full bg-teal-500/10 blur-[140px] pointer-events-none" />
+    <main className="min-h-screen bg-[#1E3A5F] flex flex-col items-center justify-center p-3 sm:p-6 font-sans relative overflow-hidden selection:bg-[#1E3A5F]/20">
+      {/* Soft Ambient Background Glows */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-sky-400/10 blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none" />
 
-      {/* Main Container */}
-      <div className="w-full max-w-2xl relative z-10">
-        {/* Brand Header */}
-        <header className="text-center mb-6 md:mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md mb-3">
-            <Store className="w-3.5 h-3.5 text-[#00c988]" />
-            <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-300">
-              In-Store Experience
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-white">
-            How was your visit to <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-emerald-400">AIRO</span>?
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-400 mt-1.5 max-w-md mx-auto">
-            Your instant review takes less than 30 seconds and helps us tailor an unmatched physical store experience.
-          </p>
-        </header>
-
-        {/* Form Card or Thank-You Screen */}
+      <div className="w-full max-w-[420px] relative z-10">
         <AnimatePresence mode="wait">
           {!isSubmitted ? (
             <motion.div
-              key="feedback-form"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.09] rounded-3xl p-6 sm:p-8 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.7)] relative overflow-hidden"
+              key="feedback-card"
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="bg-white rounded-[32px] shadow-2xl border border-white/20 overflow-hidden flex flex-col"
             >
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Store Location Selector */}
-                <div>
-                  <label className="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">
-                    Store Location
-                  </label>
-                  <div className="relative">
-                    <MapPin className="w-4 h-4 text-emerald-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    <select
-                      value={storeLocation}
-                      onChange={(e) => setStoreLocation(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-white/[0.04] border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/20 transition-all cursor-pointer appearance-none"
-                    >
-                      {STORE_LOCATIONS.map((loc) => (
-                        <option key={loc} value={loc} className="bg-[#0e1628] text-white">
-                          {loc}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+              {/* Header */}
+              <div className="pt-6 pb-4 px-6 text-center border-b border-slate-100">
+                <h1 className="text-xl sm:text-2xl font-bold text-[#1E3A5F] tracking-tight">
+                  Give us your feedback
+                </h1>
+              </div>
 
-                {/* Step 1: 5-Tier Apple-Style Rating Selector */}
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <label className="text-xs font-semibold tracking-wider text-gray-400 uppercase">
-                      Overall Experience Rating
-                    </label>
-                    <span className="text-[11px] font-medium text-emerald-400/90">
-                      {selectedRating ? `${SENTIMENT_MAP[selectedRating].label} (${selectedRating} / 5)` : "Select one"}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-5 gap-2 sm:gap-3">
-                    {RATINGS_OPTIONS.map((opt) => {
-                      const isSelected = selectedRating === opt.level;
+              {/* Form Body */}
+              <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
+                {/* Store Rating Prompt & Stars */}
+                <div className="text-center space-y-2">
+                  <p className="text-xs sm:text-sm font-medium text-slate-600">
+                    How would you rate our service?
+                  </p>
+                  <div className="flex items-center justify-center gap-2">
+                    {[1, 2, 3, 4, 5].map((starVal) => {
+                      const isFilled = starVal <= currentDisplayRating;
                       return (
                         <motion.button
-                          key={opt.level}
+                          key={starVal}
                           type="button"
-                          whileHover={{ scale: 1.04 }}
-                          whileTap={{ scale: 0.95 }}
-                          transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                          onClick={() => handleRatingSelect(opt.level)}
-                          className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border transition-all duration-200 relative group ${
-                            isSelected
-                              ? `${opt.activeBg} ${opt.borderActive}`
-                              : "bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]"
-                          }`}
-                          style={{
-                            boxShadow: isSelected ? `0 0 20px ${opt.glow}` : "none",
-                          }}
+                          whileHover={{ scale: 1.15 }}
+                          whileTap={{ scale: 0.85 }}
+                          onMouseEnter={() => setHoverRating(starVal)}
+                          onMouseLeave={() => setHoverRating(null)}
+                          onClick={() => setRating(starVal as RatingLevel)}
+                          className="p-1 focus:outline-none transition-transform"
                         >
-                          <span className="text-2xl sm:text-3xl mb-1.5 transform group-hover:scale-110 transition-transform">
-                            {opt.emoji}
-                          </span>
-                          <span className={`text-[11px] sm:text-xs font-semibold ${isSelected ? "text-white" : "text-gray-400"}`}>
-                            {opt.label}
-                          </span>
+                          <Star
+                            className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
+                              isFilled
+                                ? "fill-[#F59E0B] text-[#F59E0B] drop-shadow-[0_2px_8px_rgba(245,158,11,0.3)]"
+                                : "fill-transparent text-[#F59E0B]/50 stroke-[1.5]"
+                            }`}
+                          />
                         </motion.button>
                       );
                     })}
                   </div>
                 </div>
 
-                {/* Step 2: Store Aspects Badges (1-Tap Fast Check) */}
-                <div>
-                  <label className="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2.5">
-                    What did you appreciate most? (Optional)
+                {/* Segmented Pill Selector (Idea | Complaint | Suggestion | Compliment) */}
+                <div className="bg-[#DCE4EC] p-1 rounded-2xl flex items-center gap-1">
+                  {FEEDBACK_TYPES.map((type) => {
+                    const isSelected = feedbackType === type;
+                    return (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setFeedbackType(type)}
+                        className={`flex-1 py-2 px-1 rounded-xl text-xs font-semibold transition-all duration-200 text-center ${
+                          isSelected
+                            ? "bg-[#1E3A5F] text-white shadow-sm"
+                            : "bg-transparent text-slate-600 hover:text-slate-900"
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Experience Text Prompt & Area */}
+                <div className="space-y-1.5 text-center">
+                  <label className="block text-xs sm:text-sm font-medium text-slate-600">
+                    Describe your experience
                   </label>
-                  <div className="flex flex-wrap gap-2">
-                    {STORE_ASPECTS.map((aspect) => {
-                      const isChecked = Boolean(selectedAspects[aspect.id]);
-                      const Icon = aspect.icon;
-                      return (
-                        <button
-                          key={aspect.id}
-                          type="button"
-                          onClick={() => toggleAspect(aspect.id)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
-                            isChecked
-                              ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.15)]"
-                              : "bg-white/[0.02] border-white/5 text-gray-400 hover:border-white/15 hover:text-gray-200"
-                          }`}
-                        >
-                          <Icon className={`w-3.5 h-3.5 ${isChecked ? "text-emerald-400" : "text-gray-500"}`} />
-                          {aspect.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Step 3: Customer Information */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label className="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">
-                      Your Full Name <span className="text-emerald-400">*</span>
-                    </label>
-                    <div className="relative">
-                      <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Mukesh Kumar"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-white/[0.04] border border-white/10 rounded-2xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">
-                      Contact Number <span className="text-emerald-400">*</span>
-                    </label>
-                    <div className="relative">
-                      <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                      <input
-                        type="tel"
-                        required
-                        placeholder="+91 98765 43210"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-white/[0.04] border border-white/10 rounded-2xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 4: Comment Box */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-semibold tracking-wider text-gray-400 uppercase">
-                      Comments or Suggestions
-                    </label>
-                    <span className="text-[10px] text-gray-500">Optional</span>
-                  </div>
                   <div className="relative">
                     <textarea
                       rows={3}
-                      placeholder="Share compliments for the team or suggestions on how we can improve your next visit..."
+                      required
+                      placeholder="Share your thoughts about your visit today..."
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
-                      className="w-full p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
+                      className="w-full p-3.5 bg-slate-50/70 border border-slate-200 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F] transition-all resize-none shadow-xs"
                     />
                   </div>
                 </div>
 
-                {/* Error Banner */}
-                {errorMsg && (
+                {/* Quick Aspect Tags Drawer (Toggleable via paperclip) */}
+                {showAspects && (
                   <motion.div
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-300 text-xs font-medium flex items-center gap-2"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2"
                   >
-                    <span>⚠️</span> {errorMsg}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider">
+                        Store Experience Tags
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setShowAspects(false)}
+                        className="text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {STORE_ASPECTS.map((aspect) => {
+                        const isChecked = Boolean(selectedAspects[aspect.id]);
+                        return (
+                          <button
+                            key={aspect.id}
+                            type="button"
+                            onClick={() => toggleAspect(aspect.id)}
+                            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
+                              isChecked
+                                ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
+                                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                            }`}
+                          >
+                            {aspect.label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </motion.div>
                 )}
 
-                {/* Submit Action */}
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#00c988] to-teal-500 hover:from-[#00b277] hover:to-teal-600 text-[#070B14] font-semibold text-sm tracking-wide shadow-[0_10px_25px_-5px_rgba(0,201,136,0.4)] flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin text-[#070B14]" />
-                      <span>Saving Securely...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Submit Experience Review</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </>
-                  )}
-                </motion.button>
+                {/* Customer Details Inputs */}
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your Name *"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
+                    />
+                    <input
+                      type="tel"
+                      required
+                      placeholder="Contact Number *"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
+                    />
+                  </div>
+
+                  <input
+                    type="email"
+                    placeholder="Email (Optional)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F]"
+                  />
+
+                  {/* Store Location */}
+                  <div className="relative">
+                    <select
+                      value={storeLocation}
+                      onChange={(e) => setStoreLocation(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20 focus:border-[#1E3A5F] cursor-pointer"
+                    >
+                      {STORE_LOCATIONS.map((loc) => (
+                        <option key={loc} value={loc}>
+                          📍 {loc}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Error message */}
+                {errorMsg && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs text-center font-medium"
+                  >
+                    {errorMsg}
+                  </motion.div>
+                )}
+
+                {/* Action Row: Paperclip Aspect Toggle + Submit Button */}
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setShowAspects((prev) => !prev)}
+                    title="Add Experience Tags"
+                    className={`p-3 rounded-2xl border transition-all ${
+                      showAspects
+                        ? "bg-[#1E3A5F] text-white border-[#1E3A5F]"
+                        : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                    }`}
+                  >
+                    <Paperclip className="w-5 h-5" />
+                  </button>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 py-3 px-6 rounded-2xl bg-[#1E3A5F] hover:bg-[#162C47] text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Submitting...</span>
+                      </>
+                    ) : (
+                      <span>Submit</span>
+                    )}
+                  </motion.button>
+                </div>
               </form>
+
+              {/* Card Footer */}
+              <div className="pb-4 pt-1 text-center">
+                <span className="text-[11px] text-slate-400 font-medium tracking-wide">
+                  By AIRO
+                </span>
+              </div>
             </motion.div>
           ) : (
-            /* Apple-Style Confirmation Delight Screen */
+            /* Thank-You Delight Screen */
             <motion.div
-              key="thank-you-state"
+              key="thank-you-card"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.09] rounded-3xl p-8 sm:p-12 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.7)] text-center relative overflow-hidden"
+              className="bg-white rounded-[32px] shadow-2xl border border-white/20 p-8 text-center"
             >
-              {/* Apple-style pop-in checkmark */}
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.1 }}
-                className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-emerald-500 to-[#00c988] flex items-center justify-center shadow-[0_0_35px_rgba(0,201,136,0.5)] mb-6"
+                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
+                className="w-16 h-16 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4"
               >
-                <CheckCircle2 className="w-10 h-10 text-[#070B14] stroke-[2.5]" />
+                <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
               </motion.div>
 
-              <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-2">
+              <h2 className="text-xl font-bold text-[#1E3A5F] mb-1">
                 Thank You, {name.split(" ")[0]}!
               </h2>
-              <p className="text-sm text-gray-300 max-w-md mx-auto leading-relaxed mb-6">
-                Your feedback has been securely transmitted to our store leadership. It helps us continually redefine holistic care & customer excellence.
+              <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto mb-6">
+                Your review has been logged to AIRO Core. We appreciate your valuable feedback!
               </p>
 
-              {/* Review Snapshot Card */}
-              <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 max-w-sm mx-auto mb-8 text-left">
-                <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-                  <span>Rating Given</span>
-                  <span className="text-emerald-400 font-semibold">{selectedRating} / 5 Stars ({SENTIMENT_MAP[selectedRating || 5].label})</span>
+              <div className="bg-slate-50 rounded-2xl p-3 text-left text-xs text-slate-600 space-y-1 mb-6 border border-slate-100">
+                <div className="flex justify-between">
+                  <span>Rating:</span>
+                  <span className="font-semibold text-amber-500">{"★".repeat(rating)}</span>
                 </div>
-                <div className="flex items-center justify-between text-xs text-gray-400">
-                  <span>Store</span>
-                  <span className="text-white font-medium truncate max-w-[180px]">{storeLocation}</span>
+                <div className="flex justify-between">
+                  <span>Type:</span>
+                  <span className="font-semibold text-slate-800">{feedbackType}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Store:</span>
+                  <span className="font-medium text-slate-700 truncate max-w-[170px]">{storeLocation}</span>
                 </div>
               </div>
 
-              {/* Action to reset for next customer */}
-              <motion.button
+              <button
                 type="button"
                 onClick={resetForm}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-xs tracking-wider uppercase border border-white/10 transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#1E3A5F] text-white text-xs font-semibold hover:bg-[#162C47] transition-all"
               >
-                <RotateCcw className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Submit Another Review</span>
-              </motion.button>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Submit Another Feedback</span>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Security & Private Server Footnote */}
-        <footer className="mt-8 text-center flex items-center justify-center gap-2 text-gray-500 text-xs">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-          <span>Encrypted Store Experience Terminal • Powered by AIRO Core</span>
-        </footer>
       </div>
     </main>
   );

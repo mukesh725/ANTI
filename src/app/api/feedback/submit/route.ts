@@ -4,7 +4,7 @@ import { submitStoreFeedback, RatingLevel, SentimentType } from "@/lib/feedback"
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, phone, email, rating, sentiment, storeLocation, comment, aspects, recommendScore, source } = body;
+    const { name, phone, email, rating, sentiment, feedbackType, storeLocation, comment, aspects, recommendScore, source } = body;
 
     // Basic validation
     if (!name || typeof name !== "string" || name.trim().length === 0) {
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
       email: email?.trim() || "",
       rating: numRating as RatingLevel,
       sentiment: (sentiment as SentimentType) || (numRating >= 4 ? "excellent" : numRating === 3 ? "good" : numRating === 2 ? "average" : "poor"),
+      feedbackType: feedbackType || "Suggestion",
       storeLocation: storeLocation?.trim() || "AIRO Flagship Experience Center",
       comment: comment?.trim() || "",
       aspects: aspects || {},

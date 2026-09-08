@@ -34,6 +34,7 @@ export interface StoreFeedback {
   email?: string;
   rating: RatingLevel;
   sentiment: SentimentType;
+  feedbackType?: "Idea" | "Complaint" | "Suggestion" | "Compliment";
   storeLocation: string;
   comment: string;
   aspects?: AspectRatings;
@@ -80,6 +81,7 @@ export async function submitStoreFeedback(feedback: Omit<StoreFeedback, "id" | "
       email: feedback.email?.trim() || "",
       rating: feedback.rating,
       sentiment: feedback.sentiment || SENTIMENT_MAP[feedback.rating]?.sentiment || "good",
+      feedbackType: feedback.feedbackType || "Suggestion",
       storeLocation: feedback.storeLocation || "AIRO Flagship Experience Center",
       comment: feedback.comment?.trim() || "",
       aspects: feedback.aspects || {},
@@ -121,6 +123,7 @@ export async function getAllStoreFeedbacks(): Promise<StoreFeedback[]> {
         email: data.email || "",
         rating: (data.rating as RatingLevel) || 5,
         sentiment: data.sentiment || "excellent",
+        feedbackType: data.feedbackType || "Suggestion",
         storeLocation: data.storeLocation || "AIRO Flagship Experience Center",
         comment: data.comment || "",
         aspects: data.aspects || {},
