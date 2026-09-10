@@ -4,7 +4,7 @@ import { submitStoreFeedback, RatingLevel, SentimentType } from "@/lib/feedback"
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, phone, email, rating, sentiment, feedbackType, storeLocation, comment, aspects, recommendScore, source } = body;
+    const { name, phone, email, rating, sentiment, feedbackType, storeLocation, comment, aspects, photos, recommendScore, source } = body;
 
     const numRating = Number(rating);
     if (!numRating || numRating < 1 || numRating > 5) {
@@ -24,6 +24,7 @@ export async function POST(req: Request) {
       storeLocation: storeLocation?.trim() || "AIRO Flagship Experience Center",
       comment: comment?.trim() || "",
       aspects: aspects || {},
+      photos: Array.isArray(photos) ? photos.slice(0, 5) : [],
       recommendScore: typeof recommendScore === "number" ? recommendScore : undefined,
       source: source || "in_store_kiosk",
     });

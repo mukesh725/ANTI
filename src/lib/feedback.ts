@@ -38,6 +38,7 @@ export interface StoreFeedback {
   storeLocation: string;
   comment: string;
   aspects?: AspectRatings;
+  photos?: string[];
   recommendScore?: number; // 1-10 NPS optional
   isPublished: boolean; // Publish on public website
   isFeatured: boolean;
@@ -91,6 +92,7 @@ export async function submitStoreFeedback(feedback: Omit<StoreFeedback, "id" | "
       storeLocation: feedback.storeLocation || "AIRO Flagship Experience Center",
       comment: feedback.comment?.trim() || "",
       aspects: feedback.aspects || {},
+      photos: Array.isArray(feedback.photos) ? feedback.photos : [],
       recommendScore: feedback.recommendScore || (feedback.rating >= 4 ? 10 : feedback.rating * 2),
       isPublished: feedback.isPublished ?? false,
       isFeatured: feedback.isFeatured ?? false,
@@ -133,6 +135,7 @@ export async function getAllStoreFeedbacks(): Promise<StoreFeedback[]> {
         storeLocation: data.storeLocation || "AIRO Flagship Experience Center",
         comment: data.comment || "",
         aspects: data.aspects || {},
+        photos: Array.isArray(data.photos) ? data.photos : [],
         recommendScore: data.recommendScore,
         isPublished: Boolean(data.isPublished),
         isFeatured: Boolean(data.isFeatured),

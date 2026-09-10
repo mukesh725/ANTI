@@ -119,10 +119,13 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call</h4>
-                  <p className="text-sm font-semibold hover:text-ink/70 transition-colors">
-                    {details.phone}
-                  </p>
-                  <p className="text-xs text-ink/60 mt-0.5">Toll-free</p>
+                  <a
+                    href="tel:+919000172121"
+                    className="text-sm font-semibold hover:text-ink/70 transition-colors block"
+                  >
+                    {details.phone && details.phone !== "+91 8019241143" ? details.phone : "+91 90001 72121"}
+                  </a>
+                  <p className="text-xs text-ink/60 mt-0.5">Customer Support & Concierge</p>
                 </div>
               </div>
 
@@ -132,9 +135,12 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Email Inquiry</h4>
-                  <p className="text-sm font-semibold hover:text-ink/70 transition-colors">
-                    {details.email}
-                  </p>
+                  <a
+                    href="mailto:info@airoessentials.com"
+                    className="text-sm font-semibold hover:text-ink/70 transition-colors block"
+                  >
+                    {details.email && details.email !== "airoessentials@gmail.com" ? details.email : "info@airoessentials.com"}
+                  </a>
                   <p className="text-xs text-ink/60 mt-0.5">Our response standard is within 3 business hours</p>
                 </div>
               </div>
@@ -230,7 +236,7 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="tel"
-                        placeholder="+1 (555) 000-0000"
+                        placeholder="+91 90001 72121"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full bg-white border border-[#E6DFD5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-theme transition-all text-ink"
