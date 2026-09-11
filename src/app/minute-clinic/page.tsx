@@ -10,8 +10,6 @@ import { ServicesDirectory } from "@/components/minute-clinic/ServicesDirectory"
 
 import Image from "next/image";
 
-const MotionImage = motion(Image);
-
 // Custom Parallax Image component that drives slow-zoom and vertical parallax
 function ParallaxImage({ 
   src, 
@@ -38,16 +36,20 @@ function ParallaxImage({
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
-      <MotionImage
-        src={src}
-        alt={alt}
+      <motion.div
         style={{ y, scale }}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={priority}
-        className="object-cover"
+        className="absolute inset-0 w-full h-full"
         transition={{ type: "spring", stiffness: 30, damping: 15 }}
-      />
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={priority}
+          className="object-cover"
+        />
+      </motion.div>
     </div>
   );
 }

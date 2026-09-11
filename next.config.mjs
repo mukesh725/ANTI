@@ -1,4 +1,3 @@
-import { withReticle } from '@reticlehq/next';
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   {
@@ -65,4 +64,4 @@ const nextConfig = {
   },
 };
 
-export default withReticle(nextConfig);
+export default nextConfig;

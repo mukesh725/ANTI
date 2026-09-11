@@ -41,4 +41,6 @@ next-env.d.ts
 
 # mobile apps (excluded from git/vercel)
 /mobile
+*.apk
+scratch/
 

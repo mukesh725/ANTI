@@ -36,6 +36,15 @@ interface BookingState {
   location: any | null;
   date: string | null;
   time: string | null;
+  selectedDoctor?: {
+    id: number | string;
+    name: string;
+    specialization: string;
+    consultationFee?: number;
+    profileImage?: string | null;
+  } | null;
+  meetingLink?: string | null;
+  consultationId?: string | null;
   phone: string;
   dobMonth: string;
   dobDay: string;
@@ -66,6 +75,9 @@ export default function MinuteClinicBookingPage() {
     location: null,
     date: null,
     time: null,
+    selectedDoctor: null,
+    meetingLink: null,
+    consultationId: null,
     phone: "",
     dobMonth: "",
     dobDay: "",
@@ -92,11 +104,30 @@ export default function MinuteClinicBookingPage() {
   const { profile } = useAuth();
   const [locationsList, setLocationsList] = useState<string[]>([]);
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
+  const [emedDoctors, setEmedDoctors] = useState<any[]>([]);
+  const [isLoadingDoctors, setIsLoadingDoctors] = useState(false);
+  const [virtualSelectedDate, setVirtualSelectedDate] = useState<string>(getMinBookingDate());
+  const [selectedDoctorId, setSelectedDoctorId] = useState<number | string | "auto">("auto");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchServiceQuery, setSearchServiceQuery] = useState("");
   const [activeServiceTab, setActiveServiceTab] = useState<"common" | "search">("common");
   const [clinicSelectedDates, setClinicSelectedDates] = useState<Record<number, string>>({});
   const [policyModal, setPolicyModal] = useState<"treatment" | "privacy" | "communication" | null>(null);
+
+  useEffect(() => {
+    if (state.careOption === "virtual") {
+      setIsLoadingDoctors(true);
+      fetch(`/api/telemed/doctors?service=${encodeURIComponent(state.service || "")}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.doctors)) {
+            setEmedDoctors(data.doctors);
+          }
+        })
+        .catch(err => console.error("Error fetching E-Med doctors:", err))
+        .finally(() => setIsLoadingDoctors(false));
+    }
+  }, [state.careOption, state.service]);
 
   useEffect(() => {
     const fetchMemberData = async () => {
@@ -480,147 +511,361 @@ export default function MinuteClinicBookingPage() {
     </div>
   );
 
-  const renderLocation = () => (
-    <div className="max-w-[800px] mx-auto px-4 py-12">
-      <div className="mb-8">
-        <button onClick={() => handleBack("service")} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back
-        </button>
-      </div>
-
-      <h1 className="text-3xl font-bold text-[#111827] mb-6 tracking-tight">Find care</h1>
-      
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <div className="flex-1 bg-white border border-gray-300 rounded-full flex items-center px-4 py-3 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
-          <MapPin className="w-5 h-5 text-gray-400 mr-3" />
-          <input 
-            type="text" 
-            placeholder="Search location name or city" 
-            className="w-full bg-transparent border-none focus:outline-none text-gray-900 placeholder-gray-500 text-sm"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        {isLoadingLocations ? (
-          <div className="text-center py-12 text-gray-500 font-medium text-sm">
-            Loading real-time availability...
+  const renderLocation = () => {
+    if (state.careOption === "virtual") {
+      return (
+        <div className="max-w-[850px] mx-auto px-4 py-12">
+          <div className="mb-8">
+            <button onClick={() => handleBack("service")} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
+              <ArrowLeft className="w-4 h-4 mr-1" /> Back
+            </button>
           </div>
-        ) : locationsList.filter(loc => loc.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
-          <div className="text-center py-12 text-gray-500 font-medium text-sm">
-            No locations found matching your search.
+
+          <div className="flex items-center gap-2 mb-3">
+            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              AIRO E-Med Verified Specialists
+            </span>
+            <span className="text-xs text-gray-500 font-medium">&bull; 100ms HD Encrypted Video Call</span>
           </div>
-        ) : (
-          locationsList
-            .filter(loc => loc.toLowerCase().includes(searchQuery.toLowerCase()))
-            .map((locName, idx) => {
-              const clinic = {
-                id: idx,
-                name: `AIRO Minute Clinic - ${locName}`,
-                address: locName,
-                distance: "Available",
-                status: "Available today"
-              };
-              return (
-                <div key={clinic.id} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <p className="text-xs font-bold text-emerald-600 flex items-center gap-1 mb-2"><MapPin className="w-3 h-3"/> {clinic.distance}</p>
-                      <h2 className="text-lg font-bold text-gray-900">{clinic.name}</h2>
-                      <p className="text-sm text-gray-600">{clinic.address}</p>
+
+          <h1 className="text-3xl font-bold text-[#111827] mb-2 tracking-tight">Select Doctor & Video Consultation Time</h1>
+          <p className="text-gray-600 mb-8 text-sm">
+            Consultation for: <span className="font-semibold text-gray-900">{state.service || "General Medical Care"}</span>
+          </p>
+
+          {/* Step 1: Doctor Selection */}
+          <div className="mb-10">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">1. Choose a Clinical Specialist</h2>
+            
+            {isLoadingDoctors ? (
+              <div className="text-center py-10 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                <div className="w-7 h-7 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+                <p className="text-sm text-gray-600 font-medium">Connecting to AIRO E-Med doctor directory...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Auto Assign Fast Option */}
+                <div
+                  onClick={() => {
+                    setSelectedDoctorId("auto");
+                    setState(s => ({
+                      ...s,
+                      selectedDoctor: {
+                        id: "auto",
+                        name: "On-Duty AIRO E-Med Specialist",
+                        specialization: "General Medicine & Primary Care",
+                        consultationFee: 499
+                      }
+                    }));
+                  }}
+                  className={`p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white flex items-center justify-between shadow-2xs ${
+                    selectedDoctorId === "auto"
+                      ? "border-blue-600 bg-blue-50/40 ring-1 ring-blue-600"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-[#0A1128] text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+                      ⚡
                     </div>
-                    <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 border border-gray-100">
-                      <Building2 className="w-6 h-6 text-blue-600" />
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm">Fastest Available Doctor</h4>
+                      <p className="text-xs text-gray-500">Auto-routes to on-duty specialist</p>
+                      <p className="text-[11px] font-semibold text-emerald-600 mt-0.5">₹499 &bull; Minimal Wait Time</p>
                     </div>
                   </div>
-                  
-                  <div className="border-t border-gray-100 pt-4 mt-2">
-                    {locName === "Kondapur" ? (
-                      <div className="bg-orange-50 text-orange-800 p-4 rounded-xl border border-orange-200 text-sm mt-4 text-center">
-                        <p className="font-bold mb-2">Opening Postponed!</p>
-                        <p>Our Kondapur clinic's opening date has been postponed. New bookings are temporarily suspended until we announce our grand opening date. Existing bookings remain valid.</p>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="mb-6 w-full">
-                          <p className="text-sm font-bold text-gray-900 mb-2">Select Date</p>
-                          <DatePicker 
-                            selectedDate={clinicSelectedDates[clinic.id] || getMinBookingDate()}
-                            onSelect={(date) => setClinicSelectedDates({ ...clinicSelectedDates, [clinic.id]: date })}
-                            minDate={getMinBookingDate()}
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                          {["08:50 AM", "09:10 AM", "10:00 AM", "11:20 AM", "12:10 PM", "01:20 PM", "03:20 PM", "04:40 PM"].map(time => (
-                            <button 
-                              key={time}
-                              onClick={() => {
-                                setState({ ...state, location: clinic, time, date: clinicSelectedDates[clinic.id] || "Today" });
-                                handleNext("details");
-                              }}
-                              className="border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white rounded-lg py-2.5 text-sm font-bold transition-colors w-full text-center"
-                            >
-                              {time}
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    )}
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ml-2 ${
+                    selectedDoctorId === "auto" ? "border-blue-600 bg-blue-600 text-white" : "border-gray-300"
+                  }`}>
+                    {selectedDoctorId === "auto" && <Check className="w-3 h-3" />}
                   </div>
                 </div>
-              );
-            })
-        )}
+
+                {/* Live E-Med Doctors */}
+                {emedDoctors.map((doc: any) => (
+                  <div
+                    key={doc.id}
+                    onClick={() => {
+                      setSelectedDoctorId(doc.id);
+                      setState(s => ({
+                        ...s,
+                        selectedDoctor: {
+                          id: doc.id,
+                          name: doc.name.startsWith("Dr") ? doc.name : `Dr. ${doc.name}`,
+                          specialization: doc.specialization || "Clinical Specialist",
+                          consultationFee: doc.consultationFee || 499,
+                          profileImage: doc.profileImage
+                        }
+                      }));
+                    }}
+                    className={`p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white flex items-center justify-between shadow-2xs ${
+                      selectedDoctorId === doc.id
+                        ? "border-blue-600 bg-blue-50/40 ring-1 ring-blue-600"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {doc.profileImage ? (
+                        <img
+                          src={doc.profileImage}
+                          alt={doc.name}
+                          className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm border border-slate-200 shrink-0">
+                          {doc.name.replace(/Dr\.?\s*/i, "").slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <h4 className="font-bold text-gray-900 text-sm">
+                          {doc.name.startsWith("Dr") ? doc.name : `Dr. ${doc.name}`}
+                        </h4>
+                        <p className="text-xs text-gray-500 line-clamp-1">{doc.specialization}</p>
+                        <p className="text-[11px] font-semibold text-emerald-600 mt-0.5">
+                          ₹{doc.consultationFee || 499} &bull; {doc.experienceYears || 5} yrs exp
+                        </p>
+                      </div>
+                    </div>
+                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ml-2 ${
+                      selectedDoctorId === doc.id ? "border-blue-600 bg-blue-600 text-white" : "border-gray-300"
+                    }`}>
+                      {selectedDoctorId === doc.id && <Check className="w-3 h-3" />}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Step 2: Date & Virtual Slot Selection */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">2. Select Date & Video Time Slot</h2>
+            <div className="mb-6 w-full">
+              <p className="text-sm font-bold text-gray-900 mb-2">Select Consultation Date</p>
+              <DatePicker 
+                selectedDate={virtualSelectedDate}
+                onSelect={(date) => setVirtualSelectedDate(date)}
+                minDate={getMinBookingDate()}
+              />
+            </div>
+
+            <p className="text-sm font-bold text-gray-900 mb-2">Available Consultation Slots Today / Selected Date</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {["09:00 AM", "09:30 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:30 PM", "03:30 PM", "04:30 PM", "05:00 PM", "06:00 PM"].map(time => (
+                <button 
+                  key={time}
+                  type="button"
+                  onClick={() => {
+                    const activeDoc = emedDoctors.find(d => d.id === selectedDoctorId);
+                    setState(s => ({
+                      ...s,
+                      careOption: "virtual",
+                      location: { name: "AIRO E-Med Telemedicine Portal" },
+                      selectedDoctor: activeDoc ? {
+                        id: activeDoc.id,
+                        name: activeDoc.name.startsWith("Dr") ? activeDoc.name : `Dr. ${activeDoc.name}`,
+                        specialization: activeDoc.specialization || "Clinical Specialist",
+                        consultationFee: activeDoc.consultationFee || 499,
+                        profileImage: activeDoc.profileImage
+                      } : (s.selectedDoctor || {
+                        id: "auto",
+                        name: "On-Duty AIRO E-Med Specialist",
+                        specialization: "General Medicine & Primary Care",
+                        consultationFee: 499
+                      }),
+                      time,
+                      date: virtualSelectedDate || "Today"
+                    }));
+                    handleNext("details");
+                  }}
+                  className="border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white rounded-lg py-2.5 text-sm font-bold transition-all w-full text-center shadow-2xs active:scale-[0.98]"
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="max-w-[800px] mx-auto px-4 py-12">
+        <div className="mb-8">
+          <button onClick={() => handleBack("service")} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
+            <ArrowLeft className="w-4 h-4 mr-1" /> Back
+          </button>
+        </div>
+
+        <h1 className="text-3xl font-bold text-[#111827] mb-6 tracking-tight">Find care</h1>
+        
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="flex-1 bg-white border border-gray-300 rounded-full flex items-center px-4 py-3 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
+            <MapPin className="w-5 h-5 text-gray-400 mr-3" />
+            <input 
+              type="text" 
+              placeholder="Search location name or city" 
+              className="w-full bg-transparent border-none focus:outline-none text-gray-900 placeholder-gray-500 text-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {isLoadingLocations ? (
+            <div className="text-center py-12 text-gray-500 font-medium text-sm">
+              Loading real-time availability...
+            </div>
+          ) : locationsList.filter(loc => loc.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
+            <div className="text-center py-12 text-gray-500 font-medium text-sm">
+              No locations found matching your search.
+            </div>
+          ) : (
+            locationsList
+              .filter(loc => loc.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map((locName, idx) => {
+                const clinic = {
+                  id: idx,
+                  name: `AIRO Minute Clinic - ${locName}`,
+                  address: locName,
+                  distance: "Available",
+                  status: "Available today"
+                };
+                return (
+                  <div key={clinic.id} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-xs font-bold text-emerald-600 flex items-center gap-1 mb-2"><MapPin className="w-3 h-3"/> {clinic.distance}</p>
+                        <h2 className="text-lg font-bold text-gray-900">{clinic.name}</h2>
+                        <p className="text-sm text-gray-600">{clinic.address}</p>
+                      </div>
+                      <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 border border-gray-100">
+                        <Building2 className="w-6 h-6 text-blue-600" />
+                      </div>
+                    </div>
+                    
+                    <div className="border-t border-gray-100 pt-4 mt-2">
+                      {locName === "Kondapur" ? (
+                        <div className="bg-orange-50 text-orange-800 p-4 rounded-xl border border-orange-200 text-sm mt-4 text-center">
+                          <p className="font-bold mb-2">Opening Postponed!</p>
+                          <p>Our Kondapur clinic's opening date has been postponed. New bookings are temporarily suspended until we announce our grand opening date. Existing bookings remain valid.</p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="mb-6 w-full">
+                            <p className="text-sm font-bold text-gray-900 mb-2">Select Date</p>
+                            <DatePicker 
+                              selectedDate={clinicSelectedDates[clinic.id] || getMinBookingDate()}
+                              onSelect={(date) => setClinicSelectedDates({ ...clinicSelectedDates, [clinic.id]: date })}
+                              minDate={getMinBookingDate()}
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            {["08:50 AM", "09:10 AM", "10:00 AM", "11:20 AM", "12:10 PM", "01:20 PM", "03:20 PM", "04:40 PM"].map(time => (
+                              <button 
+                                key={time}
+                                type="button"
+                                onClick={() => {
+                                  setState({ ...state, location: clinic, time, date: clinicSelectedDates[clinic.id] || "Today" });
+                                  handleNext("details");
+                                }}
+                                className="border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white rounded-lg py-2.5 text-sm font-bold transition-colors w-full text-center"
+                              >
+                                {time}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+          )}
+        </div>
       </div>
-    </div>
-  );
-
-
+    );
+  };
 
   const submitBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      const payload = {
-        careOption: state.careOption,
-        service: state.service,
-        location: state.location?.name || "Virtual",
-        date: state.date,
-        time: state.time,
-        phone: state.phone,
-        email: state.email,
-        dob: `${state.dobMonth}/${state.dobDay}/${state.dobYear}`,
-        firstName: state.firstName,
-        lastName: state.lastName,
-        address: `${state.street}, ${state.unit ? state.unit + ', ' : ''}${state.city}, ${state.stateText} ${state.zip}`,
-        legalSex: state.legalSex,
-        consents: {
-          sms: state.consentSms,
-          audio: state.consentAudio,
-          treatment: state.consentTreatment,
-          privacy: state.consentPrivacy,
-          summary: state.consentSummary,
-          records: state.consentRecords,
-          marketing: state.consentMarketing
-        },
-        timestamp: new Date().toISOString(),
-        status: "confirmed"
-      };
-
-      await addDoc(collection(db, "minute_clinic_bookings"), payload);
-
       if (state.careOption === "virtual") {
-        console.log("TRIGGER EMED API FOR VIRTUAL CARE:", payload);
-      }
+        const res = await fetch("/api/telemed/book-virtual", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstName: state.firstName,
+            lastName: state.lastName,
+            phone: state.phone,
+            email: state.email,
+            dob: `${state.dobMonth}/${state.dobDay}/${state.dobYear}`,
+            legalSex: state.legalSex,
+            service: state.service,
+            date: state.date,
+            time: state.time,
+            doctorId: state.selectedDoctor?.id || "auto",
+            doctorName: state.selectedDoctor?.name || "On-Duty AIRO E-Med Specialist",
+            doctorSpecialty: state.selectedDoctor?.specialization || "General Medicine",
+            consents: {
+              sms: state.consentSms,
+              audio: state.consentAudio,
+              treatment: state.consentTreatment,
+              privacy: state.consentPrivacy
+            }
+          })
+        });
 
-      setStep("confirmation");
-    } catch (err) {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to complete virtual booking");
+        }
+
+        setState(s => ({
+          ...s,
+          meetingLink: data.meetingLink,
+          consultationId: data.consultationId,
+        }));
+
+        setStep("confirmation");
+      } else {
+        const payload = {
+          careOption: state.careOption,
+          service: state.service,
+          location: state.location?.name || "AIRO Clinic",
+          date: state.date,
+          time: state.time,
+          phone: state.phone,
+          email: state.email,
+          dob: `${state.dobMonth}/${state.dobDay}/${state.dobYear}`,
+          firstName: state.firstName,
+          lastName: state.lastName,
+          address: `${state.street}, ${state.unit ? state.unit + ', ' : ''}${state.city}, ${state.stateText} ${state.zip}`,
+          legalSex: state.legalSex,
+          consents: {
+            sms: state.consentSms,
+            audio: state.consentAudio,
+            treatment: state.consentTreatment,
+            privacy: state.consentPrivacy,
+            summary: state.consentSummary,
+            records: state.consentRecords,
+            marketing: state.consentMarketing
+          },
+          timestamp: new Date().toISOString(),
+          status: "confirmed"
+        };
+
+        await addDoc(collection(db, "minute_clinic_bookings"), payload);
+        setStep("confirmation");
+      }
+    } catch (err: any) {
       console.error(err);
-      alert("There was an error booking your appointment. Please try again.");
+      alert(err.message || "There was an error booking your appointment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -971,7 +1216,15 @@ export default function MinuteClinicBookingPage() {
             <div>
               <h4 className="font-bold text-gray-900 mb-1">Where</h4>
               {state.careOption === "virtual" ? (
-                <p className="text-sm text-gray-700">Virtual Telehealth</p>
+                <div>
+                  <p className="text-sm font-bold text-gray-900">Virtual Telemedicine</p>
+                  <p className="text-xs text-blue-800 font-semibold mt-0.5">
+                    {state.selectedDoctor?.name || "AIRO E-Med Specialist"} ({state.selectedDoctor?.specialization || "Clinical Specialist"})
+                  </p>
+                  <p className="text-xs text-emerald-700 font-medium mt-0.5">
+                    Consultation: ₹{state.selectedDoctor?.consultationFee || 499} &bull; 100ms HD Video Call
+                  </p>
+                </div>
               ) : (
                 <>
                   <p className="text-sm text-gray-700 uppercase">{state.location?.address}</p>
@@ -981,7 +1234,7 @@ export default function MinuteClinicBookingPage() {
               <div className="mt-3 mb-2 flex items-center gap-1 text-red-600 font-bold">
                 <HeartPulse className="w-5 h-5" /> AIRO Health Hub
               </div>
-              <button onClick={() => handleBack("location")} className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">Change location <ChevronRight className="w-3 h-3" /></button>
+              <button onClick={() => handleBack("location")} className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">Change location or specialist <ChevronRight className="w-3 h-3" /></button>
             </div>
           </div>
         </div>
@@ -1087,12 +1340,50 @@ export default function MinuteClinicBookingPage() {
         <Activity className="w-10 h-10" />
       </div>
       <h1 className="text-3xl font-bold text-[#111827] mb-4 tracking-tight">Booking Confirmed!</h1>
-      <p className="text-gray-600 mb-8 text-lg">Your appointment is set for {state.time} Today.</p>
+      <p className="text-gray-600 mb-8 text-lg">
+        Your appointment is set for <strong className="text-gray-900">{state.time}</strong> on <strong className="text-gray-900">{state.date}</strong>.
+      </p>
       
       {state.careOption === "virtual" && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-left mb-8">
-          <h3 className="font-bold text-blue-900 flex items-center gap-2 mb-2"><Smartphone className="w-5 h-5"/> Telemedicine Ready</h3>
-          <p className="text-blue-800 text-sm">Your virtual consultation link has been generated via AIRO eMed. We have sent the connection link via SMS to {state.phone}.</p>
+        <div className="bg-white border border-blue-200 rounded-2xl p-6 text-left mb-8 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h3 className="font-bold text-blue-900 flex items-center gap-2">
+              <Smartphone className="w-5 h-5 text-blue-600"/> Virtual Telemedicine Confirmed
+            </h3>
+            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+              Doctor Notified
+            </span>
+          </div>
+
+          <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200 flex items-center gap-3">
+            <div className="w-11 h-11 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+              Dr
+            </div>
+            <div>
+              <p className="text-xs text-slate-500 font-medium">Assigned Clinical Specialist</p>
+              <h4 className="font-bold text-slate-900 text-sm">
+                {state.selectedDoctor?.name || "On-Duty AIRO Specialist"}
+              </h4>
+              <p className="text-xs text-slate-600">{state.selectedDoctor?.specialization || "General Medicine"}</p>
+            </div>
+          </div>
+
+          <div className="space-y-2 text-sm text-slate-700">
+            <p className="text-xs leading-relaxed">
+              The assigned doctor has received your case details. A direct video room link and calendar reminders have been dispatched to <strong className="text-slate-900">{state.phone}</strong> and <strong className="text-slate-900">{state.email}</strong>.
+            </p>
+          </div>
+
+          {state.meetingLink && (
+            <a
+              href={state.meetingLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl text-center text-sm shadow-md transition-all active:scale-[0.99]"
+            >
+              Enter Video Consultation Room &rarr;
+            </a>
+          )}
         </div>
       )}
 
