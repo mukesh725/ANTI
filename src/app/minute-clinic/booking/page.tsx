@@ -1052,7 +1052,7 @@ export default function MinuteClinicBookingPage() {
             </div>
             <div className="pt-2">
               <label className="block text-sm font-bold text-gray-900 mb-1">Legal sex</label>
-              <p className="text-xs text-gray-500 mb-3">We use this for insurance, billing and to confirm the patient's medical record.</p>
+              <p className="text-xs text-gray-500 mb-3">We use this for clinical verification and to confirm the patient's medical record.</p>
               <div className="space-y-3">
                 {["Female", "Male", "Prefer not to answer"].map(sex => (
                   <label key={sex} className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${state.legalSex === sex ? 'border-blue-600 bg-blue-50/50' : 'border-gray-300 hover:bg-gray-50'}`}>
@@ -1135,7 +1135,7 @@ export default function MinuteClinicBookingPage() {
               className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" 
             />
             <span className="text-sm text-gray-700">
-              I agree to receive text messages, automated calls, and voicemails about my visits, test results, health care, account, insurance and marketing information. Message and data rates apply. Consent is not a condition for service. (Optional)
+              I agree to receive text messages, automated calls, and voicemails about my visits, test results, health care, account, and clinic updates. Message and data rates apply. Consent is not a condition for service. (Optional)
             </span>
           </label>
           <label className="flex items-start gap-3 cursor-pointer">
@@ -1390,9 +1390,22 @@ export default function MinuteClinicBookingPage() {
       )}
 
       {state.careOption === "in-person" && (
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-left mb-8">
-          <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-2"><MapPin className="w-5 h-5 text-emerald-600"/> See you soon at the Clinic</h3>
-          <p className="text-gray-700 text-sm">Please arrive 5 minutes early to <strong>{state.location?.name || "AIRO Minute Clinic"}</strong>. A confirmation message and reminder have been sent to <strong>{state.phone || state.email}</strong>.</p>
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-left mb-8 space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-1"><MapPin className="w-5 h-5 text-emerald-600"/> See you soon at the Clinic</h3>
+              <p className="text-gray-700 text-sm">Please arrive 5 minutes early to <strong>{state.location?.name || "AIRO Minute Clinic"}</strong>. A confirmation message and reminder have been sent to <strong>{state.phone || state.email}</strong>.</p>
+            </div>
+          </div>
+          <div className="pt-3 border-t border-gray-200/60 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-slate-600">Save time at the front desk by completing your pre-visit checklist before you arrive:</p>
+            <Link
+              href="/ecommerce/account#consultations"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 shadow-sm whitespace-nowrap transition-all"
+            >
+              <ClipboardList className="w-3.5 h-3.5" /> Start Pre-Visit Checklist
+            </Link>
+          </div>
         </div>
       )}
 

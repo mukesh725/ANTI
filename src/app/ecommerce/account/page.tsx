@@ -9,7 +9,7 @@ import {
   Download, Share2, Wallet, ExternalLink, ArrowRight, X,
   FileText, HeartPulse, Medal, MapPin, Heart, User, Bell, Headset, Gift,
   Activity, Thermometer, Wind, Zap, Gauge, Sparkles, Scale, CheckCircle2,
-  Video, Stethoscope, Clock, Plus, Check, AlertCircle, RefreshCw
+  Video, Stethoscope, Clock, Plus, Check, AlertCircle, RefreshCw, ClipboardCheck
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
@@ -17,6 +17,7 @@ import { MemberRecord, PatientRecord } from "@/types/membership";
 import { PraanaVitalRecord } from "@/types/praana";
 import MemberSwitcher from "@/components/membership/MemberSwitcher";
 import AddMemberModal from "@/components/membership/AddMemberModal";
+import VisitChecklistModal, { VisitChecklistData } from "@/components/minute-clinic/VisitChecklistModal";
 
 export interface ConsultationItem {
   id: string;
@@ -69,6 +70,7 @@ export default function AccountPage() {
   const [consultations, setConsultations] = useState<ConsultationItem[]>([]);
   const [consultationsLoading, setConsultationsLoading] = useState(true);
   const [consultationFilter, setConsultationFilter] = useState<'all' | 'upcoming' | 'completed'>('all');
+  const [activeChecklistVisit, setActiveChecklistVisit] = useState<VisitChecklistData | null>(null);
 
   // Membership State
   const [membership, setMembership] = useState<MemberRecord | null>(null);
@@ -873,6 +875,31 @@ export default function AccountPage() {
                       {/* Action Buttons */}
                       <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2 justify-between">
                         <div className="flex items-center gap-2">
+                          {/* Pre-Visit Checklist & Check-In Button */}
+                          {item.isUpcoming && (
+                            <button
+                              onClick={() => {
+                                setActiveChecklistVisit({
+                                  id: item.id,
+                                  type: item.type,
+                                  careOption: item.careOption,
+                                  service: item.service,
+                                  date: item.date,
+                                  time: item.time,
+                                  location: item.location,
+                                  status: item.status,
+                                  patientName: item.patientName || `${profile?.firstName || ''} ${profile?.lastName || ''}`.trim() || 'Patient',
+                                  bookingReference: item.bookingReference,
+                                  meetingLink: item.meetingLink
+                                });
+                              }}
+                              className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 shadow-2xs"
+                              title="Complete Consents, Payment & Clinic Check-In"
+                            >
+                              <ClipboardCheck className="w-3.5 h-3.5 text-emerald-600" /> Pre-Checklist & Check-In
+                            </button>
+                          )}
+
                           {/* Virtual Join Call Button */}
                           {item.careOption === 'virtual' && item.meetingLink && item.isUpcoming && (
                             <a
@@ -1298,6 +1325,18 @@ export default function AccountPage() {
         accountId={membership?.mobile || ''}
         onSuccess={() => {
           if (typeof window !== 'undefined') window.location.reload();
+        }}
+      />
+
+      {/* Pre-Visit Checklist & Check-In Modal */}
+      <VisitChecklistModal
+        isOpen={!!activeChecklistVisit}
+        onClose={() => setActiveChecklistVisit(null)}
+        visit={activeChecklistVisit}
+        onCheckInSuccess={(visitId) => {
+          setConsultations(prev => prev.map(c => 
+            c.id === visitId ? { ...c, status: 'Checked In (Arrived)' } : c
+          ));
         }}
       />
 
