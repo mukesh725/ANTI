@@ -31,6 +31,8 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@reticlehq/next": "^2.14.0",
+    "@reticlehq/react": "^2.14.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

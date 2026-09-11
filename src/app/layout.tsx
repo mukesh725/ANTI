@@ -1,3 +1,4 @@
+import { ReticleDev } from './reticle-dev';
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClientLayoutWrapper } from "@/components/ClientLayoutWrapper";
@@ -207,7 +208,7 @@ export default async function RootLayout({
         />
         <SchemaOrg schema={schema} />
       </head>
-      <body className="antialiased bg-paper text-ink min-h-screen flex flex-col">
+      <body className="antialiased bg-paper text-ink min-h-screen flex flex-col">{process.env.NODE_ENV === 'development' ? <ReticleDev /> : null}
         <ClientLayoutWrapper cmsData={cmsData}>
           {children}
         </ClientLayoutWrapper>

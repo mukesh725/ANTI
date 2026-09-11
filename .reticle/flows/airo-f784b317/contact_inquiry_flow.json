@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "name": "contact_inquiry_flow",
+  "projectId": "airo-f784b317",
+  "createdAt": 1789155131097,
+  "steps": [
+    {
+      "tool": "reticle_act_sequence",
+      "anchor": {
+        "kind": "role",
+        "role": "textbox",
+        "name": "Jane Doe"
+      },
+      "steps": [
+        {
+          "tool": "reticle_act",
+          "anchor": {
+            "kind": "role",
+            "role": "textbox",
+            "name": "Jane Doe"
+          },
+          "args": {
+            "value": "Reticle Automated Tester"
+          },
+          "action": "fill"
+        },
+        {
+          "tool": "reticle_act",
+          "anchor": {
+            "kind": "role",
+            "role": "textbox",
+            "name": "jane@example.com"
+          },
+          "args": {
+            "value": "tester@airoessentials.com"
+          },
+          "action": "fill"
+        },
+        {
+          "tool": "reticle_act",
+          "anchor": {
+            "kind": "role",
+            "role": "textbox",
+            "name": "+91 90001 72121"
+          },
+          "args": {
+            "value": "+91 90001 72121"
+          },
+          "action": "fill"
+        },
+        {
+          "tool": "reticle_act",
+          "anchor": {
+            "kind": "role",
+            "role": "textbox",
+            "name": "Please detail your wellness goals or inquiry..."
+          },
+          "args": {
+            "value": "Testing contact inquiry flow automated verification via Reticle."
+          },
+          "action": "fill"
+        }
+      ]
+    },
+    {
+      "tool": "reticle_act",
+      "anchor": {
+        "kind": "role",
+        "role": "button",
+        "name": "Submit Consultation Request"
+      },
+      "args": {},
+      "action": "click"
+    }
+  ],
+  "startPath": "/contact",
+  "intent": "Fill and submit consultation request on contact page and verify success confirmation",
+  "intentId": "flow:contact_inquiry_flow"
+}

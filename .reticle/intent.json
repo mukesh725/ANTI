@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "intents": {
+    "inline:submitting-contact-consultation-form-triggers-in-61a06e3a": {
+      "id": "inline:submitting-contact-consultation-form-triggers-in-61a06e3a",
+      "statement": "Submitting contact consultation form triggers inquiry logged confirmation screen",
+      "state": "proved",
+      "declaredAt": 1789155121224,
+      "binding": {
+        "kind": "text",
+        "contains": "Inquiry Logged"
+      },
+      "surface": {
+        "route": "/contact",
+        "files": [
+          "src/app/contact/page.tsx"
+        ]
+      },
+      "provenBy": {
+        "verdictId": "reticle_act_and_wait:1789155122451",
+        "grade": "presence",
+        "at": 1789155122451
+      }
+    },
+    "flow:contact_inquiry_flow": {
+      "id": "flow:contact_inquiry_flow",
+      "statement": "Fill and submit consultation request on contact page and verify success confirmation",
+      "state": "declared",
+      "declaredAt": 1789155131098,
+      "surface": {
+        "flow": "contact_inquiry_flow"
+      }
+    }
+  }
+}

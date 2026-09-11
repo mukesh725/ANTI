@@ -1,0 +1,13 @@
+{
+  "projectId": "anti",
+  "projectName": "anti",
+  "orgId": "org_cb833add15df41149774e3e9c5acb1c9",
+  "url": "https://app.reticle.sh",
+  "dashboardUrl": "https://app.reticle.sh/issues?project=anti",
+  "sync": {
+    "runs": true,
+    "memory": true,
+    "flows": true
+  },
+  "verify": "local"
+}
