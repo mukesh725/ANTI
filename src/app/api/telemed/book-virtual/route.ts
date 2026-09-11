@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { sanitizeString, isValidIndianMobile } from '@/lib/telemed';
+import { sendBookingConfirmationEmail } from '@/lib/bookingEmailService';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
@@ -145,7 +146,26 @@ export async function POST(req: NextRequest) {
 
     const docRef = await addDoc(collection(db, 'minute_clinic_bookings'), bookingRecord);
 
-    // 5. Simulated / Dispatched Notification Payload
+    // 5. Send automated email confirmation to the patient
+    try {
+      await sendBookingConfirmationEmail({
+        firstName: firstName || '',
+        lastName: lastName || '',
+        email: email.trim().toLowerCase(),
+        date,
+        timeSlot: time,
+        location: 'Virtual Consultation Room',
+        bookingReference: consultationId,
+        service: service || 'General Virtual Consultation',
+        careOption: 'virtual',
+        doctorName: `${doctorName} (${doctorSpecialty})`,
+        meetingLink
+      });
+    } catch (mailErr) {
+      console.error('[API /api/telemed/book-virtual] Email dispatch error:', mailErr);
+    }
+
+    // 6. Simulated / Dispatched Notification Payload
     // In production, this pushes to WhatsApp Business API (e.g. Gupshup/Twilio/Wati)
     // alerting the assigned Doctor on https://admin.airoemed.com
     console.log('[AIRO E-Med Alert] New Virtual Consultation Scheduled:');

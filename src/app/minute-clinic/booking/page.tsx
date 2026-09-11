@@ -45,6 +45,7 @@ interface BookingState {
   } | null;
   meetingLink?: string | null;
   consultationId?: string | null;
+  bookingReference?: string | null;
   phone: string;
   dobMonth: string;
   dobDay: string;
@@ -78,6 +79,7 @@ export default function MinuteClinicBookingPage() {
     selectedDoctor: null,
     meetingLink: null,
     consultationId: null,
+    bookingReference: null,
     phone: "",
     dobMonth: "",
     dobDay: "",
@@ -835,34 +837,45 @@ export default function MinuteClinicBookingPage() {
 
         setStep("confirmation");
       } else {
-        const payload = {
-          careOption: state.careOption,
-          service: state.service,
-          location: state.location?.name || "AIRO Clinic",
-          date: state.date,
-          time: state.time,
-          phone: state.phone,
-          email: state.email,
-          dob: `${state.dobMonth}/${state.dobDay}/${state.dobYear}`,
-          firstName: state.firstName,
-          lastName: state.lastName,
-          address: `${state.street}, ${state.unit ? state.unit + ', ' : ''}${state.city}, ${state.stateText} ${state.zip}`,
-          legalSex: state.legalSex,
-          consents: {
-            sms: state.consentSms,
-            audio: state.consentAudio,
-            treatment: state.consentTreatment,
-            privacy: state.consentPrivacy,
-            summary: state.consentSummary,
-            records: state.consentRecords,
-            marketing: state.consentMarketing
-          },
-          timestamp: new Date().toISOString(),
-          status: "confirmed",
-          userId: profile?.uid || user?.uid || null
-        };
+        const res = await fetch("/api/minute-clinic/book-in-person", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            careOption: state.careOption,
+            service: state.service,
+            location: state.location?.name || "AIRO Minute Clinic",
+            date: state.date,
+            time: state.time,
+            phone: state.phone,
+            email: state.email,
+            dob: `${state.dobMonth}/${state.dobDay}/${state.dobYear}`,
+            firstName: state.firstName,
+            lastName: state.lastName,
+            address: `${state.street}, ${state.unit ? state.unit + ', ' : ''}${state.city}, ${state.stateText} ${state.zip}`,
+            legalSex: state.legalSex,
+            consents: {
+              sms: state.consentSms,
+              audio: state.consentAudio,
+              treatment: state.consentTreatment,
+              privacy: state.consentPrivacy,
+              summary: state.consentSummary,
+              records: state.consentRecords,
+              marketing: state.consentMarketing
+            },
+            userId: profile?.uid || user?.uid || null
+          })
+        });
 
-        await addDoc(collection(db, "minute_clinic_bookings"), payload);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to complete in-person booking");
+        }
+
+        setState(s => ({
+          ...s,
+          bookingReference: data.bookingReference || null,
+        }));
+
         setStep("confirmation");
       }
     } catch (err: any) {
@@ -1393,8 +1406,15 @@ export default function MinuteClinicBookingPage() {
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-left mb-8 space-y-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-1"><MapPin className="w-5 h-5 text-emerald-600"/> See you soon at the Clinic</h3>
-              <p className="text-gray-700 text-sm">Please arrive 5 minutes early to <strong>{state.location?.name || "AIRO Minute Clinic"}</strong>. A confirmation message and reminder have been sent to <strong>{state.phone || state.email}</strong>.</p>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-bold text-gray-900 flex items-center gap-2"><MapPin className="w-5 h-5 text-emerald-600"/> See you soon at the Clinic</h3>
+                {state.bookingReference && (
+                  <span className="text-xs font-mono font-bold bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-700">
+                    #{state.bookingReference}
+                  </span>
+                )}
+              </div>
+              <p className="text-gray-700 text-sm">Please arrive 5 minutes early to <strong>{state.location?.name || "AIRO Minute Clinic"}</strong>. A detailed email confirmation with your QR code and directions has been dispatched to <strong className="text-gray-900">{state.email}</strong>.</p>
             </div>
           </div>
           <div className="pt-3 border-t border-gray-200/60 flex flex-col sm:flex-row items-center justify-between gap-3">
