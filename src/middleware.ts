@@ -7,6 +7,8 @@ const ALLOWED_ORIGINS = [
   'https://airohealthhub.com',
   'https://www.airohealthhub.com',
   'https://airohealth-test.vercel.app',
+  'https://airoone.in',
+  'https://www.airoone.in',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
@@ -21,6 +23,7 @@ export function middleware(request: NextRequest) {
     !host ||
     host.includes('airoessentials.com') ||
     host.includes('airohealthhub.com') ||
+    host.includes('airoone.in') ||
     host.includes('vercel.app') ||
     host.includes('localhost') ||
     host.includes('127.0.0.1');
