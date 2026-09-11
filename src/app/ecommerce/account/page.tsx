@@ -117,7 +117,7 @@ export default function AccountPage() {
   }, [user, profile, loading, router]);
 
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchAccountData() {
       if (!activeEmail) return;
 
       // 1. Fetch Orders
@@ -127,11 +127,23 @@ export default function AccountPage() {
           where("userId", "==", profile?.uid || user?.uid || '')
         );
         const snapshot = await getDocs(q);
-        const fetchedOrders = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate() || new Date()
-        })) as Order[];
+        const fetchedOrders = snapshot.docs.map(doc => {
+          const data = doc.data();
+          let createdAt = new Date();
+          if (data.createdAt) {
+            if (typeof data.createdAt.toDate === "function") {
+              createdAt = data.createdAt.toDate();
+            } else {
+              const parsed = new Date(data.createdAt);
+              if (!isNaN(parsed.getTime())) createdAt = parsed;
+            }
+          }
+          return {
+            id: doc.id,
+            ...data,
+            createdAt
+          };
+        }) as Order[];
         
         fetchedOrders.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
         setOrders(fetchedOrders);
@@ -286,7 +298,19 @@ export default function AccountPage() {
         {/* Top Header & Metrics */}
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6">
           <div>
-            <p className="text-gray-500 font-medium mb-1">Welcome back,</p>
+            <div className="flex items-center gap-3">
+              <p className="text-gray-500 font-medium mb-1">Welcome back,</p>
+              <button
+                onClick={async () => {
+                  await logout();
+                  router.push("/ecommerce/login");
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg transition-colors border border-rose-100 mb-1"
+                title="Sign Out"
+              >
+                <LogOut className="w-3.5 h-3.5" /> Sign Out
+              </button>
+            </div>
             <h1 className="font-bold text-3xl md:text-4xl text-gray-900 mb-2">{displayName}</h1>
             <p className="text-sm text-gray-500 mb-4">Here's what's happening with your account today.</p>
 
@@ -466,7 +490,7 @@ export default function AccountPage() {
                       </div>
                     </div>
                     <div className="text-right flex items-center gap-6">
-                      <p className="font-semibold text-sm">₹{order.total?.toFixed(2)}</p>
+                      <p className="font-semibold text-sm">₹{Number(order.total || 0).toFixed(2)}</p>
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-wide ${getStatusColor(order.status || 'delivered')}`}>
                         {order.status || 'Delivered'}
                       </span>
