@@ -1,0 +1,3014 @@
+{
+  "info": {
+    "_postman_id": "telemed-website-api-collection",
+    "name": "TeleMed Website API",
+    "description": "Customer-facing TeleMed API — **only routes used by `telemed-customer`**.\n\nImport **TeleMed_Website.postman_environment.json** and select the **TeleMed Website** environment.\n\nSeed customer password: `password123`\n\nRun **Auth → Login Customer** before authenticated `/v1/users/*` routes. Use **Refresh Access Token** / **Logout** for the refresh-token flow.\n\n**Public browse:** `/v1/catalog/*` (no auth; Redis-cached). **Account & orders:** `/v1/users/*` (customer token).\n\nUse **Customer Journey** for an end-to-end checkout and consultation flow.\n\n**Terminology:** Customer catalog uses **concerns** (`/v1/catalog/concerns`). **Medicine categories** (Skin Care, Hair Care) remain `/v1/catalog/categories`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "baseurl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "categoryId",
+      "value": "2"
+    },
+    {
+      "key": "medicineId",
+      "value": "1"
+    },
+    {
+      "key": "medicineSlug",
+      "value": "minoxidil-solution-5"
+    },
+    {
+      "key": "cartId",
+      "value": "1"
+    },
+    {
+      "key": "cartItemId",
+      "value": "1"
+    },
+    {
+      "key": "questionnaireId",
+      "value": "1"
+    },
+    {
+      "key": "responseId",
+      "value": "1"
+    },
+    {
+      "key": "consultationId",
+      "value": "1"
+    },
+    {
+      "key": "prescriptionId",
+      "value": "1"
+    },
+    {
+      "key": "orderId",
+      "value": "1"
+    },
+    {
+      "key": "shipmentId",
+      "value": "1"
+    },
+    {
+      "key": "doctorId",
+      "value": "1"
+    },
+    {
+      "key": "addressId",
+      "value": "1"
+    },
+    {
+      "key": "fileId",
+      "value": "1"
+    },
+    {
+      "key": "concernId",
+      "value": "1",
+      "type": "default"
+    },
+    {
+      "key": "concernIds",
+      "value": "1,2",
+      "type": "default"
+    },
+    {
+      "key": "purchaseId",
+      "value": "1",
+      "type": "default"
+    },
+    {
+      "key": "sessionId",
+      "value": "1",
+      "type": "default"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const baseUrl = pm.variables.get('baseUrl') || pm.variables.get('baseurl') || 'http://localhost:3000';",
+          "pm.variables.set('baseUrl', baseUrl);",
+          "pm.variables.set('baseurl', baseUrl);"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login Customer (Priya)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (pm.response.code === 200 && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya@telemed.test\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/login"
+          }
+        },
+        {
+          "name": "Register Customer",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"email\": \"test.user@example.com\",\n  \"password\": \"password123\",\n  \"mobile\": \"9999999999\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/register"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (pm.response.code === 200 && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Access Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (pm.response.code === 200 && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/refresh"
+          }
+        },
+        {
+          "name": "Logout (Revoke Refresh Token)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/logout",
+            "description": "Revokes the opaque refresh token (204). Clears local session on clients."
+          }
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/auth/session"
+          }
+        },
+        {
+          "name": "Signup Email OTP — Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/register/email-otp/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"new.user@telemed.test\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Signup Email OTP — Resend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/register/email-otp/resend",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"new.user@telemed.test\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Signup Email OTP — Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/register/email-otp/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"new.user@telemed.test\",\n  \"otp\": \"1234\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if ((pm.response.code === 200 || pm.response.code === 201) && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}",
+                  "if (res.emailVerificationToken) pm.environment.set('emailVerificationToken', res.emailVerificationToken);",
+                  "if (res.signupToken) pm.environment.set('signupToken', res.signupToken);",
+                  "if (res.mobileVerificationToken) pm.environment.set('mobileVerificationToken', res.mobileVerificationToken);",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.order?.orderId) pm.environment.set('razorpayOrderId', res.order.orderId);",
+                  "if (res.order?.keyId) pm.environment.set('razorpayKeyId', res.order.keyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Signup Mobile OTP — Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/register/mobile-otp/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Signup Mobile OTP — Resend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/register/mobile-otp/resend",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Signup Mobile OTP — Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/register/mobile-otp/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\",\n  \"otp\": \"1234\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if ((pm.response.code === 200 || pm.response.code === 201) && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}",
+                  "if (res.emailVerificationToken) pm.environment.set('emailVerificationToken', res.emailVerificationToken);",
+                  "if (res.signupToken) pm.environment.set('signupToken', res.signupToken);",
+                  "if (res.mobileVerificationToken) pm.environment.set('mobileVerificationToken', res.mobileVerificationToken);",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.order?.orderId) pm.environment.set('razorpayOrderId', res.order.orderId);",
+                  "if (res.order?.keyId) pm.environment.set('razorpayKeyId', res.order.keyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Email Login OTP — Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/email-otp/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya@telemed.test\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Email Login OTP — Resend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/email-otp/resend",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya@telemed.test\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Email Login OTP — Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/email-otp/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya@telemed.test\",\n  \"otp\": \"1234\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if ((pm.response.code === 200 || pm.response.code === 201) && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}",
+                  "if (res.emailVerificationToken) pm.environment.set('emailVerificationToken', res.emailVerificationToken);",
+                  "if (res.signupToken) pm.environment.set('signupToken', res.signupToken);",
+                  "if (res.mobileVerificationToken) pm.environment.set('mobileVerificationToken', res.mobileVerificationToken);",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.order?.orderId) pm.environment.set('razorpayOrderId', res.order.orderId);",
+                  "if (res.order?.keyId) pm.environment.set('razorpayKeyId', res.order.keyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mobile Login OTP — Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/otp/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Mobile Login OTP — Resend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/otp/resend",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Mobile Login OTP — Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/otp/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\",\n  \"otp\": \"1234\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if ((pm.response.code === 200 || pm.response.code === 201) && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}",
+                  "if (res.emailVerificationToken) pm.environment.set('emailVerificationToken', res.emailVerificationToken);",
+                  "if (res.signupToken) pm.environment.set('signupToken', res.signupToken);",
+                  "if (res.mobileVerificationToken) pm.environment.set('mobileVerificationToken', res.mobileVerificationToken);",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.order?.orderId) pm.environment.set('razorpayOrderId', res.order.orderId);",
+                  "if (res.order?.keyId) pm.environment.set('razorpayKeyId', res.order.keyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP Complete Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/otp/complete-signup",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"signupToken\": \"{{signupToken}}\",\n  \"firstName\": \"New\",\n  \"lastName\": \"User\",\n  \"gender\": \"FEMALE\",\n  \"dob\": \"1995-06-15\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if ((pm.response.code === 200 || pm.response.code === 201) && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}",
+                  "if (res.emailVerificationToken) pm.environment.set('emailVerificationToken', res.emailVerificationToken);",
+                  "if (res.signupToken) pm.environment.set('signupToken', res.signupToken);",
+                  "if (res.mobileVerificationToken) pm.environment.set('mobileVerificationToken', res.mobileVerificationToken);",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.order?.orderId) pm.environment.set('razorpayOrderId', res.order.orderId);",
+                  "if (res.order?.keyId) pm.environment.set('razorpayKeyId', res.order.keyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP Complete Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/otp/complete-profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Priya\",\n  \"lastName\": \"Sharma\",\n  \"gender\": \"FEMALE\",\n  \"dob\": \"1992-03-10\",\n  \"ethnicity\": \"asian\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if ((pm.response.code === 200 || pm.response.code === 201) && res.accessToken) {",
+                  "  pm.environment.set('accessToken', res.accessToken);",
+                  "  pm.environment.set('customerToken', res.accessToken);",
+                  "  if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+                  "}",
+                  "if (res.emailVerificationToken) pm.environment.set('emailVerificationToken', res.emailVerificationToken);",
+                  "if (res.signupToken) pm.environment.set('signupToken', res.signupToken);",
+                  "if (res.mobileVerificationToken) pm.environment.set('mobileVerificationToken', res.mobileVerificationToken);",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.order?.orderId) pm.environment.set('razorpayOrderId', res.order.orderId);",
+                  "if (res.order?.keyId) pm.environment.set('razorpayKeyId', res.order.keyId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Email Verification — Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/email-verification/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya.new@telemed.test\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Email Verification — Resend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/email-verification/resend",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya.new@telemed.test\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Email Verification — Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/email-verification/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya.new@telemed.test\",\n  \"otp\": \"1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mobile Verification — Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/mobile-verification/send",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mobile Verification — Resend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/mobile-verification/resend",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mobile Verification — Verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/auth/mobile-verification/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\",\n  \"otp\": \"1234\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/profile"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\",\n  \"gender\": \"FEMALE\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/profile"
+          }
+        },
+        {
+          "name": "List Addresses",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/addresses"
+          }
+        },
+        {
+          "name": "Add Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressLine1\": \"42 MG Road\",\n  \"addressLine2\": \"Flat 3B\",\n  \"city\": \"Bengaluru\",\n  \"state\": \"Karnataka\",\n  \"pincode\": \"560001\",\n  \"country\": \"India\",\n  \"isDefault\": true\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/addresses"
+          }
+        },
+        {
+          "name": "Update Address",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"landmark\": \"Near Metro\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/addresses/{{addressId}}"
+          }
+        },
+        {
+          "name": "Delete Address",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/users/addresses/{{addressId}}"
+          }
+        },
+        {
+          "name": "GET Account Deletion Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/account/deletion"
+          }
+        },
+        {
+          "name": "POST Request Account Deletion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/account/deletion",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Cancel Account Deletion",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/account/deletion"
+          }
+        },
+        {
+          "name": "POST Media Presign (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/media/presign",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"folder\": \"questionnaire\",\n  \"contentType\": \"image/jpeg\",\n  \"fileName\": \"photo.jpg\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Doctors",
+      "item": [
+        {
+          "name": "List Doctors",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/doctors?categoryId={{categoryId}}&limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "doctors"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/notifications?view=inbox&limit=20",
+            "description": "Unified inbox for the authenticated user (doctor/pharmacy/customer). Use after **Test SSE (Self)**.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctorToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Notifications Unread Count",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/notifications/unread-count",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctorToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark All Notifications Read",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/notifications/read-all",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{doctorToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "includeInactive",
+                  "value": "false"
+                },
+                {
+                  "key": "includeInactive",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Concerns",
+      "item": [
+        {
+          "name": "List Concerns",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/concerns?categoryId={{categoryId}}&limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "concerns"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                },
+                {
+                  "key": "includeInactive",
+                  "value": "false"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Medicines by Concerns",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/concerns/medicines?concernIds={{concernIds}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "concerns",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "concernIds",
+                  "value": "{{concernIds}}",
+                  "description": "Comma-separated concern IDs"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Customer browse — `/v1/catalog/concerns`. Filter by medicine category via `?categoryId=`. Admin CRUD stays under `/v1/admin/conditions`."
+    },
+    {
+      "name": "Medicines",
+      "item": [
+        {
+          "name": "List Medicines",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/medicines?categoryId={{categoryId}}&limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                },
+                {
+                  "key": "concernId",
+                  "value": "{{concernId}}",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "minoxidil",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Medicines Grouped by Subcategory",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/medicines/by-subcategory?categoryId={{categoryId}}&limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2",
+                "catalog",
+                "medicines"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Medicine",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Includes availability', () => {",
+                  "  pm.expect(json.medicine?.availability).to.be.an('object');",
+                  "  pm.expect(json.medicine.availability.status).to.be.oneOf(['IN_STOCK', 'LOW_STOCK', 'OUT_OF_STOCK']);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}"
+          }
+        },
+        {
+          "name": "Get Medicine by Slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Includes availability', () => {",
+                  "  pm.expect(json.medicine?.availability).to.be.an('object');",
+                  "  pm.expect(json.medicine.availability.status).to.be.oneOf(['IN_STOCK', 'LOW_STOCK', 'OUT_OF_STOCK']);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicines/by-slug/{{medicineSlug}}"
+          }
+        },
+        {
+          "name": "List Medicine Reviews",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}/reviews?limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "medicines",
+                "%7B%7BmedicineId%7D%7D",
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "featured",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Medicine Reviews (PDP preview)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}/reviews?limit=5&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "medicines",
+                "%7B%7BmedicineId%7D%7D",
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "featured",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Medicine Featured Doctors",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}/doctors?limit=4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "medicines",
+                "%7B%7BmedicineId%7D%7D",
+                "doctors"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "4"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "Get Homepage Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Homepage returns content', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "const content = json.content;",
+                  "pm.test('Content object present', () => pm.expect(content).to.be.an('object'));",
+                  "const med = content?.featuredMedicines?.items?.[0];",
+                  "if (med?.id) {",
+                  "  pm.environment.set('medicineId', String(med.id));",
+                  "  pm.collectionVariables.set('medicineId', String(med.id));",
+                  "}",
+                  "if (med?.slug) {",
+                  "  pm.environment.set('medicineSlug', med.slug);",
+                  "  pm.collectionVariables.set('medicineSlug', med.slug);",
+                  "}",
+                  "const concern = content?.featuredConcerns?.items?.[0];",
+                  "if (concern?.id) {",
+                  "  pm.environment.set('concernId', String(concern.id));",
+                  "  pm.collectionVariables.set('concernId', String(concern.id));",
+                  "}",
+                  "if (concern?.categoryId) {",
+                  "  pm.environment.set('categoryId', String(concern.categoryId));",
+                  "  pm.collectionVariables.set('categoryId', String(concern.categoryId));",
+                  "}",
+                  "const review = content?.featuredReviews?.items?.[0];",
+                  "if (review?.medicineId) {",
+                  "  pm.environment.set('medicineId', String(review.medicineId));",
+                  "  pm.collectionVariables.set('medicineId', String(review.medicineId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/homepage",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "homepage"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Medicine Detail Content",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/medicine-detail?categoryId={{categoryId}}&medicineId={{medicineId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "medicine-detail"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                },
+                {
+                  "key": "medicineId",
+                  "value": "{{medicineId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Get Top Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/catalog/top-products",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Get Contact Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/catalog/contact-page",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Get Mobile Onboarding",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/catalog/mobile-onboarding",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Get Treatment Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/catalog/treatment-page?scope=concern&scopeId={{concernId}}&audience=BOTH",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Get Treatment Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/catalog/treatment-page/testimonials?scope=concern&scopeId={{concernId}}",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ],
+      "description": "Public CMS content. **Homepage** loads hero, how-it-works, social proof, and curated featured medicines/concerns/reviews."
+    },
+    {
+      "name": "Carts",
+      "description": "Website **Add to Cart** uses `POST /v1/users/carts/items` — backend finds or creates the user's single active cart.\n\n**Get Active Cart** (`GET /carts`) returns `{ cart }` with items, files, and `paymentContext`, or `cart: null` if empty.\n\n**Get Cart** by id is optional (checkout deep link only).\n\nCheckout: **Purchases (Checkout)** folder.",
+      "item": [
+        {
+          "name": "Add to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const cart = json.cart;",
+                  "if (cart?.id) {",
+                  "  pm.environment.set('cartId', String(cart.id));",
+                  "  pm.collectionVariables.set('cartId', String(cart.id));",
+                  "}",
+                  "const item = cart?.items?.find((i) => i.medicineId === Number(pm.collectionVariables.get(\"medicineId\")));",
+                  "if (item?.id) {",
+                  "  pm.environment.set('cartItemId', String(item.id));",
+                  "  pm.collectionVariables.set('cartItemId', String(item.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineId\": {{medicineId}},\n  \"quantity\": 1\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/carts/items"
+          }
+        },
+        {
+          "name": "Get Active Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Returns cart object', () => pm.expect(json).to.have.property('cart'));",
+                  "const cart = json.cart;",
+                  "if (cart) pm.test('Cart includes items', () => pm.expect(cart.items).to.be.an('array'));",
+                  "if (cart?.id) {",
+                  "  pm.environment.set('cartId', String(cart.id));",
+                  "  pm.collectionVariables.set('cartId', String(cart.id));",
+                  "}",
+                  "const item = cart?.items?.[0];",
+                  "if (item?.id) {",
+                  "  pm.environment.set('cartItemId', String(item.id));",
+                  "  pm.collectionVariables.set('cartItemId', String(item.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/carts"
+          }
+        },
+        {
+          "name": "Get Cart (deep link)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}"
+          }
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}/items/{{cartItemId}}"
+          }
+        },
+        {
+          "name": "Remove Cart Item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}/items/{{cartItemId}}"
+          }
+        },
+        {
+          "name": "Add Cart File",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileUrl\": \"https://cdn.telemed.test/carts/scalp-front.jpg\",\n  \"fileType\": \"PHOTO\",\n  \"angle\": \"FRONT\",\n  \"medicineId\": {{medicineId}}\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}/files"
+          }
+        },
+        {
+          "name": "Remove Cart File",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}/files/{{fileId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Purchases (Checkout)",
+      "description": "Checkout after **Carts → Add to Cart**. Payment SUCCESS locks cart and **auto-creates consultation**.\n\nCustomer app calls `POST .../payment` with `outcome: SUCCESS` only.",
+      "item": [
+        {
+          "name": "Create Purchase from Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}/purchases"
+          }
+        },
+        {
+          "name": "Get Purchase",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}"
+          }
+        },
+        {
+          "name": "Resolve Payment — SUCCESS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.purchase?.consultationId) {",
+                  "  pm.environment.set('consultationId', String(json.purchase.consultationId));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"outcome\": \"SUCCESS\",\n  \"provider\": \"DUMMY\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}/payment"
+          }
+        },
+        {
+          "name": "POST Cancel Purchase",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}/cancel",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST Razorpay Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}/razorpay/order",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "description": "Returns keyId + orderId (amount in paise) for Razorpay Checkout."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "const order = res.order || res;",
+                  "if (order.orderId) pm.environment.set('razorpayOrderId', order.orderId);",
+                  "if (order.keyId) pm.environment.set('razorpayKeyId', order.keyId);",
+                  "if (order.purchaseId) pm.environment.set('purchaseId', String(order.purchaseId));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Razorpay Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}/razorpay/verify",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpayOrderId\": \"{{razorpayOrderId}}\",\n  \"razorpayPaymentId\": \"{{razorpayPaymentId}}\",\n  \"razorpaySignature\": \"{{razorpaySignature}}\"\n}"
+            },
+            "description": "Verify checkout signature and fulfill purchase (creates consultation)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.purchase?.id) pm.environment.set('purchaseId', String(res.purchase.id));",
+                  "if (res.cart?.id) pm.environment.set('cartId', String(res.cart.id));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Questionnaires",
+      "description": "Customer app intake uses **sessions** only (`POST` → `GET health-profile` → `PATCH answers` → `GET session` → `POST submit`).\n\nQuestionnaire flow is embedded in the session response — no catalog `/v1/catalog/questionnaires/*` calls.",
+      "item": [
+        {
+          "name": "Create Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cartId\": {{cartId}}\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.session?.id;",
+                  "pm.test('Session created', () => pm.expect(id).to.be.a('number'));",
+                  "if (id) {",
+                  "  pm.environment.set('sessionId', String(id));",
+                  "  pm.collectionVariables.set('sessionId', String(id));",
+                  "}",
+                  "const section = json.session?.currentSectionCode;",
+                  "if (section) pm.collectionVariables.set('sectionCode', section);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions/{{sessionId}}",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Answers (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions/{{sessionId}}/answers",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    { \"questionCode\": \"hair_thinning_duration\", \"answerValue\": \"over_1_year\" },\n    { \"questionCode\": \"hair_thinning_areas\", \"answerValue\": \"crown,temples\" },\n    { \"questionCode\": \"prior_hair_rx_gate\", \"answerValue\": \"no\" }\n  ]\n}"
+            }
+          },
+          "description": "Patch one or more answers without advancing section."
+        },
+        {
+          "name": "Submit Session",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions/{{sessionId}}/submit",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Create Intro Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/intro-questionnaires/sessions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conditionId\": \"{{concernId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET Intro Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/intro-questionnaires/sessions/{{sessionId}}"
+          }
+        },
+        {
+          "name": "PATCH Intro Answers",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/intro-questionnaires/sessions/{{sessionId}}/answers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": {}\n}"
+            }
+          }
+        },
+        {
+          "name": "POST Submit Intro Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/intro-questionnaires/sessions/{{sessionId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Profile",
+      "description": "Persistent customer health profile synced from questionnaire answers.",
+      "item": [
+        {
+          "name": "Get Health Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/health-profile",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consultations",
+      "item": [
+        {
+          "name": "List Consultations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/consultations?status=IN_PROGRESS",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "consultations"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "IN_PROGRESS",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Consultation",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/consultations/{{consultationId}}"
+          }
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"I have mild scalp dryness.\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/consultations/{{consultationId}}/messages"
+          }
+        },
+        {
+          "name": "Get Consultation Journey",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/consultations/{{consultationId}}/journey"
+          }
+        },
+        {
+          "name": "POST Patient Video Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/consultations/{{consultationId}}/video/token",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        }
+      ],
+      "description": "Customer consultations are **read-only** from the website — created automatically on successful payment (doctor assigned by cart category).\n\nDoctor actions are under **Doctor Portal** folder."
+    },
+    {
+      "name": "Prescriptions",
+      "item": [
+        {
+          "name": "List Prescriptions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/prescriptions?status=ISSUED",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "prescriptions"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ISSUED",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Prescription",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/prescriptions/{{prescriptionId}}"
+          }
+        },
+        {
+          "name": "GET Prescription PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/prescriptions/{{prescriptionId}}/pdf"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "description": "Customer account orders under `/v1/users/orders/*`.\n\n- **List** — each order has `displayStatus` (`label`, `tone`, `phase`, `timestamp`) for list badges and filters.\n- **Detail page** — `GET .../:orderId/detail` returns slim payload: `order`, `timeline`, `delivery`, `invoiceAvailable`. Use `timeline` for track status (including return rails).\n- **Documents** — use `/documents/receipt` and `/documents/invoice` for downloads; detail only exposes `invoiceAvailable` boolean.\n- Customer order id = **purchase id** (`order.id` in list), formatted `#AH-{id}` in UI.",
+      "item": [
+        {
+          "name": "List Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/orders?status=received",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "received",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Order Detail Page",
+          "request": {
+            "description": "Account order detail + track timeline.\n\nResponse: `{ order, timeline, delivery, invoiceAvailable }`.\n\n- `order` — slim fields only (`id`, `status`, `amount`, `displayStatus`, return window, `items[]`).\n- `timeline` — `{ displayStatus, steps[] }` with optional return rail on step `return`.\n- `delivery` — recipient + address lines.\n- `invoiceAvailable` — `true` when invoice doc status is `ISSUED` (download via `GET .../documents/invoice`).",
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/orders/{{orderId}}/detail"
+          }
+        },
+        {
+          "name": "POST Cancel Order (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/users/orders/{{orderId}}/cancel",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET Order Receipt",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/orders/{{orderId}}/documents/receipt"
+          }
+        },
+        {
+          "name": "GET Order Invoice",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/users/orders/{{orderId}}/documents/invoice"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer Journey (run in order)",
+      "description": "End-to-end **customer app** flow — only APIs called by `telemed-customer`.\n\n1. Run **Auth → Login Customer (Priya)** first.\n2. Steps **0–2e** are public catalog (no auth).\n3. Rx checkout: **3a–3e** questionnaire (`POST sessions` → `GET health-profile` → `PATCH answers` → `GET session` → `POST submit`). Flow is embedded in the session — no catalog questionnaire flow API.\n4. **Add to Cart** auto-creates/reuses cart; consultation is created on payment SUCCESS.\n5. Step **0** sets `medicineId`, `concernId`, `categoryId` from homepage.\n6. Steps **10–11** (orders) run only after a prescription is fulfilled and an order exists.",
+      "item": [
+        {
+          "name": "0. Get Homepage Content",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Homepage returns content', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "const content = json.content;",
+                  "pm.test('Content object present', () => pm.expect(content).to.be.an('object'));",
+                  "const med = content?.featuredMedicines?.items?.[0];",
+                  "if (med?.id) {",
+                  "  pm.environment.set('medicineId', String(med.id));",
+                  "  pm.collectionVariables.set('medicineId', String(med.id));",
+                  "}",
+                  "if (med?.slug) {",
+                  "  pm.environment.set('medicineSlug', med.slug);",
+                  "  pm.collectionVariables.set('medicineSlug', med.slug);",
+                  "}",
+                  "const concern = content?.featuredConcerns?.items?.[0];",
+                  "if (concern?.id) {",
+                  "  pm.environment.set('concernId', String(concern.id));",
+                  "  pm.collectionVariables.set('concernId', String(concern.id));",
+                  "}",
+                  "if (concern?.categoryId) {",
+                  "  pm.environment.set('categoryId', String(concern.categoryId));",
+                  "  pm.collectionVariables.set('categoryId', String(concern.categoryId));",
+                  "}",
+                  "const review = content?.featuredReviews?.items?.[0];",
+                  "if (review?.medicineId) {",
+                  "  pm.environment.set('medicineId', String(review.medicineId));",
+                  "  pm.collectionVariables.set('medicineId', String(review.medicineId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/v1/catalog/homepage",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "catalog",
+                "homepage"
+              ]
+            }
+          }
+        },
+        {
+          "name": "1. List Categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/categories"
+          }
+        },
+        {
+          "name": "1b. List Concerns",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/concerns?categoryId={{categoryId}}&limit=20"
+          }
+        },
+        {
+          "name": "1c. Medicines by Concerns",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/concerns/medicines?concernIds={{concernId}}"
+          }
+        },
+        {
+          "name": "2. List Medicines",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicines?categoryId={{categoryId}}"
+          }
+        },
+        {
+          "name": "2b. Get Medicine Detail (PDP)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}"
+          }
+        },
+        {
+          "name": "2c. Get Medicine Detail Content",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicine-detail?categoryId={{categoryId}}&medicineId={{medicineId}}"
+          }
+        },
+        {
+          "name": "2d. List Medicine Reviews",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}/reviews?limit=5"
+          }
+        },
+        {
+          "name": "2e. List Featured Doctors",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/catalog/medicines/{{medicineId}}/doctors?limit=4"
+          }
+        },
+        {
+          "name": "3. Add to Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const cart = json.cart;",
+                  "if (cart?.id) {",
+                  "  pm.environment.set('cartId', String(cart.id));",
+                  "  pm.collectionVariables.set('cartId', String(cart.id));",
+                  "}",
+                  "const item = cart?.items?.find((i) => i.medicineId === Number(pm.collectionVariables.get(\"medicineId\")));",
+                  "if (item?.id) {",
+                  "  pm.environment.set('cartItemId', String(item.id));",
+                  "  pm.collectionVariables.set('cartItemId', String(item.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineId\": {{medicineId}},\n  \"quantity\": 1\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/carts/items"
+          }
+        },
+        {
+          "name": "3a. Create Questionnaire Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.session?.id;",
+                  "pm.test('Session created', () => pm.expect(id).to.be.a('number'));",
+                  "if (id) {",
+                  "  pm.environment.set('sessionId', String(id));",
+                  "  pm.collectionVariables.set('sessionId', String(id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cartId\": {{cartId}}\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions"
+          }
+        },
+        {
+          "name": "3b. Get Health Profile (prefill)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/health-profile"
+          }
+        },
+        {
+          "name": "3c. Patch Questionnaire Answers",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    { \"questionCode\": \"hair_thinning_duration\", \"answerValue\": \"3_to_12_months\" },\n    { \"questionCode\": \"hair_thinning_areas\", \"answerValue\": \"crown,temples\" },\n    { \"questionCode\": \"prior_hair_rx_gate\", \"answerValue\": \"no\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions/{{sessionId}}/answers"
+          }
+        },
+        {
+          "name": "3d. Get Questionnaire Session",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions/{{sessionId}}"
+          }
+        },
+        {
+          "name": "3e. Submit Questionnaire Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Session submitted', () => pm.expect(json.session?.status).to.eql('SUBMITTED'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/users/questionnaires/sessions/{{sessionId}}/submit"
+          }
+        },
+        {
+          "name": "4. Get Active Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Returns cart object', () => pm.expect(json).to.have.property('cart'));",
+                  "const cart = json.cart;",
+                  "if (cart) pm.test('Cart includes items', () => pm.expect(cart.items).to.be.an('array'));",
+                  "if (cart?.id) {",
+                  "  pm.environment.set('cartId', String(cart.id));",
+                  "  pm.collectionVariables.set('cartId', String(cart.id));",
+                  "}",
+                  "const item = cart?.items?.[0];",
+                  "if (item?.id) {",
+                  "  pm.environment.set('cartItemId', String(item.id));",
+                  "  pm.collectionVariables.set('cartItemId', String(item.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/carts"
+          }
+        },
+        {
+          "name": "5. Create Purchase from Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.purchase?.id;",
+                  "if (id) {",
+                  "  pm.environment.set('purchaseId', String(id));",
+                  "  pm.collectionVariables.set('purchaseId', String(id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": "{{baseUrl}}/v1/users/carts/{{cartId}}/purchases"
+          }
+        },
+        {
+          "name": "6. Resolve Payment — SUCCESS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const cid = json.purchase?.consultationId;",
+                  "pm.test('Consultation auto-created', () => pm.expect(cid).to.be.a('number'));",
+                  "if (cid) {",
+                  "  pm.environment.set('consultationId', String(cid));",
+                  "  pm.collectionVariables.set('consultationId', String(cid));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"outcome\": \"SUCCESS\",\n  \"provider\": \"DUMMY\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}/payment"
+          }
+        },
+        {
+          "name": "7. Get Purchase (confirmation)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/purchases/{{purchaseId}}"
+          }
+        },
+        {
+          "name": "8. Get Consultation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/consultations/{{consultationId}}"
+          }
+        },
+        {
+          "name": "9. Get Consultation Journey",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/consultations/{{consultationId}}/journey"
+          }
+        },
+        {
+          "name": "10. List Orders (account)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.orders?.[0]?.id;",
+                  "if (id) {",
+                  "  pm.environment.set('orderId', String(id));",
+                  "  pm.collectionVariables.set('orderId', String(id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/orders"
+          }
+        },
+        {
+          "name": "11. Get Order Detail Page",
+          "request": {
+            "description": "Slim account detail: `{ order, timeline, delivery, invoiceAvailable }`. Track UI reads `timeline.steps`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/users/orders/{{orderId}}/detail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Help Center & Legal",
+      "item": [
+        {
+          "name": "GET Help Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/help-center/categories",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Help Category by Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/help-center/categories/{{helpCategorySlug}}",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Help Article",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/help-center/articles/{{helpArticleId}}",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "GET Legal Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/legal/{{legalSlug}}",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications Inbox",
+      "item": [
+        {
+          "name": "GET List Notifications (Inbox)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/notifications"
+          }
+        },
+        {
+          "name": "GET Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/notifications/unread-count"
+          }
+        },
+        {
+          "name": "POST Mark All Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/notifications/read-all",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST Mark Notification Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/notifications/{{notificationId}}/read",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST Archive Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/notifications/{{notificationId}}/archive",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST Unarchive Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/notifications/{{notificationId}}/unarchive",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Storage",
+      "item": [
+        {
+          "name": "POST Register Attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/storage/user/attachments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"objectKey\": \"users/1/uploads/example.jpg\",\n  \"contentType\": \"image/jpeg\",\n  \"size\": 12345,\n  \"originalFileName\": \"example.jpg\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET Download URL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v1/storage/user/download-url/{{attachmentId}}"
+          }
+        },
+        {
+          "name": "POST Guest Media Presign",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/media/guest/presign",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentType\": \"image/jpeg\",\n  \"fileName\": \"quiz-photo.jpg\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
