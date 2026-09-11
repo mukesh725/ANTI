@@ -101,7 +101,7 @@ export default function MinuteClinicBookingPage() {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { profile } = useAuth();
+  const { user, profile } = useAuth();
   const [locationsList, setLocationsList] = useState<string[]>([]);
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [emedDoctors, setEmedDoctors] = useState<any[]>([]);
@@ -817,7 +817,8 @@ export default function MinuteClinicBookingPage() {
               audio: state.consentAudio,
               treatment: state.consentTreatment,
               privacy: state.consentPrivacy
-            }
+            },
+            userId: profile?.uid || user?.uid || null
           })
         });
 
@@ -857,7 +858,8 @@ export default function MinuteClinicBookingPage() {
             marketing: state.consentMarketing
           },
           timestamp: new Date().toISOString(),
-          status: "confirmed"
+          status: "confirmed",
+          userId: profile?.uid || user?.uid || null
         };
 
         await addDoc(collection(db, "minute_clinic_bookings"), payload);
@@ -1389,17 +1391,30 @@ export default function MinuteClinicBookingPage() {
 
       {state.careOption === "in-person" && (
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-left mb-8">
-          <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-2"><MapPin className="w-5 h-5"/> See you soon</h3>
-          <p className="text-gray-700 text-sm">Please arrive 5 minutes early to {state.location?.name}. We have sent your confirmation code via SMS to {state.phone}.</p>
+          <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-2"><MapPin className="w-5 h-5 text-emerald-600"/> See you soon at the Clinic</h3>
+          <p className="text-gray-700 text-sm">Please arrive 5 minutes early to <strong>{state.location?.name || "AIRO Minute Clinic"}</strong>. A confirmation message and reminder have been sent to <strong>{state.phone || state.email}</strong>.</p>
         </div>
       )}
 
-      <Link 
-        href="/minute-clinic"
-        className="bg-gray-200 hover:bg-gray-300 text-gray-900 font-bold py-3 px-8 rounded-full transition-colors inline-block"
-      >
-        Return to Home
-      </Link>
+      <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-4 mb-8 text-xs text-emerald-800 flex items-center justify-center gap-2">
+        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+        <span>This appointment has been synchronized to your <strong>AIRO Profile</strong> under <strong>My Consultations</strong>.</span>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <Link 
+          href="/ecommerce/account#consultations"
+          className="bg-[#006537] hover:bg-[#004e2a] text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-sm w-full sm:w-auto"
+        >
+          <Calendar className="w-4 h-4" /> View in My Profile
+        </Link>
+        <Link 
+          href="/minute-clinic"
+          className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-3.5 px-8 rounded-xl transition-colors text-sm w-full sm:w-auto text-center"
+        >
+          Book Another Service
+        </Link>
+      </div>
     </div>
   );
 

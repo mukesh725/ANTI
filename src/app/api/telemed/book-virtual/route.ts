@@ -102,6 +102,12 @@ export async function POST(req: NextRequest) {
       service: service || 'General Virtual Consultation',
       date,
       time,
+      email: (email || '').trim().toLowerCase(),
+      phone: (phone || '').trim(),
+      firstName: firstName || '',
+      lastName: lastName || '',
+      meetingLink,
+      userId: body.userId || null,
       patient: {
         firstName,
         lastName,

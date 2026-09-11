@@ -8,7 +8,8 @@ import {
   LogOut, ShieldCheck, Star, ShoppingBag, Calendar,
   Download, Share2, Wallet, ExternalLink, ArrowRight, X,
   FileText, HeartPulse, Medal, MapPin, Heart, User, Bell, Headset, Gift,
-  Activity, Thermometer, Wind, Zap, Gauge, Sparkles, Scale, CheckCircle2
+  Activity, Thermometer, Wind, Zap, Gauge, Sparkles, Scale, CheckCircle2,
+  Video, Stethoscope, Clock, Plus, Check, AlertCircle, RefreshCw
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
@@ -16,6 +17,27 @@ import { MemberRecord, PatientRecord } from "@/types/membership";
 import { PraanaVitalRecord } from "@/types/praana";
 import MemberSwitcher from "@/components/membership/MemberSwitcher";
 import AddMemberModal from "@/components/membership/AddMemberModal";
+
+export interface ConsultationItem {
+  id: string;
+  type: 'minute_clinic' | 'telemed' | 'health_scan';
+  careOption: 'virtual' | 'in-person' | 'scan';
+  service: string;
+  doctorName?: string;
+  doctorSpecialty?: string;
+  location?: string;
+  date: string;
+  time: string;
+  status: string;
+  bookingReference?: string;
+  meetingLink?: string;
+  patientName?: string;
+  patientPhone?: string;
+  patientEmail?: string;
+  reports?: { name: string; url: string; type: string }[];
+  rawDateTime: Date;
+  isUpcoming: boolean;
+}
 
 interface Order {
   id: string;
@@ -25,12 +47,28 @@ interface Order {
   items: unknown[];
 }
 
+function getGoogleCalendarUrl(title: string, details: string, location: string, dateStr: string, timeStr: string) {
+  try {
+    const start = new Date(`${dateStr} ${timeStr}`);
+    if (isNaN(start.getTime())) return null;
+    const end = new Date(start.getTime() + 45 * 60000);
+    const fmt = (d: Date) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&dates=${fmt(start)}/${fmt(end)}`;
+  } catch (e) {
+    return null;
+  }
+}
+
 export default function AccountPage() {
   const { user, profile, logout, loading } = useAuth();
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
-  const [healthBookings, setHealthBookings] = useState<any[]>([]);
+  
+  // Consultations & Health Appointments State
+  const [consultations, setConsultations] = useState<ConsultationItem[]>([]);
+  const [consultationsLoading, setConsultationsLoading] = useState(true);
+  const [consultationFilter, setConsultationFilter] = useState<'all' | 'upcoming' | 'completed'>('all');
 
   // Membership State
   const [membership, setMembership] = useState<MemberRecord | null>(null);
@@ -53,6 +91,22 @@ export default function AccountPage() {
     firstName: "", lastName: "", mobile: "", dob: "", gender: "", 
     address: "", city: "", stateText: "", zip: ""
   });
+
+  const scrollToConsultations = () => {
+    const el = document.getElementById("consultations");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#consultations") {
+      setTimeout(() => {
+        const el = document.getElementById("consultations");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 400);
+    }
+  }, []);
 
   const openEditProfile = () => {
     setEditForm({
@@ -227,24 +281,141 @@ export default function AccountPage() {
         setMembershipLoading(false);
       }
 
-      // 3. Fetch Health Bookings (Minute Clinic)
+      // 3. Fetch Health Consultations & Minute Clinic Bookings
       try {
-        const cleanEmail = activeEmail.trim().toLowerCase();
-        const qBookings = query(
-          collection(db, "minute_clinic_bookings"),
-          where("email", "==", cleanEmail)
-        );
-        const bookingSnap = await getDocs(qBookings);
-        const fetchedBookings = bookingSnap.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as any[];
-        
-        // Sort by timestamp desc
-        fetchedBookings.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-        setHealthBookings(fetchedBookings);
+        setConsultationsLoading(true);
+        const cleanEmail = activeEmail ? activeEmail.trim().toLowerCase() : '';
+        const phone = (profile?.mobile || membership?.mobile || '').trim();
+        const uid = profile?.uid || user?.uid || '';
+
+        const fetchedMap = new Map<string, any>();
+
+        // 3a. From minute_clinic_bookings
+        const clinicRef = collection(db, "minute_clinic_bookings");
+        const clinicQueries: any[] = [];
+
+        if (cleanEmail) {
+          clinicQueries.push(query(clinicRef, where("email", "==", cleanEmail)));
+          clinicQueries.push(query(clinicRef, where("patient.email", "==", cleanEmail)));
+        }
+        if (phone) {
+          clinicQueries.push(query(clinicRef, where("phone", "==", phone)));
+          clinicQueries.push(query(clinicRef, where("patient.phone", "==", phone)));
+        }
+        if (uid) {
+          clinicQueries.push(query(clinicRef, where("userId", "==", uid)));
+        }
+
+        for (const q of clinicQueries) {
+          try {
+            const snap = await getDocs(q);
+            snap.docs.forEach(docSnap => {
+              if (!fetchedMap.has(docSnap.id)) {
+                fetchedMap.set(docSnap.id, { id: docSnap.id, source: 'minute_clinic', ...docSnap.data() });
+              }
+            });
+          } catch (e) {
+            console.warn("Clinic query fallback:", e);
+          }
+        }
+
+        // 3b. From healthBookings (Health Chair & in-clinic bookings)
+        const healthBookingsRef = collection(db, "healthBookings");
+        const healthQueries: any[] = [];
+        if (cleanEmail) {
+          healthQueries.push(query(healthBookingsRef, where("email", "==", cleanEmail)));
+        }
+        if (phone) {
+          healthQueries.push(query(healthBookingsRef, where("mobile", "==", phone)));
+        }
+
+        for (const q of healthQueries) {
+          try {
+            const snap = await getDocs(q);
+            snap.docs.forEach(docSnap => {
+              if (!fetchedMap.has(docSnap.id)) {
+                fetchedMap.set(docSnap.id, { id: docSnap.id, source: 'health_scan', ...docSnap.data() });
+              }
+            });
+          } catch (e) {
+            console.warn("Health bookings query fallback:", e);
+          }
+        }
+
+        // 3c. Parse and Normalize
+        const parsedItems: ConsultationItem[] = Array.from(fetchedMap.values()).map(raw => {
+          const careOption: 'virtual' | 'in-person' | 'scan' = 
+            raw.careOption === 'virtual' ? 'virtual' : 
+            raw.source === 'health_scan' ? 'scan' : 'in-person';
+
+          const serviceName = raw.service || (raw.source === 'health_scan' ? '5-Minute Health Chair Scan' : 'Minute Clinic Consultation');
+          const doctorName = raw.doctor?.name || raw.selectedDoctor?.name || (careOption === 'virtual' ? 'AIRO E-Med Specialist' : undefined);
+          const doctorSpecialty = raw.doctor?.specialty || raw.selectedDoctor?.specialization || (careOption === 'virtual' ? 'General & Longevity Care' : undefined);
+          const location = raw.location?.name || raw.location || (careOption === 'virtual' ? 'Online Video Consultation' : 'AIRO Minute Clinic');
+          const meetingLink = raw.meetingLink || raw.telemed?.meetingLink || undefined;
+          const patientName = raw.patient?.fullName || `${raw.firstName || raw.patient?.firstName || ''} ${raw.lastName || raw.patient?.lastName || ''}`.trim() || 'Valued Patient';
+          const patientPhone = raw.phone || raw.patient?.phone || raw.mobile || '';
+          const bookingReference = raw.bookingReference || raw.bookingId || raw.telemed?.consultationId || raw.id?.slice(0, 8).toUpperCase();
+
+          // Calculate raw date
+          let dateStr = raw.date || '';
+          let timeStr = raw.time || raw.timeSlot || '10:00 AM';
+          let itemDate = new Date();
+          
+          if (dateStr) {
+            const parsed = new Date(`${dateStr} ${timeStr}`);
+            if (!isNaN(parsed.getTime())) {
+              itemDate = parsed;
+            } else {
+              const altParsed = new Date(dateStr);
+              if (!isNaN(altParsed.getTime())) itemDate = altParsed;
+            }
+          } else if (raw.timestamp || raw.createdAt) {
+            const parsed = new Date(raw.timestamp || raw.createdAt);
+            if (!isNaN(parsed.getTime())) itemDate = parsed;
+          }
+
+          const statusLower = (raw.status || '').toLowerCase();
+          const isCancelled = statusLower.includes('cancel');
+          const isUpcoming = !isCancelled && (itemDate.getTime() >= (Date.now() - 2 * 3600 * 1000));
+
+          return {
+            id: raw.id,
+            type: raw.source === 'health_scan' ? 'health_scan' : careOption === 'virtual' ? 'telemed' : 'minute_clinic',
+            careOption,
+            service: serviceName,
+            doctorName,
+            doctorSpecialty,
+            location: typeof location === 'string' ? location : 'AIRO Health Clinic',
+            date: dateStr || itemDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            time: timeStr,
+            status: raw.status || 'Confirmed',
+            bookingReference,
+            meetingLink,
+            patientName,
+            patientPhone,
+            patientEmail: raw.email || raw.patient?.email || '',
+            reports: raw.reports || [],
+            rawDateTime: itemDate,
+            isUpcoming,
+          };
+        });
+
+        // Sort items: upcoming closest first, past most recent first
+        parsedItems.sort((a, b) => {
+          if (a.isUpcoming && b.isUpcoming) {
+            return a.rawDateTime.getTime() - b.rawDateTime.getTime();
+          }
+          if (a.isUpcoming && !b.isUpcoming) return -1;
+          if (!a.isUpcoming && b.isUpcoming) return 1;
+          return b.rawDateTime.getTime() - a.rawDateTime.getTime();
+        });
+
+        setConsultations(parsedItems);
       } catch (err) {
-        console.error("Failed to fetch health bookings:", err);
+        console.error("Failed to fetch health consultations:", err);
+      } finally {
+        setConsultationsLoading(false);
       }
     };
 
@@ -365,15 +536,23 @@ export default function AccountPage() {
               </div>
             </div>
 
-            {/* Health Appointments */}
-            <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
+            {/* Health Consultations Metric */}
+            <div 
+              onClick={scrollToConsultations}
+              className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4 cursor-pointer hover:border-emerald-300 hover:shadow-md transition-all group"
+              title="Click to view all consultations"
+            >
+              <div className="w-10 h-10 rounded-full bg-emerald-50 group-hover:bg-emerald-100 flex items-center justify-center flex-shrink-0 transition-colors">
                 <Calendar className="w-5 h-5 text-emerald-600" />
               </div>
               <div>
-                <p className="text-xs text-gray-500 font-medium mb-1">Health Appointments</p>
-                <p className="font-bold text-gray-900 mb-1">{membership?.upcomingAppointments || 0}</p>
-                <p className="text-[10px] text-gray-400">Upcoming</p>
+                <p className="text-xs text-gray-500 font-medium mb-1">Health Consultations</p>
+                <p className="font-bold text-gray-900 mb-1">
+                  {consultations.filter(c => c.isUpcoming).length > 0 
+                    ? `${consultations.filter(c => c.isUpcoming).length} Upcoming` 
+                    : (consultations.length > 0 ? `${consultations.length} Booked` : (membership?.upcomingAppointments ? `${membership.upcomingAppointments} Scheduled` : '0 Scheduled'))}
+                </p>
+                <p className="text-[10px] text-emerald-600 font-semibold group-hover:underline">View Schedule &rarr;</p>
               </div>
             </div>
           </div>
@@ -503,63 +682,247 @@ export default function AccountPage() {
 
         </div>
 
-        {/* Health Bookings & Reports Section */}
-        <div className="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="font-bold text-lg text-gray-900">Health Bookings & Reports</h2>
+        {/* Health Consultations & Minute Clinic Section */}
+        <div id="consultations" className="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm flex flex-col space-y-6 scroll-mt-28">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-gray-100">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
+                  <Stethoscope className="w-5 h-5" />
+                </span>
+                <h2 className="font-bold text-xl text-gray-900">My Consultations & Appointments</h2>
+                {consultations.filter(c => c.isUpcoming).length > 0 && (
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    {consultations.filter(c => c.isUpcoming).length} Upcoming
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Track your upcoming Minute Clinic visits, on-duty virtual doctor rooms, and diagnostic reports.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => router.push("/minute-clinic/booking")}
+                className="bg-[#006537] hover:bg-[#004e2a] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 w-full sm:w-auto"
+              >
+                <Plus className="w-4 h-4" /> Book Minute Clinic
+              </button>
+            </div>
           </div>
 
-          <div className="flex-1 flex flex-col gap-4">
-            {healthBookings.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border border-dashed border-gray-200 rounded-xl">
-                <Calendar className="w-8 h-8 text-gray-300 mb-3" />
-                <p className="text-sm font-medium text-gray-900 mb-1">No Health Bookings</p>
-                <p className="text-xs text-gray-500">You haven't booked any Minute Clinic sessions yet.</p>
+          {/* Filter Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            <button
+              onClick={() => setConsultationFilter('all')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                consultationFilter === 'all'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              All Consultations ({consultations.length})
+            </button>
+            <button
+              onClick={() => setConsultationFilter('upcoming')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                consultationFilter === 'upcoming'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Upcoming ({consultations.filter(c => c.isUpcoming).length})
+            </button>
+            <button
+              onClick={() => setConsultationFilter('completed')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                consultationFilter === 'completed'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              Past & Completed ({consultations.filter(c => !c.isUpcoming).length})
+            </button>
+          </div>
+
+          {/* Consultations Content */}
+          <div className="flex-1">
+            {consultationsLoading ? (
+              <div className="p-12 text-center text-sm text-gray-400 flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                Loading consultations & appointments...
+              </div>
+            ) : (consultationFilter === 'upcoming' ? consultations.filter(c => c.isUpcoming) : consultationFilter === 'completed' ? consultations.filter(c => !c.isUpcoming) : consultations).length === 0 ? (
+              <div className="p-10 text-center bg-gray-50/60 rounded-2xl border border-dashed border-gray-200 space-y-4">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-gray-100 text-emerald-600">
+                  <Calendar className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-gray-900">
+                    {consultationFilter === 'upcoming' ? 'No Upcoming Consultations' : 
+                     consultationFilter === 'completed' ? 'No Past Consultations' : 'No Consultations Found'}
+                  </h4>
+                  <p className="text-xs text-gray-500 max-w-md mx-auto mt-1">
+                    {consultationFilter === 'upcoming' 
+                      ? 'You have no upcoming appointments right now. Need medical assistance or a routine checkup? Book an in-person Minute Clinic session or connect with a specialist online.'
+                      : 'Schedule your first consultation or biometric scan to start tracking your proactive health journey.'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => router.push("/minute-clinic/booking")}
+                  className="bg-[#006537] hover:bg-[#004e2a] text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm inline-flex items-center gap-2"
+                >
+                  <Calendar className="w-4 h-4" /> Book Consultation Now
+                </button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {healthBookings.map(booking => (
-                  <div key={booking.id} className="p-5 rounded-xl border border-gray-100 bg-gray-50/50 flex flex-col">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h3 className="font-bold text-gray-900 text-sm">{booking.service}</h3>
-                        <p className="text-xs text-gray-500 mt-1 capitalize">{booking.careOption} • {booking.date} at {booking.time}</p>
-                      </div>
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        booking.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-700'
-                      }`}>
-                        {booking.status || 'Pending'}
-                      </span>
-                    </div>
+                {(consultationFilter === 'upcoming' ? consultations.filter(c => c.isUpcoming) : consultationFilter === 'completed' ? consultations.filter(c => !c.isUpcoming) : consultations).map(item => {
+                  const googleCalUrl = getGoogleCalendarUrl(
+                    `AIRO: ${item.service}`,
+                    `Your consultation with AIRO Health Hub. Ref: #${item.bookingReference}`,
+                    item.location || 'AIRO Minute Clinic',
+                    item.date,
+                    item.time
+                  );
 
-                    {/* Reports Section inside booking */}
-                    <div className="mt-auto pt-4 border-t border-gray-100">
-                      <p className="text-xs font-semibold text-gray-700 mb-2">Attached Reports & Prescriptions</p>
-                      {booking.reports && booking.reports.length > 0 ? (
-                        <div className="space-y-2">
-                          {booking.reports.map((report: any, idx: number) => (
-                            <div key={idx} className="flex items-center justify-between bg-white p-2.5 rounded-lg border border-gray-200">
-                              <div className="flex items-center gap-2">
-                                {report.type === 'prescription' ? <FileText className="w-4 h-4 text-blue-500"/> : <Activity className="w-4 h-4 text-emerald-500"/>}
-                                <span className="text-xs font-medium text-gray-900 truncate max-w-[150px]">{report.name}</span>
-                              </div>
-                              <a 
-                                href={report.url}
+                  return (
+                    <div 
+                      key={item.id} 
+                      className={`p-5 rounded-2xl border transition-all flex flex-col justify-between space-y-4 ${
+                        item.isUpcoming 
+                          ? 'border-emerald-200/80 bg-gradient-to-br from-emerald-50/20 to-white shadow-sm hover:shadow-md hover:border-emerald-300' 
+                          : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'
+                      }`}
+                    >
+                      {/* Card Header */}
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-3">
+                          <div className="flex items-center gap-2">
+                            {item.careOption === 'virtual' ? (
+                              <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-blue-100 text-blue-800 flex items-center gap-1">
+                                <Video className="w-3 h-3" /> Virtual Video Room
+                              </span>
+                            ) : item.careOption === 'scan' ? (
+                              <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-teal-100 text-teal-800 flex items-center gap-1">
+                                <Activity className="w-3 h-3" /> Health Chair Scan
+                              </span>
+                            ) : (
+                              <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                                <MapPin className="w-3 h-3" /> In-Person Clinic
+                              </span>
+                            )}
+                            
+                            {item.isUpcoming && (
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Upcoming Appointment"></span>
+                            )}
+                          </div>
+
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                            item.status.toLowerCase().includes('confirm') ? 'bg-emerald-100 text-emerald-700' :
+                            item.status.toLowerCase().includes('sched') ? 'bg-blue-100 text-blue-700' :
+                            item.status.toLowerCase().includes('cancel') ? 'bg-rose-100 text-rose-700' : 'bg-gray-200 text-gray-700'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </div>
+
+                        {/* Service Title */}
+                        <h3 className="font-bold text-gray-900 text-base leading-tight mb-2">
+                          {item.service}
+                        </h3>
+
+                        {/* Details */}
+                        <div className="space-y-1.5 text-xs text-gray-600">
+                          {item.doctorName && (
+                            <div className="flex items-center gap-2 font-medium text-gray-900">
+                              <Stethoscope className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                              <span>{item.doctorName} {item.doctorSpecialty && `• ${item.doctorSpecialty}`}</span>
+                            </div>
+                          )}
+
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span className="font-semibold text-gray-800">{item.date} at {item.time}</span>
+                          </div>
+
+                          {item.location && item.careOption !== 'virtual' && (
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                              <span className="truncate max-w-[280px]">{item.location}</span>
+                            </div>
+                          )}
+
+                          {item.patientName && (
+                            <div className="flex items-center gap-2 text-[11px] text-gray-500">
+                              <User className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                              <span>Patient: {item.patientName}</span>
+                            </div>
+                          )}
+
+                          {item.bookingReference && (
+                            <div className="text-[11px] font-mono text-gray-400 pt-1">
+                              Booking Ref: #{item.bookingReference}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2 justify-between">
+                        <div className="flex items-center gap-2">
+                          {/* Virtual Join Call Button */}
+                          {item.careOption === 'virtual' && item.meetingLink && item.isUpcoming && (
+                            <a
+                              href={item.meetingLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 active:scale-95"
+                            >
+                              <Video className="w-3.5 h-3.5" /> Join Video Call
+                            </a>
+                          )}
+
+                          {/* Google Calendar Link */}
+                          {googleCalUrl && item.isUpcoming && (
+                            <a
+                              href={googleCalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+                              title="Add to Google Calendar"
+                            >
+                              <Calendar className="w-3.5 h-3.5 text-gray-500" /> Add to Calendar
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Reports button or status */}
+                        {item.reports && item.reports.length > 0 ? (
+                          <div className="flex items-center gap-2">
+                            {item.reports.map((rep, idx) => (
+                              <a
+                                key={idx}
+                                href={rep.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                                className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
                               >
-                                <Download className="w-3.5 h-3.5" /> View
+                                <Download className="w-3 h-3" /> {rep.name}
                               </a>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-xs text-gray-500 italic">No reports available yet.</p>
-                      )}
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-[11px] text-gray-400 font-medium">
+                            {item.isUpcoming ? 'Confirmed Appointment' : 'Completed Consultation'}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -724,28 +1087,38 @@ export default function AccountPage() {
         {/* 8 Grid Menu Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           
-          {/* Prescriptions */}
-          <div onClick={() => alert("Prescriptions module coming soon!")} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between">
+          {/* Prescriptions & Reports */}
+          <div 
+            onClick={scrollToConsultations} 
+            className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all cursor-pointer group flex flex-col justify-between"
+          >
             <div>
-              <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center mb-4 group-hover:bg-green-100 transition-colors">
-                <FileText className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+                <FileText className="w-5 h-5 text-blue-600" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-1">Prescriptions</h3>
-              <p className="text-xs text-gray-500 mb-4 line-clamp-2">View your uploaded prescriptions and their status.</p>
+              <h3 className="font-bold text-gray-900 mb-1">Prescriptions & Notes</h3>
+              <p className="text-xs text-gray-500 mb-4 line-clamp-2">View medical reports, prescriptions, and physician recommendations.</p>
             </div>
-            <span className="text-green-600 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">View All <ChevronRight className="w-3.5 h-3.5"/></span>
+            <span className="text-blue-600 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              View Reports <ChevronRight className="w-3.5 h-3.5"/>
+            </span>
           </div>
 
           {/* Health Services */}
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between" onClick={() => window.location.href='https://airohealthhub.com'}>
+          <div 
+            onClick={scrollToConsultations} 
+            className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all cursor-pointer group flex flex-col justify-between"
+          >
             <div>
-              <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center mb-4 group-hover:bg-red-100 transition-colors">
-                <HeartPulse className="w-5 h-5 text-red-500" />
+              <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center mb-4 group-hover:bg-emerald-100 transition-colors">
+                <HeartPulse className="w-5 h-5 text-emerald-600" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-1">Health Services</h3>
-              <p className="text-xs text-gray-500 mb-4 line-clamp-2">Book appointments, view reports and manage your health.</p>
+              <h3 className="font-bold text-gray-900 mb-1">Health Consultations</h3>
+              <p className="text-xs text-gray-500 mb-4 line-clamp-2">Track upcoming appointments, join video calls, and schedule Minute Clinic sessions.</p>
             </div>
-            <span className="text-green-600 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">View All <ChevronRight className="w-3.5 h-3.5"/></span>
+            <span className="text-emerald-600 text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              View Consultations <ChevronRight className="w-3.5 h-3.5"/>
+            </span>
           </div>
 
           {/* Rewards */}
