@@ -138,7 +138,7 @@ export default function ConsultationRoomPage() {
           </div>
           <div>
             <h1 className="font-semibold text-sm tracking-wide flex items-center gap-2">
-              AIRO E-Med Virtual Consultation
+              AIRO Health Virtual Consultation
               <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
                 <Lock className="w-2.5 h-2.5" /> 256-bit Encrypted
               </span>
