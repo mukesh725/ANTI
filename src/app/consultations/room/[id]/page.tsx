@@ -5,11 +5,12 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { 
   Video, VideoOff, Mic, MicOff, PhoneOff, MessageSquare, 
   ShieldCheck, User, Sparkles, Send, Activity, Lock, ArrowLeft,
-  Stethoscope, CheckCircle2, AlertCircle, FileText
+  Stethoscope, CheckCircle2, AlertCircle, FileText, Phone,
+  Clock, Radio, Bell
 } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
 
 interface ChatMessage {
   id: string;
@@ -24,6 +25,9 @@ interface ConsultationData {
   service?: string;
   date?: string;
   time?: string;
+  status?: string;
+  doctorInCall?: boolean;
+  patientInCall?: boolean;
   patient?: {
     fullName?: string;
     phone?: string;
@@ -36,6 +40,41 @@ interface ConsultationData {
   };
 }
 
+// Synthesize pleasant clinical audio chime using Web Audio API
+function playJoinChime() {
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    
+    // Note 1 (E5 - 659.25Hz)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(659.25, ctx.currentTime);
+    gain1.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime + 0.5);
+
+    // Note 2 (A5 - 880Hz)
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.setValueAtTime(880, ctx.currentTime + 0.18);
+    gain2.gain.setValueAtTime(0.2, ctx.currentTime + 0.18);
+    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(ctx.currentTime + 0.18);
+    osc2.stop(ctx.currentTime + 0.8);
+  } catch (e) {
+    // Audio autoplay policy handled silently
+  }
+}
+
 export default function ConsultationRoomPage() {
   const params = useParams();
   const searchParams = useSearchParams();
@@ -45,6 +84,7 @@ export default function ConsultationRoomPage() {
   // Check if current user is Doctor
   const [isDoctor, setIsDoctor] = useState(false);
   const [consultData, setConsultData] = useState<ConsultationData | null>(null);
+  const previousDoctorStatus = useRef<boolean | undefined>(undefined);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -55,14 +95,14 @@ export default function ConsultationRoomPage() {
     {
       id: "1",
       sender: "system",
-      text: "End-to-end encrypted medical consultation room initiated. Camera and audio streams ready.",
+      text: "End-to-end encrypted medical consultation room initiated. Audio & camera ready.",
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
   ]);
   const [inputText, setInputText] = useState("");
   const [callDuration, setCallDuration] = useState(0);
 
-  // Detect Doctor Role from URL or LocalStorage
+  // 1. Detect Doctor Role from URL or LocalStorage
   useEffect(() => {
     const roleParam = searchParams.get("role");
     let hasDoctorSession = false;
@@ -77,30 +117,83 @@ export default function ConsultationRoomPage() {
     setIsDoctor(roleParam === "doctor" || hasDoctorSession);
   }, [searchParams]);
 
-  // Fetch consultation details from Firestore
+  // 2. Real-Time Firestore Presence Subscription
   useEffect(() => {
-    async function fetchConsultation() {
+    if (!roomId || roomId === "ROOM") return;
+
+    const q = query(
+      collection(db, "doctor_consultations"),
+      where("consultationId", "==", roomId)
+    );
+
+    const unsubscribe = onSnapshot(q, (snap) => {
+      if (!snap.empty) {
+        const d = snap.docs[0];
+        const data = { id: d.id, ...(d.data() as any) } as ConsultationData;
+        
+        // If patient and doctor just joined -> Play Chime!
+        if (!isDoctor && previousDoctorStatus.current === false && data.doctorInCall === true) {
+          playJoinChime();
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now().toString(),
+              sender: "system",
+              text: `${data.doctor?.name || "The Doctor"} has joined the video consultation.`,
+              time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            }
+          ]);
+        }
+        previousDoctorStatus.current = data.doctorInCall;
+
+        setConsultData(data);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [roomId, isDoctor]);
+
+  // 3. Mark Presence in Firestore when Entering / Leaving Room
+  useEffect(() => {
+    if (!consultData?.id) return;
+
+    const consultRef = doc(db, "doctor_consultations", consultData.id);
+
+    // On enter: set active status
+    const updatePresenceEnter = async () => {
       try {
-        const q = query(
-          collection(db, "doctor_consultations"),
-          where("consultationId", "==", roomId)
-        );
-        const snap = await getDocs(q);
-        if (!snap.empty) {
-          const d = snap.docs[0];
-          setConsultData({ id: d.id, ...(d.data() as any) });
+        if (isDoctor) {
+          await updateDoc(consultRef, {
+            doctorInCall: true,
+            doctorJoinedAt: new Date().toISOString(),
+            status: "IN_PROGRESS",
+          });
+        } else {
+          await updateDoc(consultRef, {
+            patientInCall: true,
+            patientJoinedAt: new Date().toISOString(),
+          });
         }
       } catch (err) {
-        console.warn("Could not fetch consultation metadata:", err);
+        console.warn("Failed to set presence enter:", err);
       }
-    }
+    };
 
-    if (roomId && roomId !== "ROOM") {
-      fetchConsultation();
-    }
-  }, [roomId]);
+    updatePresenceEnter();
 
-  // Initialize camera and microphone
+    // On exit/cleanup: reset presence
+    return () => {
+      try {
+        if (isDoctor) {
+          updateDoc(consultRef, { doctorInCall: false });
+        } else {
+          updateDoc(consultRef, { patientInCall: false });
+        }
+      } catch (e) {}
+    };
+  }, [consultData?.id, isDoctor]);
+
+  // 4. Initialize Local Camera and Microphone
   useEffect(() => {
     let activeStream: MediaStream | null = null;
     async function startMedia() {
@@ -173,31 +266,35 @@ export default function ConsultationRoomPage() {
   };
 
   const handleEndCall = async () => {
-    // 1. Stop local hardware media tracks
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
 
-    // 2. Mark consultation in progress if doctor
-    if (consultData?.id && isDoctor) {
+    if (consultData?.id) {
       try {
         const consultRef = doc(db, "doctor_consultations", consultData.id);
-        await updateDoc(consultRef, {
-          updatedAt: new Date().toISOString(),
-          status: "IN_PROGRESS",
-        });
+        if (isDoctor) {
+          await updateDoc(consultRef, {
+            doctorInCall: false,
+            updatedAt: new Date().toISOString(),
+          });
+        } else {
+          await updateDoc(consultRef, {
+            patientInCall: false,
+          });
+        }
       } catch (e) {}
     }
 
-    // 3. Route user based on role
     if (isDoctor) {
-      // Doctor MUST stay in their portal
       router.push("/doctor/portal");
     } else {
-      // Patient goes back to minute clinic
       router.push("/minute-clinic");
     }
   };
+
+  const isDoctorInCall = Boolean(consultData?.doctorInCall);
+  const isPatientInCall = Boolean(consultData?.patientInCall);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col font-sans select-none">
@@ -220,20 +317,49 @@ export default function ConsultationRoomPage() {
           </div>
         </div>
 
-        {/* Status & Exit Navigation */}
-        <div className="flex items-center gap-4">
-          <div className="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-xs text-emerald-400 font-mono flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        {/* Live Presence Indicator in Header */}
+        <div className="flex items-center gap-3">
+          {/* Patient View of Doctor Status */}
+          {!isDoctor && (
+            <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 transition-all ${
+              isDoctorInCall 
+                ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm shadow-emerald-500/10"
+                : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+            }`}>
+              <span className={`w-2 h-2 rounded-full ${
+                isDoctorInCall ? "bg-emerald-400 animate-pulse" : "bg-amber-400 animate-ping"
+              }`} />
+              <span>{isDoctorInCall ? "Doctor is in the call" : "Waiting for doctor to connect"}</span>
+            </div>
+          )}
+
+          {/* Doctor View of Patient Status */}
+          {isDoctor && (
+            <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 transition-all ${
+              isPatientInCall 
+                ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+            }`}>
+              <span className={`w-2 h-2 rounded-full ${
+                isPatientInCall ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
+              }`} />
+              <span>{isPatientInCall ? "Patient is in the call" : "Patient not yet connected"}</span>
+            </div>
+          )}
+
+          {/* Call Duration Clock */}
+          <div className="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-xs text-slate-300 font-mono">
             {formatDuration(callDuration)}
           </div>
 
+          {/* Return button */}
           {isDoctor ? (
             <button
               onClick={handleEndCall}
               className="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1.5 font-semibold bg-sky-500/10 px-3 py-1.5 rounded-lg border border-sky-500/20"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Return to Doctor Portal</span>
+              <span>Doctor Portal</span>
             </button>
           ) : (
             <Link
@@ -248,44 +374,97 @@ export default function ConsultationRoomPage() {
 
       {/* Main Video Stage */}
       <div className="flex-1 relative flex overflow-hidden">
+        
         {/* Remote Stage */}
-        <div className="flex-1 relative bg-slate-900 flex items-center justify-center p-4">
-          <div className="text-center p-8 max-w-md">
-            <div className="w-24 h-24 rounded-full bg-sky-500/10 border-2 border-sky-500/30 flex items-center justify-center mx-auto mb-4 text-sky-400">
-              <User className="w-12 h-12" />
-            </div>
+        <div className="flex-1 relative bg-slate-900 flex items-center justify-center p-6">
+          
+          {/* STATE 1: For Patient when Doctor has NOT joined yet */}
+          {!isDoctor && !isDoctorInCall && (
+            <div className="text-center p-8 max-w-lg bg-slate-900/90 border border-white/10 rounded-3xl shadow-2xl backdrop-blur">
+              <div className="relative w-20 h-20 mx-auto mb-5 flex items-center justify-center">
+                <span className="absolute inset-0 rounded-full bg-amber-500/20 animate-ping" />
+                <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg">
+                  <Clock className="w-7 h-7" />
+                </div>
+              </div>
 
-            {isDoctor ? (
-              <>
-                <h2 className="text-xl font-bold text-white mb-1">
-                  {consultData?.patient?.fullName || "Patient Connected"}
-                </h2>
-                <p className="text-xs text-sky-400 uppercase tracking-widest font-semibold mb-2">
-                  Patient Consultation Encounter
-                </p>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Patient audio and video channel is active. Conduct the examination and record clinical notes.
-                </p>
-              </>
-            ) : (
-              <>
-                <h2 className="text-xl font-bold text-white mb-1">
-                  {consultData?.doctor?.name || "Dr. MUKESH Doctor"}
-                </h2>
-                <p className="text-xs text-emerald-400 uppercase tracking-widest font-semibold mb-2">
-                  {consultData?.doctor?.specialty || "General Medicine"}
-                </p>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Doctor is connected to the examination session. Your camera and audio are streaming securely.
-                </p>
-              </>
-            )}
+              <h2 className="text-lg font-bold text-white mb-1.5">
+                Waiting for {consultData?.doctor?.name || "Your Doctor"} to Join...
+              </h2>
+              <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+                Your camera and microphone are ready. Dr. {consultData?.doctor?.name?.replace("Dr. ", "") || "Physician"} has been notified and will enter the consultation room shortly.
+              </p>
 
-            <div className="mt-6 inline-flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/60 border border-emerald-500/20 px-3 py-1.5 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Live Secure Channel Active
+              {/* Waiting Room Checklist */}
+              <div className="mt-6 pt-5 border-t border-white/10 grid grid-cols-2 gap-3 text-left text-xs text-slate-300">
+                <div className="p-2.5 bg-white/5 rounded-xl flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Camera stream active</span>
+                </div>
+                <div className="p-2.5 bg-white/5 rounded-xl flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Microphone tested</span>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* STATE 2: For Patient when Doctor IS in the call */}
+          {!isDoctor && isDoctorInCall && (
+            <div className="text-center p-8 max-w-md bg-slate-900/90 border border-emerald-500/30 rounded-3xl shadow-2xl backdrop-blur animate-in fade-in zoom-in-95">
+              <div className="relative w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+                <span className="absolute inset-0 rounded-full bg-emerald-500/20 animate-pulse" />
+                <div className="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center text-emerald-400 text-xl font-bold">
+                  <Stethoscope className="w-10 h-10" />
+                </div>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-3">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Doctor Is In Consultation
+              </div>
+
+              <h2 className="text-xl font-bold text-white mb-1">
+                {consultData?.doctor?.name || "Dr. MUKESH Doctor"}
+              </h2>
+              <p className="text-xs text-emerald-400 uppercase tracking-widest font-semibold mb-2">
+                {consultData?.doctor?.specialty || "General Medicine"}
+              </p>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Consultation in progress. You and the doctor are connected through an encrypted WebRTC telehealth session.
+              </p>
+            </div>
+          )}
+
+          {/* STATE 3: For Doctor view */}
+          {isDoctor && (
+            <div className="text-center p-8 max-w-md bg-slate-900/90 border border-white/10 rounded-3xl shadow-2xl backdrop-blur">
+              <div className="w-20 h-20 rounded-full bg-sky-500/10 border-2 border-sky-500/30 flex items-center justify-center mx-auto mb-4 text-sky-400">
+                <User className="w-10 h-10" />
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3 border border-white/10 bg-white/5">
+                <span className={`w-2 h-2 rounded-full ${
+                  isPatientInCall ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
+                }`} />
+                <span>{isPatientInCall ? "Patient Connected" : "Awaiting Patient Entry"}</span>
+              </div>
+
+              <h2 className="text-xl font-bold text-white mb-1">
+                {consultData?.patient?.fullName || "Patient"}
+              </h2>
+              <p className="text-xs text-sky-400 font-medium mb-3">
+                {consultData?.service || "General Virtual Consultation"}
+              </p>
+
+              {consultData?.patient?.phone && (
+                <div className="inline-flex items-center gap-2 text-xs text-slate-300 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10 font-mono">
+                  <Phone className="w-3.5 h-3.5 text-sky-400" />
+                  <span>{consultData.patient.phone}</span>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Floating Self Camera (Picture in Picture) */}
           <div className="absolute bottom-6 right-6 w-48 sm:w-64 aspect-video bg-slate-950 rounded-2xl overflow-hidden border border-white/20 shadow-2xl z-10">
@@ -308,7 +487,7 @@ export default function ConsultationRoomPage() {
           </div>
         </div>
 
-        {/* Chat Drawer */}
+        {/* Clinical Chat Drawer */}
         {isChatOpen && (
           <aside className="w-80 bg-slate-900 border-l border-white/10 flex flex-col z-20">
             <div className="p-4 border-b border-white/10 flex justify-between items-center">
@@ -362,7 +541,7 @@ export default function ConsultationRoomPage() {
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="Type clinical note or message..."
+                placeholder="Type message..."
                 className="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
               />
               <button
@@ -376,7 +555,7 @@ export default function ConsultationRoomPage() {
         )}
       </div>
 
-      {/* Bottom Controls */}
+      {/* Bottom Audio/Video Controls */}
       <footer className="px-6 py-4 bg-slate-900 border-t border-white/10 flex items-center justify-center gap-4 z-20">
         <button
           onClick={toggleAudio}
