@@ -25,6 +25,7 @@ import { AdminMinuteClinicManager } from "@/components/admin/AdminMinuteClinicMa
 import { AdminBlogManager } from "@/components/admin/AdminBlogManager";
 import { AdminPraanaManager } from "@/components/admin/AdminPraanaManager";
 import { AdminFeedbackManager } from "@/components/admin/AdminFeedbackManager";
+import { AdminDoctorsManager } from "@/components/admin/AdminDoctorsManager";
 import Image from "next/image";
 
 // Types
@@ -57,6 +58,7 @@ const SIDEBAR_NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "praana", label: "Praana Vitals", icon: Activity },
   { id: "minute-clinic", label: "Minute Clinic", icon: Stethoscope },
+  { id: "doctors", label: "Doctors Hub", icon: UserPlus },
   { id: "bookings", label: "Health Intakes", icon: Ticket }, // Using Ticket/Calendar-like icon
   { id: "membership", label: "Memberships", icon: ShieldCheck },
   { id: "orders", label: "Orders", icon: ShoppingBag },
@@ -270,6 +272,8 @@ export default function AdminDashboardPage() {
         return <AdminPraanaManager />;
       case "minute-clinic":
         return <AdminMinuteClinicManager />;
+      case "doctors":
+        return <AdminDoctorsManager />;
       case "bookings":
         return <AdminBookingsManager />;
       case "membership":
