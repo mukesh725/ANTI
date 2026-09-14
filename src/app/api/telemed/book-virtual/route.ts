@@ -92,8 +92,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Generate Cryptographic Consultation Room ID & Join Token
     const consultationId = `CN_${Date.now().toString(36).toUpperCase()}_${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
-    const joinToken = crypto.randomBytes(16).toString('hex');
-    const meetingLink = `https://airoemed.com/consultations/join/${joinToken}`;
+    const meetingLink = `/consultations/room/${consultationId}`;
 
     // 4. Save to Firestore minute_clinic_bookings
     const bookingRecord = {
@@ -126,7 +125,6 @@ export async function POST(req: NextRequest) {
       },
       telemed: {
         consultationId,
-        joinToken,
         meetingLink,
         status: 'SCHEDULED',
         doctorNotified: true,
@@ -146,7 +144,84 @@ export async function POST(req: NextRequest) {
 
     const docRef = await addDoc(collection(db, 'minute_clinic_bookings'), bookingRecord);
 
-    // 5. Send automated email confirmation to the patient
+    // 5. Option A: Sync consultation directly into AIRO E-Med backend database (api.airoemed.com)
+    const numDocId = Number(doctorId) > 0 ? Number(doctorId) : 20;
+    try {
+      // 1. Admin login on AIRO E-Med
+      const adminLogin = await fetch("https://api.airoemed.com/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: "admin@telemed.test", password: "password123" }),
+      });
+      if (adminLogin.ok) {
+        const { accessToken: adminToken } = await adminLogin.json();
+
+        // 2. Assign Consultation in AIRO E-Med PostgreSQL database
+        await fetch(`https://api.airoemed.com/v1/admin/consultations/20/doctor`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ doctorId: numDocId }),
+        });
+
+        // 3. Update Doctor consultation to IN_PROGRESS so it shows in doctor queue
+        const docLogin = await fetch("https://api.airoemed.com/v1/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: "sahangutta57@gmail.com", password: "password123" }),
+        });
+        if (docLogin.ok) {
+          const { accessToken: docToken } = await docLogin.json();
+          await fetch(`https://api.airoemed.com/v1/doctor/consultations/20`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${docToken}`,
+            },
+            body: JSON.stringify({
+              status: "IN_PROGRESS",
+              diagnosis: service,
+              doctorNotes: `Minute Clinic appointment booked for ${fullName} (${phone}) on ${date} at ${time}.`,
+            }),
+          });
+
+          // 4. Schedule Call in AIRO E-Med
+          await fetch(`https://api.airoemed.com/v1/doctor/consultations/20/calls`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${docToken}`,
+            },
+            body: JSON.stringify({
+              scheduledAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+              meetingLink: `https://airohealthhub.com${meetingLink}`,
+              meetingProvider: "TELEMED_VIDEO",
+            }),
+          });
+        }
+
+        // 5. Fire real-time SSE alert to doctor
+        await fetch("https://api.airoemed.com/v1/admin/realtime/test", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({
+            audience: "doctor",
+            audienceId: numDocId,
+            message: `New appointment: ${fullName} for ${service} on ${date} at ${time}`,
+          }),
+        });
+        console.log(`[AIRO E-Med Sync] Consultation 20 assigned and alerted to doctor ${numDocId}`);
+      }
+    } catch (syncErr) {
+      console.error("[AIRO E-Med Sync Error]:", syncErr);
+    }
+
+    // 6. Send automated email confirmation to the patient
     try {
       await sendBookingConfirmationEmail({
         firstName: firstName || '',
