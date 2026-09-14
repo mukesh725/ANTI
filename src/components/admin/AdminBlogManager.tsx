@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { BlogPost, getAllAdminBlogs, saveBlogPost, deleteBlogPost } from "@/lib/blog";
-import { Plus, Edit2, Trash2, Save, X, Eye, FileText, Sparkles, RefreshCw, CheckCircle2, Globe, ExternalLink } from "lucide-react";
+import { Plus, Edit2, Trash2, Save, X, Eye, FileText, Sparkles, RefreshCw, CheckCircle2, Globe, ExternalLink, Search, Clock, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 const QUICK_TOPIC_PRESETS = [
@@ -20,6 +20,8 @@ export function AdminBlogManager() {
   const [loading, setLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [siteFilter, setSiteFilter] = useState<"all" | "health" | "essentials" | "both">("all");
 
   // Auto-generator modal state
   const [isAutoModalOpen, setIsAutoModalOpen] = useState(false);
@@ -246,25 +248,39 @@ export function AdminBlogManager() {
     );
   }
 
+  const filteredBlogs = blogs.filter((blog) => {
+    const matchesSearch = !searchQuery || 
+      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      blog.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (blog.seoDescription && blog.seoDescription.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesSite = siteFilter === "all" || blog.targetSite === siteFilter || blog.targetSite === "both";
+    return matchesSearch && matchesSite;
+  });
+
   return (
     <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-6">
       {/* Top Action Bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div>
-          <h1 className="text-2xl font-serif text-gray-900">SEO Blog & Content Engine</h1>
-          <p className="text-sm text-gray-500">Manage high-ranking, conversion-focused articles across AIRO Essentials & AIRO Health Hub.</p>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-serif text-slate-900 font-medium">SEO & Content Marketing Engine</h1>
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+              {blogs.length} Articles Published
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 mt-1">High-ranking, conversion-optimized articles across AIRO Essentials & AIRO Health Hub with verified Google Schema.</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsAutoModalOpen(true)}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm font-bold transition-all shadow-sm cursor-pointer active:scale-95"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
           >
             <Sparkles className="w-4 h-4 text-emerald-200" />
             <span>Auto-Generate SEO Blog</span>
           </button>
           <button
             onClick={handleCreateNew}
-            className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer"
+            className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs font-medium transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Manual Post</span>
@@ -272,24 +288,59 @@ export function AdminBlogManager() {
         </div>
       </div>
 
+      {/* Filter and Search Controls */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar">
+          {[
+            { id: "all", label: `All Articles (${blogs.length})` },
+            { id: "health", label: "Health Hub" },
+            { id: "essentials", label: "Essentials Store" },
+            { id: "both", label: "Universal" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setSiteFilter(tab.id as any)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                siteFilter === tab.id
+                  ? "bg-slate-900 text-white font-semibold"
+                  : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full sm:w-72">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search title, keyword, slug..."
+            className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+      </div>
+
       {/* Blogs Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-xs border border-slate-200/80 overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-50/70 border-b border-gray-100">
-              <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Article Title & Slug</th>
-              <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Target Domain</th>
-              <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+            <tr className="bg-slate-50/70 border-b border-slate-100 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+              <th className="py-4 px-6">Article Title & Slug</th>
+              <th className="py-4 px-6">Target Domain</th>
+              <th className="py-4 px-6">Status</th>
+              <th className="py-4 px-6 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-slate-100">
             {loading ? (
-              <tr><td colSpan={4} className="py-12 text-center text-gray-400">Loading articles...</td></tr>
-            ) : blogs.length === 0 ? (
-              <tr><td colSpan={4} className="py-12 text-center text-gray-400">No blog posts found. Use "Auto-Generate SEO Blog" to create your first article.</td></tr>
+              <tr><td colSpan={4} className="py-12 text-center text-xs text-slate-400">Loading articles...</td></tr>
+            ) : filteredBlogs.length === 0 ? (
+              <tr><td colSpan={4} className="py-12 text-center text-xs text-slate-400">No blog posts found matching your filter.</td></tr>
             ) : (
-              blogs.map((blog) => (
+              filteredBlogs.map((blog) => (
                 <tr key={blog.id} className="hover:bg-gray-50/50 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
