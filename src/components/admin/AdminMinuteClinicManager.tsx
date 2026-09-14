@@ -257,6 +257,14 @@ export function AdminMinuteClinicManager() {
           <p className="text-sm text-gray-500 mt-1">Manage health intakes, virtual consultations, and patient reports.</p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
+          <a
+            href="/doctor/portal"
+            target="_blank"
+            className="px-4 py-2 bg-[#0A1128] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-sm shrink-0"
+          >
+            <Stethoscope className="w-4 h-4 text-cyan-400" />
+            Launch Physician Hub &rarr;
+          </a>
           <div className="relative flex-1 md:w-80">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 

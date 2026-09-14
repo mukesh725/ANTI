@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { sanitizeString, isValidIndianMobile } from '@/lib/telemed';
-import { sendBookingConfirmationEmail } from '@/lib/bookingEmailService';
+import { sanitizeString, isValidIndianMobile, getEmedDoctors } from '@/lib/telemed';
+import { sendBookingConfirmationEmail, sendDoctorNotificationEmail } from '@/lib/bookingEmailService';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
@@ -144,84 +144,40 @@ export async function POST(req: NextRequest) {
 
     const docRef = await addDoc(collection(db, 'minute_clinic_bookings'), bookingRecord);
 
-    // 5. Option A: Sync consultation directly into AIRO E-Med backend database (api.airoemed.com)
-    const numDocId = Number(doctorId) > 0 ? Number(doctorId) : 20;
-    try {
-      // 1. Admin login on AIRO E-Med
-      const adminLogin = await fetch("https://api.airoemed.com/v1/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "admin@telemed.test", password: "password123" }),
-      });
-      if (adminLogin.ok) {
-        const { accessToken: adminToken } = await adminLogin.json();
+    // 5. Save dedicated doctor consultation record in Firestore
+    const doctorConsultationRecord = {
+      consultationId,
+      bookingId: docRef.id,
+      patient: {
+        firstName,
+        lastName,
+        fullName,
+        phone,
+        email,
+        dob,
+        legalSex,
+      },
+      doctor: {
+        id: doctorId,
+        name: doctorName,
+        specialty: doctorSpecialty,
+      },
+      service,
+      date,
+      time,
+      meetingLink,
+      status: 'AWAITING_DOCTOR',
+      clinicalNotes: '',
+      diagnosis: '',
+      prescription: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
-        // 2. Assign Consultation in AIRO E-Med PostgreSQL database
-        await fetch(`https://api.airoemed.com/v1/admin/consultations/20/doctor`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${adminToken}`,
-          },
-          body: JSON.stringify({ doctorId: numDocId }),
-        });
+    await addDoc(collection(db, 'doctor_consultations'), doctorConsultationRecord);
+    console.log(`[AIRO Telemed] Consultation ${consultationId} created for doctor ${doctorName} (ID: ${doctorId})`);
 
-        // 3. Update Doctor consultation to IN_PROGRESS so it shows in doctor queue
-        const docLogin = await fetch("https://api.airoemed.com/v1/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: "sahangutta57@gmail.com", password: "password123" }),
-        });
-        if (docLogin.ok) {
-          const { accessToken: docToken } = await docLogin.json();
-          await fetch(`https://api.airoemed.com/v1/doctor/consultations/20`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${docToken}`,
-            },
-            body: JSON.stringify({
-              status: "IN_PROGRESS",
-              diagnosis: service,
-              doctorNotes: `Minute Clinic appointment booked for ${fullName} (${phone}) on ${date} at ${time}.`,
-            }),
-          });
-
-          // 4. Schedule Call in AIRO E-Med
-          await fetch(`https://api.airoemed.com/v1/doctor/consultations/20/calls`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${docToken}`,
-            },
-            body: JSON.stringify({
-              scheduledAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-              meetingLink: `https://airohealthhub.com${meetingLink}`,
-              meetingProvider: "TELEMED_VIDEO",
-            }),
-          });
-        }
-
-        // 5. Fire real-time SSE alert to doctor
-        await fetch("https://api.airoemed.com/v1/admin/realtime/test", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${adminToken}`,
-          },
-          body: JSON.stringify({
-            audience: "doctor",
-            audienceId: numDocId,
-            message: `New appointment: ${fullName} for ${service} on ${date} at ${time}`,
-          }),
-        });
-        console.log(`[AIRO E-Med Sync] Consultation 20 assigned and alerted to doctor ${numDocId}`);
-      }
-    } catch (syncErr) {
-      console.error("[AIRO E-Med Sync Error]:", syncErr);
-    }
-
-    // 6. Send automated email confirmation to the patient
+    // 6. Send automated email confirmation to the patient (ONLY to the patient's verified email)
     try {
       await sendBookingConfirmationEmail({
         firstName: firstName || '',
@@ -240,14 +196,29 @@ export async function POST(req: NextRequest) {
       console.error('[API /api/telemed/book-virtual] Email dispatch error:', mailErr);
     }
 
-    // 6. Simulated / Dispatched Notification Payload
-    // In production, this pushes to WhatsApp Business API (e.g. Gupshup/Twilio/Wati)
-    // alerting the assigned Doctor on https://admin.airoemed.com
-    console.log('[AIRO E-Med Alert] New Virtual Consultation Scheduled:');
-    console.log(`- Doctor: ${doctorName} (${doctorSpecialty})`);
-    console.log(`- Patient: ${fullName} (${phone})`);
-    console.log(`- Time: ${date} at ${time}`);
-    console.log(`- Room: ${meetingLink}`);
+    // 7. Dispatch direct notification email to assigned Doctor
+    try {
+      const allDocs = await getEmedDoctors();
+      const matchedDoctor = allDocs.find(d => String(d.id) === String(doctorId));
+      const doctorEmail = matchedDoctor?.email || (String(doctorId) === '21' ? 'mukesh@akronpharma.com' : null);
+
+      if (doctorEmail) {
+        await sendDoctorNotificationEmail({
+          doctorEmail,
+          doctorName,
+          patientName: fullName,
+          patientPhone: phone,
+          patientEmail: email,
+          service,
+          date,
+          timeSlot: time,
+          bookingReference: consultationId,
+          meetingLink,
+        });
+      }
+    } catch (docMailErr) {
+      console.error('[API /api/telemed/book-virtual] Doctor notification error:', docMailErr);
+    }
 
     return NextResponse.json({
       success: true,

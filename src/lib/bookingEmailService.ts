@@ -218,3 +218,94 @@ export async function sendBookingConfirmationEmail(bookingDetails: BookingEmailD
     return false;
   }
 }
+
+export interface DoctorEmailDetails {
+  doctorEmail: string;
+  doctorName: string;
+  patientName: string;
+  patientPhone: string;
+  patientEmail: string;
+  service: string;
+  date: string;
+  timeSlot: string;
+  bookingReference: string;
+  meetingLink: string;
+}
+
+export async function sendDoctorNotificationEmail(details: DoctorEmailDetails) {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY;
+  if (!BREVO_API_KEY || !details.doctorEmail) return false;
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airohealthhub.com';
+  const fullMeetingLink = details.meetingLink.startsWith('http') 
+    ? details.meetingLink 
+    : `${baseUrl}${details.meetingLink}`;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8" /></head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; padding: 24px;">
+      <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="background: #0f172a; padding: 24px; text-align: center;">
+          <h2 style="color: #38bdf8; margin: 0; font-size: 20px; font-weight: 700;">AIRO Health Hub &bull; Physician Alert</h2>
+          <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 12px;">New Telemedicine Consultation Intake</p>
+        </div>
+        <div style="padding: 24px;">
+          <p style="font-size: 15px; color: #1e293b; margin: 0 0 16px 0;">Dear <strong>${details.doctorName}</strong>,</p>
+          <p style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0 0 20px 0;">
+            A new virtual clinical consultation has been scheduled with you. Below are the verified patient intake details:
+          </p>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #334155;"><strong>Patient:</strong> ${details.patientName}</p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #334155;"><strong>Phone:</strong> ${details.patientPhone}</p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #334155;"><strong>Email:</strong> ${details.patientEmail}</p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #334155;"><strong>Service / Reason:</strong> ${details.service}</p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #334155;"><strong>Date & Time:</strong> ${details.date} at ${details.timeSlot}</p>
+            <p style="margin: 0; font-size: 13px; color: #0284c7;"><strong>Reference ID:</strong> #${details.bookingReference}</p>
+          </div>
+
+          <div style="text-align: center; margin: 28px 0;">
+            <a href="${fullMeetingLink}" style="display: inline-block; background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);">
+              Launch Video Consultation Room &rarr;
+            </a>
+          </div>
+
+          <div style="text-align: center; margin-top: 16px;">
+            <a href="${baseUrl}/doctor/portal" style="font-size: 12px; color: #64748b; text-decoration: underline;">
+              Open AIRO Doctor Portal
+            </a>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: { name: 'AIRO Health Clinic System', email: 'info@airoessentials.com' },
+        to: [{ email: details.doctorEmail.trim(), name: details.doctorName }],
+        subject: `[Doctor Alert] Virtual Consultation: ${details.patientName} (${details.date} at ${details.timeSlot})`,
+        htmlContent: htmlContent,
+      }),
+    });
+
+    if (response.ok) {
+      console.log(`[Brevo Email Sent] Doctor notification sent to ${details.doctorEmail}`);
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.error('[Doctor Email Error]:', err);
+    return false;
+  }
+}
