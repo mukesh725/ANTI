@@ -153,7 +153,8 @@ export function ClientLayoutWrapper({
   }
 
   const isFeedbackPage = pathname.startsWith("/store-feedback") || pathname.startsWith("/feedback");
-  const isStandalonePage = pathname.startsWith("/admin") || isFeedbackPage;
+  const isDoctorPage = pathname.startsWith("/doctor");
+  const isStandalonePage = pathname.startsWith("/admin") || isDoctorPage || isFeedbackPage;
 
   return (
     <>
