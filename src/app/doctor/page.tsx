@@ -610,8 +610,7 @@ export default function DoctorDashboardPage() {
 
                       {/* Video Room Button */}
                       <Link
-                        href={consult.meetingLink || `/consultations/room/${consult.consultationId}`}
-                        target="_blank"
+                        href={`${consult.meetingLink || `/consultations/room/${consult.consultationId}`}?role=doctor`}
                         className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs ${
                           isCompleted
                             ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -725,8 +724,7 @@ export default function DoctorDashboardPage() {
             {/* Modal Footer Controls */}
             <div className="p-4 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
               <Link
-                href={selectedConsult.meetingLink || `/consultations/room/${selectedConsult.consultationId}`}
-                target="_blank"
+                href={`${selectedConsult.meetingLink || `/consultations/room/${selectedConsult.consultationId}`}?role=doctor`}
                 className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
               >
                 <Video className="w-3.5 h-3.5 text-sky-600" />

@@ -154,7 +154,8 @@ export function ClientLayoutWrapper({
 
   const isFeedbackPage = pathname.startsWith("/store-feedback") || pathname.startsWith("/feedback");
   const isDoctorPage = pathname.startsWith("/doctor");
-  const isStandalonePage = pathname.startsWith("/admin") || isDoctorPage || isFeedbackPage;
+  const isConsultationRoom = pathname.startsWith("/consultations/room");
+  const isStandalonePage = pathname.startsWith("/admin") || isDoctorPage || isConsultationRoom || isFeedbackPage;
 
   return (
     <>
