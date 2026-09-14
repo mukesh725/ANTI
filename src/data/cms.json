@@ -98,10 +98,10 @@
             "status": "Coming Soon"
           },
           {
-            "name": "AIRO E-Med",
-            "description": "Virtual consultations, personalized treatments, and home delivery.",
-            "link": "https://airoemed.com",
-            "status": "Visit Portal"
+            "name": "Physician Portal",
+            "description": "Secure virtual consultations, clinical charting, and digital prescriptions.",
+            "link": "/doctor/portal",
+            "status": "Doctor Access"
           }
         ],
         "lifestyleBanner": {
@@ -168,10 +168,10 @@
             "status": "Coming Soon"
           },
           {
-            "name": "AIRO E-Med",
-            "description": "Virtual consultations, personalized treatments, and home delivery.",
-            "link": "https://airoemed.com",
-            "status": "Visit Portal"
+            "name": "Physician Portal",
+            "description": "Virtual consultations, clinical charting, and digital prescriptions.",
+            "link": "/doctor/portal",
+            "status": "Doctor Access"
           }
         ],
         "clinicalSectionLabel": "The Clinic",

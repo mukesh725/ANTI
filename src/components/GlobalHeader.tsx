@@ -20,7 +20,7 @@ const allLinks: NavLink[] = [
       { href: "/pharmacy", label: "Pharmacy & Compounding" },
       { href: "/minute-clinic", label: "Minute Clinic" },
       { href: "/health-chair", label: "AIRO Praana" },
-      { href: "https://airoemed.com", label: "AIRO E-Med" }
+      { href: "/doctor/portal", label: "Physician Portal" }
     ]
   },
   { href: "/membership", label: "Membership" },
