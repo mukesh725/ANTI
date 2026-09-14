@@ -108,6 +108,7 @@ export default function MinuteClinicBookingPage() {
   const [isLoadingLocations, setIsLoadingLocations] = useState(true);
   const [emedDoctors, setEmedDoctors] = useState<any[]>([]);
   const [isLoadingDoctors, setIsLoadingDoctors] = useState(false);
+  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const [virtualSelectedDate, setVirtualSelectedDate] = useState<string>(getMinBookingDate());
   const [selectedDoctorId, setSelectedDoctorId] = useState<number | string | "auto">("auto");
   const [searchQuery, setSearchQuery] = useState("");
@@ -118,16 +119,30 @@ export default function MinuteClinicBookingPage() {
 
   useEffect(() => {
     if (state.careOption === "virtual") {
+      let isMounted = true;
+      const loadDoctors = () => {
+        fetch(`/api/telemed/doctors?service=${encodeURIComponent(state.service || "")}`)
+          .then(res => res.json())
+          .then(data => {
+            if (isMounted && data.success && Array.isArray(data.doctors)) {
+              setEmedDoctors(data.doctors);
+            }
+          })
+          .catch(err => console.error("Error fetching E-Med doctors:", err))
+          .finally(() => {
+            if (isMounted) setIsLoadingDoctors(false);
+          });
+      };
+
       setIsLoadingDoctors(true);
-      fetch(`/api/telemed/doctors?service=${encodeURIComponent(state.service || "")}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success && Array.isArray(data.doctors)) {
-            setEmedDoctors(data.doctors);
-          }
-        })
-        .catch(err => console.error("Error fetching E-Med doctors:", err))
-        .finally(() => setIsLoadingDoctors(false));
+      loadDoctors();
+
+      // Automatically sync doctor roster every 5 minutes while booking page is active
+      const syncInterval = setInterval(loadDoctors, 5 * 60 * 1000);
+      return () => {
+        isMounted = false;
+        clearInterval(syncInterval);
+      };
     }
   }, [state.careOption, state.service]);
 
@@ -523,10 +538,10 @@ export default function MinuteClinicBookingPage() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 mb-3">
-            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 flex items-center gap-1.5">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
+            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 flex items-center gap-1.5 border border-emerald-200">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              AIRO E-Med Verified Specialists
+              AIRO E-Med Verified Specialists &bull; Synced Every 5 Mins
             </span>
             <span className="text-xs text-gray-500 font-medium">&bull; 100ms HD Encrypted Video Call</span>
           </div>
@@ -538,12 +553,19 @@ export default function MinuteClinicBookingPage() {
 
           {/* Step 1: Doctor Selection */}
           <div className="mb-10">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">1. Choose a Clinical Specialist</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500">1. Choose a Clinical Specialist</h2>
+              {emedDoctors.length > 0 && (
+                <span className="text-xs text-slate-500 font-medium">
+                  {emedDoctors.length} Specialists Available
+                </span>
+              )}
+            </div>
             
             {isLoadingDoctors ? (
               <div className="text-center py-10 bg-white rounded-2xl border border-gray-200 shadow-sm">
                 <div className="w-7 h-7 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-                <p className="text-sm text-gray-600 font-medium">Connecting to AIRO E-Med doctor directory...</p>
+                <p className="text-sm text-gray-600 font-medium">Connecting to AIRO E-Med live doctor directory...</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -607,23 +629,33 @@ export default function MinuteClinicBookingPage() {
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      {doc.profileImage ? (
+                    <div className="flex items-center gap-3 min-w-0">
+                      {doc.profileImage && !imgErrors[doc.id] ? (
                         <img
                           src={doc.profileImage}
                           alt={doc.name}
+                          onError={() => setImgErrors(prev => ({ ...prev, [doc.id]: true }))}
                           className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm border border-slate-200 shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 text-cyan-300 flex items-center justify-center font-bold text-sm border border-slate-700 shadow-xs shrink-0">
                           {doc.name.replace(/Dr\.?\s*/i, "").slice(0, 2).toUpperCase()}
                         </div>
                       )}
-                      <div>
-                        <h4 className="font-bold text-gray-900 text-sm">
-                          {doc.name.startsWith("Dr") ? doc.name : `Dr. ${doc.name}`}
-                        </h4>
-                        <p className="text-xs text-gray-500 line-clamp-1">{doc.specialization}</p>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <h4 className="font-bold text-gray-900 text-sm truncate">
+                            {doc.name.startsWith("Dr") ? doc.name : `Dr. ${doc.name}`}
+                          </h4>
+                          {doc.isRecommended && (
+                            <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full border border-emerald-200">
+                              Recommended
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 line-clamp-1">
+                          {doc.specialization} {doc.degree ? `&bull; ${doc.degree}` : ""}
+                        </p>
                         <p className="text-[11px] font-semibold text-emerald-600 mt-0.5">
                           ₹{doc.consultationFee || 499} &bull; {doc.experienceYears || 5} yrs exp
                         </p>

@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/generate-blog",
       "schedule": "0 0 */2 * *"
+    },
+    {
+      "path": "/api/cron/sync-doctors",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

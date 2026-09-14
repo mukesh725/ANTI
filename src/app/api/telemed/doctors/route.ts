@@ -37,16 +37,20 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const service = searchParams.get('service') || '';
+    const forceRefresh = searchParams.get('refresh') === 'true';
 
-    // 2. Fetch verified doctors
-    const allDoctors = await getEmedDoctors();
-    const filteredDoctors = service ? matchDoctorsByService(allDoctors, service) : allDoctors;
+    // 2. Fetch verified doctors (auto-syncs if older than 5 minutes)
+    const allDoctors = await getEmedDoctors(forceRefresh);
+    const filteredDoctors = matchDoctorsByService(allDoctors, service);
 
     // 3. Return sanitized response
     return NextResponse.json(
       {
         success: true,
         count: filteredDoctors.length,
+        totalActive: allDoctors.length,
+        lastSyncedAt: allDoctors[0]?.lastSyncedAt || Date.now(),
+        syncInterval: '5 minutes',
         doctors: filteredDoctors,
       },
       {
