@@ -48,6 +48,46 @@ interface Order {
   items: unknown[];
 }
 
+function safeFormatDate(val: any, options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }): string {
+  if (!val) return '-';
+  try {
+    let d: Date;
+    if (typeof val?.toDate === 'function') {
+      d = val.toDate();
+    } else if (val?.seconds) {
+      d = new Date(val.seconds * 1000);
+    } else if (val instanceof Date) {
+      d = val;
+    } else {
+      d = new Date(val);
+    }
+    if (isNaN(d.getTime())) return '-';
+    return d.toLocaleDateString('en-US', options);
+  } catch {
+    return '-';
+  }
+}
+
+function safeFormatTime(val: any, options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' }): string {
+  if (!val) return '';
+  try {
+    let d: Date;
+    if (typeof val?.toDate === 'function') {
+      d = val.toDate();
+    } else if (val?.seconds) {
+      d = new Date(val.seconds * 1000);
+    } else if (val instanceof Date) {
+      d = val;
+    } else {
+      d = new Date(val);
+    }
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleTimeString([], options);
+  } catch {
+    return '';
+  }
+}
+
 function getGoogleCalendarUrl(title: string, details: string, location: string, dateStr: string, timeStr: string) {
   try {
     const start = new Date(`${dateStr} ${timeStr}`);
@@ -389,7 +429,7 @@ export default function AccountPage() {
             doctorName,
             doctorSpecialty,
             location: typeof location === 'string' ? location : 'AIRO Health Clinic',
-            date: dateStr || itemDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            date: dateStr || safeFormatDate(itemDate, { month: 'short', day: 'numeric', year: 'numeric' }),
             time: timeStr,
             status: raw.status || 'Confirmed',
             bookingReference,
@@ -510,7 +550,7 @@ export default function AccountPage() {
               <div>
                 <p className="text-xs text-gray-500 font-medium mb-1">Membership Status</p>
                 <p className="font-bold text-gray-900 mb-1">{membership?.membershipStatus || 'Inactive'}</p>
-                <p className="text-[10px] text-gray-400">Valid until {membership?.expiryDate ? new Date(membership.expiryDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) : '-'}</p>
+                <p className="text-[10px] text-gray-400">Valid until {membership?.expiryDate ? safeFormatDate(membership.expiryDate) : '-'}</p>
               </div>
             </div>
 
@@ -667,7 +707,7 @@ export default function AccountPage() {
                       </div>
                       <div>
                         <p className="font-semibold text-sm text-gray-900">Order #{order.id.slice(0,8).toUpperCase()}</p>
-                        <p className="text-xs text-gray-500 mt-0.5">{order.createdAt.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{safeFormatDate(order.createdAt)}</p>
                       </div>
                     </div>
                     <div className="text-right flex items-center gap-6">
@@ -1001,7 +1041,7 @@ export default function AccountPage() {
                 <div>
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                     <span className="font-bold uppercase tracking-wider text-gray-400">
-                      Latest Scan ({new Date(praanaVitals[0].timestamp).toLocaleDateString()} at {new Date(praanaVitals[0].timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})})
+                      Latest Scan ({safeFormatDate(praanaVitals[0].timestamp)} at {safeFormatTime(praanaVitals[0].timestamp)})
                     </span>
                     <span className="font-mono text-[11px] text-gray-400">
                       Session: {praanaVitals[0].sessionId}
@@ -1094,7 +1134,7 @@ export default function AccountPage() {
                       <tbody className="divide-y divide-gray-50">
                         {praanaVitals.slice(1).map(v => (
                           <tr key={v.id} className="text-gray-700">
-                            <td className="py-2 font-medium">{new Date(v.timestamp).toLocaleDateString()} {new Date(v.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                            <td className="py-2 font-medium">{safeFormatDate(v.timestamp)} {safeFormatTime(v.timestamp)}</td>
                             <td className="py-2 font-bold">{v.heartRate} bpm</td>
                             <td className="py-2 font-bold">{v.bloodPressureSystolic}/{v.bloodPressureDiastolic} mmHg</td>
                             <td className="py-2 font-bold">{v.spo2}%</td>

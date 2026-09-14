@@ -102,7 +102,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithEmail = async (email: string, pass: string): Promise<UserProfile> => {
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Try Firebase Auth first
+    // 1. Secure server-side authentication (Rate-limited, Salted Scrypt Hash, Zero-Leakage)
+    try {
+      const res = await fetch("/api/auth/customer-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanEmail, password: pass, mode: "login" }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Invalid email or password.");
+      }
+      if (data.user) {
+        setProfile(data.user);
+        localStorage.setItem("airo_customer_user", JSON.stringify(data.user));
+        if (data.token) {
+          localStorage.setItem("airo_auth_token", data.token);
+        }
+        return data.user;
+      }
+    } catch (apiErr: any) {
+      if (apiErr.message && !apiErr.message.includes("Failed to fetch")) {
+        throw apiErr;
+      }
+      console.warn("Server auth unavailable, trying client fallback:", apiErr?.message);
+    }
+
+    // 2. Client-side Firebase Auth fallback if server route is unreachable
     try {
       const { signInWithEmailAndPassword } = await import("firebase/auth");
       const cred = await signInWithEmailAndPassword(auth, cleanEmail, pass);
@@ -117,59 +143,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return uProfile;
       }
     } catch (fbErr: any) {
-      console.warn("Firebase Auth fallback triggering:", fbErr?.message);
+      console.warn("Client auth fallback failed:", fbErr?.message);
     }
 
-    // 2. Fallback to Firestore 'users' collection lookup
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", cleanEmail));
-    const snap = await getDocs(q);
-
-    if (!snap.empty) {
-      const userDoc = snap.docs[0];
-      const data = userDoc.data();
-      const uProfile: UserProfile = {
-        uid: userDoc.id,
-        email: data.email || cleanEmail,
-        name: data.name || `${data.firstName || ''} ${data.lastName || ''}`.trim() || cleanEmail.split("@")[0],
-        mobile: data.mobile,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        dob: data.dob,
-        gender: data.gender,
-        address: data.address,
-        city: data.city,
-        stateText: data.stateText,
-        zip: data.zip,
-      };
-      setProfile(uProfile);
-      localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));
-      return uProfile;
-    }
-
-    // If no existing user found, auto-create customer account
-    const newDoc = await addDoc(usersRef, {
-      email: cleanEmail,
-      name: cleanEmail.split("@")[0],
-      role: "CUSTOMER",
-      createdAt: new Date().toISOString(),
-    });
-
-    const uProfile: UserProfile = {
-      uid: newDoc.id,
-      email: cleanEmail,
-      name: cleanEmail.split("@")[0],
-    };
-
-    setProfile(uProfile);
-    localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));
-    return uProfile;
+    throw new Error("Invalid email or password.");
   };
 
   const signUpWithEmail = async (email: string, pass: string, name?: string): Promise<UserProfile> => {
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Try Firebase Auth
+    // 1. Secure server-side registration
+    try {
+      const res = await fetch("/api/auth/customer-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanEmail, password: pass, name, mode: "signup" }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Registration failed. Please check your details.");
+      }
+      if (data.user) {
+        setProfile(data.user);
+        localStorage.setItem("airo_customer_user", JSON.stringify(data.user));
+        if (data.token) {
+          localStorage.setItem("airo_auth_token", data.token);
+        }
+        return data.user;
+      }
+    } catch (apiErr: any) {
+      if (apiErr.message && !apiErr.message.includes("Failed to fetch")) {
+        throw apiErr;
+      }
+      console.warn("Server signup unavailable, trying client fallback:", apiErr?.message);
+    }
+
+    // 2. Client-side Firebase Auth fallback
     try {
       const { createUserWithEmailAndPassword } = await import("firebase/auth");
       const cred = await createUserWithEmailAndPassword(auth, cleanEmail, pass);
@@ -179,58 +188,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: cred.user.email,
           name: name || cleanEmail.split("@")[0],
         };
-        await setDoc(doc(db, "users", cred.user.uid), uProfile);
         setProfile(uProfile);
         localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));
         return uProfile;
       }
     } catch (fbErr: any) {
-      console.warn("Firebase Auth signup fallback triggering:", fbErr?.message);
+      throw new Error(fbErr?.message || "Sign up failed. Please try again.");
     }
 
-    // 2. Fallback to Firestore creation
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", cleanEmail));
-    const snap = await getDocs(q);
-
-    if (!snap.empty) {
-      const userDoc = snap.docs[0];
-      const data = userDoc.data();
-      const uProfile: UserProfile = {
-        uid: userDoc.id,
-        email: data.email || cleanEmail,
-        name: name || data.name || cleanEmail.split("@")[0],
-        mobile: data.mobile,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        dob: data.dob,
-        gender: data.gender,
-        address: data.address,
-        city: data.city,
-        stateText: data.stateText,
-        zip: data.zip,
-      };
-      setProfile(uProfile);
-      localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));
-      return uProfile;
-    }
-
-    const newDoc = await addDoc(usersRef, {
-      email: cleanEmail,
-      name: name || cleanEmail.split("@")[0],
-      role: "CUSTOMER",
-      createdAt: new Date().toISOString(),
-    });
-
-    const uProfile: UserProfile = {
-      uid: newDoc.id,
-      email: cleanEmail,
-      name: name || cleanEmail.split("@")[0],
-    };
-
-    setProfile(uProfile);
-    localStorage.setItem("airo_customer_user", JSON.stringify(uProfile));
-    return uProfile;
+    throw new Error("Registration failed. Please try again.");
   };
 
   const logout = async () => {
@@ -238,6 +204,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await firebaseSignOut(auth);
     } catch (e) {}
     localStorage.removeItem("airo_customer_user");
+    localStorage.removeItem("airo_auth_token");
     setUser(null);
     setProfile(null);
   };
