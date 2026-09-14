@@ -168,6 +168,16 @@ export default function ConsultationRoomPage() {
             doctorJoinedAt: new Date().toISOString(),
             status: "IN_PROGRESS",
           });
+
+          // Dispatch instant email alert to patient that doctor has joined
+          fetch("/api/doctor/notify-patient", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "DOCTOR_JOINED",
+              consultationDocId: consultData.id,
+            }),
+          }).catch((err) => console.warn("Doctor entrance notification error:", err));
         } else {
           await updateDoc(consultRef, {
             patientInCall: true,

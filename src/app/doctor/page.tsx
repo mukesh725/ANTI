@@ -184,8 +184,27 @@ export default function DoctorDashboardPage() {
       await updateDoc(consultRef, updateData);
       setSelectedConsult(prev => prev ? { ...prev, ...updateData } : null);
       
-      setToastMessage(statusToSet === "COMPLETED" ? "Consultation marked completed" : "Clinical notes updated successfully");
-      setTimeout(() => setToastMessage(null), 3500);
+      // Dispatch clinical summary & prescription email to patient if prescription or diagnosis provided
+      if (prescription.trim() || diagnosis.trim() || statusToSet === "COMPLETED") {
+        fetch("/api/doctor/notify-patient", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "PRESCRIPTION",
+            consultationDocId: selectedConsult.id,
+            diagnosis: diagnosis.trim(),
+            clinicalNotes: clinicalNotes.trim(),
+            prescription: prescription.trim(),
+          }),
+        }).catch((err) => console.warn("Prescription email dispatch warning:", err));
+      }
+
+      setToastMessage(
+        statusToSet === "COMPLETED"
+          ? "Consultation completed & prescription emailed to patient!"
+          : "Clinical notes saved & updated!"
+      );
+      setTimeout(() => setToastMessage(null), 4000);
     } catch (err) {
       console.error("Failed to save diagnosis:", err);
     } finally {

@@ -309,3 +309,190 @@ export async function sendDoctorNotificationEmail(details: DoctorEmailDetails) {
     return false;
   }
 }
+
+export interface DoctorJoinedDetails {
+  patientEmail: string;
+  patientName: string;
+  doctorName: string;
+  specialty?: string;
+  consultationId: string;
+  meetingLink: string;
+}
+
+export async function sendDoctorJoinedRoomEmail(details: DoctorJoinedDetails) {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY;
+  if (!BREVO_API_KEY || !details.patientEmail) return false;
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airohealthhub.com';
+  const fullMeetingLink = details.meetingLink.startsWith('http') 
+    ? details.meetingLink 
+    : `${baseUrl}${details.meetingLink}`;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8" /></head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 24px; margin: 0;">
+      <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="background: #0f172a; padding: 26px 24px; text-align: center;">
+          <div style="display: inline-block; background-color: #059669; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">
+            AIRO HEALTH &bull; LIVE CONSULTATION
+          </div>
+          <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 700;">Doctor Has Entered Your Room</h2>
+        </div>
+        <div style="padding: 28px 24px;">
+          <p style="font-size: 15px; color: #1e293b; margin: 0 0 12px 0;">Hello <strong>${details.patientName}</strong>,</p>
+          <p style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0 0 20px 0;">
+            <strong>${details.doctorName}</strong> (${details.specialty || 'General Medicine'}) has connected to your virtual consultation room and is waiting to begin your appointment.
+          </p>
+
+          <div style="background: #ecfdf5; border-left: 4px solid #059669; padding: 16px; border-radius: 0 12px 12px 0; margin-bottom: 24px;">
+            <p style="margin: 0 0 4px 0; font-size: 13px; font-weight: 700; color: #065f46;">
+              🟢 Session Active &bull; Doctor Ready
+            </p>
+            <p style="margin: 0; font-size: 12px; color: #047857;">
+              Please click the button below to join the video room with your camera and audio enabled.
+            </p>
+          </div>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${fullMeetingLink}" style="display: inline-block; background-color: #059669; color: #ffffff; text-decoration: none; padding: 15px 32px; border-radius: 12px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+              Join Dr. ${details.doctorName.replace('Dr. ', '')} Now &rarr;
+            </a>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 12px 16px; text-align: center;">
+            <span style="font-size: 11px; color: #64748b; font-family: monospace;">Room Ref: #${details.consultationId}</span>
+          </div>
+        </div>
+        <div style="background: #f1f5f9; padding: 16px 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b;">
+          AIRO Health Telemedicine &bull; End-to-End Encrypted Healthcare Session
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: { name: 'AIRO Health Clinic System', email: 'info@airoessentials.com' },
+        to: [{ email: details.patientEmail.trim(), name: details.patientName }],
+        subject: `Dr. ${details.doctorName} is in your consultation room! (#${details.consultationId})`,
+        htmlContent: htmlContent,
+      }),
+    });
+
+    return response.ok;
+  } catch (err) {
+    console.error('[Doctor Joined Email Error]:', err);
+    return false;
+  }
+}
+
+export interface PrescriptionEmailDetails {
+  patientEmail: string;
+  patientName: string;
+  doctorName: string;
+  specialty?: string;
+  consultationId: string;
+  diagnosis: string;
+  clinicalNotes?: string;
+  prescription: string;
+}
+
+export async function sendDoctorPrescriptionEmail(details: PrescriptionEmailDetails) {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY;
+  if (!BREVO_API_KEY || !details.patientEmail) return false;
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airohealthhub.com';
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8" /></head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 24px; margin: 0;">
+      <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="background: #0f172a; padding: 26px 24px; text-align: center;">
+          <div style="display: inline-block; background-color: #0284c7; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">
+            AIRO HEALTH &bull; CLINICAL SUMMARY
+          </div>
+          <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 700;">Consultation Summary & Prescription</h2>
+          <p style="color: #94a3b8; font-size: 12px; margin: 4px 0 0 0;">Physician: ${details.doctorName} (${details.specialty || 'General Medicine'})</p>
+        </div>
+        
+        <div style="padding: 28px 24px;">
+          <p style="font-size: 15px; color: #1e293b; margin: 0 0 12px 0;">Hello <strong>${details.patientName}</strong>,</p>
+          <p style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0 0 20px 0;">
+            Thank you for consulting with <strong>${details.doctorName}</strong>. Your clinical encounter summary and digital prescription have been finalized:
+          </p>
+
+          ${details.diagnosis ? `
+            <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+              <p style="margin: 0 0 4px 0; font-size: 11px; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 1px;">Clinical Assessment / Diagnosis</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 700; color: #0f172a;">${details.diagnosis}</p>
+            </div>
+          ` : ''}
+
+          ${details.prescription ? `
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+              <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 1px;">℞ Digital e-Prescription & Medication</p>
+              <pre style="margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; color: #1e293b; white-space: pre-wrap; line-height: 1.6;">${details.prescription}</pre>
+            </div>
+          ` : ''}
+
+          ${details.clinicalNotes ? `
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+              <p style="margin: 0 0 6px 0; font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 1px;">Doctor's Advice & Plan</p>
+              <p style="margin: 0; font-size: 13px; color: #334155; line-height: 1.6;">${details.clinicalNotes}</p>
+            </div>
+          ` : ''}
+
+          <div style="text-align: center; margin: 28px 0;">
+            <a href="${baseUrl}/pharmacy" style="display: inline-block; background-color: #0f172a; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 14px;">
+              Order Prescribed Medicines via AIRO Pharmacy &rarr;
+            </a>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 12px 16px; text-align: center;">
+            <span style="font-size: 11px; color: #64748b; font-family: monospace;">Encounter Ref: #${details.consultationId}</span>
+          </div>
+        </div>
+
+        <div style="background: #f1f5f9; padding: 16px 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b;">
+          AIRO Health Clinical Care Network &bull; Verified Electronic Health Record
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: { name: 'AIRO Health Clinic System', email: 'info@airoessentials.com' },
+        to: [{ email: details.patientEmail.trim(), name: details.patientName }],
+        subject: `Medical Summary & Prescription from Dr. ${details.doctorName} (#${details.consultationId})`,
+        htmlContent: htmlContent,
+      }),
+    });
+
+    return response.ok;
+  } catch (err) {
+    console.error('[Prescription Email Error]:', err);
+    return false;
+  }
+}
+
