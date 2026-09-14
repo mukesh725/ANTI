@@ -338,31 +338,31 @@ export async function sendDoctorJoinedRoomEmail(details: DoctorJoinedDetails) {
           <div style="display: inline-block; background-color: #059669; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">
             AIRO HEALTH &bull; LIVE CONSULTATION
           </div>
-          <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 700;">Doctor Has Entered Your Room</h2>
+          <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 700;">Dr. ${details.doctorName} Is In Your Consultation Room</h2>
         </div>
         <div style="padding: 28px 24px;">
           <p style="font-size: 15px; color: #1e293b; margin: 0 0 12px 0;">Hello <strong>${details.patientName}</strong>,</p>
           <p style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0 0 20px 0;">
-            <strong>${details.doctorName}</strong> (${details.specialty || 'General Medicine'}) has connected to your virtual consultation room and is waiting to begin your appointment.
+            Your physician <strong>${details.doctorName}</strong> (${details.specialty || 'General Medicine'}) has started your appointment and is waiting for you in the virtual consultation room.
           </p>
 
           <div style="background: #ecfdf5; border-left: 4px solid #059669; padding: 16px; border-radius: 0 12px 12px 0; margin-bottom: 24px;">
-            <p style="margin: 0 0 4px 0; font-size: 13px; font-weight: 700; color: #065f46;">
-              🟢 Session Active &bull; Doctor Ready
+            <p style="margin: 0 0 4px 0; font-size: 14px; font-weight: 700; color: #065f46;">
+              🟢 Video Consultation Live Now
             </p>
-            <p style="margin: 0; font-size: 12px; color: #047857;">
-              Please click the button below to join the video room with your camera and audio enabled.
+            <p style="margin: 0; font-size: 13px; color: #047857; line-height: 1.5;">
+              Dr. ${details.doctorName} is waiting for you. Please click the button below to enter your session immediately with your camera and audio enabled.
             </p>
           </div>
 
           <div style="text-align: center; margin: 30px 0;">
-            <a href="${fullMeetingLink}" style="display: inline-block; background-color: #059669; color: #ffffff; text-decoration: none; padding: 15px 32px; border-radius: 12px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
-              Join Dr. ${details.doctorName.replace('Dr. ', '')} Now &rarr;
+            <a href="${fullMeetingLink}" style="display: inline-block; background-color: #059669; color: #ffffff; text-decoration: none; padding: 16px 36px; border-radius: 12px; font-weight: 800; font-size: 15px; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);">
+              Join Video Consultation Now &rarr;
             </a>
           </div>
 
           <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 12px 16px; text-align: center;">
-            <span style="font-size: 11px; color: #64748b; font-family: monospace;">Room Ref: #${details.consultationId}</span>
+            <span style="font-size: 11px; color: #64748b; font-family: monospace;">Encounter Ref: #${details.consultationId}</span>
           </div>
         </div>
         <div style="background: #f1f5f9; padding: 16px 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b;">
@@ -384,7 +384,7 @@ export async function sendDoctorJoinedRoomEmail(details: DoctorJoinedDetails) {
       body: JSON.stringify({
         sender: { name: 'AIRO Health Clinic System', email: 'info@airoessentials.com' },
         to: [{ email: details.patientEmail.trim(), name: details.patientName }],
-        subject: `Dr. ${details.doctorName} is in your consultation room! (#${details.consultationId})`,
+        subject: `🔔 Dr. ${details.doctorName} has started your video consultation — Please Join Now (Room #${details.consultationId})`,
         htmlContent: htmlContent,
       }),
     });

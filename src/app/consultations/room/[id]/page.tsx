@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/firebase";
-import { collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { collection, query, where, onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore";
 
 interface ChatMessage {
   id: string;
@@ -101,6 +101,8 @@ export default function ConsultationRoomPage() {
   ]);
   const [inputText, setInputText] = useState("");
   const [callDuration, setCallDuration] = useState(0);
+  const [isAlertingPatient, setIsAlertingPatient] = useState(false);
+  const [alertSentNotice, setAlertSentNotice] = useState<string | null>(null);
 
   // 1. Detect Doctor Role from URL or LocalStorage
   useEffect(() => {
@@ -117,6 +119,43 @@ export default function ConsultationRoomPage() {
     setIsDoctor(roleParam === "doctor" || hasDoctorSession);
   }, [searchParams]);
 
+  // Handle explicit or resend email notification to patient
+  const handleResendPatientAlert = async () => {
+    const targetDocId = consultData?.id || roomId;
+    if (!targetDocId) return;
+    setIsAlertingPatient(true);
+    try {
+      const res = await fetch("/api/doctor/notify-patient", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "DOCTOR_JOINED",
+          consultationDocId: targetDocId,
+          forceResend: true,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const patientEmail = consultData?.patient?.email || "patient";
+        setAlertSentNotice(`Alert email sent to ${patientEmail}!`);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            sender: "system",
+            text: `🔔 Video consultation invitation email dispatched to ${patientEmail}.`,
+            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          }
+        ]);
+        setTimeout(() => setAlertSentNotice(null), 6000);
+      }
+    } catch (err) {
+      console.error("Alert email error:", err);
+    } finally {
+      setIsAlertingPatient(false);
+    }
+  };
+
   // 2. Real-Time Firestore Presence Subscription
   useEffect(() => {
     if (!roomId || roomId === "ROOM") return;
@@ -126,7 +165,7 @@ export default function ConsultationRoomPage() {
       where("consultationId", "==", roomId)
     );
 
-    const unsubscribe = onSnapshot(q, (snap) => {
+    const unsubscribe = onSnapshot(q, async (snap) => {
       if (!snap.empty) {
         const d = snap.docs[0];
         const data = { id: d.id, ...(d.data() as any) } as ConsultationData;
@@ -147,6 +186,15 @@ export default function ConsultationRoomPage() {
         previousDoctorStatus.current = data.doctorInCall;
 
         setConsultData(data);
+      } else {
+        // Fallback: Check if roomId is the direct doc id
+        try {
+          const directSnap = await getDoc(doc(db, "doctor_consultations", roomId));
+          if (directSnap.exists()) {
+            const data = { id: directSnap.id, ...(directSnap.data() as any) } as ConsultationData;
+            setConsultData(data);
+          }
+        } catch (e) {}
       }
     });
 
@@ -345,15 +393,29 @@ export default function ConsultationRoomPage() {
 
           {/* Doctor View of Patient Status */}
           {isDoctor && (
-            <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 transition-all ${
-              isPatientInCall 
-                ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
-                : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-            }`}>
-              <span className={`w-2 h-2 rounded-full ${
-                isPatientInCall ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
-              }`} />
-              <span>{isPatientInCall ? "Patient is in the call" : "Patient not yet connected"}</span>
+            <div className="flex items-center gap-2">
+              <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 transition-all ${
+                isPatientInCall 
+                  ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                  : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+              }`}>
+                <span className={`w-2 h-2 rounded-full ${
+                  isPatientInCall ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
+                }`} />
+                <span>{isPatientInCall ? "Patient is in the call" : "Patient not yet connected"}</span>
+              </div>
+
+              {!isPatientInCall && (
+                <button
+                  onClick={handleResendPatientAlert}
+                  disabled={isAlertingPatient}
+                  className="px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  title="Notify patient via email that you have started the consultation"
+                >
+                  <Bell className={`w-3 h-3 ${isAlertingPatient ? "animate-spin" : ""}`} />
+                  <span>{isAlertingPatient ? "Alerting..." : "Notify Patient (Email)"}</span>
+                </button>
+              )}
             </div>
           )}
 
@@ -471,6 +533,29 @@ export default function ConsultationRoomPage() {
                 <div className="inline-flex items-center gap-2 text-xs text-slate-300 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10 font-mono">
                   <Phone className="w-3.5 h-3.5 text-sky-400" />
                   <span>{consultData.patient.phone}</span>
+                </div>
+              )}
+
+              {/* Patient Email Alert Status Card when patient is not yet connected */}
+              {!isPatientInCall && (
+                <div className="mt-5 pt-4 border-t border-white/10 flex flex-col items-center gap-2.5">
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    {alertSentNotice ? (
+                      <span className="text-emerald-400 font-semibold">{alertSentNotice}</span>
+                    ) : (
+                      <span>
+                        Invitation email was dispatched to <strong className="text-white">{consultData?.patient?.email || "patient's email"}</strong> with a 1-click link to join.
+                      </span>
+                    )}
+                  </p>
+                  <button
+                    onClick={handleResendPatientAlert}
+                    disabled={isAlertingPatient}
+                    className="px-4 py-2 rounded-xl text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white transition-all shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50 active:scale-95"
+                  >
+                    <Bell className={`w-3.5 h-3.5 ${isAlertingPatient ? "animate-spin" : ""}`} />
+                    <span>{isAlertingPatient ? "Sending Alert Email..." : "Resend Email Notification to Patient"}</span>
+                  </button>
                 </div>
               )}
             </div>

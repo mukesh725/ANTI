@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { 
   sendDoctorJoinedRoomEmail, 
   sendDoctorPrescriptionEmail 
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { action, consultationDocId, diagnosis, clinicalNotes, prescription } = body;
+    const { action, consultationDocId, diagnosis, clinicalNotes, prescription, forceResend } = body;
 
     if (!consultationDocId || !action) {
       return NextResponse.json(
@@ -20,8 +20,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const consultRef = doc(db, 'doctor_consultations', consultationDocId);
-    const snap = await getDoc(consultRef);
+    let consultRef = doc(db, 'doctor_consultations', consultationDocId);
+    let snap = await getDoc(consultRef);
+
+    // Fallback: If not found directly by doc id, search by consultationId field
+    if (!snap.exists()) {
+      const q = query(
+        collection(db, 'doctor_consultations'),
+        where('consultationId', '==', consultationDocId)
+      );
+      const querySnap = await getDocs(q);
+      if (!querySnap.empty) {
+        consultRef = querySnap.docs[0].ref;
+        snap = querySnap.docs[0];
+      }
+    }
 
     if (!snap.exists()) {
       return NextResponse.json(
@@ -47,8 +60,8 @@ export async function POST(req: NextRequest) {
 
     // 1. ACTION: DOCTOR ENTERED THE CONSULTATION ROOM
     if (action === 'DOCTOR_JOINED') {
-      // Avoid sending duplicate joined alerts for same consultation
-      if (data.doctorJoinedEmailSent) {
+      // Avoid sending duplicate joined alerts for same consultation unless forceResend is requested
+      if (data.doctorJoinedEmailSent && !forceResend) {
         return NextResponse.json({
           success: true,
           skipped: true,
@@ -69,6 +82,7 @@ export async function POST(req: NextRequest) {
         await updateDoc(consultRef, {
           doctorJoinedEmailSent: true,
           doctorJoinedEmailSentAt: new Date().toISOString(),
+          lastPatientEmailAlertAt: new Date().toISOString(),
         });
       }
 
