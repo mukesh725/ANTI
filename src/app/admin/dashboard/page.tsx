@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, ShoppingBag, CreditCard, Package, 
   Layers, Boxes, Users, UserPlus, Database, Ticket, 
@@ -10,7 +9,7 @@ import {
   TrendingUp, TrendingDown, DollarSign, Activity,
   Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope, FileText, Star,
   Sparkles, ExternalLink, Search, Bell, Clock, Calendar, ChevronRight,
-  Phone, Mail, Check, Building2, ArrowUpRight
+  Phone, Mail, Check, Building2, ArrowUpRight, Compass, HeartPulse
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit, updateDoc } from "firebase/firestore";
@@ -28,7 +27,7 @@ import { AdminBlogManager } from "@/components/admin/AdminBlogManager";
 import { AdminPraanaManager } from "@/components/admin/AdminPraanaManager";
 import { AdminFeedbackManager } from "@/components/admin/AdminFeedbackManager";
 import { AdminDoctorsManager } from "@/components/admin/AdminDoctorsManager";
-import Image from "next/image";
+import Link from "next/link";
 
 // Types
 interface LocationData {
@@ -36,12 +35,6 @@ interface LocationData {
   country: string;
   region: string;
   ip: string;
-}
-
-interface HistoryEntry {
-  path: string;
-  timestamp: string;
-  location?: LocationData | null;
 }
 
 interface Lead {
@@ -72,41 +65,41 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: "Clinical Operations",
     items: [
-      { id: "dashboard", label: "Operations Cockpit", icon: LayoutDashboard },
-      { id: "praana", label: "Praana 3D Vitals", icon: Activity },
+      { id: "dashboard", label: "Overview", icon: LayoutDashboard },
+      { id: "praana", label: "Praana 3D Vitals", icon: HeartPulse },
       { id: "minute-clinic", label: "Minute Clinic", icon: Stethoscope },
       { id: "doctors", label: "Doctors Hub", icon: UserPlus },
-      { id: "bookings", label: "Health Intakes", icon: Ticket },
+      { id: "bookings", label: "Health Intakes", icon: Calendar },
     ],
   },
   {
     title: "Commerce & Membership",
     items: [
       { id: "membership", label: "Memberships", icon: ShieldCheck },
-      { id: "orders", label: "Orders & Rx", icon: ShoppingBag },
-      { id: "products", label: "Catalog Products", icon: Package },
+      { id: "orders", label: "Orders & Prescriptions", icon: ShoppingBag },
+      { id: "products", label: "Store Catalog", icon: Package },
       { id: "categories", label: "Categories", icon: Layers },
-      { id: "inventory", label: "Inventory Stock", icon: Boxes },
-      { id: "payments", label: "Transactions", icon: CreditCard },
+      { id: "inventory", label: "Inventory", icon: Boxes },
+      { id: "payments", label: "Payments", icon: CreditCard },
     ],
   },
   {
     title: "Growth & Patients",
     items: [
-      { id: "blog", label: "Auto SEO Blogs", icon: Sparkles, badge: "AI SEO" },
-      { id: "customers", label: "Patient Directory", icon: Users },
+      { id: "blog", label: "Auto SEO Blogs", icon: Sparkles, badge: "SEO Engine" },
+      { id: "customers", label: "Patients & Users", icon: Users },
       { id: "leads", label: "Inbound Leads", icon: UserPlus },
-      { id: "feedback", label: "Store Reviews", icon: Star },
+      { id: "feedback", label: "Customer Reviews", icon: Star },
       { id: "locations", label: "Physical Clinics", icon: MapPin },
     ],
   },
   {
-    title: "Platform Governance",
+    title: "System & Governance",
     items: [
-      { id: "cms", label: "Site CMS", icon: Database },
-      { id: "coupons", label: "Coupons & Offers", icon: Ticket },
-      { id: "admin-team", label: "Admin Staff", icon: ShieldAlert },
-      { id: "settings", label: "System Settings", icon: Settings },
+      { id: "cms", label: "CMS & Content", icon: Database },
+      { id: "coupons", label: "Coupons", icon: Ticket },
+      { id: "admin-team", label: "Staff Access", icon: ShieldAlert },
+      { id: "settings", label: "Settings", icon: Settings },
     ],
   },
 ];
@@ -127,7 +120,6 @@ export default function AdminDashboardPage() {
   const [totalHealthCheckups, setTotalHealthCheckups] = useState(0);
   const [healthCheckupLocations, setHealthCheckupLocations] = useState<Record<string, number>>({});
   const [totalBlogs, setTotalBlogs] = useState(0);
-  const [activeLocationFilter, setActiveLocationFilter] = useState<"all" | "Kondapur" | "Kompally">("all");
   const [leadSearchQuery, setLeadSearchQuery] = useState("");
 
   useEffect(() => {
@@ -143,7 +135,6 @@ export default function AdminDashboardPage() {
           const user = JSON.parse(userStr);
           setCurrentUser(user);
           
-          // RBAC default routing
           if (!user.allowedModules.includes("all")) {
              if (!user.allowedModules.includes("dashboard") && user.allowedModules.length > 0) {
                 setActiveTab(user.allowedModules[0]);
@@ -229,7 +220,7 @@ export default function AdminDashboardPage() {
 
   const totalCustomers = totalMemberships + totalHealthCheckups;
   const currentTabObj = ALL_NAV_ITEMS.find(item => item.id === activeTab);
-  const activeLabel = currentTabObj?.label || "Operations Cockpit";
+  const activeLabel = currentTabObj?.label || "Overview";
 
   const isModuleAllowed = (moduleId: string) => {
     const modules = currentUser?.allowedModules || [];
@@ -252,358 +243,369 @@ export default function AdminDashboardPage() {
     switch (activeTab) {
       case "dashboard":
         return (
-          <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8">
-            {/* Cockpit Executive Header */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/70">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Central HQ Live
-                  </span>
-                  <span className="text-xs text-slate-500">
-                    Hyderabad • Kondapur & Kompally Hubs
-                  </span>
-                </div>
-                <h1 className="text-2xl md:text-3xl font-serif tracking-tight text-slate-900 font-medium">
-                  AIRO Operations & Clinical Cockpit
-                </h1>
-                <p className="text-xs md:text-sm text-slate-500">
-                  Realtime telematics across Minute Clinics, Praana 3D Scans, Online Telemedicine, and Organic Commerce.
+          <div className="p-6 md:p-10 max-w-[1500px] mx-auto space-y-8">
+            {/* Apple macOS Overview Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold text-[#86868B] uppercase tracking-wider">
+                  Hyderabad Operations • Central Command
                 </p>
+                <h1 className="text-3xl font-semibold text-[#1D1D1F] tracking-tight mt-1">
+                  Overview
+                </h1>
               </div>
 
-              {/* Quick Action Dock */}
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex items-center gap-2.5">
                 <button
                   onClick={() => setActiveTab("blog")}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2 rounded-full text-xs font-medium bg-[#0071E3] hover:bg-[#0077ED] text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
-                  Auto SEO Blog
+                  <Sparkles className="w-3.5 h-3.5 text-white/90" />
+                  Auto SEO Generator
                 </button>
-                <button
-                  onClick={() => setActiveTab("doctors")}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                <Link
+                  href="/doctor"
+                  target="_blank"
+                  className="px-4 py-2 rounded-full text-xs font-medium bg-white hover:bg-[#F5F5F7] text-[#1D1D1F] border border-black/[0.08] shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5"
                 >
-                  <Stethoscope className="w-3.5 h-3.5 text-slate-300" />
-                  Doctors Hub
-                </button>
+                  <Stethoscope className="w-3.5 h-3.5 text-[#86868B]" />
+                  Doctor Portal
+                  <ArrowUpRight className="w-3 h-3 text-[#86868B]" />
+                </Link>
                 <a
                   href="/blog"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3.5 py-2 rounded-xl text-xs font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition-all flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-full text-xs font-medium bg-white hover:bg-[#F5F5F7] text-[#1D1D1F] border border-black/[0.08] shadow-xs transition-all flex items-center gap-1.5"
                 >
-                  Public Blog
-                  <ExternalLink className="w-3 h-3 text-slate-400" />
+                  Live Blog
+                  <ExternalLink className="w-3 h-3 text-[#86868B]" />
                 </a>
               </div>
             </div>
 
-            {/* Top 4 Operational KPI Cards */}
+            {/* Apple Health / macOS 4 Metric Squircle Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Card 1: Patients & Members */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:border-slate-300 transition-all">
+              {/* Metric 1: Patients & Members */}
+              <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Patient & Customer Base</span>
-                    <div className="text-3xl font-semibold text-slate-900 tabular-nums mt-1">{totalCustomers}</div>
+                    <span className="text-xs font-medium text-[#86868B]">Registered Patients</span>
+                    <div className="text-3xl font-semibold text-[#1D1D1F] tracking-tight tabular-nums mt-2">
+                      {totalCustomers.toLocaleString()}
+                    </div>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200/60">
-                    <Users className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-full bg-[#F5F5F7] text-[#1D1D1F] flex items-center justify-center">
+                    <Users className="w-5 h-5 text-[#1D1D1F]" />
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <div className="mt-5 pt-3 border-t border-black/[0.04] flex items-center justify-between text-xs text-[#86868B]">
                   <span>{totalMemberships} Members • {totalHealthCheckups} Scans</span>
-                  <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-medium text-[11px]">SSO Synced</span>
+                  <span className="inline-flex items-center gap-1 text-[#34C759] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]"></span>
+                    Synced
+                  </span>
                 </div>
               </div>
 
-              {/* Card 2: Praana 3D Health Screenings */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:border-slate-300 transition-all">
+              {/* Metric 2: Praana 3D Health Screenings */}
+              <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Praana 3D Health Scans</span>
-                    <div className="text-3xl font-semibold text-slate-900 tabular-nums mt-1">{totalHealthCheckups}</div>
+                    <span className="text-xs font-medium text-[#86868B]">Praana 3D Screenings</span>
+                    <div className="text-3xl font-semibold text-[#1D1D1F] tracking-tight tabular-nums mt-2">
+                      {totalHealthCheckups.toLocaleString()}
+                    </div>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100">
-                    <Activity className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-full bg-[#34C759]/10 text-[#34C759] flex items-center justify-center">
+                    <HeartPulse className="w-5 h-5 text-[#34C759]" />
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>Kondapur & Kompally Pods</span>
-                  <button onClick={() => setActiveTab("praana")} className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-1 cursor-pointer">
+                <div className="mt-5 pt-3 border-t border-black/[0.04] flex items-center justify-between text-xs text-[#86868B]">
+                  <span>Kondapur & Kompally Hubs</span>
+                  <button 
+                    onClick={() => setActiveTab("praana")} 
+                    className="text-[#0071E3] hover:underline font-medium cursor-pointer"
+                  >
                     Vitals →
                   </button>
                 </div>
               </div>
 
-              {/* Card 3: Auto SEO Blog Engine */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:border-slate-300 transition-all">
+              {/* Metric 3: Auto SEO Blog Knowledge Engine */}
+              <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Auto SEO Articles</span>
-                    <div className="text-3xl font-semibold text-slate-900 tabular-nums mt-1">{totalBlogs || 10}</div>
+                    <span className="text-xs font-medium text-[#86868B]">Published SEO Articles</span>
+                    <div className="text-3xl font-semibold text-[#1D1D1F] tracking-tight tabular-nums mt-2">
+                      {totalBlogs || 10}
+                    </div>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center border border-indigo-100">
-                    <Sparkles className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-full bg-[#0071E3]/10 text-[#0071E3] flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-[#0071E3]" />
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>Google Schema Active</span>
-                  <button onClick={() => setActiveTab("blog")} className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 cursor-pointer">
+                <div className="mt-5 pt-3 border-t border-black/[0.04] flex items-center justify-between text-xs text-[#86868B]">
+                  <span>Google Schema Validated</span>
+                  <button 
+                    onClick={() => setActiveTab("blog")} 
+                    className="text-[#0071E3] hover:underline font-medium cursor-pointer"
+                  >
                     Generate →
                   </button>
                 </div>
               </div>
 
-              {/* Card 4: Clinical Consultations */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:border-slate-300 transition-all">
+              {/* Metric 4: Virtual Telemedicine & Care */}
+              <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Telemedicine & Walk-ins</span>
-                    <div className="text-xl font-semibold text-slate-900 mt-1">₹499 Virtual MD</div>
+                    <span className="text-xs font-medium text-[#86868B]">Virtual Consultations</span>
+                    <div className="text-2xl font-semibold text-[#1D1D1F] tracking-tight mt-2">
+                      ₹499 Flat MD
+                    </div>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
-                    <Stethoscope className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-full bg-[#5856D6]/10 text-[#5856D6] flex items-center justify-center">
+                    <Stethoscope className="w-5 h-5 text-[#5856D6]" />
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <div className="mt-5 pt-3 border-t border-black/[0.04] flex items-center justify-between text-xs text-[#86868B]">
                   <span>Dr. Mukesh & Dr. Sahan</span>
-                  <span className="text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md font-medium text-[11px]">WebRTC Live</span>
+                  <span className="text-[#0071E3] font-medium">WebRTC Active</span>
                 </div>
               </div>
             </div>
 
-            {/* Prominent Auto SEO Showcase Banner */}
-            <div className="bg-gradient-to-r from-[#0C152B] via-[#162545] to-[#0C152B] rounded-2xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl border border-white/10">
-              <div className="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            {/* Apple Style Refined Auto SEO Engine Hub */}
+            <div className="bg-[#1D1D1F] rounded-3xl p-8 text-white relative overflow-hidden shadow-xl">
               <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                 <div className="space-y-3 max-w-3xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold tracking-wide">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                    AIRO ORGANIC SEO & CONVERSION ENGINE
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-medium backdrop-blur-md">
+                    <Sparkles className="w-3.5 h-3.5 text-white/90" />
+                    Autonomous Organic Growth
                   </div>
-                  <h2 className="text-xl md:text-2xl font-serif text-white font-medium tracking-tight">
-                    Automated Ecosystem Content & Lead Generator
+                  <h2 className="text-2xl font-semibold tracking-tight text-white">
+                    AIRO SEO & Conversion Engine
                   </h2>
-                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                    Auto-publishes 1,000+ word clinical and organic grocery articles deeply anchored to the AIRO ecosystem (Minute Clinics, Praana 3D Health Scans, Online Telemedicine Consultations, and Wood-Pressed Oils). Every article embeds Google-validated Schema markup and direct high-converting CTAs driving bookings and orders.
+                  <p className="text-sm text-[#A1A1A6] leading-relaxed">
+                    Instantly synthesizes 1,000+ word clinical and organic grocery articles deeply anchored to AIRO Minute Clinics, Praana 3D Scans, Online Telemedicine Consultations, and Wood-Pressed Cooking Oils. Automatically embeds verified Google Schema markup and direct booking CTAs.
                   </p>
-                  <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-300">
-                    <span className="bg-white/10 px-3 py-1 rounded-lg border border-white/10 font-medium">
-                      <strong className="text-white font-bold">{totalBlogs || 10}</strong> Articles Live in Firestore
+                  <div className="flex flex-wrap items-center gap-2.5 pt-2 text-xs">
+                    <span className="bg-white/10 px-3 py-1 rounded-full text-white/90 font-medium">
+                      {totalBlogs || 10} Articles Live
                     </span>
-                    <span className="bg-white/10 px-3 py-1 rounded-lg border border-white/10">
-                      SEO Schema: <strong className="text-emerald-300">BlogPosting JSON-LD</strong>
+                    <span className="bg-white/10 px-3 py-1 rounded-full text-white/80">
+                      Google JSON-LD Validated
                     </span>
-                    <span className="bg-white/10 px-3 py-1 rounded-lg border border-white/10">
-                      Conversion CTAs: <strong className="text-emerald-300">Virtual Doctor (₹499) + Organic Store</strong>
+                    <span className="bg-white/10 px-3 py-1 rounded-full text-white/80">
+                      High-Conversion Patient CTAs
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto flex-shrink-0">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
                   <button
                     onClick={() => setActiveTab("blog")}
-                    className="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                    className="px-5 py-2.5 rounded-full bg-white text-[#1D1D1F] hover:bg-[#F5F5F7] font-medium text-xs transition-all shadow-sm active:scale-[0.98] cursor-pointer"
                   >
-                    <Sparkles className="w-4 h-4 text-emerald-200" />
-                    Auto-Generate SEO Blog
+                    Open Generator
                   </button>
                   <a
                     href="/blog"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm transition-all border border-white/10 flex items-center justify-center gap-2"
+                    className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition-all border border-white/15 flex items-center justify-center gap-1.5"
                   >
                     View Live Blog
-                    <ExternalLink className="w-4 h-4 text-slate-400" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-white/80" />
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Regional Clinic Footprint & Praana 3D Scans Grid */}
+            {/* Apple Style Regional Clinic Footprint Cards */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Kondapur Center */}
-              <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+              <div className="bg-white rounded-3xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800">
-                      <Building2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Kondapur Pod
+                    <span className="text-xs font-semibold text-[#86868B] uppercase tracking-wider">
+                      Minute Clinic #1
                     </span>
-                    <span className="text-xs text-slate-500 font-medium">Minute Clinic #1</span>
+                    <span className="inline-flex items-center gap-1.5 text-xs text-[#34C759] font-medium">
+                      <span className="w-2 h-2 rounded-full bg-[#34C759]"></span>
+                      Open Now
+                    </span>
                   </div>
-                  <h3 className="font-serif text-lg text-slate-900 font-medium">Kondapur Main Center</h3>
-                  <p className="text-xs text-slate-500 mt-1">Kondapur Main Road, Hitec City Corridor, Hyderabad</p>
-                  
+                  <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">Kondapur Main Center</h3>
+                  <p className="text-xs text-[#86868B] mt-1">Kondapur Main Road, Hitec City Corridor, Hyderabad</p>
+
                   <div className="mt-6 space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Praana 3D Scans Logged</span>
-                      <span className="font-semibold text-slate-900">{healthCheckupLocations['Kondapur'] || 0}</span>
+                    <div className="flex justify-between items-center text-xs py-2 border-b border-black/[0.04]">
+                      <span className="text-[#86868B]">Praana 3D Scans</span>
+                      <span className="font-semibold text-[#1D1D1F]">{healthCheckupLocations['Kondapur'] || 0} Logged</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">On-Duty Doctor</span>
-                      <span className="font-semibold text-emerald-700">Dr. Mukesh Doctor (MD)</span>
+                    <div className="flex justify-between items-center text-xs py-2 border-b border-black/[0.04]">
+                      <span className="text-[#86868B]">On-Duty Physician</span>
+                      <span className="font-semibold text-[#1D1D1F]">Dr. MUKESH Doctor (MD)</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Services</span>
-                      <span className="text-slate-700">3D Vitals • Walk-ins • Pharmacy</span>
+                    <div className="flex justify-between items-center text-xs py-2">
+                      <span className="text-[#86868B]">Services</span>
+                      <span className="text-[#1D1D1F]">3D Vitals • Walk-in MD • Pharmacy</span>
                     </div>
                   </div>
                 </div>
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500">Walk-ins & Booking Active</span>
-                  <button onClick={() => setActiveTab("minute-clinic")} className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 cursor-pointer">
+                <div className="mt-6 pt-4 border-t border-black/[0.04] flex items-center justify-between">
+                  <span className="text-xs text-[#86868B]">Walk-ins & Appointments</span>
+                  <button onClick={() => setActiveTab("minute-clinic")} className="text-xs font-medium text-[#0071E3] hover:underline cursor-pointer">
                     Manage Clinic →
                   </button>
                 </div>
               </div>
 
               {/* Kompally Center */}
-              <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+              <div className="bg-white rounded-3xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800">
-                      <Building2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Kompally Pod
+                    <span className="text-xs font-semibold text-[#86868B] uppercase tracking-wider">
+                      Minute Clinic #2
                     </span>
-                    <span className="text-xs text-slate-500 font-medium">Minute Clinic #2</span>
+                    <span className="inline-flex items-center gap-1.5 text-xs text-[#34C759] font-medium">
+                      <span className="w-2 h-2 rounded-full bg-[#34C759]"></span>
+                      Open Now
+                    </span>
                   </div>
-                  <h3 className="font-serif text-lg text-slate-900 font-medium">Kompally Highway Hub</h3>
-                  <p className="text-xs text-slate-500 mt-1">Kompally Main Road, Medchal Highway, Hyderabad</p>
-                  
+                  <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">Kompally Highway Hub</h3>
+                  <p className="text-xs text-[#86868B] mt-1">Kompally Main Road, Medchal Highway, Hyderabad</p>
+
                   <div className="mt-6 space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Praana 3D Scans Logged</span>
-                      <span className="font-semibold text-slate-900">{healthCheckupLocations['Kompally'] || 0}</span>
+                    <div className="flex justify-between items-center text-xs py-2 border-b border-black/[0.04]">
+                      <span className="text-[#86868B]">Praana 3D Scans</span>
+                      <span className="font-semibold text-[#1D1D1F]">{healthCheckupLocations['Kompally'] || 0} Logged</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">On-Duty Doctor</span>
-                      <span className="font-semibold text-emerald-700">Dr. Gutta Sahan (MBBS)</span>
+                    <div className="flex justify-between items-center text-xs py-2 border-b border-black/[0.04]">
+                      <span className="text-[#86868B]">On-Duty Physician</span>
+                      <span className="font-semibold text-[#1D1D1F]">Dr. Gutta Sahan (MBBS)</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Services</span>
-                      <span className="text-slate-700">3D Vitals • Organic Pantry • Rx</span>
+                    <div className="flex justify-between items-center text-xs py-2">
+                      <span className="text-[#86868B]">Services</span>
+                      <span className="text-[#1D1D1F]">3D Vitals • Organic Store • Rx</span>
                     </div>
                   </div>
                 </div>
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500">Walk-ins & Booking Active</span>
-                  <button onClick={() => setActiveTab("minute-clinic")} className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 cursor-pointer">
+                <div className="mt-6 pt-4 border-t border-black/[0.04] flex items-center justify-between">
+                  <span className="text-xs text-[#86868B]">Walk-ins & Appointments</span>
+                  <button onClick={() => setActiveTab("minute-clinic")} className="text-xs font-medium text-[#0071E3] hover:underline cursor-pointer">
                     Manage Clinic →
                   </button>
                 </div>
               </div>
 
-              {/* Virtual Telemedicine Pod */}
-              <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+              {/* Telemedicine Cloud Pod */}
+              <div className="bg-white rounded-3xl p-6 border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-800">
-                      <Stethoscope className="w-3.5 h-3.5 text-blue-600" />
-                      Telemed Cloud Pod
+                    <span className="text-xs font-semibold text-[#86868B] uppercase tracking-wider">
+                      Virtual Care
                     </span>
-                    <span className="text-xs text-slate-500 font-medium">Instant Consultation</span>
+                    <span className="inline-flex items-center gap-1.5 text-xs text-[#0071E3] font-medium">
+                      <span className="w-2 h-2 rounded-full bg-[#0071E3] animate-pulse"></span>
+                      WebRTC Active
+                    </span>
                   </div>
-                  <h3 className="font-serif text-lg text-slate-900 font-medium">Virtual Doctor Consultations</h3>
-                  <p className="text-xs text-slate-500 mt-1">End-to-end WebRTC encrypted peer-to-peer video & audio care.</p>
-                  
+                  <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">Telemedicine Consultations</h3>
+                  <p className="text-xs text-[#86868B] mt-1">Encrypted peer-to-peer audio & HD video medical care.</p>
+
                   <div className="mt-6 space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Patient Fee</span>
-                      <span className="font-semibold text-slate-900">₹499 Flat / Session</span>
+                    <div className="flex justify-between items-center text-xs py-2 border-b border-black/[0.04]">
+                      <span className="text-[#86868B]">Session Fee</span>
+                      <span className="font-semibold text-[#1D1D1F]">₹499 Flat Fee</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Active Queue</span>
-                      <span className="font-semibold text-blue-700">Ready for Inbound Calls</span>
+                    <div className="flex justify-between items-center text-xs py-2 border-b border-black/[0.04]">
+                      <span className="text-[#86868B]">Patient Notification</span>
+                      <span className="font-semibold text-[#34C759]">Realtime Instant Email</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600">Digital Rx & Delivery</span>
-                      <span className="text-slate-700">Automated Patient Dispatch</span>
+                    <div className="flex justify-between items-center text-xs py-2">
+                      <span className="text-[#86868B]">Prescriptions</span>
+                      <span className="text-[#1D1D1F]">Digital PDF & Pharmacy Fulfillment</span>
                     </div>
                   </div>
                 </div>
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500">Realtime Doctor Calling</span>
-                  <button onClick={() => setActiveTab("doctors")} className="text-xs font-semibold text-blue-700 hover:text-blue-800 cursor-pointer">
-                    Open Doctors Hub →
-                  </button>
+                <div className="mt-6 pt-4 border-t border-black/[0.04] flex items-center justify-between">
+                  <span className="text-xs text-[#86868B]">Direct Doctor Call</span>
+                  <Link href="/doctor" target="_blank" className="text-xs font-medium text-[#0071E3] hover:underline cursor-pointer">
+                    Doctor Portal →
+                  </Link>
                 </div>
               </div>
             </div>
 
-            {/* Inbound Leads & Patient Inquiries Feed */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            {/* Inbound Inquiries & Patient Triage Table */}
+            <div className="bg-white rounded-3xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
+              <div className="p-6 border-b border-black/[0.04] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-serif text-slate-900 font-medium">Inbound Patient Inquiries & Triage</h3>
-                  <p className="text-xs text-slate-500">Live booking requests, medical questions, and store inquiries.</p>
+                  <h3 className="text-lg font-semibold text-[#1D1D1F] tracking-tight">Patient Inquiries & Triage</h3>
+                  <p className="text-xs text-[#86868B]">Realtime clinic consultations, scan registrations, and customer requests.</p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="relative w-full sm:w-64">
-                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input
-                      type="text"
-                      value={leadSearchQuery}
-                      onChange={(e) => setLeadSearchQuery(e.target.value)}
-                      placeholder="Search patient, phone..."
-                      className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
+                <div className="relative w-full sm:w-64">
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#86868B]" />
+                  <input
+                    type="text"
+                    value={leadSearchQuery}
+                    onChange={(e) => setLeadSearchQuery(e.target.value)}
+                    placeholder="Search patient or phone..."
+                    className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#F5F5F7] border border-transparent focus:border-black/[0.1] focus:bg-white rounded-full focus:outline-none transition-all"
+                  />
                 </div>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse min-w-[700px]">
                   <thead>
-                    <tr className="bg-slate-50/60 border-b border-slate-100 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+                    <tr className="border-b border-black/[0.04] text-[#86868B] text-xs font-medium">
                       <th className="py-3 px-6">Patient</th>
-                      <th className="py-3 px-6">Contact Info</th>
-                      <th className="py-3 px-6">Inquiry Category</th>
-                      <th className="py-3 px-6">Triage Status</th>
+                      <th className="py-3 px-6">Contact</th>
+                      <th className="py-3 px-6">Source</th>
+                      <th className="py-3 px-6">Status</th>
                       <th className="py-3 px-6 text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-sm">
+                  <tbody className="divide-y divide-black/[0.04] text-xs">
                     {filteredLeads.slice(0, 8).map((lead) => (
-                      <tr key={lead.id} className="hover:bg-slate-50/50 transition-colors">
-                        <td className="py-3.5 px-6">
+                      <tr key={lead.id} className="hover:bg-[#F5F5F7]/60 transition-colors">
+                        <td className="py-4 px-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs">
+                            <div className="w-8 h-8 rounded-full bg-[#F5F5F7] text-[#1D1D1F] font-semibold text-xs flex items-center justify-center">
                               {lead.name ? lead.name.slice(0, 2).toUpperCase() : "PT"}
                             </div>
                             <div>
-                              <p className="font-semibold text-slate-900 text-xs">{lead.name || "Anonymous Patient"}</p>
-                              <p className="text-[11px] text-slate-400 mt-0.5">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                              <p className="font-semibold text-[#1D1D1F]">{lead.name || "Patient"}</p>
+                              <p className="text-[11px] text-[#86868B] mt-0.5">{new Date(lead.createdAt).toLocaleDateString()}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3.5 px-6">
-                          <p className="text-xs text-slate-700">{lead.email || "No email"}</p>
-                          <p className="text-[11px] text-slate-500 font-mono mt-0.5">{lead.phone || "No phone"}</p>
+                        <td className="py-4 px-6">
+                          <p className="text-[#1D1D1F]">{lead.email || "No email"}</p>
+                          <p className="text-[11px] text-[#86868B] font-mono mt-0.5">{lead.phone || "No phone"}</p>
                         </td>
-                        <td className="py-3.5 px-6">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">
-                            {lead.source || "Web Intake"}
+                        <td className="py-4 px-6">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-[#F5F5F7] text-[#1D1D1F] font-medium">
+                            {lead.source || "Web"}
                           </span>
                         </td>
-                        <td className="py-3.5 px-6">
+                        <td className="py-4 px-6">
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
                             lead.status === 'Contacted' 
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' 
-                              : 'bg-amber-50 text-amber-700 border border-amber-200/60'
+                              ? 'bg-[#34C759]/10 text-[#34C759]' 
+                              : 'bg-[#FF9500]/10 text-[#FF9500]'
                           }`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${lead.status === 'Contacted' ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+                            <span className={`w-1.5 h-1.5 rounded-full ${lead.status === 'Contacted' ? 'bg-[#34C759]' : 'bg-[#FF9500]'}`}></span>
                             {lead.status}
                           </span>
                         </td>
-                        <td className="py-3.5 px-6 text-right">
+                        <td className="py-4 px-6 text-right">
                           <button
                             onClick={() => setSelectedLead(lead)}
-                            className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 px-3 py-1 rounded-lg hover:bg-emerald-50 transition-colors cursor-pointer"
+                            className="text-xs font-medium text-[#0071E3] hover:underline px-2.5 py-1 rounded-full hover:bg-[#0071E3]/5 transition-colors cursor-pointer"
                           >
                             Inspect
                           </button>
@@ -612,7 +614,7 @@ export default function AdminDashboardPage() {
                     ))}
                     {filteredLeads.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="py-10 text-center text-xs text-slate-400">
+                        <td colSpan={5} className="py-10 text-center text-xs text-[#86868B]">
                           No inquiries found.
                         </td>
                       </tr>
@@ -645,29 +647,29 @@ export default function AdminDashboardPage() {
         return <AdminCustomersManager />;
       case "leads":
         return (
-          <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="p-6 md:p-10 max-w-[1500px] mx-auto space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-2xl font-serif text-slate-900">Lead Intelligence & Patient CRM</h1>
-                <p className="text-xs text-slate-500 mt-1">Review all inbound patient requests, clinic walk-in inquiries, and store leads.</p>
+                <h1 className="text-3xl font-semibold text-[#1D1D1F] tracking-tight">Patient Inbound Leads</h1>
+                <p className="text-xs text-[#86868B] mt-1">Review all patient consultations, scan requests, and customer inquiries.</p>
               </div>
               <div className="relative w-full sm:w-72">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#86868B]" />
                 <input
                   type="text"
                   value={leadSearchQuery}
                   onChange={(e) => setLeadSearchQuery(e.target.value)}
-                  placeholder="Filter leads..."
-                  className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
+                  placeholder="Search leads..."
+                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-black/[0.08] rounded-full focus:outline-none focus:border-[#0071E3]"
                 />
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xs border border-slate-200/80 overflow-hidden">
+            <div className="bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-black/[0.06] overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse min-w-[800px]">
                   <thead>
-                    <tr className="bg-slate-50/70 border-b border-slate-100 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+                    <tr className="border-b border-black/[0.04] text-[#86868B] text-xs font-medium">
                       <th className="py-4 px-6">Lead</th>
                       <th className="py-4 px-6">Contact</th>
                       <th className="py-4 px-6">Source</th>
@@ -675,21 +677,21 @@ export default function AdminDashboardPage() {
                       <th className="py-4 px-6 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-sm">
+                  <tbody className="divide-y divide-black/[0.04] text-xs">
                     {filteredLeads.map((lead) => (
-                      <tr key={lead.id} className="hover:bg-slate-50/50 transition-colors">
+                      <tr key={lead.id} className="hover:bg-[#F5F5F7]/60 transition-colors">
                         <td className="py-4 px-6">
-                          <p className="font-semibold text-slate-900 text-xs">{lead.name}</p>
-                          <p className="text-[11px] text-slate-400 mt-0.5">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                          <p className="font-semibold text-[#1D1D1F]">{lead.name}</p>
+                          <p className="text-[11px] text-[#86868B] mt-0.5">{new Date(lead.createdAt).toLocaleDateString()}</p>
                         </td>
                         <td className="py-4 px-6">
-                          <p className="text-xs text-slate-700">{lead.email}</p>
-                          <p className="text-[11px] text-slate-500 font-mono mt-0.5">{lead.phone}</p>
+                          <p className="text-[#1D1D1F]">{lead.email}</p>
+                          <p className="text-[11px] text-[#86868B] font-mono mt-0.5">{lead.phone}</p>
                         </td>
-                        <td className="py-4 px-6 text-xs text-slate-600">{lead.source}</td>
+                        <td className="py-4 px-6 text-[#1D1D1F]">{lead.source}</td>
                         <td className="py-4 px-6">
-                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wider ${
-                            lead.status === 'Pending' ? 'bg-amber-50 text-amber-700 border border-amber-200/70' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/70'
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
+                            lead.status === 'Pending' ? 'bg-[#FF9500]/10 text-[#FF9500]' : 'bg-[#34C759]/10 text-[#34C759]'
                           }`}>
                             {lead.status}
                           </span>
@@ -697,7 +699,7 @@ export default function AdminDashboardPage() {
                         <td className="py-4 px-6 text-right">
                           <button 
                             onClick={() => setSelectedLead(lead)}
-                            className="text-xs text-emerald-700 hover:text-emerald-800 font-semibold px-3 py-1 rounded-lg hover:bg-emerald-50 transition-colors cursor-pointer"
+                            className="text-xs text-[#0071E3] hover:underline font-medium px-3 py-1 rounded-full cursor-pointer"
                           >
                             View Details
                           </button>
@@ -706,7 +708,7 @@ export default function AdminDashboardPage() {
                     ))}
                     {filteredLeads.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="py-8 text-center text-xs text-slate-400">No leads found.</td>
+                        <td colSpan={5} className="py-8 text-center text-xs text-[#86868B]">No leads found.</td>
                       </tr>
                     )}
                   </tbody>
@@ -728,50 +730,55 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans text-slate-800 antialiased">
-      {/* Mobile Sidebar Backdrop */}
+    <div className="flex h-screen bg-[#F5F5F7] overflow-hidden font-sans text-[#1D1D1F] antialiased">
+      {/* Mobile Backdrop */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 md:hidden"
+          className="fixed inset-0 bg-black/30 backdrop-blur-xs z-40 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
-      {/* Modern Executive Sidebar */}
-      <aside className={`w-[270px] bg-[#0C152B] flex flex-col flex-shrink-0 fixed md:relative h-full z-50 border-r border-slate-800/80 shadow-2xl transition-transform duration-300 ${
+      {/* Apple macOS Translucent Frosted Sidebar */}
+      <aside className={`w-[260px] bg-[#F2F2F7]/95 backdrop-blur-2xl flex flex-col flex-shrink-0 fixed md:relative h-full z-50 border-r border-black/[0.06] shadow-sm transition-transform duration-300 ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}>
-        {/* Brand Header */}
-        <div className="p-5 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-serif font-bold text-lg shadow-sm">
+        {/* macOS Traffic Lights Window Header */}
+        <div className="p-4 pb-3 border-b border-black/[0.04]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] inline-block shadow-xs"></span>
+              <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] inline-block shadow-xs"></span>
+              <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] inline-block shadow-xs"></span>
+            </div>
+            <button 
+              className="md:hidden text-[#86868B] hover:text-[#1D1D1F] p-1"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="mt-3 flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-[#1D1D1F] text-white flex items-center justify-center font-bold text-xs shadow-xs">
               A
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg font-bold tracking-tight text-white font-serif">AIRO</span>
-                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">HQ</span>
-              </div>
-              <p className="text-[10px] text-slate-400">Health Hub & Essentials</p>
+            <div className="leading-tight">
+              <div className="text-xs font-semibold text-[#1D1D1F] tracking-tight">AIRO Operations</div>
+              <div className="text-[10px] text-[#86868B]">Central Command</div>
             </div>
           </div>
-          <button 
-            className="md:hidden text-slate-400 hover:text-white p-1 rounded-lg"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <X className="w-5 h-5" />
-          </button>
         </div>
 
-        {/* Categorized Navigation */}
-        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-5 custom-scrollbar">
+        {/* macOS Categorized Navigation List */}
+        <div className="flex-1 overflow-y-auto py-3 px-2 space-y-4 custom-scrollbar">
           {NAV_SECTIONS.map((section, idx) => {
             const visibleItems = section.items.filter(item => isModuleAllowed(item.id));
             if (visibleItems.length === 0) return null;
 
             return (
-              <div key={idx} className="space-y-1">
-                <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              <div key={idx} className="space-y-0.5">
+                <div className="px-3 text-[11px] font-semibold text-[#86868B] tracking-normal mb-1">
                   {section.title}
                 </div>
                 {visibleItems.map((item) => {
@@ -785,18 +792,20 @@ export default function AdminDashboardPage() {
                         setActiveTab(item.id);
                         setIsSidebarOpen(false);
                       }}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all duration-150 text-xs font-medium cursor-pointer ${
+                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg transition-all text-xs font-medium cursor-pointer active:scale-[0.98] ${
                         isActive
-                          ? "bg-white/10 text-white font-semibold border-l-2 border-emerald-400 pl-2.5 shadow-xs"
-                          : "text-slate-300 hover:text-white hover:bg-white/5"
+                          ? "bg-[#0071E3] text-white font-semibold shadow-xs"
+                          : "text-[#1D1D1F] hover:bg-black/[0.04]"
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <Icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : "text-slate-400"}`} />
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-[#86868B]"}`} />
                         <span>{item.label}</span>
                       </div>
                       {item.badge && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${
+                          isActive ? "bg-white/20 text-white" : "bg-[#0071E3]/10 text-[#0071E3]"
+                        }`}>
                           {item.badge}
                         </span>
                       )}
@@ -808,122 +817,108 @@ export default function AdminDashboardPage() {
           })}
         </div>
 
-        {/* Sidebar Footer User Profile */}
-        <div className="p-4 border-t border-white/10 mt-auto bg-slate-950/40">
-          <div className="mb-3 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 font-bold text-xs">
-              {currentUser?.name ? currentUser.name.slice(0, 2).toUpperCase() : "AD"}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-white truncate">{currentUser?.name || "Operations Lead"}</p>
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest">{currentUser?.role || "Super Admin"}</span>
+        {/* macOS User Profile Capsule */}
+        <div className="p-3 border-t border-black/[0.06] mt-auto">
+          <div className="flex items-center justify-between p-2 rounded-xl bg-black/[0.02]">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-full bg-[#1D1D1F] text-white flex items-center justify-center font-semibold text-[10px]">
+                {currentUser?.name ? currentUser.name.slice(0, 2).toUpperCase() : "HQ"}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-[#1D1D1F] truncate">{currentUser?.name || "Admin"}</p>
+                <p className="text-[10px] text-[#86868B] truncate">{currentUser?.role || "Super Admin"}</p>
               </div>
             </div>
+            <button
+              onClick={handleLogout}
+              title="Sign out"
+              className="p-1.5 text-[#86868B] hover:text-[#FF3B30] rounded-lg transition-colors cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 hover:text-red-300 text-slate-300 transition-colors text-xs font-medium border border-white/5 cursor-pointer"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            Sign out
-          </button>
         </div>
       </aside>
 
-      {/* Main App Content Viewport */}
+      {/* Main Workspace Frame */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
-        {/* Top Navbar Header */}
-        <header className="h-[64px] bg-white border-b border-slate-200/80 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10 sticky top-0 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+        {/* Apple macOS Translucent Topbar */}
+        <header className="h-[56px] bg-white/80 backdrop-blur-xl border-b border-black/[0.06] flex items-center justify-between px-6 md:px-8 flex-shrink-0 z-20 sticky top-0">
           <div className="flex items-center gap-3">
             <button 
-              className="md:hidden p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+              className="md:hidden p-1.5 text-[#1D1D1F] hover:bg-black/[0.05] rounded-lg transition-colors"
               onClick={() => setIsSidebarOpen(true)}
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4" />
             </button>
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <span className="hidden sm:inline">Central Operations</span>
-              <ChevronRight className="w-3 h-3 text-slate-400 hidden sm:inline" />
-              <span className="font-semibold text-slate-900 text-sm">{activeLabel}</span>
+            <div className="flex items-center gap-1.5 text-xs text-[#86868B]">
+              <span className="hidden sm:inline">AIRO Operations</span>
+              <span className="hidden sm:inline">/</span>
+              <span className="font-semibold text-[#1D1D1F] text-xs">{activeLabel}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Live Dual Domain Status */}
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            {/* Live Dual-Domain Status Capsule */}
+            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F5F5F7] text-[11px] text-[#1D1D1F] border border-black/[0.04]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]"></span>
               <span>airohealthhub.com & airoessentials.com</span>
             </div>
-
-            {/* Direct Quick Link to Live Blog */}
-            <a
-              href="/blog"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors"
-            >
-              <span>Live Blog</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
-            </a>
 
             {/* Quick Auto SEO Trigger */}
             <button
               onClick={() => setActiveTab("blog")}
-              className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/70 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#0071E3]/10 hover:bg-[#0071E3]/15 text-[#0071E3] transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden sm:inline">Auto SEO</span>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Auto SEO</span>
             </button>
           </div>
         </header>
 
-        {/* Scrollable Workspace */}
-        <main className="flex-1 overflow-y-auto relative custom-scrollbar bg-[#F8FAFC]">
-          <div className="relative z-10">
-            {renderContent()}
-          </div>
+        {/* Scrollable Canvas */}
+        <main className="flex-1 overflow-y-auto relative custom-scrollbar bg-[#F5F5F7]">
+          {renderContent()}
         </main>
       </div>
 
-      {/* Selected Lead Detailed Inspection Slide-over Modal */}
+      {/* Apple-style Inspection Sheet/Modal */}
       {selectedLead && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 space-y-6">
-            <div className="flex justify-between items-start border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl border border-black/[0.08] space-y-6">
+            <div className="flex justify-between items-start border-b border-black/[0.06] pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    selectedLead.status === 'Contacted' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                    selectedLead.status === 'Contacted' ? 'bg-[#34C759]/10 text-[#34C759]' : 'bg-[#FF9500]/10 text-[#FF9500]'
                   }`}>
                     {selectedLead.status}
                   </span>
-                  <span className="text-xs text-slate-400">{new Date(selectedLead.createdAt).toLocaleString()}</span>
+                  <span className="text-xs text-[#86868B]">{new Date(selectedLead.createdAt).toLocaleString()}</span>
                 </div>
-                <h3 className="font-serif text-xl font-medium text-slate-900 mt-1">{selectedLead.name || "Inbound Patient"}</h3>
-                <p className="text-xs text-slate-500">Source: {selectedLead.source || "Website Intake"}</p>
+                <h3 className="text-2xl font-semibold text-[#1D1D1F] tracking-tight mt-1">{selectedLead.name || "Patient"}</h3>
+                <p className="text-xs text-[#86868B]">Source: {selectedLead.source || "Web"}</p>
               </div>
               <button 
                 onClick={() => setSelectedLead(null)}
-                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg"
+                className="text-[#86868B] hover:text-[#1D1D1F] p-1.5 rounded-full hover:bg-[#F5F5F7]"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-100">
+              <div className="bg-[#F5F5F7] p-4 rounded-2xl space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Email Address:</span>
-                  <a href={`mailto:${selectedLead.email}`} className="font-semibold text-emerald-700 hover:underline flex items-center gap-1">
+                  <span className="text-[#86868B]">Email:</span>
+                  <a href={`mailto:${selectedLead.email}`} className="font-semibold text-[#0071E3] hover:underline flex items-center gap-1">
                     <Mail className="w-3 h-3" />
                     {selectedLead.email || "N/A"}
                   </a>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Phone Number:</span>
-                  <a href={`tel:${selectedLead.phone}`} className="font-semibold text-emerald-700 hover:underline flex items-center gap-1">
+                  <span className="text-[#86868B]">Phone:</span>
+                  <a href={`tel:${selectedLead.phone}`} className="font-semibold text-[#0071E3] hover:underline flex items-center gap-1">
                     <Phone className="w-3 h-3" />
                     {selectedLead.phone || "N/A"}
                   </a>
@@ -931,56 +926,56 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Inquiry / Patient Message
+                <label className="block text-[11px] font-semibold text-[#86868B] uppercase tracking-wider mb-1">
+                  Message Details
                 </label>
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl text-slate-700 text-xs leading-relaxed whitespace-pre-wrap">
-                  {selectedLead.message || "No specific message provided. Inquiry initiated via direct consultation or scan registration."}
+                <div className="p-4 bg-[#F5F5F7] rounded-2xl text-[#1D1D1F] leading-relaxed whitespace-pre-wrap">
+                  {selectedLead.message || "No specific message provided. Inquiry initiated via direct consultation or scan booking."}
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                  Update Triage Status
+                <label className="block text-[11px] font-semibold text-[#86868B] uppercase tracking-wider mb-2">
+                  Update Triage
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => handleUpdateLeadStatus(selectedLead.id, "Contacted")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
                       selectedLead.status === "Contacted"
-                        ? "bg-emerald-600 text-white border-emerald-600"
-                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                        ? "bg-[#34C759] text-white"
+                        : "bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E5E5EA]"
                     }`}
                   >
                     <Check className="w-3.5 h-3.5" />
-                    Mark as Contacted
+                    Mark Contacted
                   </button>
                   <button
                     onClick={() => handleUpdateLeadStatus(selectedLead.id, "Pending")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
                       selectedLead.status === "Pending"
-                        ? "bg-amber-600 text-white border-amber-600"
-                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                        ? "bg-[#FF9500] text-white"
+                        : "bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E5E5EA]"
                     }`}
                   >
                     <Clock className="w-3.5 h-3.5" />
-                    Keep Pending
+                    Mark Pending
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-4 flex justify-end gap-3">
+            <div className="border-t border-black/[0.06] pt-4 flex justify-end gap-3">
               <button
                 onClick={() => setSelectedLead(null)}
-                className="px-4 py-2 text-xs font-medium text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 cursor-pointer"
+                className="px-4 py-2 text-xs font-medium text-[#1D1D1F] bg-[#F5F5F7] hover:bg-[#E5E5EA] rounded-full cursor-pointer"
               >
                 Close
               </button>
               {selectedLead.phone && (
                 <a
                   href={`tel:${selectedLead.phone}`}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2 text-xs font-semibold text-white bg-[#0071E3] hover:bg-[#0077ED] rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98]"
                 >
                   <Phone className="w-3.5 h-3.5" />
                   Call Patient
