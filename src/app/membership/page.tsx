@@ -262,7 +262,7 @@ export default function MembershipPage() {
                     bg: "bg-green-50 border-[#006537]/20", highlight: true
                   },
                   {
-                    name: "AIRO ONE™ Signature", price: "₹4,999", members: "Up to 5 Members",
+                    name: "AIRO ONE™ Signature", price: "₹6,999", members: "Up to 5 Members",
                     offers: "✔", pharmacy: "Up to 60%+*", brand: "6%", doc: "10 / Year",
                     tele: "10 / Year", screen: "Unlimited Basic Screenings", checkup: "2 Complimentary",
                     diet: "6 / Year", delivery: "Unlimited Free Delivery", priority: "VIP Priority", care365: "Included", senior: "✔ Included", 
@@ -345,7 +345,7 @@ export default function MembershipPage() {
                       <td className="p-6 font-medium text-gray-700">Annual Membership Fee</td>
                       <td className="p-6 text-center font-bold text-lg">₹999</td>
                       <td className="p-6 text-center font-bold text-lg bg-green-50 text-[#006537]">₹2,999</td>
-                      <td className="p-6 text-center font-bold text-lg">₹4,999</td>
+                      <td className="p-6 text-center font-bold text-lg">₹6,999</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="p-6 text-gray-600">Members Covered</td>
@@ -470,7 +470,7 @@ export default function MembershipPage() {
                           onClick={() => startRegistration('AIRO ONE Signature')} 
                           className="bg-[#006537] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#004e2a] transition-all"
                         >
-                          Join Signature (₹4,999)
+                          Join Signature (₹6,999)
                         </button>
                       </td>
                     </tr>
@@ -863,7 +863,7 @@ export default function MembershipPage() {
                 {[
                   { name: 'AIRO ONE Select', price: '₹999', desc: '1 Member Covered' },
                   { name: 'AIRO ONE Preferred', price: '₹2,999', desc: 'Up to 3 Members Covered' },
-                  { name: 'AIRO ONE Signature', price: '₹4,999', desc: 'Up to 5 Members Covered' },
+                  { name: 'AIRO ONE Signature', price: '₹6,999', desc: 'Up to 5 Members Covered' },
                 ].map((plan) => (
                   <div
                     key={plan.name}

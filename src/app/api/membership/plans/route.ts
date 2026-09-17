@@ -36,7 +36,7 @@ export async function GET() {
           id: 'plan_signature',
           name: 'AIRO ONE™ Signature',
           description: 'Up to 5 Members, ₹2500 Welcome Coupons, Premium Wellness Kit',
-          price: 4999,
+          price: 6999,
           durationDays: 365,
           features: JSON.stringify(['Up to 5 Members Covered', '6% Essentials Discount', '22% Pharmacy Discount', '10 Free Doctor Consultations', 'Unlimited Basic Health Screenings'])
         }

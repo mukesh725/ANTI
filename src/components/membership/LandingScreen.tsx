@@ -49,7 +49,7 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
                 <td className="p-6 font-medium text-gray-700">Annual Membership Fee</td>
                 <td className="p-6 text-center font-bold text-lg">₹999</td>
                 <td className="p-6 text-center font-bold text-lg bg-green-50">₹2,999</td>
-                <td className="p-6 text-center font-bold text-lg">₹4,999</td>
+                <td className="p-6 text-center font-bold text-lg">₹6,999</td>
               </tr>
               <tr className="hover:bg-gray-50">
                 <td className="p-6 text-gray-600">Members Covered</td>

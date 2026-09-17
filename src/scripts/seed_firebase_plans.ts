@@ -54,7 +54,7 @@ const plans = [
     id: "plan_signature",
     name: 'AIRO ONE™ Signature',
     description: 'Up to 5 Members, ₹2500 Welcome Coupons, Premium Wellness Kit',
-    price: 4999,
+    price: 6999,
     durationDays: 365,
     status: 'ACTIVE',
     features: JSON.stringify([
