@@ -49,6 +49,16 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // 2.5 Admin Route Protection (Point 11: An admin panel with no auth on it)
+  if (url.pathname.startsWith('/admin') && url.pathname !== '/admin/login') {
+    const adminSessionCookie = request.cookies.get('airo_admin_session')?.value;
+    if (!adminSessionCookie) {
+      const loginUrl = new URL('/admin/login', request.url);
+      loginUrl.searchParams.set('redirect', url.pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
   // Determine domains
   const isHealthDomain =
     host.includes('airohealth') ||

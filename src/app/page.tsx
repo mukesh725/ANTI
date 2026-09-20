@@ -275,7 +275,10 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">AIRO E-Med</h3>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h3 className="font-serif text-3xl font-medium text-ink tracking-tight group-hover:text-theme transition-colors duration-300">AIRO E-Med</h3>
+                  <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">Coming Soon</span>
+                </div>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   Hair Loss • Sexual Health • Weight Management
                 </p>

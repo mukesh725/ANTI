@@ -242,32 +242,56 @@ export default function MembershipPage() {
             <div>
               <h2 className="text-3xl font-semibold text-center mb-10 text-[#006537]">Membership Comparison</h2>
 
+              {/* AIRO ONE™ AT A GLANCE */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                {[
+                  { tier: "SELECT", price: "₹999", desc: "For Individuals", border: "border-gray-200" },
+                  { tier: "PREFERRED", price: "₹2,999", desc: "For Small Families", border: "border-[#006537]/40 bg-green-50/50" },
+                  { tier: "SIGNATURE", price: "₹6,999", desc: "For Families", border: "border-amber-200" },
+                  { tier: "INFINITE", price: "₹8,999", desc: "For Large Families", border: "border-emerald-300 bg-emerald-50/30" }
+                ].map((item, i) => (
+                  <div key={i} className={`p-4 rounded-2xl bg-white border ${item.border} shadow-sm text-center`}>
+                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-1">{item.tier}</span>
+                    <div className="text-2xl font-extrabold text-[#006537] mb-1">{item.price}</div>
+                    <div className="text-xs text-gray-500 font-medium">{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+
               {/* Mobile View - Cards */}
               <div className="lg:hidden space-y-6 mb-8">
                 {[
                   {
-                    name: "AIRO ONE™ Select", price: "₹999", members: "1 Member",
-                    offers: "✔", pharmacy: "Up to 60%+*", brand: "3%", doc: "2 / Year",
-                    tele: "2 / Year", screen: "4 Basic Screenings", checkup: "—",
-                    diet: "—", delivery: "Free Above ₹1,500", priority: "—", care365: "—", senior: "✔ Included", 
+                    name: "AIRO ONE™ Select", price: "₹999", members: "1 Member (For Individuals)",
+                    voucher: "—", pharmacy: "Up to 60%+*", brand: "—", doc: "2 / Year",
+                    tele: "2 / Year", screen: "4 / Year", checkup: "—",
+                    diet: "—", delivery: "Free Above ₹1,500", care365: "—", senior: "✔ Included", 
                     app: "✔",
                     bg: "bg-white", highlight: false
                   },
                   {
-                    name: "AIRO ONE™ Preferred", price: "₹2,999", members: "Up to 3 Members",
-                    offers: "✔", pharmacy: "Up to 60%+*", brand: "5%", doc: "6 / Year",
-                    tele: "6 / Year", screen: "10 Basic Screenings", checkup: "1 Complimentary",
-                    diet: "2 / Year", delivery: "Free Above ₹1,500", priority: "—", care365: "—", senior: "✔ Included", 
+                    name: "AIRO ONE™ Preferred", price: "₹2,999", members: "Up to 3 Members (For Small Families)",
+                    voucher: "₹500 Voucher", pharmacy: "Up to 60%+*", brand: "3%", doc: "6 / Year",
+                    tele: "6 / Year", screen: "10 / Year", checkup: "1 Member / Year",
+                    diet: "2 / Year", delivery: "Free Above ₹1,500", care365: "—", senior: "✔ Included", 
                     app: "✔",
                     bg: "bg-green-50 border-[#006537]/20", highlight: true
                   },
                   {
-                    name: "AIRO ONE™ Signature", price: "₹6,999", members: "Up to 5 Members",
-                    offers: "✔", pharmacy: "Up to 60%+*", brand: "6%", doc: "10 / Year",
-                    tele: "10 / Year", screen: "Unlimited Basic Screenings", checkup: "2 Complimentary",
-                    diet: "6 / Year", delivery: "Unlimited Free Delivery", priority: "VIP Priority", care365: "Included", senior: "✔ Included", 
+                    name: "AIRO ONE™ Signature", price: "₹6,999", members: "Up to 5 Members (For Families)",
+                    voucher: "₹1,000 Voucher", pharmacy: "Up to 60%+*", brand: "6%", doc: "10 / Year",
+                    tele: "10 / Year", screen: "Unlimited", checkup: "2 Members / Year",
+                    diet: "6 / Year", delivery: "Unlimited", care365: "Included", senior: "✔ Included", 
                     app: "✔",
                     bg: "bg-white", highlight: false
+                  },
+                  {
+                    name: "AIRO ONE™ Infinite", price: "₹8,999", members: "Up to 6 Members (For Large Families)",
+                    voucher: "₹1,500 Voucher", pharmacy: "Up to 60%+*", brand: "8%", doc: "15 / Year",
+                    tele: "Unlimited", screen: "Unlimited", checkup: "3 Members / Year",
+                    diet: "12 / Year", delivery: "Unlimited", care365: "Included", senior: "✔ Included", 
+                    app: "✔",
+                    bg: "bg-emerald-50/60 border-emerald-500/30", highlight: false
                   }
                 ].map((plan, idx) => (
                   <div key={idx} className={`${plan.bg} rounded-3xl shadow-md border ${plan.highlight ? 'border-[#006537]/30 border-2' : 'border-gray-100'} p-6 relative`}>
@@ -282,16 +306,15 @@ export default function MembershipPage() {
                     <div className="space-y-3 text-sm">
                       {[
                         { label: "Members Covered", val: plan.members },
-                        { label: "Exclusive Member Offers", val: plan.offers },
+                        { label: "Medication Voucher", val: plan.voucher },
                         { label: "Pharmacy Discount*", val: plan.pharmacy },
                         { label: "AIRO Branded Products", val: plan.brand },
                         { label: "In-Store Doctor Consults", val: plan.doc },
                         { label: "Telemedicine Consults", val: plan.tele },
-                        { label: "Health Screenings", val: plan.screen },
+                        { label: "Praana Screenings", val: plan.screen },
                         { label: "Preventive Health Check", val: plan.checkup },
                         { label: "Dietitian Consults", val: plan.diet },
                         { label: "Medicine Home Delivery", val: plan.delivery },
-                        { label: "Priority Service", val: plan.priority },
                         { label: "AIRO Care365™", val: plan.care365 },
                         { label: "Senior Citizens Care", val: plan.senior },
                         { label: "App & Reminders", val: plan.app },
@@ -305,7 +328,7 @@ export default function MembershipPage() {
                             ) : (
                               <span className="pr-4 text-gray-600">{feature.label}</span>
                             )}
-                            <span className={`font-semibold text-right ${feature.val.includes('✔') || feature.val.includes('Unlimited') || feature.val.includes('VIP') || feature.val.includes('Included') ? 'text-[#006537]' : ''} ${feature.val === '—' ? 'text-gray-400' : ''}`}>
+                            <span className={`font-semibold text-right ${feature.val.includes('✔') || feature.val.includes('Unlimited') || feature.val.includes('Included') || feature.val.includes('Voucher') ? 'text-[#006537]' : ''} ${feature.val === '—' ? 'text-gray-400' : ''}`}>
                               {feature.val === '✔' ? <Check className="inline text-[#006537]" size={18}/> : feature.val}
                             </span>
                           </div>
@@ -319,7 +342,7 @@ export default function MembershipPage() {
                     </div>
                     <div className="mt-6">
                       <button 
-                        onClick={() => startRegistration(plan.name.replace('™', ''))} 
+                        onClick={() => startRegistration(plan.name.replace('™', '') as MembershipPlanType)} 
                         className="w-full bg-[#006537] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#004e2a] transition-all shadow-md"
                       >
                         Join {plan.name.split(' ')[2]} ({plan.price})
@@ -331,146 +354,162 @@ export default function MembershipPage() {
 
               {/* Desktop View - Table */}
               <div className="hidden lg:block overflow-x-auto bg-white rounded-3xl shadow-sm border border-gray-100">
-                <table className="w-full text-left border-collapse min-w-[800px]">
+                <table className="w-full text-left border-collapse min-w-[900px]">
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-100">
-                      <th className="p-6 font-semibold text-gray-700 w-1/3">Benefits</th>
-                      <th className="p-6 font-semibold text-center text-[#006537]">AIRO ONE™ Select</th>
-                      <th className="p-6 font-semibold text-center text-[#006537] bg-green-50">AIRO ONE™ Preferred</th>
-                      <th className="p-6 font-semibold text-center text-[#006537]">AIRO ONE™ Signature</th>
+                      <th className="p-5 font-semibold text-gray-700 w-1/4">Benefits</th>
+                      <th className="p-5 font-semibold text-center text-[#006537]">AIRO ONE™ Select</th>
+                      <th className="p-5 font-semibold text-center text-[#006537] bg-green-50">AIRO ONE™ Preferred</th>
+                      <th className="p-5 font-semibold text-center text-[#006537]">AIRO ONE™ Signature</th>
+                      <th className="p-5 font-semibold text-center text-[#006537] bg-emerald-50">AIRO ONE™ Infinite</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-sm">
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 font-medium text-gray-700">Annual Membership Fee</td>
-                      <td className="p-6 text-center font-bold text-lg">₹999</td>
-                      <td className="p-6 text-center font-bold text-lg bg-green-50 text-[#006537]">₹2,999</td>
-                      <td className="p-6 text-center font-bold text-lg">₹6,999</td>
+                      <td className="p-5 font-medium text-gray-700">Annual Membership Fee</td>
+                      <td className="p-5 text-center font-bold text-lg">₹999</td>
+                      <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">₹2,999</td>
+                      <td className="p-5 text-center font-bold text-lg">₹6,999</td>
+                      <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">₹8,999</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Members Covered</td>
-                      <td className="p-6 text-center">1 Member</td>
-                      <td className="p-6 text-center bg-green-50 font-semibold">Up to 3 Members</td>
-                      <td className="p-6 text-center font-semibold">Up to 5 Members</td>
+                      <td className="p-5 text-gray-600">Members Covered</td>
+                      <td className="p-5 text-center">1 Member<div className="text-xs text-gray-400 font-normal">For Individuals</div></td>
+                      <td className="p-5 text-center bg-green-50 font-semibold">Up to 3 Members<div className="text-xs text-gray-400 font-normal">For Small Families</div></td>
+                      <td className="p-5 text-center font-semibold">Up to 5 Members<div className="text-xs text-gray-400 font-normal">For Families</div></td>
+                      <td className="p-5 text-center bg-emerald-50 font-semibold text-[#006537]">Up to 6 Members<div className="text-xs text-gray-400 font-normal">For Large Families</div></td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Exclusive Member Offers &amp; Seasonal Promotions</td>
-                      <td className="p-6 text-center"><Check className="inline text-[#006537]" size={20}/></td>
-                      <td className="p-6 text-center bg-green-50"><Check className="inline text-[#006537]" size={20}/></td>
-                      <td className="p-6 text-center"><Check className="inline text-[#006537]" size={20}/></td>
+                      <td className="p-5 text-gray-600">AIRO Pharmacy Discount*</td>
+                      <td className="p-5 text-center font-semibold text-[#006537]">Up to 60%+</td>
+                      <td className="p-5 text-center font-semibold bg-green-50 text-[#006537]">Up to 60%+</td>
+                      <td className="p-5 text-center font-semibold text-[#006537]">Up to 60%+</td>
+                      <td className="p-5 text-center font-semibold bg-emerald-50 text-[#006537]">Up to 60%+</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">AIRO Pharmacy Discount*</td>
-                      <td className="p-6 text-center font-semibold text-[#006537]">Up to 60%+*</td>
-                      <td className="p-6 text-center font-semibold bg-green-50 text-[#006537]">Up to 60%+*</td>
-                      <td className="p-6 text-center font-semibold text-[#006537]">Up to 60%+*</td>
+                      <td className="p-5 text-gray-600">AIRO Branded Products Discount</td>
+                      <td className="p-5 text-center text-gray-400">—</td>
+                      <td className="p-5 text-center font-semibold bg-green-50 text-[#006537]">3%</td>
+                      <td className="p-5 text-center font-semibold text-[#006537]">6%</td>
+                      <td className="p-5 text-center font-semibold bg-emerald-50 text-[#006537]">8%</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">AIRO Branded Products Discount</td>
-                      <td className="p-6 text-center font-semibold">3%</td>
-                      <td className="p-6 text-center font-semibold bg-green-50">5%</td>
-                      <td className="p-6 text-center font-semibold">6%</td>
+                      <td className="p-5 text-gray-600">Free In-Store Doctor Consultations</td>
+                      <td className="p-5 text-center">2 / Year</td>
+                      <td className="p-5 text-center bg-green-50">6 / Year</td>
+                      <td className="p-5 text-center font-bold">10 / Year</td>
+                      <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">15 / Year</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Free In-Store Doctor Consultations</td>
-                      <td className="p-6 text-center">2 / Year</td>
-                      <td className="p-6 text-center bg-green-50">6 / Year</td>
-                      <td className="p-6 text-center font-bold">10 / Year</td>
+                      <td className="p-5 text-gray-600">Free Telemedicine Consultations</td>
+                      <td className="p-5 text-center">2 / Year</td>
+                      <td className="p-5 text-center bg-green-50">6 / Year</td>
+                      <td className="p-5 text-center font-bold">10 / Year</td>
+                      <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">Unlimited</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Free Telemedicine Consultations</td>
-                      <td className="p-6 text-center">2 / Year</td>
-                      <td className="p-6 text-center bg-green-50">6 / Year</td>
-                      <td className="p-6 text-center font-bold">10 / Year</td>
+                      <td className="p-5 text-gray-600">AIRO Praana™ Health Screenings</td>
+                      <td className="p-5 text-center">4 / Year</td>
+                      <td className="p-5 text-center bg-green-50">10 / Year</td>
+                      <td className="p-5 text-center font-bold text-[#006537]">Unlimited</td>
+                      <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">Unlimited</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">AIRO Praana™ Health Screenings</td>
-                      <td className="p-6 text-center">4 Basic Screenings</td>
-                      <td className="p-6 text-center bg-green-50">10 Basic Screenings</td>
-                      <td className="p-6 text-center font-bold text-[#006537]">Unlimited Basic Screenings</td>
+                      <td className="p-5 text-gray-600">Annual Preventive Health Check-up</td>
+                      <td className="p-5 text-center text-gray-400">—</td>
+                      <td className="p-5 text-center bg-green-50 font-semibold">1 Member / Year</td>
+                      <td className="p-5 text-center font-semibold">2 Members / Year</td>
+                      <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">3 Members / Year</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Annual Preventive Health Check-up</td>
-                      <td className="p-6 text-center text-gray-400">—</td>
-                      <td className="p-6 text-center bg-green-50 font-semibold">1 Complimentary</td>
-                      <td className="p-6 text-center font-semibold">2 Complimentary</td>
+                      <td className="p-5 text-gray-600">Dietitian Consultations</td>
+                      <td className="p-5 text-center text-gray-400">—</td>
+                      <td className="p-5 text-center bg-green-50">2 / Year</td>
+                      <td className="p-5 text-center font-semibold">6 / Year</td>
+                      <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">12 / Year</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Dietitian Consultations</td>
-                      <td className="p-6 text-center text-gray-400">—</td>
-                      <td className="p-6 text-center bg-green-50">2 / Year</td>
-                      <td className="p-6 text-center font-semibold">6 / Year</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Medicine Home Delivery</td>
-                      <td className="p-6 text-center">Free Above ₹1,500</td>
-                      <td className="p-6 text-center bg-green-50">Free Above ₹1,500</td>
-                      <td className="p-6 text-center font-semibold text-[#006537]">Unlimited Free Delivery</td>
-                    </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-6 text-gray-600">Priority Service</td>
-                      <td className="p-6 text-center text-gray-400">—</td>
-                      <td className="p-6 text-center text-gray-400 bg-green-50">—</td>
-                      <td className="p-6 text-center font-bold text-[#D02029]">VIP Priority</td>
+                      <td className="p-5 text-gray-600">Medicine Home Delivery</td>
+                      <td className="p-5 text-center">Free Above ₹1,500</td>
+                      <td className="p-5 text-center bg-green-50">Free Above ₹1,500</td>
+                      <td className="p-5 text-center font-semibold text-[#006537]">Unlimited</td>
+                      <td className="p-5 text-center bg-emerald-50 font-semibold text-[#006537]">Unlimited</td>
                     </tr>
                     <tr className="hover:bg-gray-50 bg-[#D02029]/5 border-y border-[#D02029]/20">
-                      <td className="p-6">
+                      <td className="p-5">
                         <a href="#airo-care365" className="block hover:opacity-80">
                           <div className="font-bold text-[#D02029] hover:underline">AIRO Care365™ (24/7 Emergency Support)</div>
                           <div className="text-xs text-[#D02029]/80 mt-1.5 font-medium hover:underline">Scroll down to view more details ↓</div>
                         </a>
                       </td>
-                      <td className="p-6 text-center text-gray-400">—</td>
-                      <td className="p-6 text-center text-gray-400 bg-green-50">—</td>
-                      <td className="p-6 text-center font-bold text-[#D02029]">Included</td>
+                      <td className="p-5 text-center text-gray-400">—</td>
+                      <td className="p-5 text-center text-gray-400 bg-green-50">—</td>
+                      <td className="p-5 text-center font-bold text-[#D02029]">Included</td>
+                      <td className="p-5 text-center bg-emerald-50 font-bold text-[#D02029]">Included</td>
                     </tr>
                     <tr className="hover:bg-gray-50 bg-[#006537]/5 border-y border-[#006537]/20">
-                      <td className="p-6">
+                      <td className="p-5">
                         <a href="#senior-citizens-care" className="block hover:opacity-80">
                           <div className="font-bold text-[#006537] hover:underline">Senior Citizens Care (60+ Years)</div>
                           <div className="text-xs text-[#006537]/80 mt-1.5 font-medium hover:underline">Scroll down to view more details ↓</div>
                         </a>
                       </td>
-                      <td className="p-6 text-center font-semibold text-[#006537]">✔ Included</td>
-                      <td className="p-6 text-center font-semibold bg-green-50 text-[#006537]">✔ Included</td>
-                      <td className="p-6 text-center font-semibold text-[#006537]">✔ Included</td>
+                      <td className="p-5 text-center font-semibold text-[#006537]">✔ Included</td>
+                      <td className="p-5 text-center font-semibold bg-green-50 text-[#006537]">✔ Included</td>
+                      <td className="p-5 text-center font-semibold text-[#006537]">✔ Included</td>
+                      <td className="p-5 text-center font-semibold bg-emerald-50 text-[#006537]">✔ Included</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="p-5 text-gray-600">AIRO Medication Gift Voucher</td>
+                      <td className="p-5 text-center text-gray-400">—</td>
+                      <td className="p-5 text-center font-bold text-[#006537] bg-green-50">₹500</td>
+                      <td className="p-5 text-center font-bold text-[#006537]">₹1,000</td>
+                      <td className="p-5 text-center font-bold text-[#006537] bg-emerald-50">₹1,500</td>
                     </tr>
                     {[
                       "AIRO App (Digital Health Records)",
-                      "Health & Medication Reminders",
-                      "Birthday Rewards"
+                      "Health & Medication Reminders"
                     ].map((item, i) => (
                       <tr key={i} className="hover:bg-gray-50">
-                        <td className="p-6 text-gray-600">{item}</td>
-                        <td className="p-6 text-center"><Check className="inline text-[#006537]" size={20}/></td>
-                        <td className="p-6 text-center bg-green-50"><Check className="inline text-[#006537]" size={20}/></td>
-                        <td className="p-6 text-center"><Check className="inline text-[#006537]" size={20}/></td>
+                        <td className="p-5 text-gray-600">{item}</td>
+                        <td className="p-5 text-center"><Check className="inline text-[#006537]" size={20}/></td>
+                        <td className="p-5 text-center bg-green-50"><Check className="inline text-[#006537]" size={20}/></td>
+                        <td className="p-5 text-center"><Check className="inline text-[#006537]" size={20}/></td>
+                        <td className="p-5 text-center bg-emerald-50"><Check className="inline text-[#006537]" size={20}/></td>
                       </tr>
                     ))}
                     <tr className="bg-gray-50">
-                      <td className="p-6"></td>
-                      <td className="p-6 text-center">
+                      <td className="p-5"></td>
+                      <td className="p-5 text-center">
                         <button 
                           onClick={() => startRegistration('AIRO ONE Select')} 
-                          className="bg-[#006537] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#004e2a] transition-all"
+                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-[#004e2a] transition-all"
                         >
                           Join Select (₹999)
                         </button>
                       </td>
-                      <td className="p-6 text-center bg-green-50">
+                      <td className="p-5 text-center bg-green-50">
                         <button 
                           onClick={() => startRegistration('AIRO ONE Preferred')} 
-                          className="bg-[#006537] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#004e2a] transition-all shadow-md"
+                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-[#004e2a] transition-all shadow-md"
                         >
                           Join Preferred (₹2,999)
                         </button>
                       </td>
-                      <td className="p-6 text-center">
+                      <td className="p-5 text-center">
                         <button 
                           onClick={() => startRegistration('AIRO ONE Signature')} 
-                          className="bg-[#006537] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#004e2a] transition-all"
+                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-[#004e2a] transition-all"
                         >
                           Join Signature (₹6,999)
+                        </button>
+                      </td>
+                      <td className="p-5 text-center bg-emerald-50">
+                        <button 
+                          onClick={() => startRegistration('AIRO ONE Infinite')} 
+                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-semibold hover:bg-[#004e2a] transition-all shadow-md"
+                        >
+                          Join Infinite (₹8,999)
                         </button>
                       </td>
                     </tr>
@@ -520,53 +559,112 @@ export default function MembershipPage() {
               </div>
             </div>
 
-            {/* Signature Health Assessment */}
-            <div className="bg-[#006537] text-white p-8 md:p-12 rounded-3xl shadow-xl">
-              <h2 className="text-3xl font-semibold mb-6">AIRO ONE™ Signature Comprehensive Health Assessment</h2>
-              <p className="text-lg opacity-90 mb-10 max-w-4xl">
-                A Complete Preventive Health Evaluation combining advanced body composition analysis, vital health measurements, and essential laboratory testing to provide a detailed picture of your health.
+            {/* AIRO Praana™ Health Screening */}
+            <div className="bg-gradient-to-r from-emerald-900 to-[#006537] text-white p-8 md:p-12 rounded-3xl shadow-xl">
+              <div className="max-w-3xl mb-8">
+                <span className="bg-white/20 text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
+                  AIRO PRAANA™ HEALTH SCREENING
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-3">Quick. Easy. Essential.</h2>
+                <p className="text-emerald-100 text-lg">Know Your Numbers. Take Charge.</p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                {[
+                  'Blood Pressure',
+                  'Heart Rate & ECG',
+                  'SpO₂ / Oxygen Saturation',
+                  'Respiratory Rate',
+                  'Temperature',
+                  'Weight & BMI',
+                  'Diabetes Risk Assessment',
+                  'Cardiovascular Risk Assessment',
+                  'AIRO Praana™ Health Score'
+                ].map((check, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-white/10 px-4 py-3 rounded-xl border border-white/10">
+                    <Check className="text-emerald-300 w-4 h-4 shrink-0" />
+                    <span className="font-medium text-white">{check}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* AIRO HEALTH™ Comprehensive Preventive Health Assessment */}
+            <div className="bg-[#004e2a] text-white p-8 md:p-12 rounded-3xl shadow-xl">
+              <span className="bg-white/20 text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
+                AIRO HEALTH™
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">Comprehensive Preventive Health Assessment</h2>
+              <p className="text-green-200 text-lg mb-4">Screen Early. Know Your Health. Prevent Better.</p>
+              <p className="text-sm md:text-base opacity-90 mb-10 max-w-4xl leading-relaxed">
+                A complete preventive health evaluation combining advanced body composition analysis, vital health measurements, and essential laboratory testing to provide a detailed picture of your health.
               </p>
               
-              <div className="grid md:grid-cols-2 gap-12 text-sm">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4 text-green-200">1. Vital Signs &amp; Body Composition</h3>
-                  <ul className="space-y-3 opacity-90">
-                    <li>• Blood Pressure (BP)</li>
-                    <li>• Heart Rate &amp; Oxygen (SpO₂)</li>
-                    <li>• BMI &amp; Body Fat Percentage</li>
-                    <li>• Visceral Fat Score</li>
-                    <li>• Skeletal Muscle Mass</li>
-                    <li>• Metabolic Age &amp; Hydration Level</li>
+              <div className="grid md:grid-cols-3 gap-6 text-sm">
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">1. Health &amp; Lifestyle</h3>
+                  <p className="opacity-90 leading-relaxed text-xs">Comprehensive review of health, lifestyle and preventive-care factors.</p>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">2. Vital Signs &amp; BMI</h3>
+                  <ul className="space-y-1.5 opacity-90 text-xs">
+                    <li>• Blood Pressure &amp; Heart Rate</li>
+                    <li>• Respiratory Rate &amp; SpO₂</li>
+                    <li>• Temperature, Height, Weight &amp; BMI</li>
                   </ul>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-4 text-green-200">2. Comprehensive Laboratory Panel</h3>
-                  <ul className="space-y-3 opacity-90">
-                    <li>• HbA1c &amp; Blood Glucose</li>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">3. Blood &amp; Urine Tests</h3>
+                  <ul className="space-y-1.5 opacity-90 text-xs">
+                    <li>• CBC / Hemogram</li>
+                    <li>• Complete Urinalysis</li>
+                  </ul>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">4. Diabetes &amp; Cardio</h3>
+                  <ul className="space-y-1.5 opacity-90 text-xs">
+                    <li>• Fasting Blood Glucose</li>
+                    <li>• HbA1c</li>
                     <li>• Complete Lipid Profile</li>
-                    <li>• Liver &amp; Kidney Function (LFT/KFT)</li>
-                    <li>• Thyroid Function (T3, T4, TSH)</li>
-                    <li>• Vitamin D &amp; Complete Blood Count</li>
                   </ul>
                 </div>
-              </div>
-              
-              <div className="mt-12 bg-white/10 p-6 rounded-2xl">
-                <h3 className="font-semibold text-lg mb-4">Your Personalized Report Includes:</h3>
-                <div className="flex flex-wrap gap-3 text-sm">
-                  {['AIRO Health Score', 'Body Composition', 'Cardiometabolic Risk', 'Dietitian Recommendations', 'Health Trend Tracking'].map((item, i) => (
-                    <span key={i} className="bg-white/20 px-4 py-2 rounded-full font-medium">{item}</span>
-                  ))}
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">5. Organ Health</h3>
+                  <ul className="space-y-1.5 opacity-90 text-xs">
+                    <li>• Liver Function Tests (LFT)</li>
+                    <li>• Kidney Function Tests (KFT)</li>
+                    <li>• Electrolytes &amp; TSH (Thyroid)</li>
+                  </ul>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">6. Vitamins &amp; Nutrition</h3>
+                  <ul className="space-y-1.5 opacity-90 text-xs">
+                    <li>• Vitamin D &amp; Vitamin B12</li>
+                    <li>• Folate, Iron &amp; Ferritin</li>
+                    <li>• Calcium &amp; Magnesium</li>
+                  </ul>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">7. Physical Examination</h3>
+                  <p className="opacity-90 leading-relaxed text-xs">Comprehensive physical assessment as part of the preventive evaluation.</p>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">8. Age &amp; Risk Screening</h3>
+                  <p className="opacity-90 leading-relaxed text-xs">Additional preventive screening based on age and individual risk factors.</p>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <h3 className="text-base font-bold mb-3 text-green-200">9. Doctor Review</h3>
+                  <p className="opacity-90 leading-relaxed text-xs">Professional doctor review with a personalized health summary report.</p>
                 </div>
               </div>
             </div>
 
-            {/* AIRO Care365 - Exclusive to Signature */}
+            {/* AIRO Care365 - Exclusive to Signature & Infinite */}
             <div id="airo-care365" className="bg-[#D02029] text-white p-8 md:p-12 rounded-3xl shadow-xl mt-12 scroll-mt-24">
               <span className="bg-white/20 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-6 inline-block">
-                Exclusive to AIRO ONE™ Signature
+                Exclusive to AIRO ONE™ Signature &amp; Infinite
               </span>
-              <h2 className="text-3xl font-bold mb-4">AIRO Care365™</h2>
+              <h2 className="text-3xl font-bold mb-2">AIRO Care365™</h2>
               <p className="text-xl font-semibold mb-2">24/7 Emergency Support Membership</p>
               <p className="text-lg opacity-90 mb-10 max-w-4xl">
                 Care Every Day. Support When You Need It Most.
@@ -602,7 +700,7 @@ export default function MembershipPage() {
                 </div>
               </div>
               
-              <div className="mt-8 bg-white/10 p-6 rounded-2xl text-center">
+              <div className="mt-8 bg-black/20 p-6 rounded-2xl text-center">
                 <p className="text-base font-medium opacity-100">
                   Because AIRO knows your health history, medications, allergies, and medical conditions, we can help coordinate your care faster when every minute matters.
                 </p>
@@ -859,29 +957,32 @@ export default function MembershipPage() {
                 <p className="text-sm text-gray-500">Select your preferred AIRO ONE plan duration &amp; tier.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { name: 'AIRO ONE Select', price: '₹999', desc: '1 Member Covered' },
-                  { name: 'AIRO ONE Preferred', price: '₹2,999', desc: 'Up to 3 Members Covered' },
-                  { name: 'AIRO ONE Signature', price: '₹6,999', desc: 'Up to 5 Members Covered' },
+                  { name: 'AIRO ONE Select', price: '₹999', desc: '1 Member Covered • For Individuals' },
+                  { name: 'AIRO ONE Preferred', price: '₹2,999', desc: 'Up to 3 Members Covered • ₹500 Voucher' },
+                  { name: 'AIRO ONE Signature', price: '₹6,999', desc: 'Up to 5 Members Covered • ₹1,000 Voucher' },
+                  { name: 'AIRO ONE Infinite', price: '₹8,999', desc: 'Up to 6 Members Covered • ₹1,500 Voucher' },
                 ].map((plan) => (
                   <div
                     key={plan.name}
                     onClick={() => handleInputChange('membershipPlan', plan.name as MembershipPlanType)}
-                    className={`cursor-pointer p-5 rounded-2xl border-2 transition-all text-left relative ${
+                    className={`cursor-pointer p-4 rounded-2xl border-2 transition-all text-left relative flex flex-col justify-between ${
                       formData.membershipPlan === plan.name
                         ? 'border-[#006537] bg-emerald-50/50 shadow-md ring-2 ring-[#006537]/20'
                         : 'border-gray-200 bg-white hover:border-gray-300'
                     }`}
                   >
                     {formData.membershipPlan === plan.name && (
-                      <div className="absolute top-3 right-3 bg-[#006537] text-white p-0.5 rounded-full">
-                        <Check className="w-3.5 h-3.5" />
+                      <div className="absolute top-2.5 right-2.5 bg-[#006537] text-white p-0.5 rounded-full">
+                        <Check className="w-3 h-3" />
                       </div>
                     )}
-                    <h4 className="font-bold text-gray-900 text-sm">{plan.name}</h4>
-                    <p className="text-2xl font-extrabold text-[#006537] mt-1">{plan.price} <span className="text-xs text-gray-500 font-normal">/ year</span></p>
-                    <p className="text-xs text-gray-500 mt-2">{plan.desc}</p>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm leading-tight">{plan.name}</h4>
+                      <p className="text-xl font-extrabold text-[#006537] mt-1">{plan.price} <span className="text-[10px] text-gray-500 font-normal">/ yr</span></p>
+                    </div>
+                    <p className="text-[11px] text-gray-500 mt-2 leading-snug">{plan.desc}</p>
                   </div>
                 ))}
               </div>

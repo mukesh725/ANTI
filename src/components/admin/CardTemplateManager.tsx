@@ -15,7 +15,8 @@ export function CardTemplateManager() {
   const [templates, setTemplates] = useState({
     Select: "",
     Preferred: "",
-    Signature: ""
+    Signature: "",
+    Infinite: ""
   });
 
   const fetchTemplates = async () => {
@@ -29,6 +30,7 @@ export function CardTemplateManager() {
           Select: data.Select || "",
           Preferred: data.Preferred || "",
           Signature: data.Signature || "",
+          Infinite: data.Infinite || "",
         });
       }
     } catch (e) {
@@ -113,7 +115,7 @@ export function CardTemplateManager() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {(Object.keys(templates) as Array<keyof typeof templates>).map(tier => (
           <div key={tier} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
             <h3 className="font-bold text-gray-800 mb-3">{tier} Plan</h3>

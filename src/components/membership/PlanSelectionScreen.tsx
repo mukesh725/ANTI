@@ -130,7 +130,7 @@ export default function PlanSelectionScreen({
 
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-semibold text-[#006537] mb-4">Choose Your Plan</h2>
           <p className="text-gray-500 text-lg">Select the membership that fits your wellness journey.</p>
@@ -139,38 +139,48 @@ export default function PlanSelectionScreen({
         {error && <div className="text-center text-[#D02029] mb-8 bg-red-50 p-4 rounded-xl max-w-md mx-auto">{error}</div>}
 
         {loading ? (
-          <div className="flex justify-center"><div className="animate-pulse flex gap-6"><div className="w-80 h-[500px] bg-gray-200 rounded-3xl"></div><div className="w-80 h-[500px] bg-gray-200 rounded-3xl"></div></div></div>
+          <div className="flex justify-center"><div className="animate-pulse flex gap-6"><div className="w-72 h-[500px] bg-gray-200 rounded-3xl"></div><div className="w-72 h-[500px] bg-gray-200 rounded-3xl"></div><div className="w-72 h-[500px] bg-gray-200 rounded-3xl"></div></div></div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-start">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center items-stretch">
             {Array.isArray(plans) && plans.map((plan, i) => {
               if (!plan) return null;
+              const features: string[] = Array.isArray(plan.features) 
+                ? plan.features 
+                : typeof plan.features === 'string' 
+                ? (() => { try { return JSON.parse(plan.features); } catch { return []; } })() 
+                : [];
+
+              const isHighlight = plan.name?.toLowerCase().includes('preferred') || plan.name?.toLowerCase().includes('popular');
+
               return (
               <motion.div 
                 key={plan.id || i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full relative overflow-hidden group hover:border-[#006537] hover:shadow-md transition-all"
+                className={`bg-white p-6 rounded-3xl shadow-sm border flex flex-col h-full relative overflow-hidden group hover:shadow-lg transition-all ${
+                  isHighlight ? 'border-[#006537] ring-2 ring-[#006537]/10' : 'border-gray-100 hover:border-[#006537]'
+                }`}
               >
-                {plan.name?.toLowerCase().includes('premium') && (
-                  <div className="absolute top-0 inset-x-0 bg-[#006537] text-white text-xs font-bold text-center py-1.5 uppercase tracking-widest">
+                {isHighlight && (
+                  <div className="absolute top-0 inset-x-0 bg-[#006537] text-white text-[11px] font-bold text-center py-1 uppercase tracking-widest">
                     Most Popular
                   </div>
                 )}
-                <div className="mb-8 mt-4">
-                  <h3 className="text-2xl font-semibold mb-2">{plan.name || 'AIRO Plan'}</h3>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold">₹{plan.price || 0}</span>
-                    <span className="text-gray-500">/ {plan.duration || 365} days</span>
+                <div className="mb-6 mt-3">
+                  <h3 className="text-xl font-bold text-gray-900 mb-1">{plan.name || 'AIRO Plan'}</h3>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-extrabold text-[#006537]">₹{plan.price || 0}</span>
+                    <span className="text-gray-400 text-xs">/ year</span>
                   </div>
-                  {plan.description && <p className="text-gray-500 mt-4 text-sm">{plan.description}</p>}
+                  {plan.description && <p className="text-gray-500 mt-3 text-xs leading-relaxed">{plan.description}</p>}
                 </div>
 
                 <div className="flex-1">
-                  <ul className="space-y-4 mb-8">
-                    {Array.isArray(plan.features) && plan.features.map((feature: string, idx: number) => (
-                      <li key={idx} className="flex items-start gap-3 text-sm text-gray-700">
-                        <Check size={18} className="text-[#006537] shrink-0 mt-0.5" />
+                  <ul className="space-y-3 mb-6">
+                    {features.map((feature: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs text-gray-700 leading-snug">
+                        <Check size={16} className="text-[#006537] shrink-0 mt-0.5" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -180,9 +190,9 @@ export default function PlanSelectionScreen({
                 <button 
                   onClick={() => handleJoin(plan)}
                   disabled={processing}
-                  className={`w-full py-4 rounded-xl font-medium transition-colors ${
-                    plan.name?.toLowerCase().includes('premium') 
-                      ? 'bg-[#006537] text-white hover:bg-[#004e2a]' 
+                  className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-colors ${
+                    isHighlight
+                      ? 'bg-[#006537] text-white hover:bg-[#004e2a] shadow-md' 
                       : 'bg-[#F8F7F4] text-[#006537] hover:bg-[#e8e6e1]'
                   } disabled:opacity-50`}
                 >

@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Default deny: all collections locked down unless explicitly permitted
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Public Catalog & Content: Read-only for customers
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /blogs/{blogId} {
+      allow read: if resource.data.status == 'published';
+      allow write: if false;
+    }
+
+    match /doctors/{doctorId} {
+      // Allow read for active doctors (excluding sensitive internal fields handled via API)
+      allow read: if resource.data.status == 'active';
+      allow write: if false;
+    }
+
+    match /membershipPlans/{planId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /cms/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 3. User Scoped Documents: Strict owner-only access
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /Members/{memberId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow write: if false; // Handled strictly via server API routes
+    }
+
+    // Note: Backend Next.js Route Handlers with Server SDK bypass client Firestore rules
+    // to securely process bookings, payments, and administrative actions.
+  }
+}

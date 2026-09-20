@@ -200,9 +200,37 @@ async function handleBlogGeneration(params: {
   return blogData;
 }
 
+function checkCronOrAdminAuth(req: NextRequest): boolean {
+  // 1. Check Admin JWT Token
+  if (verifyAdminAuth(req)) return true;
+
+  // 2. Check Vercel Cron Secret or Custom Secret header
+  const authHeader = req.headers.get('authorization');
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret) {
+    if (authHeader === `Bearer ${cronSecret}` || authHeader === cronSecret) return true;
+    const { searchParams } = new URL(req.url);
+    if (searchParams.get('secret') === cronSecret || searchParams.get('cron_secret') === cronSecret) return true;
+  }
+
+  // 3. Allow in local development if CRON_SECRET is not configured
+  if (process.env.NODE_ENV !== 'production' && !cronSecret) {
+    return true;
+  }
+
+  return false;
+}
+
 // GET Handler (Supports Cron and Query Params)
 export async function GET(req: NextRequest) {
   try {
+    if (!checkCronOrAdminAuth(req)) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials or CRON_SECRET required.' },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const keyword = searchParams.get('keyword') || undefined;
     const targetSite = (searchParams.get('targetSite') as any) || "both";
@@ -224,6 +252,13 @@ export async function GET(req: NextRequest) {
 // POST Handler (Supports Admin 1-Click Generator with Body)
 export async function POST(req: NextRequest) {
   try {
+    if (!checkCronOrAdminAuth(req)) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials or CRON_SECRET required.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json().catch(() => ({}));
     const { keyword, targetSite = "both", autoPublish = true } = body;
 

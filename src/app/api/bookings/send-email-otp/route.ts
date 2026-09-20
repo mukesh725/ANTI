@@ -6,12 +6,42 @@ export const dynamic = 'force-dynamic';
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 
+const emailOtpRateLimits = new Map<string, { count: number; resetTime: number }>();
+
+function checkEmailOtpRateLimit(key: string, limit = 5, windowMs = 10 * 60 * 1000): boolean {
+  const now = Date.now();
+  const record = emailOtpRateLimits.get(key);
+
+  if (!record || now > record.resetTime) {
+    emailOtpRateLimits.set(key, { count: 1, resetTime: now + windowMs });
+    return true;
+  }
+
+  if (record.count >= limit) {
+    return false;
+  }
+
+  record.count += 1;
+  return true;
+}
+
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown-ip';
     const { email, firstName } = await request.json();
 
     if (!email || !email.includes('@')) {
       return NextResponse.json({ error: 'Valid email is required' }, { status: 400 });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const rateLimitKey = `${ip}:${cleanEmail}`;
+
+    if (!checkEmailOtpRateLimit(rateLimitKey)) {
+      return NextResponse.json(
+        { error: 'Too many verification code requests. Please wait 10 minutes.' },
+        { status: 429 }
+      );
     }
 
     // Generate a random 6-digit OTP
@@ -19,7 +49,7 @@ export async function POST(request: Request) {
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes from now
 
     // Save OTP to Firestore
-    await setDoc(doc(db, 'email_otps', email.toLowerCase()), {
+    await setDoc(doc(db, 'email_otps', cleanEmail), {
       otp,
       expiresAt,
       createdAt: Date.now()

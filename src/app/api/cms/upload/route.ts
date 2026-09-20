@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { storage } from "@/lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { verifyAdminAuth } from "@/lib/membershipAuth";
 
 const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg",
@@ -25,6 +26,14 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export async function POST(req: Request) {
   try {
+    const admin = verifyAdminAuth(req);
+    if (!admin) {
+      return NextResponse.json(
+        { error: "Valid administrative credentials required for file upload." },
+        { status: 401 }
+      );
+    }
+
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
 

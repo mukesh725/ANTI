@@ -91,9 +91,13 @@ export function AdminBlogManager() {
     setGenerateSuccessMessage(null);
 
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('airo_admin_token') || '' : '';
       const res = await fetch("/api/cron/generate-blog", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({
           keyword: autoKeyword.trim(),
           targetSite: autoTargetSite,

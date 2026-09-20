@@ -210,9 +210,14 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+    } catch (e) {}
     localStorage.removeItem("airo_admin_auth");
+    localStorage.removeItem("airo_admin_token");
     localStorage.removeItem("airo_admin_user");
+    document.cookie = 'airo_admin_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     router.replace("/admin/login");
   };
 

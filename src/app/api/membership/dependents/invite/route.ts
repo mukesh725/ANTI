@@ -31,7 +31,9 @@ export async function POST(req: Request) {
       
       const legacyMember = membersSnap.docs[0].data();
       const planName = (legacyMember.membershipPlan || '').toLowerCase();
-      if (planName.includes('signature')) {
+      if (planName.includes('infinite')) {
+        maxMembers = 6;
+      } else if (planName.includes('signature')) {
         maxMembers = 5;
       } else if (planName.includes('preferred')) {
         maxMembers = 3;

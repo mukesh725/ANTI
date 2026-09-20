@@ -105,9 +105,10 @@ export default function MinuteClinicPage() {
               </Link>
               <Link 
                 href="/minute-clinic/booking?type=virtual"
-                className="text-[10px] tracking-[0.2em] uppercase font-bold text-ink bg-white px-8 py-4 rounded-full border border-theme/20 hover:border-theme hover:bg-gray-50 transition-all shadow-sm text-center w-full sm:w-auto flex-1 whitespace-nowrap"
+                className="text-[10px] tracking-[0.15em] uppercase font-bold text-ink/90 bg-amber-50/60 px-6 py-4 rounded-full border border-amber-300 hover:border-amber-400 hover:bg-amber-100/50 transition-all shadow-sm text-center w-full sm:w-auto flex-1 whitespace-nowrap inline-flex items-center justify-center gap-2"
               >
-                Virtual Consultation
+                <span>Virtual Consultation</span>
+                <span className="bg-amber-500 text-white text-[9px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Coming Soon</span>
               </Link>
             </div>
           </div>

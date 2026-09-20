@@ -66,6 +66,18 @@ export default function AdminMembershipDashboard() {
     }
   }, [showScanner]);
 
+  const getAdminHeaders = (includeContentType = true) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('airo_admin_token') || '' : '';
+    const headers: Record<string, string> = {};
+    if (includeContentType) {
+      headers['Content-Type'] = 'application/json';
+    }
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  };
+
   const handleScanSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!scannerInput.trim()) return;
@@ -73,7 +85,9 @@ export default function AdminMembershipDashboard() {
     // Quick fetch for the exact barcode
     try {
       const url = `/api/membership/list?q=${encodeURIComponent(scannerInput.trim())}&status=ALL`;
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: getAdminHeaders(false),
+      });
       const data = await res.json();
       
       if (data.success && data.members && data.members.length === 1) {
@@ -100,14 +114,18 @@ export default function AdminMembershipDashboard() {
     setLoading(true);
     try {
       const url = `/api/membership/list?q=${encodeURIComponent(search)}&status=${encodeURIComponent(statusFilter)}`;
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: getAdminHeaders(false),
+      });
       const data = await res.json();
       if (data.success) {
         setMembers(data.members || []);
       }
       
       // Fetch dependents to display underneath primary members
-      const depRes = await fetch('/api/admin/dependents');
+      const depRes = await fetch('/api/admin/dependents', {
+        headers: getAdminHeaders(false),
+      });
       const depData = await depRes.json();
       if (depData.success) {
         setDependents(depData.dependents || []);
@@ -221,7 +239,7 @@ export default function AdminMembershipDashboard() {
     try {
       const res = await fetch('/api/membership/edit', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders(true),
         body: JSON.stringify({
           docId: memberToEdit.id,
           updates: {
@@ -258,6 +276,7 @@ export default function AdminMembershipDashboard() {
     try {
       const res = await fetch(`/api/membership/delete?docId=${memberToDelete.id}`, {
         method: 'DELETE',
+        headers: getAdminHeaders(false),
       });
       const data = await res.json();
       
@@ -276,7 +295,9 @@ export default function AdminMembershipDashboard() {
   };
 
   const handleExcelExport = () => {
-    window.open('/api/membership/export', '_blank');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('airo_admin_token') || '' : '';
+    const url = token ? `/api/membership/export?token=${encodeURIComponent(token)}` : '/api/membership/export';
+    window.open(url, '_blank');
   };
 
   return (
@@ -454,7 +475,9 @@ export default function AdminMembershipDashboard() {
                       {/* Membership Plan */}
                       <td className="p-4">
                         <span className={`font-bold text-xs px-2.5 py-1 rounded-full ${
-                          m.membershipPlan.includes('Signature')
+                          m.membershipPlan.includes('Infinite')
+                            ? 'bg-slate-900 text-emerald-300 border border-emerald-500/30'
+                            : m.membershipPlan.includes('Signature')
                             ? 'bg-amber-100 text-amber-900 border border-amber-300'
                             : m.membershipPlan.includes('Preferred')
                             ? 'bg-purple-100 text-purple-900 border border-purple-300'
@@ -633,6 +656,7 @@ export default function AdminMembershipDashboard() {
                     <div>
                       <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">Plan</p>
                       <span className={`font-bold text-xs px-2 py-0.5 rounded-md ${
+                        m.membershipPlan.includes('Infinite') ? 'bg-slate-900 text-emerald-300' :
                         m.membershipPlan.includes('Signature') ? 'bg-amber-100 text-amber-900' :
                         m.membershipPlan.includes('Preferred') ? 'bg-purple-100 text-purple-900' :
                         'bg-emerald-100 text-emerald-900'
@@ -1034,6 +1058,7 @@ export default function AdminMembershipDashboard() {
                     <option value="AIRO ONE Select">AIRO ONE Select</option>
                     <option value="AIRO ONE Preferred">AIRO ONE Preferred</option>
                     <option value="AIRO ONE Signature">AIRO ONE Signature</option>
+                    <option value="AIRO ONE Infinite">AIRO ONE Infinite</option>
                   </select>
                 </div>
 

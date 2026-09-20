@@ -91,11 +91,22 @@ export async function POST(req: Request) {
       allowedModules: authenticatedUser.allowedModules
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       token,
       user: authenticatedUser
     });
+
+    // Set httpOnly, secure, SameSite=Lax cookie for Edge Middleware protection (Points 10 & 11)
+    response.cookies.set('airo_admin_session', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+    });
+
+    return response;
 
   } catch (error: any) {
     console.error('Admin login exception:', error);

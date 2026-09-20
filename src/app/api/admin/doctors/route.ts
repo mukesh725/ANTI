@@ -1,18 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
+import { hashPassword, validatePasswordStrength } from '@/lib/password';
 
 export const dynamic = 'force-dynamic';
 
+const ALLOWED_DOCTOR_UPDATE_FIELDS = new Set([
+  'name', 'degree', 'registrationNumber', 'registrationExpiryDate',
+  'experienceYears', 'email', 'phone', 'password', 'specialty',
+  'clinicName', 'city', 'bio', 'profilePhotoUrl', 'digitalSignatureUrl',
+  'isFeatured', 'status', 'consultationFee', 'categories', 'supportingDocuments'
+]);
+
 export async function GET(req: NextRequest) {
   try {
+    const admin = verifyAdminAuth(req);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required.' },
+        { status: 401 }
+      );
+    }
+
     const doctorsRef = collection(db, 'doctors');
     const snapshot = await getDocs(doctorsRef);
 
-    const doctors = snapshot.docs.map(docSnap => ({
-      id: docSnap.id,
-      ...docSnap.data()
-    }));
+    const doctors = snapshot.docs.map(docSnap => {
+      const data = docSnap.data();
+      // Mask raw password in admin response for security
+      const { password, ...safeData } = data;
+      return {
+        id: docSnap.id,
+        hasCustomPassword: Boolean(password),
+        ...safeData
+      };
+    });
 
     return NextResponse.json({
       success: true,
@@ -22,7 +45,7 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     console.error('[API /api/admin/doctors] GET error:', error);
     return NextResponse.json(
-      { error: 'FETCH_FAILED', message: error.message || 'Failed to fetch doctors' },
+      { error: 'FETCH_FAILED', message: 'Failed to fetch doctors' },
       { status: 500 }
     );
   }
@@ -30,6 +53,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const admin = verifyAdminAuth(req);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
 
     const {
@@ -61,10 +92,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Password strength check (Point 19)
+    const rawPassword = password || 'DoctorSecure2026!';
+    const strength = validatePasswordStrength(rawPassword);
+    if (!strength.valid) {
+      return NextResponse.json(
+        { error: 'WEAK_PASSWORD', message: strength.reason },
+        { status: 400 }
+      );
+    }
+
     // Generate unique ID
     const cleanName = name.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 15);
     const doctorDocId = `doc_${cleanName}_${Date.now().toString(36)}`;
     const doctorNumId = Date.now() % 100000;
+
+    // Cryptographic Password Hashing (Point 9)
+    const hashedPassword = hashPassword(rawPassword);
 
     const newDoctorRecord = {
       id: doctorDocId,
@@ -76,7 +120,7 @@ export async function POST(req: NextRequest) {
       experienceYears: Number(experienceYears) || 0,
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
-      password: password || 'doctor123',
+      password: hashedPassword,
       specialty: specialty.trim(),
       clinicName: clinicName?.trim() || 'AIRO Health Hub',
       city: city?.trim() || 'Hyderabad',
@@ -95,15 +139,17 @@ export async function POST(req: NextRequest) {
     const docRef = doc(db, 'doctors', doctorDocId);
     await setDoc(docRef, newDoctorRecord);
 
+    const { password: _, ...safeReturnRecord } = newDoctorRecord;
+
     return NextResponse.json({
       success: true,
-      message: 'Doctor added successfully with dedicated portal credentials.',
-      doctor: newDoctorRecord
+      message: 'Doctor added successfully with encrypted credentials.',
+      doctor: safeReturnRecord
     });
   } catch (error: any) {
     console.error('[API /api/admin/doctors] POST error:', error);
     return NextResponse.json(
-      { error: 'CREATE_FAILED', message: error.message || 'Failed to create doctor' },
+      { error: 'CREATE_FAILED', message: 'Failed to create doctor' },
       { status: 500 }
     );
   }
@@ -111,6 +157,14 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
+    const admin = verifyAdminAuth(req);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { id, ...updateFields } = body;
 
@@ -121,23 +175,38 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const docRef = doc(db, 'doctors', id);
-    const updatePayload = {
-      ...updateFields,
-      updatedAt: new Date().toISOString()
-    };
+    // Mass assignment defense (Point 15): Filter against allowlisted fields only
+    const safeUpdates: Record<string, any> = {};
+    for (const [key, value] of Object.entries(updateFields)) {
+      if (ALLOWED_DOCTOR_UPDATE_FIELDS.has(key)) {
+        if (key === 'password' && typeof value === 'string' && value.trim()) {
+          const strength = validatePasswordStrength(value);
+          if (!strength.valid) {
+            return NextResponse.json(
+              { error: 'WEAK_PASSWORD', message: strength.reason },
+              { status: 400 }
+            );
+          }
+          safeUpdates.password = hashPassword(value);
+        } else {
+          safeUpdates[key] = value;
+        }
+      }
+    }
 
-    await updateDoc(docRef, updatePayload);
+    safeUpdates.updatedAt = new Date().toISOString();
+
+    const docRef = doc(db, 'doctors', id);
+    await updateDoc(docRef, safeUpdates);
 
     return NextResponse.json({
       success: true,
       message: 'Doctor updated successfully.',
-      updatedFields: updatePayload
     });
   } catch (error: any) {
     console.error('[API /api/admin/doctors] PATCH error:', error);
     return NextResponse.json(
-      { error: 'UPDATE_FAILED', message: error.message || 'Failed to update doctor' },
+      { error: 'UPDATE_FAILED', message: 'Failed to update doctor' },
       { status: 500 }
     );
   }
@@ -145,6 +214,14 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const admin = verifyAdminAuth(req);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required.' },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 

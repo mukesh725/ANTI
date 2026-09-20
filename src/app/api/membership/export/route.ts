@@ -1,11 +1,20 @@
 import { NextResponse } from 'next/server';
 import { getAllMembers } from '@/lib/membershipRepository';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
 import * as XLSX from 'xlsx';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required to export member records.' },
+        { status: 401 }
+      );
+    }
+
     const members = await getAllMembers();
 
     // Transform members to requested exact columns:

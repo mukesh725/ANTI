@@ -16,6 +16,20 @@ interface Props {
   };
 }
 
+/**
+ * Strips dangerous HTML tags and inline event handlers to prevent XSS (Point 8)
+ */
+function sanitizeBlogHtml(html: string): string {
+  if (!html) return '';
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/on\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/href\s*=\s*(['"])javascript:.*?\1/gi, 'href="#"');
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const blog = await getBlogBySlug(params.slug);
   
@@ -178,7 +192,7 @@ export default async function BlogPostPage({ params }: Props) {
           prose-ul:text-slate-700 prose-li:my-1.5
           prose-strong:text-slate-900 prose-strong:font-bold
           prose-a:text-emerald-600 prose-a:font-semibold hover:prose-a:text-emerald-700"
-          dangerouslySetInnerHTML={{ __html: blog.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(blog.content) }}
         />
 
         {/* HIGH-CONVERSION CALL-TO-ACTION CARD */}

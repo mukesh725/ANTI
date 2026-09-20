@@ -90,19 +90,21 @@ export async function generateDigitalMembershipCard(
     qrCodeDataUrl = await generateMemberQRCode(`https://airoessentials.com/member/${memberId}`);
   }
 
-  // Format plan title e.g. "Preferred Member", "Signature Member", "Select Member"
+  // Format plan title e.g. "Preferred Member", "Signature Member", "Select Member", "Infinite Member"
   let rawPlan = member.membershipPlan || 'Preferred';
   if (!rawPlan.toLowerCase().includes('member')) {
-    if (rawPlan.toLowerCase().includes('signature')) rawPlan = 'Signature Member';
+    if (rawPlan.toLowerCase().includes('infinite')) rawPlan = 'Infinite Member';
+    else if (rawPlan.toLowerCase().includes('signature')) rawPlan = 'Signature Member';
     else if (rawPlan.toLowerCase().includes('preferred')) rawPlan = 'Preferred Member';
     else if (rawPlan.toLowerCase().includes('select')) rawPlan = 'Select Member';
     else rawPlan = `${rawPlan} Member`;
   }
   const displayPlanTitle = rawPlan;
 
+  const isInfinite = displayPlanTitle.includes('Infinite');
   const isSignature = displayPlanTitle.includes('Signature');
   const isPreferred = displayPlanTitle.includes('Preferred');
-  const isSelect = displayPlanTitle.includes('Select') || (!isSignature && !isPreferred);
+  const isSelect = displayPlanTitle.includes('Select') || (!isInfinite && !isSignature && !isPreferred);
 
   // Base64 logo data URLs
   const airoOneLogoUrl = await getLogoDataUrl('airo-one-logo.png');
@@ -112,7 +114,9 @@ export async function generateDigitalMembershipCard(
   let activeTemplateUrl = '';
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
   let templatePath = '';
-  if (isSignature) {
+  if (isInfinite) {
+    templatePath = `${baseUrl}/templates/infinite.jpg`;
+  } else if (isSignature) {
     templatePath = `${baseUrl}/templates/signature.jpg`;
   } else if (isPreferred) {
     templatePath = `${baseUrl}/templates/preferred.jpg`;
@@ -146,7 +150,14 @@ export async function generateDigitalMembershipCard(
   let textColor = activeTemplateUrl ? '#1e293b' : '#ffffff';
   let textNameColor = activeTemplateUrl ? '#0f172a' : '#ffffff';
 
-  if (isSignature) {
+  if (isInfinite) {
+    outerBgFill = 'url(#infOuterGrad)';
+    innerBgFill = 'url(#infInnerGrad)';
+    outerStroke = '#10b981';
+    innerStroke = '#34d399';
+    textColor = activeTemplateUrl ? '#1e293b' : '#6ee7b7';
+    textNameColor = activeTemplateUrl ? '#0f172a' : '#ffffff';
+  } else if (isSignature) {
     outerBgFill = 'url(#sigOuterGrad)';
     innerBgFill = 'url(#sigInnerGrad)';
     outerStroke = '#ca8a04';
@@ -223,6 +234,15 @@ export async function generateDigitalMembershipCard(
         <linearGradient id="sigInnerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#fef08a" />
           <stop offset="100%" stop-color="#f59e0b" />
+        </linearGradient>
+        <linearGradient id="infOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0f172a" />
+          <stop offset="50%" stop-color="#064e3b" />
+          <stop offset="100%" stop-color="#022c22" />
+        </linearGradient>
+        <linearGradient id="infInnerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1e293b" />
+          <stop offset="100%" stop-color="#064e3b" />
         </linearGradient>
       </defs>
 

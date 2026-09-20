@@ -93,7 +93,14 @@ export async function POST(request: Request) {
         .update(`${razorpay_order_id}|${razorpay_payment_id}`)
         .digest('hex');
 
-      if (generated_signature !== razorpay_signature) {
+      // Timing-safe signature comparison (Point 16: Defend against timing attacks)
+      const genBuffer = Buffer.from(generated_signature);
+      const provBuffer = Buffer.from(razorpay_signature);
+      const isSignatureValid =
+        genBuffer.length === provBuffer.length &&
+        crypto.timingSafeEqual(genBuffer, provBuffer);
+
+      if (!isSignatureValid) {
         await updateDoc(paymentDocRef, { status: 'FAILED' });
         return NextResponse.json({ error: 'Payment verification failed' }, { status: 400 });
       }

@@ -3,11 +3,20 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { generateDigitalMembershipCard } from '@/lib/membershipCardGenerator';
 import { MemberRecord } from '@/types/membership';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required.' },
+        { status: 401 }
+      );
+    }
+
     const memSnapshot = await getDocs(collection(db, 'Members'));
     
     let updatedCount = 0;

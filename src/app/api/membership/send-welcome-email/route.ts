@@ -7,40 +7,56 @@ export const dynamic = 'force-dynamic';
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 
 const PLAN_BENEFITS: Record<string, string[]> = {
+  Infinite: [
+    'Up to 6 Members Covered',
+    'Up to 60%+* Pharmacy Discount',
+    '8% AIRO Branded Products Discount',
+    '15 Free In-Store Doctor Consults/Yr',
+    'Unlimited Free Telemedicine Consults',
+    'Unlimited AIRO Praana™ Health Screenings',
+    '3 Annual Preventive Health Check-ups',
+    '12 Dietitian Consultations/Yr',
+    '₹1,500 Medication Gift Voucher',
+    'Unlimited Free Medicine Delivery',
+    'AIRO Care365™ (24/7 Emergency Support)',
+    'Senior Citizens Care (60+ Years)'
+  ],
   Signature: [
     'Up to 5 Members Covered',
     'Up to 60%+* Pharmacy Discount',
-    '6% AIRO Branded Products',
-    '10 Free Doctor Consults/Yr',
+    '6% AIRO Branded Products Discount',
+    '10 Free In-Store Doctor Consults/Yr',
     '10 Free Telemedicine Consults/Yr',
-    'Unlimited Basic Health Screenings',
+    'Unlimited AIRO Praana™ Health Screenings',
     '2 Annual Preventive Health Check-ups',
     '6 Dietitian Consultations/Yr',
+    '₹1,000 Medication Gift Voucher',
     'Unlimited Free Medicine Delivery',
-    'VIP Priority Service',
-    'AIRO Care365™ (24/7 Support)',
+    'AIRO Care365™ (24/7 Emergency Support)',
     'Senior Citizens Care (60+ Years)'
   ],
   Preferred: [
     'Up to 3 Members Covered',
     'Up to 60%+* Pharmacy Discount',
-    '5% AIRO Branded Products',
-    '6 Free Doctor Consults/Yr',
+    '3% AIRO Branded Products Discount',
+    '6 Free In-Store Doctor Consults/Yr',
     '6 Free Telemedicine Consults/Yr',
-    '10 Basic Health Screenings',
+    '10 AIRO Praana™ Health Screenings',
     '1 Annual Preventive Health Check-up',
     '2 Dietitian Consultations/Yr',
-    'Free Medicine Delivery > ₹1,500',
+    '₹500 Medication Gift Voucher',
+    'Free Medicine Delivery Above ₹1,500',
     'Senior Citizens Care (60+ Years)'
   ],
   Select: [
     '1 Member Covered',
     'Up to 60%+* Pharmacy Discount',
-    '3% AIRO Branded Products',
-    '2 Free Doctor Consults/Yr',
+    '2 Free In-Store Doctor Consults/Yr',
     '2 Free Telemedicine Consults/Yr',
-    '4 Basic Health Screenings',
-    'Free Medicine Delivery > ₹1,500',
+    '4 AIRO Praana™ Health Screenings',
+    'Free Medicine Delivery Above ₹1,500',
+    'AIRO App & Digital Health Records',
+    'Health & Medication Reminders',
     'Senior Citizens Care (60+ Years)'
   ],
 };
@@ -59,7 +75,8 @@ export async function POST(request: Request) {
     
     // Normalize plan name
     let planKey = 'Select';
-    if (member.membershipPlan?.toLowerCase().includes('signature')) planKey = 'Signature';
+    if (member.membershipPlan?.toLowerCase().includes('infinite')) planKey = 'Infinite';
+    else if (member.membershipPlan?.toLowerCase().includes('signature')) planKey = 'Signature';
     else if (member.membershipPlan?.toLowerCase().includes('preferred')) planKey = 'Preferred';
     
     const displayPlanName = member.membershipPlan || `AIRO ONE ${planKey}`;

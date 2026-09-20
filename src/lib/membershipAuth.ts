@@ -22,8 +22,16 @@ export function verifyToken(token: string) {
 export function verifyAdminAuth(request: Request): { email: string; role: string; allowedModules?: string[] } | null {
   try {
     const authHeader = request.headers.get('authorization') || request.headers.get('x-admin-token');
-    if (!authHeader) return null;
-    const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
+    let token = '';
+    if (authHeader) {
+      token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
+    } else {
+      try {
+        const url = new URL(request.url);
+        token = url.searchParams.get('token') || url.searchParams.get('admin_token') || '';
+      } catch (e) {}
+    }
+    if (!token) return null;
     const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as any;
     if (decoded && decoded.isAdmin) {
       return decoded;

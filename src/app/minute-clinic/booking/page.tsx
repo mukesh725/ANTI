@@ -5,7 +5,7 @@ import {
   Building2, Smartphone, ArrowLeft, Search, MapPin, 
   Calendar, Clock, Phone, Stethoscope, Thermometer, 
   Bandage, Syringe, ClipboardList, Activity, Droplets,
-  ChevronRight, ArrowRight, Pill, ShieldCheck, HeartPulse, Check, X
+  ChevronRight, ArrowRight, Pill, ShieldCheck, HeartPulse, Check, X, Sparkles
 } from "lucide-react";
 import Link from "next/link";
 import { collection, addDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
@@ -116,6 +116,8 @@ export default function MinuteClinicBookingPage() {
   const [activeServiceTab, setActiveServiceTab] = useState<"common" | "search">("common");
   const [clinicSelectedDates, setClinicSelectedDates] = useState<Record<number, string>>({});
   const [policyModal, setPolicyModal] = useState<"treatment" | "privacy" | "communication" | null>(null);
+  const [isVirtualTestMode, setIsVirtualTestMode] = useState(false);
+  const [showVirtualComingSoonModal, setShowVirtualComingSoonModal] = useState(false);
 
   useEffect(() => {
     if (state.careOption === "virtual") {
@@ -231,12 +233,38 @@ export default function MinuteClinicBookingPage() {
     const type = params.get("type");
     const serviceParam = params.get("service");
 
+    const isExplicitTestMode =
+      typeof window !== "undefined" &&
+      (params.get("preview") === "virtual" ||
+       params.get("test") === "virtual" ||
+       params.get("demo") === "virtual" ||
+       params.get("test") === "true" ||
+       params.get("mode") === "virtual");
+
+    setIsVirtualTestMode(isExplicitTestMode);
+
     if (serviceParam) {
-      setState(s => ({ ...s, service: serviceParam, careOption: type === "virtual" ? "virtual" : "in-person" }));
-      setStep("location");
-    } else if (type === "in-person" || type === "virtual") {
-      setState(s => ({ ...s, careOption: type }));
+      if (type === "virtual" && !isExplicitTestMode) {
+        // On live public without bypass, default to in-person and pop up notice
+        setState(s => ({ ...s, service: serviceParam, careOption: "in-person" }));
+        setStep("location");
+        setShowVirtualComingSoonModal(true);
+      } else {
+        setState(s => ({ ...s, service: serviceParam, careOption: type === "virtual" ? "virtual" : "in-person" }));
+        setStep("location");
+      }
+    } else if (type === "in-person") {
+      setState(s => ({ ...s, careOption: "in-person" }));
       setStep("service");
+    } else if (type === "virtual") {
+      if (isExplicitTestMode) {
+        setState(s => ({ ...s, careOption: "virtual" }));
+        setStep("service");
+      } else {
+        // On live public: keep on care-option or in-person, show coming soon modal
+        setState(s => ({ ...s, careOption: "in-person" }));
+        setShowVirtualComingSoonModal(true);
+      }
     }
 
     const fetchLocations = async () => {
@@ -257,8 +285,11 @@ export default function MinuteClinicBookingPage() {
     fetchLocations();
   }, []);
 
-  const handleNext = (nextStep: Step) => {
+  const handleNext = (nextStep: Step, careOption?: "in-person" | "virtual") => {
     window.scrollTo(0, 0);
+    if (careOption) {
+      setState(s => ({ ...s, careOption }));
+    }
     setStep(nextStep);
   };
 
@@ -297,59 +328,124 @@ export default function MinuteClinicBookingPage() {
       <p className="text-gray-600 mb-8">Results for AIRO Minute Clinic</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* In-Person Option - Fully Active & Open */}
         <button 
           onClick={() => handleNext("service", "in-person")}
-          className="bg-white border border-gray-200 rounded-xl p-8 text-left hover:shadow-lg hover:border-blue-300 transition-all flex flex-col min-h-[280px] group"
+          className="relative bg-white border-2 border-emerald-500/50 rounded-2xl p-8 text-left hover:shadow-xl hover:border-emerald-600 transition-all flex flex-col min-h-[300px] group bg-gradient-to-b from-emerald-50/20 to-white"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="bg-blue-50 p-3 rounded-lg text-blue-600">
-              <Building2 className="w-8 h-8" />
+          <div className="flex items-center justify-between gap-3 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-emerald-50 p-3.5 rounded-xl text-emerald-600 border border-emerald-100">
+                <Building2 className="w-8 h-8" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">In-Person Visit</h2>
+                <p className="text-xs text-emerald-700 font-medium">Pay at clinic desk (Cash/UPI/Card)</p>
+              </div>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">In-person</h2>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Open for Booking
+            </span>
           </div>
           
           <div className="mt-auto space-y-3">
             <div className="flex items-start gap-2 text-sm text-gray-700">
-              <Calendar className="w-4 h-4 mt-0.5 text-gray-400" />
-              <p>Visits as early as <span className="font-bold">{getNextAvailableTime(20)} today</span></p>
+              <Calendar className="w-4 h-4 mt-0.5 text-emerald-600" />
+              <p>Store launch slots available from <span className="font-bold">tomorrow</span></p>
             </div>
             <div className="flex items-start gap-2 text-sm text-gray-700">
-              <Clock className="w-4 h-4 mt-0.5 text-gray-400" />
-              <p><span className="font-bold">Same-day walk-ins</span> also available</p>
+              <Clock className="w-4 h-4 mt-0.5 text-emerald-600" />
+              <p><span className="font-bold">Walk-ins & scheduled appointments</span> welcome</p>
+            </div>
+            <div className="flex items-start gap-2 text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg border border-emerald-100/60">
+              <span>💳 Zero online payment required upfront. Billing handled directly during your consultation.</span>
             </div>
           </div>
           
-          <div className="mt-6 pt-4 border-t border-gray-100 flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700">
-            See care options near you <ChevronRight className="w-4 h-4 ml-1" />
+          <div className="mt-6 pt-4 border-t border-gray-100 flex items-center text-emerald-700 font-semibold text-sm group-hover:text-emerald-800">
+            Select in-person clinic visit <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </div>
         </button>
 
-        <button 
-          onClick={() => handleNext("service", "virtual")}
-          className="bg-white border border-gray-200 rounded-xl p-8 text-left hover:shadow-lg hover:border-blue-300 transition-all flex flex-col min-h-[280px] group"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="bg-blue-50 p-3 rounded-lg text-blue-600">
-              <Smartphone className="w-8 h-8" />
+        {/* Virtual Option - Coming Soon on live, Active for localhost / ?preview=virtual */}
+        {isVirtualTestMode ? (
+          <button 
+            onClick={() => handleNext("service", "virtual")}
+            className="relative bg-white border-2 border-purple-400 rounded-2xl p-8 text-left hover:shadow-xl hover:border-purple-600 transition-all flex flex-col min-h-[300px] group bg-gradient-to-b from-purple-50/20 to-white"
+          >
+            <div className="flex items-center justify-between gap-3 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="bg-purple-50 p-3.5 rounded-xl text-purple-600 border border-purple-100">
+                  <Smartphone className="w-8 h-8" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Virtual Consultation</h2>
+                  <p className="text-xs text-purple-700 font-medium">Video call with doctors</p>
+                </div>
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 border border-purple-200">
+                <Sparkles className="w-3 h-3 text-purple-600" />
+                Internal Demo Mode
+              </span>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">Virtual</h2>
-          </div>
-          
-          <div className="mt-auto space-y-3">
-            <div className="flex items-start gap-2 text-sm text-gray-700">
-              <Calendar className="w-4 h-4 mt-0.5 text-gray-400" />
-              <p>Visits as early as <span className="font-bold">{getNextAvailableTime(60)} today</span></p>
+            
+            <div className="mt-auto space-y-3">
+              <div className="flex items-start gap-2 text-sm text-gray-700">
+                <Calendar className="w-4 h-4 mt-0.5 text-purple-600" />
+                <p>E-Med roster connected & active for internal test</p>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-gray-700">
+                <Activity className="w-4 h-4 mt-0.5 text-purple-600" />
+                <p><span className="font-bold">HD WebRTC Video Room</span> enabled</p>
+              </div>
             </div>
-            <div className="flex items-start gap-2 text-sm text-gray-700">
-              <Activity className="w-4 h-4 mt-0.5 text-gray-400" />
-              <p>Or <span className="font-bold">skip the line</span> and see the next available provider</p>
+            
+            <div className="mt-6 pt-4 border-t border-gray-100 flex items-center text-purple-700 font-semibold text-sm group-hover:text-purple-800">
+              Enter Virtual Demo Flow <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
-          </div>
-          
-          <div className="mt-6 pt-4 border-t border-gray-100 flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700">
-            See care options <ChevronRight className="w-4 h-4 ml-1" />
-          </div>
-        </button>
+          </button>
+        ) : (
+          <button 
+            onClick={() => setShowVirtualComingSoonModal(true)}
+            className="relative bg-white/95 border-2 border-amber-300 rounded-2xl p-8 text-left hover:shadow-xl hover:border-amber-500 transition-all flex flex-col min-h-[300px] group bg-gradient-to-b from-amber-50/40 via-amber-50/10 to-white"
+          >
+            <div className="flex items-center justify-between gap-3 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="bg-amber-100/80 p-3.5 rounded-xl text-amber-700 border border-amber-200">
+                  <Smartphone className="w-8 h-8" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    Virtual Consultation
+                  </h2>
+                  <p className="text-xs text-amber-800 font-medium">Online Video Care & Prescriptions</p>
+                </div>
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-amber-500 text-white shadow-sm border border-amber-600">
+                Coming Soon
+              </span>
+            </div>
+            
+            <div className="mt-auto space-y-3">
+              <div className="flex items-start gap-2 text-sm text-gray-700">
+                <Clock className="w-4 h-4 mt-0.5 text-amber-600 font-bold" />
+                <p><span className="font-semibold text-amber-900">Launching Next Week:</span> Video consults with registered doctors</p>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-gray-700">
+                <Building2 className="w-4 h-4 mt-0.5 text-emerald-600" />
+                <p><span className="font-bold text-emerald-900">Physical Clinic is Open:</span> Same-day appointments available</p>
+              </div>
+              <div className="flex items-start gap-2 text-xs text-amber-800 bg-amber-100/60 p-2.5 rounded-lg border border-amber-200/80 font-medium">
+                <span>⚠️ Online payment gateway integration in progress. In-person billing open at the clinic desk.</span>
+              </div>
+            </div>
+            
+            <div className="mt-6 pt-4 border-t border-amber-100 flex items-center text-amber-800 font-bold text-sm group-hover:text-amber-900">
+              Coming Soon — Click for Details <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </button>
+        )}
       </div>
       
       <div className="mt-8 flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 cursor-pointer">
@@ -1537,6 +1633,87 @@ export default function MinuteClinicBookingPage() {
               <button onClick={() => setPolicyModal(null)} className="bg-[#0A1128] text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 transition-colors">
                 I Understand
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Virtual Consultation Coming Soon Modal */}
+      {showVirtualComingSoonModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 transform transition-all">
+            {/* Header with decorative badge */}
+            <div className="p-6 pb-4 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border-b border-amber-100 flex justify-between items-start">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600">
+                  <Smartphone className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-amber-100 text-amber-900 border border-amber-200 mb-1">
+                    Launching Next Week
+                  </span>
+                  <h3 className="text-xl font-bold text-gray-900">Virtual Consultation</h3>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowVirtualComingSoonModal(false)}
+                className="text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 space-y-4 text-sm text-gray-600 leading-relaxed">
+              <p>
+                Online video consultations and direct digital payments are currently undergoing final merchant onboarding. This feature will go live next week!
+              </p>
+              
+              <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/70 text-emerald-900 space-y-2">
+                <div className="flex items-center gap-2 font-bold text-emerald-950">
+                  <Building2 className="w-4 h-4 text-emerald-600" />
+                  <span>Physical Clinic Open Starting Tomorrow!</span>
+                </div>
+                <p className="text-xs text-emerald-800 leading-normal">
+                  Our in-person Minute Clinic is fully staffed and ready for appointments and walk-ins. You can pay conveniently at the clinic reception counter using <strong>UPI, Credit/Debit Cards, or Cash</strong>.
+                </p>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="p-6 pt-2 bg-gray-50/70 border-t border-gray-100 flex flex-col gap-2.5">
+              <button
+                onClick={() => {
+                  setShowVirtualComingSoonModal(false);
+                  handleNext("service", "in-person");
+                }}
+                className="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                <Building2 className="w-4 h-4" />
+                Book an In-Person Clinic Visit
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={() => setShowVirtualComingSoonModal(false)}
+                className="w-full py-2.5 px-4 rounded-xl text-gray-500 hover:text-gray-800 text-xs font-medium transition-colors"
+              >
+                Maybe Later
+              </button>
+
+              {/* Discreet internal tester bypass link */}
+              <div className="text-center pt-2 border-t border-gray-200/60">
+                <button
+                  onClick={() => {
+                    setIsVirtualTestMode(true);
+                    setShowVirtualComingSoonModal(false);
+                    handleNext("service", "virtual");
+                  }}
+                  className="text-[11px] text-gray-400 hover:text-purple-600 underline transition-colors"
+                >
+                  Internal Team Demo? Click here to unlock Virtual consultation preview
+                </button>
+              </div>
             </div>
           </div>
         </div>

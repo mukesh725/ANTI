@@ -1,10 +1,19 @@
 import { NextResponse } from 'next/server';
 import { deleteMember } from '@/lib/membershipRepository';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
 
 export const dynamic = 'force-dynamic';
 
 export async function DELETE(request: Request) {
   try {
+    const admin = verifyAdminAuth(request);
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'Valid administrative credentials required.' },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const docId = searchParams.get('docId');
 

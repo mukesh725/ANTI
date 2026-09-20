@@ -126,23 +126,28 @@ export default function CheckoutPage() {
   let pharmacyDiscountPct = 0;
   let groceryDiscountPct = 0;
   let brandedDiscountPct = 0;
-  let isSignaturePlan = false;
+  let isUnlimitedShipping = false;
 
   if (memberRecord && memberRecord.membershipStatus === 'Active') {
     const plan = memberRecord.membershipPlan;
     if (plan === 'AIRO ONE Select') {
-      pharmacyDiscountPct = 0.15; // 15% off pharmacy
+      pharmacyDiscountPct = 0.20; // Generic/eligible up to 60%+
       groceryDiscountPct = 0.02;  // 2% off grocery
-      brandedDiscountPct = 0.04;  // 4% off branded
+      brandedDiscountPct = 0.00;  // 0% off branded
     } else if (plan === 'AIRO ONE Preferred') {
-      pharmacyDiscountPct = 0.18; // 18% off pharmacy
+      pharmacyDiscountPct = 0.20; // Generic/eligible up to 60%+
       groceryDiscountPct = 0.04;  // 4% off grocery
-      brandedDiscountPct = 0.06;  // 6% off branded
+      brandedDiscountPct = 0.03;  // 3% off branded
     } else if (plan === 'AIRO ONE Signature') {
-      pharmacyDiscountPct = 0.22; // 22% off pharmacy
+      pharmacyDiscountPct = 0.22; // Generic/eligible up to 60%+
       groceryDiscountPct = 0.06;  // 6% off grocery
+      brandedDiscountPct = 0.06;  // 6% off branded
+      isUnlimitedShipping = true; // Unlimited Free Delivery on all orders
+    } else if (plan === 'AIRO ONE Infinite') {
+      pharmacyDiscountPct = 0.25; // Generic/eligible up to 60%+
+      groceryDiscountPct = 0.08;  // 8% off grocery
       brandedDiscountPct = 0.08;  // 8% off branded
-      isSignaturePlan = true;     // Free shipping on all orders
+      isUnlimitedShipping = true; // Unlimited Free Delivery on all orders
     }
   }
 
@@ -164,9 +169,9 @@ export default function CheckoutPage() {
 
   const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
 
-  // Shipping Calculation: Free for Signature or orders above ₹1,500 (or ₹50 standard)
+  // Shipping Calculation: Free for Signature/Infinite or orders above ₹1,500 (or ₹50 standard)
   let shipping = 0;
-  if (!isSignaturePlan && discountedSubtotal < 1500) {
+  if (!isUnlimitedShipping && discountedSubtotal < 1500) {
     shipping = rawSubtotal > 0 ? 50 : 0;
   }
 

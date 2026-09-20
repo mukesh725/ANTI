@@ -19,26 +19,88 @@ export async function GET() {
         {
           id: 'plan_select',
           name: 'AIRO ONE™ Select',
-          description: '1 Member, ₹500 Welcome Coupons, Shopping Bag',
+          description: '1 Member Covered • For Individuals',
           price: 999,
           durationDays: 365,
-          features: JSON.stringify(['1 Member Covered', '2% Essentials Discount', '15% Pharmacy Discount', '2 Free Doctor Consultations', '4 Basic Health Screenings'])
+          features: JSON.stringify([
+            '1 Member Covered',
+            'Up to 60%+ Pharmacy Discount*',
+            '2 Free In-Store Doctor Consultations/Yr',
+            '2 Free Telemedicine Consultations/Yr',
+            '4 AIRO Praana™ Health Screenings/Yr',
+            'Free Medicine Delivery Above ₹1,500',
+            'AIRO App & Digital Health Records',
+            'Health & Medication Reminders',
+            'Senior Citizens Care (60+ Years)'
+          ])
         },
         {
           id: 'plan_preferred',
           name: 'AIRO ONE™ Preferred',
-          description: 'Up to 3 Members, ₹1500 Welcome Coupons, Wellness Kit',
+          description: 'Up to 3 Members • For Small Families • ₹500 Medication Voucher',
           price: 2999,
           durationDays: 365,
-          features: JSON.stringify(['Up to 3 Members Covered', '4% Essentials Discount', '18% Pharmacy Discount', '6 Free Doctor Consultations', '10 Basic Health Screenings'])
+          features: JSON.stringify([
+            'Up to 3 Members Covered',
+            'Up to 60%+ Pharmacy Discount*',
+            '3% AIRO Branded Products Discount',
+            '6 Free In-Store Doctor Consultations/Yr',
+            '6 Free Telemedicine Consultations/Yr',
+            '10 AIRO Praana™ Health Screenings/Yr',
+            '1 Annual Preventive Health Check-up/Yr',
+            '2 Dietitian Consultations/Yr',
+            '₹500 AIRO Medication Gift Voucher',
+            'Free Medicine Delivery Above ₹1,500',
+            'AIRO App & Digital Health Records',
+            'Health & Medication Reminders',
+            'Senior Citizens Care (60+ Years)'
+          ])
         },
         {
           id: 'plan_signature',
           name: 'AIRO ONE™ Signature',
-          description: 'Up to 5 Members, ₹2500 Welcome Coupons, Premium Wellness Kit',
+          description: 'Up to 5 Members • For Families • ₹1,000 Medication Voucher • AIRO Care365™',
           price: 6999,
           durationDays: 365,
-          features: JSON.stringify(['Up to 5 Members Covered', '6% Essentials Discount', '22% Pharmacy Discount', '10 Free Doctor Consultations', 'Unlimited Basic Health Screenings'])
+          features: JSON.stringify([
+            'Up to 5 Members Covered',
+            'Up to 60%+ Pharmacy Discount*',
+            '6% AIRO Branded Products Discount',
+            '10 Free In-Store Doctor Consultations/Yr',
+            '10 Free Telemedicine Consultations/Yr',
+            'Unlimited AIRO Praana™ Health Screenings',
+            '2 Annual Preventive Health Check-ups/Yr',
+            '6 Dietitian Consultations/Yr',
+            '₹1,000 AIRO Medication Gift Voucher',
+            'Unlimited Free Medicine Delivery',
+            'AIRO Care365™ (24/7 Emergency Support)',
+            'AIRO App & Digital Health Records',
+            'Health & Medication Reminders',
+            'Senior Citizens Care (60+ Years)'
+          ])
+        },
+        {
+          id: 'plan_infinite',
+          name: 'AIRO ONE™ Infinite',
+          description: 'Up to 6 Members • For Large Families • ₹1,500 Medication Voucher • AIRO Care365™',
+          price: 8999,
+          durationDays: 365,
+          features: JSON.stringify([
+            'Up to 6 Members Covered',
+            'Up to 60%+ Pharmacy Discount*',
+            '8% AIRO Branded Products Discount',
+            '15 Free In-Store Doctor Consultations/Yr',
+            'Unlimited Free Telemedicine Consultations',
+            'Unlimited AIRO Praana™ Health Screenings',
+            '3 Annual Preventive Health Check-ups/Yr',
+            '12 Dietitian Consultations/Yr',
+            '₹1,500 AIRO Medication Gift Voucher',
+            'Unlimited Free Medicine Delivery',
+            'AIRO Care365™ (24/7 Emergency Support)',
+            'AIRO App & Digital Health Records',
+            'Health & Medication Reminders',
+            'Senior Citizens Care (60+ Years)'
+          ])
         }
       ];
     }

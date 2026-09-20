@@ -534,6 +534,7 @@ export default function AccountPage() {
                 onSelect={setActivePatientId}
                 onAddClick={() => setIsAddMemberOpen(true)}
                 maxMembers={
+                  membership?.membershipPlan?.includes('Infinite') ? 6 :
                   membership?.membershipPlan?.includes('Signature') ? 5 :
                   membership?.membershipPlan?.includes('Preferred') ? 3 : 1
                 }

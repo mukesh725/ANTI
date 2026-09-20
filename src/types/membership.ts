@@ -1,7 +1,8 @@
 export type MembershipPlanType = 
   | 'AIRO ONE Select' 
   | 'AIRO ONE Preferred' 
-  | 'AIRO ONE Signature';
+  | 'AIRO ONE Signature'
+  | 'AIRO ONE Infinite';
 
 export type PaymentStatusType = 'Pending' | 'Paid' | 'Failed' | 'Refunded';
 
@@ -76,7 +77,7 @@ export interface AccountRecord {
   membershipStatus: MembershipStatusType;
   paymentStatus: PaymentStatusType;
   paymentMethod: PaymentMethodType | null;
-  maxMembers: number; // e.g., 1 (Select), 3 (Preferred), 5 (Signature)
+  maxMembers: number; // e.g., 1 (Select), 3 (Preferred), 5 (Signature), 6 (Infinite)
   registrationDate: string;
   activationDate: string | null;
   expiryDate: string | null;

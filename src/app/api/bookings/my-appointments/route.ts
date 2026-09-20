@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import { verifyAdminAuth } from '@/lib/membershipAuth';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +14,16 @@ export async function GET(req: Request) {
     const patientId = searchParams.get('patientId')?.trim() || '';
 
     const cleanPhone = phone || mobile;
+
+    // IDOR / Data Exposure Defense (Point 14 & Point 4):
+    // Require either a specific patient identifier OR valid administrative credentials
+    const admin = verifyAdminAuth(req);
+    if (!email && !cleanPhone && !admin) {
+      return NextResponse.json(
+        { error: 'INVALID_REQUEST', message: 'A verified email or phone number is required to look up your appointments.' },
+        { status: 400 }
+      );
+    }
 
     const appointments: any[] = [];
 

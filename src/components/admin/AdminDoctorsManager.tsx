@@ -66,15 +66,32 @@ export function AdminDoctorsManager() {
   const [isFeatured, setIsFeatured] = useState(false);
   const [accountStatus, setAccountStatus] = useState<"active" | "inactive">("active");
   const [categoriesInput, setCategoriesInput] = useState("");
+  const [supportingDocs, setSupportingDocs] = useState<Array<{ name: string; url: string; type?: string }>>([]);
+  const [uploadDocName, setUploadDocName] = useState("");
+  const [uploadDocUrl, setUploadDocUrl] = useState("");
 
   useEffect(() => {
     fetchDoctors();
   }, []);
 
+  const getAdminHeaders = (includeContentType = true) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('airo_admin_token') || '' : '';
+    const headers: Record<string, string> = {};
+    if (includeContentType) {
+      headers['Content-Type'] = 'application/json';
+    }
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  };
+
   const fetchDoctors = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/doctors");
+      const res = await fetch("/api/admin/doctors", {
+        headers: getAdminHeaders(false),
+      });
       const data = await res.json();
       if (data.success && Array.isArray(data.doctors)) {
         setDoctors(data.doctors);
@@ -95,18 +112,21 @@ export function AdminDoctorsManager() {
     setExperienceYears(5);
     setEmail("");
     setPhone("");
-    setPortalPassword("password123");
-    setSpecialty("");
-    setClinicName("AIRO Health Care Center");
+    setPassword("");
+    setSpecialty("General Physician");
+    setClinicName("AIRO Health Hub");
     setCity("Hyderabad");
     setBio("");
     setConsultationFee(499);
     setProfilePhotoUrl("");
     setDigitalSignatureUrl("");
     setIsFeatured(false);
-    setAccountStatus("active");
-    setCategoriesInput("General Medicine");
+    setCategoriesInput("General Physician");
+    setSupportingDocs([]);
+    setUploadDocName("");
+    setUploadDocUrl("");
     setErrorMsg("");
+    setSuccessMsg("");
     setIsFormOpen(true);
   };
 
@@ -116,10 +136,10 @@ export function AdminDoctorsManager() {
     setDegree(doc.degree);
     setRegNumber(doc.registrationNumber);
     setRegExpiry(doc.registrationExpiryDate || "");
-    setExperienceYears(doc.experienceYears || 0);
+    setExperienceYears(doc.experienceYears);
     setEmail(doc.email);
     setPhone(doc.phone);
-    setPortalPassword(doc.password || "password123");
+    setPassword(doc.password || "");
     setSpecialty(doc.specialty);
     setClinicName(doc.clinicName || "");
     setCity(doc.city || "");
@@ -127,17 +147,37 @@ export function AdminDoctorsManager() {
     setConsultationFee(doc.consultationFee || 499);
     setProfilePhotoUrl(doc.profilePhotoUrl || "");
     setDigitalSignatureUrl(doc.digitalSignatureUrl || "");
-    setIsFeatured(Boolean(doc.isFeatured));
-    setAccountStatus(doc.status);
-    setCategoriesInput((doc.categories || []).join(", "));
+    setIsFeatured(doc.isFeatured);
+    setCategoriesInput(doc.categories ? doc.categories.join(", ") : doc.specialty);
+    setSupportingDocs(doc.supportingDocuments || []);
+    setUploadDocName("");
+    setUploadDocUrl("");
     setErrorMsg("");
+    setSuccessMsg("");
     setIsFormOpen(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAddSupportingDoc = () => {
+    if (!uploadDocName.trim() || !uploadDocUrl.trim()) {
+      alert("Please provide both document title and URL/link.");
+      return;
+    }
+    setSupportingDocs(prev => [
+      ...prev,
+      { name: uploadDocName.trim(), url: uploadDocUrl.trim(), type: "Document" }
+    ]);
+    setUploadDocName("");
+    setUploadDocUrl("");
+  };
+
+  const handleRemoveSupportingDoc = (idx: number) => {
+    setSupportingDocs(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleSaveDoctor = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    setIsSaving(true);
+    setSuccessMsg("");
 
     if (!fullName || !degree || !regNumber || !email || !phone || !specialty) {
       setErrorMsg("Please fill in all mandatory fields marked with an asterisk (*).");
@@ -176,13 +216,13 @@ export function AdminDoctorsManager() {
       if (editingDoctor) {
         res = await fetch("/api/admin/doctors", {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: getAdminHeaders(true),
           body: JSON.stringify({ id: editingDoctor.id, ...payload }),
         });
       } else {
         res = await fetch("/api/admin/doctors", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: getAdminHeaders(true),
           body: JSON.stringify(payload),
         });
       }
@@ -209,6 +249,7 @@ export function AdminDoctorsManager() {
     try {
       const res = await fetch(`/api/admin/doctors?id=${encodeURIComponent(id)}`, {
         method: "DELETE",
+        headers: getAdminHeaders(false),
       });
       if (res.ok) {
         fetchDoctors();
@@ -223,7 +264,7 @@ export function AdminDoctorsManager() {
     try {
       await fetch("/api/admin/doctors", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: getAdminHeaders(true),
         body: JSON.stringify({ id: doc.id, status: newStatus }),
       });
       fetchDoctors();
