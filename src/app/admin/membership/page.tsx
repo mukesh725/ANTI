@@ -25,7 +25,9 @@ import {
   Pencil,
   Trash2,
   AlertTriangle,
-  Save
+  Save,
+  XCircle,
+  AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MemberRecord, PaymentMethodType, PatientRecord } from '@/types/membership';
@@ -381,7 +383,7 @@ export default function AdminMembershipDashboard() {
 
           {/* Status Tabs / Filter */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-            {['ALL', 'Pending Activation', 'Active'].map((st) => (
+            {['ALL', 'Active', 'Pending Activation', 'Cancelled', 'Expired'].map((st) => (
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
@@ -501,12 +503,19 @@ export default function AdminMembershipDashboard() {
 
                       {/* Membership Status */}
                       <td className="p-4">
-                        <span className={`inline-flex items-center gap-1 text-xs font-extrabold px-3 py-1 rounded-full ${
-                          isActive
+                        <span className={`inline-flex items-center gap-1.5 text-xs font-extrabold px-3 py-1 rounded-full ${
+                          m.membershipStatus === 'Active'
                             ? 'bg-emerald-600 text-white shadow-sm'
-                            : 'bg-amber-500 text-white'
+                            : m.membershipStatus === 'Cancelled'
+                            ? 'bg-rose-600 text-white shadow-sm'
+                            : m.membershipStatus === 'Expired'
+                            ? 'bg-slate-600 text-white shadow-sm'
+                            : 'bg-amber-500 text-white shadow-sm'
                         }`}>
-                          {isActive ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                          {m.membershipStatus === 'Active' ? <CheckCircle2 className="w-3.5 h-3.5" /> : 
+                           m.membershipStatus === 'Cancelled' ? <XCircle className="w-3.5 h-3.5" /> :
+                           m.membershipStatus === 'Expired' ? <AlertCircle className="w-3.5 h-3.5" /> :
+                           <Clock className="w-3.5 h-3.5" />}
                           {m.membershipStatus}
                         </span>
                       </td>
@@ -645,7 +654,10 @@ export default function AdminMembershipDashboard() {
                       </div>
                     </div>
                     <span className={`inline-flex items-center gap-1 text-[10px] font-extrabold px-2.5 py-1 rounded-full ${
-                      isActive ? 'bg-emerald-600 text-white shadow-sm' : 'bg-amber-500 text-white'
+                      m.membershipStatus === 'Active' ? 'bg-emerald-600 text-white shadow-sm' :
+                      m.membershipStatus === 'Cancelled' ? 'bg-rose-600 text-white shadow-sm' :
+                      m.membershipStatus === 'Expired' ? 'bg-slate-600 text-white shadow-sm' :
+                      'bg-amber-500 text-white shadow-sm'
                     }`}>
                       {m.membershipStatus}
                     </span>

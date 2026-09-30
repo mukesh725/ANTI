@@ -13,7 +13,27 @@ const ALLOWED_MEMBER_UPDATE_FIELDS = new Set([
   'address',
   'city',
   'pincode',
-  'membershipPlan'
+  'dob',
+  'gender',
+  'emergencyContact',
+  'membershipPlan',
+  'paymentStatus',
+  'paymentMethod',
+  'membershipStatus'
+]);
+
+const VALID_MEMBERSHIP_STATUSES = new Set([
+  'Active',
+  'Pending Activation',
+  'Expired',
+  'Cancelled'
+]);
+
+const VALID_PAYMENT_STATUSES = new Set([
+  'Paid',
+  'Pending',
+  'Failed',
+  'Refunded'
 ]);
 
 export async function PUT(request: Request) {
@@ -33,11 +53,21 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Missing docId or valid updates payload' }, { status: 400 });
     }
 
-    // Mass assignment defense (Point 15): Filter against allowlisted fields only
+    // Mass assignment defense: Filter against allowlisted fields only
     const safeUpdates: Record<string, any> = {};
     for (const [key, value] of Object.entries(updates)) {
       if (ALLOWED_MEMBER_UPDATE_FIELDS.has(key)) {
-        safeUpdates[key] = value;
+        if (key === 'membershipStatus') {
+          if (VALID_MEMBERSHIP_STATUSES.has(value as string)) {
+            safeUpdates[key] = value;
+          }
+        } else if (key === 'paymentStatus') {
+          if (VALID_PAYMENT_STATUSES.has(value as string)) {
+            safeUpdates[key] = value;
+          }
+        } else {
+          safeUpdates[key] = value;
+        }
       }
     }
 
@@ -48,22 +78,24 @@ export async function PUT(request: Request) {
     // Call update with filtered updates
     await updateMember(docId, safeUpdates);
 
-    // After updating, check if name or plan changed which requires regenerating the digital card
-    if (safeUpdates.firstName || safeUpdates.lastName || safeUpdates.membershipPlan) {
-      // Get the full member record
-      const updatedMember = await getMemberById(docId);
-      if (updatedMember && updatedMember.membershipStatus === 'Active' && updatedMember.memberId) {
-        // Regenerate card
-        const cardUrl = await generateDigitalMembershipCard({
-          memberId: updatedMember.memberId,
-          firstName: updatedMember.firstName,
-          lastName: updatedMember.lastName,
-          membershipPlan: updatedMember.membershipPlan,
-          expiryDate: updatedMember.expiryDate || new Date().toISOString()
-        });
+    // After updating, check if name, plan, or status changed which requires regenerating the digital card
+    if (safeUpdates.firstName || safeUpdates.lastName || safeUpdates.membershipPlan || safeUpdates.membershipStatus) {
+      try {
+        const updatedMember = await getMemberById(docId);
+        if (updatedMember && updatedMember.membershipStatus === 'Active' && updatedMember.memberId) {
+          const cardUrl = await generateDigitalMembershipCard({
+            memberId: updatedMember.memberId,
+            firstName: updatedMember.firstName,
+            lastName: updatedMember.lastName,
+            membershipPlan: updatedMember.membershipPlan,
+            expiryDate: updatedMember.expiryDate || new Date().toISOString()
+          });
 
-        // Save new card
-        await updateMember(docId, { digitalCardUrl: cardUrl });
+          // Save new card
+          await updateMember(docId, { digitalCardUrl: cardUrl });
+        }
+      } catch (cardErr) {
+        console.warn('Non-fatal: card regeneration skipped during edit:', cardErr);
       }
     }
 
