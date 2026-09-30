@@ -259,18 +259,18 @@ export default function AdminDashboardPage() {
         return (
           <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8">
             {/* Cockpit Executive Header */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
-              <div className="space-y-1">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02),0_4px_16px_rgba(0,0,0,0.02)] flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/70">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80 shadow-xs">
+                    <span className="w-2 h-2 rounded-full bg-[#006537] animate-pulse"></span>
                     Central HQ Live
                   </span>
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-slate-500 font-medium">
                     Hyderabad • Kondapur & Kompally Hubs
                   </span>
                 </div>
-                <h1 className="text-2xl md:text-3xl font-serif tracking-tight text-slate-900 font-medium">
+                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
                   AIRO Operations & Clinical Cockpit
                 </h1>
                 <p className="text-xs md:text-sm text-slate-500">
@@ -282,14 +282,14 @@ export default function AdminDashboardPage() {
               <div className="flex flex-wrap items-center gap-2.5">
                 <button
                   onClick={() => setActiveTab("blog")}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2 rounded-full text-xs font-semibold bg-[#006537] hover:bg-[#00502c] text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
                   Auto SEO Blog
                 </button>
                 <button
                   onClick={() => setActiveTab("doctors")}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2 rounded-full text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white shadow-xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
                 >
                   <Stethoscope className="w-3.5 h-3.5 text-slate-300" />
                   Doctors Hub
@@ -298,7 +298,7 @@ export default function AdminDashboardPage() {
                   href="/blog"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3.5 py-2 rounded-xl text-xs font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition-all flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-full text-xs font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition-all flex items-center gap-1.5"
                 >
                   Public Blog
                   <ExternalLink className="w-3 h-3 text-slate-400" />
@@ -382,7 +382,7 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Prominent Auto SEO Showcase Banner */}
-            <div className="bg-gradient-to-r from-[#0C152B] via-[#162545] to-[#0C152B] rounded-2xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl border border-white/10">
+            <div className="bg-gradient-to-r from-[#00381e] via-[#00502c] to-[#006537] rounded-2xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl border border-emerald-800/40">
               <div className="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                 <div className="space-y-3 max-w-3xl">
@@ -733,50 +733,51 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC] overflow-hidden font-sans text-slate-800 antialiased">
+    <div className="flex h-screen bg-[#FBFBFC] overflow-hidden font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
       {/* Mobile Sidebar Backdrop */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 md:hidden"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
-      {/* Modern Executive Sidebar */}
-      <aside className={`w-[270px] bg-[#0C152B] flex flex-col flex-shrink-0 fixed md:relative h-full z-50 border-r border-slate-800/80 shadow-2xl transition-transform duration-300 ${
+      {/* Stripe / Apple Minimalist Studio Sidebar */}
+      <aside className={`w-[264px] bg-[#F7F7F8] flex flex-col flex-shrink-0 fixed md:relative h-full z-50 border-r border-slate-200/90 shadow-[0_0_20px_rgba(0,0,0,0.02)] transition-transform duration-300 ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}>
         {/* Brand Header */}
-        <div className="p-5 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-serif font-bold text-lg shadow-sm">
+        <div className="h-[60px] px-4 border-b border-slate-200/80 flex items-center justify-between bg-white/70 backdrop-blur-md shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#006537] via-[#00502c] to-[#00381e] flex items-center justify-center text-white font-bold text-xs shadow-sm ring-1 ring-[#006537]/20 shrink-0">
               A
             </div>
-            <div>
+            <div className="leading-tight">
               <div className="flex items-center gap-1.5">
-                <span className="text-lg font-bold tracking-tight text-white font-serif">AIRO</span>
-                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">HQ</span>
+                <span className="text-sm font-extrabold tracking-tight text-slate-900">AIRO</span>
+                <span className="text-[9px] font-bold text-[#006537] uppercase tracking-wider bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/80">Studio</span>
               </div>
-              <p className="text-[10px] text-slate-400">Health Hub & Essentials</p>
+              <p className="text-[10px] text-slate-500 font-medium">Operations Hub</p>
             </div>
           </div>
           <button 
-            className="md:hidden text-slate-400 hover:text-white p-1 rounded-lg"
+            className="md:hidden text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200/60 transition-colors"
             onClick={() => setIsSidebarOpen(false)}
+            aria-label="Close sidebar"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Categorized Navigation */}
-        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-5 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto py-3 px-3 space-y-4 custom-scrollbar">
           {NAV_SECTIONS.map((section, idx) => {
             const visibleItems = section.items.filter(item => isModuleAllowed(item.id));
             if (visibleItems.length === 0) return null;
 
             return (
-              <div key={idx} className="space-y-1">
-                <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              <div key={idx} className="space-y-0.5">
+                <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5 mt-2">
                   {section.title}
                 </div>
                 {visibleItems.map((item) => {
@@ -790,18 +791,22 @@ export default function AdminDashboardPage() {
                         setActiveTab(item.id);
                         setIsSidebarOpen(false);
                       }}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all duration-150 text-xs font-medium cursor-pointer ${
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all duration-150 text-xs cursor-pointer ${
                         isActive
-                          ? "bg-white/10 text-white font-semibold border-l-2 border-emerald-400 pl-2.5 shadow-xs"
-                          : "text-slate-300 hover:text-white hover:bg-white/5"
+                          ? "bg-[#006537] text-white font-semibold shadow-xs shadow-emerald-950/15"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 font-medium"
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <Icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : "text-slate-400"}`} />
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-slate-400"}`} />
                         <span>{item.label}</span>
                       </div>
                       {item.badge && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                          isActive 
+                            ? "bg-white/20 text-white" 
+                            : "bg-emerald-50 text-[#006537] border border-emerald-200/70"
+                        }`}>
                           {item.badge}
                         </span>
                       )}
@@ -813,34 +818,36 @@ export default function AdminDashboardPage() {
           })}
         </div>
 
-        {/* Sidebar Footer User Profile */}
-        <div className="p-4 border-t border-white/10 mt-auto bg-slate-950/40">
-          <div className="mb-3 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 font-bold text-xs">
-              {currentUser?.name ? currentUser.name.slice(0, 2).toUpperCase() : "AD"}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-white truncate">{currentUser?.name || "Operations Lead"}</p>
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest">{currentUser?.role || "Super Admin"}</span>
+        {/* Sidebar Footer User Profile Card */}
+        <div className="p-3 border-t border-slate-200/80 mt-auto bg-[#F7F7F8]">
+          <div className="p-2.5 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.03)] flex items-center justify-between">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-[10px] shrink-0 shadow-xs">
+                {currentUser?.name ? currentUser.name.slice(0, 2).toUpperCase() : "HQ"}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold text-slate-900 truncate">{currentUser?.name || "Operations Lead"}</p>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#006537]"></span>
+                  <span className="text-[10px] text-slate-500 capitalize truncate">{currentUser?.role || "Super Admin"}</span>
+                </div>
               </div>
             </div>
+            <button
+              onClick={handleLogout}
+              title="Sign out"
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 hover:text-red-300 text-slate-300 transition-colors text-xs font-medium border border-white/5 cursor-pointer"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            Sign out
-          </button>
         </div>
       </aside>
 
       {/* Main App Content Viewport */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
         {/* Top Navbar Header */}
-        <header className="h-[64px] bg-white border-b border-slate-200/80 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10 sticky top-0 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+        <header className="h-[60px] bg-white/90 backdrop-blur-xl border-b border-slate-200/80 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10 sticky top-0 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
           <div className="flex items-center gap-3">
             <button 
               className="md:hidden p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -851,41 +858,29 @@ export default function AdminDashboardPage() {
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <span className="hidden sm:inline">Central Operations</span>
               <ChevronRight className="w-3 h-3 text-slate-400 hidden sm:inline" />
-              <span className="font-semibold text-slate-900 text-sm">{activeLabel}</span>
+              <span className="font-bold text-slate-900 text-xs sm:text-sm">{activeLabel}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Live Dual Domain Status */}
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            {/* Live Dual Domain Status Capsule */}
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-xs font-semibold text-emerald-900 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-[#006537] animate-pulse"></span>
               <span>airohealthhub.com & airoessentials.com</span>
             </div>
-
-            {/* Direct Quick Link to Live Blog */}
-            <a
-              href="/blog"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors"
-            >
-              <span>Live Blog</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
-            </a>
 
             {/* Quick Auto SEO Trigger */}
             <button
               onClick={() => setActiveTab("blog")}
-              className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/70 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#006537] hover:bg-[#00502c] text-white shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden sm:inline">Auto SEO</span>
+              <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
+              <span>Auto SEO</span>
             </button>
           </div>
         </header>
-
-        {/* Scrollable Workspace */}
-        <main className="flex-1 overflow-y-auto relative custom-scrollbar bg-[#F8FAFC]">
+        {/* Scrollable Workspace Canvas */}
+        <main className="flex-1 overflow-y-auto relative custom-scrollbar bg-[#FBFBFC]">
           <div className="relative z-10">
             {renderContent()}
           </div>
