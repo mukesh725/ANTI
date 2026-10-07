@@ -188,82 +188,75 @@ export function GlobalFooter() {
         </div>
 
         {/* Mobile App & QR Code Column */}
-        <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-          <h3 className="font-sans text-[10px] font-bold mb-6 text-paper/40 tracking-[0.2em] uppercase">
-            Get The App
+        <div className="col-span-1 sm:col-span-2 lg:col-span-1 flex flex-col">
+          <h3 className="font-sans text-[10px] font-bold mb-4 text-paper/40 tracking-[0.2em] uppercase">
+            Download AIRO App
           </h3>
           <p className="text-xs text-paper/70 leading-relaxed mb-4">
-            Scan with your camera or tap below to download directly for Android &amp; iOS.
+            Scan the QR code with your phone camera or click the store button below to download directly:
           </p>
 
-          <div className="bg-paper/5 border border-paper/10 rounded-2xl p-3.5 backdrop-blur-md">
-            {/* Store Toggle */}
-            <div className="flex rounded-lg bg-black/30 p-1 mb-3">
-              <button
-                type="button"
-                onClick={() => setActiveStore('playstore')}
-                className={`flex-1 py-1 text-[10px] font-bold rounded uppercase tracking-wider transition-all ${
-                  activeStore === 'playstore' 
-                    ? 'bg-paper text-theme shadow-sm' 
-                    : 'text-paper/60 hover:text-paper'
-                }`}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3.5">
+            {/* Google Play Store Card */}
+            <div className="bg-paper/5 border border-paper/15 rounded-2xl p-3.5 backdrop-blur-md flex flex-col items-center text-center hover:border-paper/30 transition-all">
+              <div 
+                onClick={() => { setActiveStore('playstore'); setIsQrModalOpen(true); }}
+                className="p-2.5 bg-white rounded-xl shadow-md cursor-pointer hover:ring-2 hover:ring-emerald-400/80 transition-all mb-2.5 group w-fit"
+                title="Click to enlarge Google Play QR code"
               >
-                Google Play
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveStore('appstore')}
-                className={`flex-1 py-1 text-[10px] font-bold rounded uppercase tracking-wider transition-all ${
-                  activeStore === 'appstore' 
-                    ? 'bg-paper text-theme shadow-sm' 
-                    : 'text-paper/60 hover:text-paper'
-                }`}
-              >
-                App Store
-              </button>
-            </div>
+                <img
+                  src="/images/google-play-qr.jpg"
+                  alt="Google Play Store QR Code"
+                  className="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded"
+                />
+                <span className="block text-[9px] font-bold text-gray-700 mt-1 uppercase tracking-wider group-hover:text-black">
+                  Scan for Android
+                </span>
+              </div>
 
-            {/* Scannable QR Code */}
-            <div 
-              onClick={() => setIsQrModalOpen(true)}
-              className="p-2 bg-white rounded-xl flex flex-col items-center justify-center cursor-pointer group hover:ring-2 hover:ring-white/40 transition-all shadow-md"
-              title="Click to enlarge QR code"
-            >
-              <img
-                src={activeStore === 'playstore' ? '/images/google-play-qr.jpg' : '/images/qr-appstore.png'}
-                alt={activeStore === 'playstore' ? 'Google Play Store QR Code' : 'Apple App Store QR Code'}
-                className="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded"
-              />
-              <span className="text-[9px] font-bold text-gray-700 mt-1 uppercase tracking-wider group-hover:text-black">
-                Tap to Enlarge QR
-              </span>
-            </div>
-
-            {/* Store Download Buttons */}
-            <div className="flex flex-col gap-2 mt-3">
               <a
                 href={PLAY_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block hover:opacity-85 transition-opacity"
+                className="w-full flex items-center justify-center hover:opacity-85 transition-opacity"
+                aria-label="Get it on Google Play"
               >
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                  src="/images/google-play-badge.svg"
                   alt="Get it on Google Play"
-                  className="h-8 w-auto mx-auto"
+                  className="h-8.5 w-auto object-contain"
                 />
               </a>
+            </div>
+
+            {/* Apple App Store Card */}
+            <div className="bg-paper/5 border border-paper/15 rounded-2xl p-3.5 backdrop-blur-md flex flex-col items-center text-center hover:border-paper/30 transition-all">
+              <div 
+                onClick={() => { setActiveStore('appstore'); setIsQrModalOpen(true); }}
+                className="p-2.5 bg-white rounded-xl shadow-md cursor-pointer hover:ring-2 hover:ring-sky-400/80 transition-all mb-2.5 group w-fit"
+                title="Click to enlarge Apple App Store QR code"
+              >
+                <img
+                  src="/images/qr-appstore.png"
+                  alt="Apple App Store QR Code"
+                  className="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded"
+                />
+                <span className="block text-[9px] font-bold text-gray-700 mt-1 uppercase tracking-wider group-hover:text-black">
+                  Scan for iOS / iPhone
+                </span>
+              </div>
 
               <a
                 href={APP_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block hover:opacity-85 transition-opacity"
+                className="w-full flex items-center justify-center hover:opacity-85 transition-opacity"
+                aria-label="Download on the App Store"
               >
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                  src="/images/app-store-badge.svg"
                   alt="Download on the App Store"
-                  className="h-8 w-auto mx-auto"
+                  className="h-8.5 w-auto object-contain"
                 />
               </a>
             </div>
@@ -344,14 +337,23 @@ export function GlobalFooter() {
                 </button>
               </div>
 
-              <a
-                href={activeStore === 'playstore' ? PLAY_STORE_URL : APP_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block text-xs font-bold text-[#006537] hover:underline"
-              >
-                Direct Link &rarr;
-              </a>
+              <div className="flex flex-col items-center gap-2">
+                <a
+                  href={activeStore === 'playstore' ? PLAY_STORE_URL : APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-85 transition-opacity inline-block"
+                >
+                  <img
+                    src={activeStore === 'playstore' ? '/images/google-play-badge.svg' : '/images/app-store-badge.svg'}
+                    alt={activeStore === 'playstore' ? 'Get it on Google Play' : 'Download on the App Store'}
+                    className="h-10 w-auto"
+                  />
+                </a>
+                <span className="text-[10px] text-gray-400">
+                  {activeStore === 'playstore' ? 'Direct link for Android devices' : 'Direct link for iPhone & iPad'}
+                </span>
+              </div>
             </motion.div>
           </div>
         )}
