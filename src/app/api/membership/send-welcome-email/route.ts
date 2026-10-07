@@ -82,6 +82,11 @@ export async function POST(request: Request) {
     const displayPlanName = member.membershipPlan || `AIRO ONE ${planKey}`;
     const benefitsList = PLAN_BENEFITS[planKey] || PLAN_BENEFITS['Select'];
 
+    // Dynamic typography scaling for email card preview
+    const emailNameLen = memberName.length;
+    const emailNameFontSize = emailNameLen > 28 ? '8.5px' : emailNameLen > 22 ? '9.5px' : emailNameLen > 16 ? '11px' : '13px';
+    const emailPlanFontSize = displayPlanName.length > 20 ? '8.5px' : '10px';
+
     const activationStr = member.activationDate
       ? new Date(member.activationDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
       : new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -184,8 +189,8 @@ export async function POST(request: Request) {
                       
                       <!-- Text Details Box -->
                       <td width="151" valign="top" style="width: 151px;">
-                        <div class="force-black" style="font-size: 13px; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; line-height: 1;">${memberName}</div>
-                        <div class="force-gray" style="font-size: 10px; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 16px; white-space: nowrap; line-height: 1;">${displayPlanName}</div>
+                        <div class="force-black" style="font-size: ${emailNameFontSize}; font-family: 'Georgia', serif; font-weight: 700; color: #1d1d1f; text-transform: uppercase; margin-bottom: 4px; line-height: 1.2; word-break: break-word; max-width: 150px;">${memberName}</div>
+                        <div class="force-gray" style="font-size: ${emailPlanFontSize}; font-family: 'Georgia', serif; font-weight: 500; color: #374151; margin-bottom: 16px; line-height: 1.2; word-break: break-word; max-width: 150px;">${displayPlanName}</div>
                         
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                           <tr>

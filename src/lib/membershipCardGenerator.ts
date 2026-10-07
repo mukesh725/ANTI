@@ -31,6 +31,19 @@ export async function generateMemberQRCode(textOrUrl: string): Promise<string> {
  */
 async function getLogoDataUrl(filename: string): Promise<string> {
   try {
+    const localPath = path.join(process.cwd(), 'public', filename.replace(/^\/+/, ''));
+    if (fs.existsSync(localPath)) {
+      const buffer = fs.readFileSync(localPath);
+      let mime = 'image/png';
+      if (filename.endsWith('.svg')) mime = 'image/svg+xml';
+      else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) mime = 'image/jpeg';
+      return `data:${mime};base64,${buffer.toString('base64')}`;
+    }
+  } catch (e) {
+    // continue to fetch fallback
+  }
+
+  try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
     let fetchUrl = filename.startsWith('http') ? filename : `${baseUrl}/${filename.replace(/^\/+/, '')}`;
 
@@ -113,21 +126,34 @@ export async function generateDigitalMembershipCard(
 
   let activeTemplateUrl = '';
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
-  let templatePath = '';
+  let templateFileName = '';
   if (isInfinite) {
-    templatePath = `${baseUrl}/templates/infinite.jpg`;
+    templateFileName = 'infinite.jpg';
   } else if (isSignature) {
-    templatePath = `${baseUrl}/templates/signature.jpg`;
+    templateFileName = 'signature.jpg';
   } else if (isPreferred) {
-    templatePath = `${baseUrl}/templates/preferred.jpg`;
+    templateFileName = 'preferred.jpg';
   } else if (isSelect) {
-    templatePath = `${baseUrl}/templates/select.jpg`;
+    templateFileName = 'select.jpg';
   }
 
-  // Fetch the template image and convert it to a Base64 data URL so it renders inside the SVG
-  if (templatePath) {
+  // 1. Try local filesystem read first (instant, 0ms, reliable across server and edge)
+  if (templateFileName) {
     try {
-      // Add a timestamp to completely bypass CDN/Next.js edge caching
+      const localTemplatePath = path.join(process.cwd(), 'public', 'templates', templateFileName);
+      if (fs.existsSync(localTemplatePath)) {
+        const buffer = fs.readFileSync(localTemplatePath);
+        activeTemplateUrl = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+      }
+    } catch (e) {
+      console.warn('Local template read failed, falling back to fetch', e);
+    }
+  }
+
+  // 2. Fallback to network fetch if local file not found or if custom remote template was provided
+  if (!activeTemplateUrl && templateFileName) {
+    const templatePath = (templates as any)?.[rawPlan.split(' ')[0]] || `${baseUrl}/templates/${templateFileName}`;
+    try {
       const timestamp = new Date().getTime();
       const response = await fetch(`${templatePath}?v=${timestamp}`, { cache: 'no-store' });
       if (response.ok) {
@@ -183,13 +209,62 @@ export async function generateDigitalMembershipCard(
     year: 'numeric',
   }).replace(',', '');
 
+  // Calculate dynamic typography based on name length to strictly prevent any overlap with QR code
+  const rawNameLen = memberName.length;
+  const isAllUpper = memberName === memberName.toUpperCase() && /[A-Z]/.test(memberName);
+  const glyphFactor = isAllUpper ? 0.69 : 0.58;
+  const maxAvailableWidth = 350;
+
+  let nameFontSize = 30;
+  if (rawNameLen <= 14) {
+    nameFontSize = isAllUpper ? 28 : 30;
+  } else if (rawNameLen <= 18) {
+    nameFontSize = isAllUpper ? 24 : 26;
+  } else if (rawNameLen <= 22) {
+    nameFontSize = isAllUpper ? 21 : 23;
+  } else if (rawNameLen <= 27) {
+    nameFontSize = isAllUpper ? 18.5 : 20;
+  } else if (rawNameLen <= 33) {
+    nameFontSize = isAllUpper ? 16 : 17.5;
+  } else {
+    nameFontSize = Math.max(13, Math.floor(maxAvailableWidth / (rawNameLen * glyphFactor)));
+  }
+
+  // Proportionally scale plan title so member name is always the dominant element
+  let planFontSize = 24;
+  if (nameFontSize <= 16) planFontSize = 14;
+  else if (nameFontSize <= 19) planFontSize = 16;
+  else if (nameFontSize <= 23) planFontSize = 18;
+  else if (nameFontSize <= 27) planFontSize = 20;
+  else planFontSize = 22;
+
+  // Strict boundary clamp ensuring text can never exceed maxAvailableWidth (350px)
+  const estimatedWidth = rawNameLen * nameFontSize * glyphFactor;
+  const nameTextLengthAttr = (estimatedWidth > maxAvailableWidth || rawNameLen > 28)
+    ? `textLength="${maxAvailableWidth}" lengthAdjust="spacingAndGlyphs"`
+    : '';
+
+  const planTextLengthAttr = (displayPlanTitle.length > 24)
+    ? `textLength="${maxAvailableWidth}" lengthAdjust="spacingAndGlyphs"`
+    : '';
+
+  const escapeXml = (str: string) =>
+    str.replace(/[<>&'"]/g, (c) => {
+      switch (c) {
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '&': return '&amp;';
+        case '\'': return '&apos;';
+        case '"': return '&quot;';
+        default: return c;
+      }
+    });
+
   // Dynamic Dimensions
   const svgWidth = 900;
   const svgHeight = 920;
   const cardWidth = 860;
   const cardHeight = 880;
-  const textTranslateY = 560;
-  const qrTranslateY = 560;
 
   // SVG graphic matching the exact card design
   const svgContent = `
@@ -200,8 +275,8 @@ export async function generateDigitalMembershipCard(
           <rect x="20" y="20" width="${cardWidth}" height="${cardHeight}" rx="44" />
         </clipPath>
         <style>
-          .member-name { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 32px; fill: ${textNameColor}; }
-          .member-plan { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 400; font-size: 24px; fill: ${textColor}; }
+          .member-name { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: ${nameFontSize}px; fill: ${textNameColor}; }
+          .member-plan { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 400; font-size: ${planFontSize}px; fill: ${textColor}; }
           .lbl { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 500; font-size: 16px; fill: ${textColor}; }
           .val { font-family: 'Georgia', 'Times New Roman', serif; font-weight: 500; font-size: 20px; fill: ${textNameColor}; }
           .scan-lbl { font-family: 'Times New Roman', 'Georgia', serif; font-weight: 700; font-size: 13px; fill: ${textNameColor}; letter-spacing: 1px; }
@@ -271,13 +346,13 @@ export async function generateDigitalMembershipCard(
 
       <!-- Member Details -->
       <g transform="translate(180, 590)">
-        <text x="0" y="0" class="member-name">${memberName}</text>
-        <text x="0" y="38" class="member-plan">${displayPlanTitle}</text>
+        <text x="0" y="0" class="member-name" ${nameTextLengthAttr}>${escapeXml(memberName)}</text>
+        <text x="0" y="38" class="member-plan" ${planTextLengthAttr}>${escapeXml(displayPlanTitle)}</text>
         <g transform="translate(0, 100)">
           <text x="0" y="0" class="lbl">One ID</text>
-          <text x="0" y="28" class="val">${displayId}</text>
+          <text x="0" y="28" class="val">${escapeXml(displayId)}</text>
           <text x="170" y="0" class="lbl">Valid Until</text>
-          <text x="170" y="28" class="val">${formattedExpiry}</text>
+          <text x="170" y="28" class="val">${escapeXml(formattedExpiry)}</text>
         </g>
       </g>
 
