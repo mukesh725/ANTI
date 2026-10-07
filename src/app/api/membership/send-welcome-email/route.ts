@@ -298,7 +298,7 @@ export async function POST(request: Request) {
               </div>
             </div>
 
-            ${planKey === 'Signature' ? `
+            ${(planKey === 'Signature' || planKey === 'Infinite') ? `
             <!-- AIRO Care365 Section -->
             <div style="background-color: #ffeaea; border: 1px solid #ffcaca; border-radius: 20px; padding: 24px; margin-bottom: 28px;">
               <h3 style="margin-top: 0; margin-bottom: 8px; color: #D02029; font-size: 16px;">🚨 AIRO Care365™ Included</h3>

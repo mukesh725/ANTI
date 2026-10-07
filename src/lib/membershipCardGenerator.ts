@@ -128,7 +128,8 @@ export async function generateDigitalMembershipCard(
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
   let templateFileName = '';
   if (isInfinite) {
-    templateFileName = 'infinite.jpg';
+    // Currently use Signature theme as requested until custom Infinite theme is provided later
+    templateFileName = 'signature.jpg';
   } else if (isSignature) {
     templateFileName = 'signature.jpg';
   } else if (isPreferred) {
@@ -176,14 +177,8 @@ export async function generateDigitalMembershipCard(
   let textColor = activeTemplateUrl ? '#1e293b' : '#ffffff';
   let textNameColor = activeTemplateUrl ? '#0f172a' : '#ffffff';
 
-  if (isInfinite) {
-    outerBgFill = 'url(#infOuterGrad)';
-    innerBgFill = 'url(#infInnerGrad)';
-    outerStroke = '#10b981';
-    innerStroke = '#34d399';
-    textColor = activeTemplateUrl ? '#1e293b' : '#6ee7b7';
-    textNameColor = activeTemplateUrl ? '#0f172a' : '#ffffff';
-  } else if (isSignature) {
+  if (isInfinite || isSignature) {
+    // Infinite currently shares the Signature gold/amber executive theme
     outerBgFill = 'url(#sigOuterGrad)';
     innerBgFill = 'url(#sigInnerGrad)';
     outerStroke = '#ca8a04';
