@@ -34,7 +34,7 @@ export function GlobalFooter() {
 
   return (
     <footer className="border-t border-theme/10 py-16 px-8 md:px-16 bg-theme text-paper rounded-t-[3rem] w-full mt-auto">
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 md:gap-12">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
 
         {/* Brand Column */}
         <div className="col-span-1 md:col-span-1">
@@ -59,6 +59,48 @@ export function GlobalFooter() {
             >
               Twitter
             </motion.a>
+          </div>
+
+          {/* App Store & Play Store Buttons Side-by-Side Under Socials */}
+          <div className="mt-8 flex flex-col gap-2.5">
+            <div className="flex items-center gap-3 flex-wrap">
+              <a
+                href={PLAY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-85 transition-opacity"
+                aria-label="Get it on Google Play"
+              >
+                <img
+                  src="/images/google-play-badge.svg"
+                  alt="Get it on Google Play"
+                  className="h-9 w-auto object-contain"
+                />
+              </a>
+
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-85 transition-opacity"
+                aria-label="Download on the App Store"
+              >
+                <img
+                  src="/images/app-store-badge.svg"
+                  alt="Download on the App Store"
+                  className="h-9 w-auto object-contain"
+                />
+              </a>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsQrModalOpen(true)}
+              className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-paper/50 hover:text-paper transition-colors group cursor-pointer w-fit"
+            >
+              <QrCode className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" />
+              <span>Scan QR code to install</span>
+            </button>
           </div>
         </div>
 
@@ -187,57 +229,6 @@ export function GlobalFooter() {
           </ul>
         </div>
 
-        {/* Mobile App Column - Clean Buttons with Connected QR Modal */}
-        <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-          <h3 className="font-sans text-[10px] font-bold mb-6 text-paper/40 tracking-[0.2em] uppercase">
-            Experience AIRO
-          </h3>
-          <p className="text-xs text-paper/70 leading-relaxed mb-6">
-            Download our mobile app on iOS and Android for real-time vitals, clinic booking, and rapid delivery.
-          </p>
-
-          <div className="flex flex-col gap-3">
-            {/* Google Play Button */}
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block hover:opacity-85 transition-opacity w-fit"
-              aria-label="Get it on Google Play"
-            >
-              <img
-                src="/images/google-play-badge.svg"
-                alt="Get it on Google Play"
-                className="h-10 w-auto object-contain"
-              />
-            </a>
-
-            {/* Apple App Store Button */}
-            <a
-              href={APP_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block hover:opacity-85 transition-opacity w-fit"
-              aria-label="Download on the App Store"
-            >
-              <img
-                src="/images/app-store-badge.svg"
-                alt="Download on the App Store"
-                className="h-10 w-auto object-contain"
-              />
-            </a>
-
-            {/* Connected QR Code Scanner Trigger */}
-            <button
-              type="button"
-              onClick={() => setIsQrModalOpen(true)}
-              className="mt-2 inline-flex items-center gap-2 text-[11px] font-semibold text-paper/60 hover:text-paper transition-colors group cursor-pointer w-fit"
-            >
-              <QrCode className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity" />
-              <span>Scan QR code to install</span>
-            </button>
-          </div>
-        </div>
 
       </div>
 
