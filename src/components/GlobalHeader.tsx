@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, User as UserIcon, ShoppingBag, ChevronDown } from "lucide-react";
+import { Menu, X, User as UserIcon, ShoppingBag, ChevronDown, Smartphone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SmartCartDrawer } from "@/modules/retail/shared/components/SmartCartDrawer";
 import { LanguageTranslateWidget } from "./LanguageTranslateWidget";
@@ -218,7 +218,24 @@ export function GlobalHeader() {
           })}
         </div>
 
-        <div className="flex items-center justify-end gap-4 md:gap-6 flex-1">
+        <div className="flex items-center justify-end gap-3 md:gap-5 flex-1">
+          <Link href="/app" title="Download AIRO Mobile App">
+            <motion.div 
+              whileTap={{ scale: 0.96 }}
+              transition={springDefault}
+              className={`hidden sm:flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border transition-all duration-300 ${
+                isScrolled 
+                  ? "border-gray-200 text-ink hover:bg-gray-100" 
+                  : (["/", "/health", "/health-chair"].includes(pathname) 
+                      ? "border-white/30 text-paper hover:bg-white/10" 
+                      : "border-gray-200 text-ink hover:bg-gray-100")
+              }`}
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>Get App</span>
+            </motion.div>
+          </Link>
+
           <div className="hidden lg:block">
             <LanguageTranslateWidget />
           </div>
@@ -359,6 +376,17 @@ export function GlobalHeader() {
                     </motion.div>
                   </div>
                 ))}
+
+                <div className="p-4 border-t border-black/5 mt-2">
+                  <Link
+                    href="/app"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#006537] text-white rounded-xl font-bold text-xs uppercase tracking-wider shadow"
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    Download AIRO App
+                  </Link>
+                </div>
               </div>
             </motion.div>
           </>
