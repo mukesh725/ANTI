@@ -13,8 +13,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onSelect, 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
 
+  const minDateObj = new Date(minDate + "T00:00:00");
+  const isMinMonth = 
+    currentMonth.getFullYear() === minDateObj.getFullYear() &&
+    currentMonth.getMonth() === minDateObj.getMonth();
+
   const handlePrevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+    if (!isMinMonth) {
+      setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+    }
   };
 
   const handleNextMonth = () => {
@@ -25,8 +32,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onSelect, 
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push(<div key={`empty-${i}`} className="w-8 h-8"></div>);
   }
-
-  const minDateObj = new Date(minDate + "T00:00:00");
 
   for (let d = 1; d <= daysInMonth; d++) {
     const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
@@ -59,8 +64,16 @@ export const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onSelect, 
   return (
     <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 mt-4">
       <div className="flex justify-between items-center mb-6">
-        <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-50 rounded-full transition-colors border border-gray-100">
-          <ChevronLeft className="w-4 h-4 text-gray-600" />
+        <button 
+          onClick={handlePrevMonth} 
+          disabled={isMinMonth}
+          className={`p-2 rounded-full transition-colors border border-gray-100 ${
+            isMinMonth 
+              ? 'opacity-30 cursor-not-allowed text-gray-300' 
+              : 'hover:bg-gray-50 text-gray-600'
+          }`}
+        >
+          <ChevronLeft className="w-4 h-4" />
         </button>
         <p className="font-bold text-gray-900 text-sm tracking-wide">
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}

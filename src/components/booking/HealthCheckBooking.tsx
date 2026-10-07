@@ -46,11 +46,19 @@ export function HealthCheckBooking() {
   // We no longer pre-generate an array of 10 dates; 
   // the user selects any date from the native date picker.
   
-  // Custom Calendar State
-  const [calendarMonth, setCalendarMonth] = useState(() => new Date(2026, 7, 1)); // Default to August 2026
+  // Custom Calendar State - defaults dynamically to current month & year
+  const [calendarMonth, setCalendarMonth] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  });
 
   const handlePrevMonth = () => {
-    setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1));
+    const now = new Date();
+    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const prev = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
+    if (prev >= currentMonthStart) {
+      setCalendarMonth(prev);
+    }
   };
 
   const handleNextMonth = () => {
@@ -64,7 +72,8 @@ export function HealthCheckBooking() {
     const firstDay = new Date(year, month, 1).getDay();
     
     const days = [];
-    const minDate = new Date('2026-08-21T00:00:00');
+    const now = new Date();
+    const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     
     // Empty slots before 1st of month
     for (let i = 0; i < firstDay; i++) {
@@ -102,10 +111,22 @@ export function HealthCheckBooking() {
     
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
+    const isCurrentMonth = 
+      calendarMonth.getFullYear() === now.getFullYear() &&
+      calendarMonth.getMonth() === now.getMonth();
+
     return (
       <div className="bg-white border border-theme/10 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
         <div className="flex items-center justify-between mb-6">
-          <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-full transition-colors border border-transparent hover:border-gray-200">
+          <button 
+            onClick={handlePrevMonth} 
+            disabled={isCurrentMonth}
+            className={`p-2 rounded-full transition-colors border border-transparent ${
+              isCurrentMonth 
+                ? 'opacity-30 cursor-not-allowed text-gray-300' 
+                : 'hover:bg-gray-100 text-ink hover:border-gray-200'
+            }`}
+          >
             <ChevronLeft className="w-5 h-5 text-ink" />
           </button>
           <div className="font-bold text-lg text-ink font-serif tracking-wide">
@@ -433,17 +454,13 @@ export function HealthCheckBooking() {
                       <div>
                         <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Date</p>
                         <p className="font-medium">
-                          {foundBooking.location?.includes("Kondapur") 
-                            ? "Postponed (Date TBD)" 
-                            : new Date(foundBooking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' })}
+                          {new Date(foundBooking.date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
                       <div>
                         <p className="text-[10px] text-ink/50 uppercase tracking-widest font-bold">Time</p>
                         <p className="font-medium">
-                          {foundBooking.location?.includes("Kondapur") 
-                            ? "TBD" 
-                            : foundBooking.timeSlot}
+                          {foundBooking.timeSlot}
                         </p>
                       </div>
                     </div>
@@ -483,17 +500,10 @@ export function HealthCheckBooking() {
                     </select>
                   </div>
                   
-                  {selectedLocation === "Kondapur" ? (
-                    <div className="bg-orange-50 text-orange-800 p-6 rounded-xl border border-orange-200 text-sm mt-4 text-center">
-                      <p className="font-bold mb-2">Opening Postponed!</p>
-                      <p>Our Kondapur clinic's opening date has been postponed. New bookings are temporarily suspended until we announce our grand opening date. Existing bookings remain valid.</p>
-                    </div>
-                  ) : (
-                    renderCustomCalendar()
-                  )}
+                  {renderCustomCalendar()}
                 </div>
 
-                {selectedLocation !== "Kondapur" && selectedDate && (
+                {selectedDate && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}

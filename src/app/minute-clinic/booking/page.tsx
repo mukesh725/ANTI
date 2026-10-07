@@ -23,9 +23,7 @@ const getISTDateString = () => {
 };
 
 const getMinBookingDate = () => {
-  const today = getISTDateString();
-  const launchDate = "2026-08-22";
-  return today > launchDate ? today : launchDate;
+  return getISTDateString();
 };
 
 type Step = "care-option" | "service" | "location" | "details" | "review" | "consent" | "confirmation";
@@ -877,39 +875,30 @@ export default function MinuteClinicBookingPage() {
                     </div>
                     
                     <div className="border-t border-gray-100 pt-4 mt-2">
-                      {locName === "Kondapur" ? (
-                        <div className="bg-orange-50 text-orange-800 p-4 rounded-xl border border-orange-200 text-sm mt-4 text-center">
-                          <p className="font-bold mb-2">Opening Postponed!</p>
-                          <p>Our Kondapur clinic's opening date has been postponed. New bookings are temporarily suspended until we announce our grand opening date. Existing bookings remain valid.</p>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="mb-6 w-full">
-                            <p className="text-sm font-bold text-gray-900 mb-2">Select Date</p>
-                            <DatePicker 
-                              selectedDate={clinicSelectedDates[clinic.id] || getMinBookingDate()}
-                              onSelect={(date) => setClinicSelectedDates({ ...clinicSelectedDates, [clinic.id]: date })}
-                              minDate={getMinBookingDate()}
-                            />
-                          </div>
+                      <div className="mb-6 w-full">
+                        <p className="text-sm font-bold text-gray-900 mb-2">Select Date</p>
+                        <DatePicker 
+                          selectedDate={clinicSelectedDates[clinic.id] || getMinBookingDate()}
+                          onSelect={(date) => setClinicSelectedDates({ ...clinicSelectedDates, [clinic.id]: date })}
+                          minDate={getMinBookingDate()}
+                        />
+                      </div>
 
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            {["08:50 AM", "09:10 AM", "10:00 AM", "11:20 AM", "12:10 PM", "01:20 PM", "03:20 PM", "04:40 PM"].map(time => (
-                              <button 
-                                key={time}
-                                type="button"
-                                onClick={() => {
-                                  setState({ ...state, location: clinic, time, date: clinicSelectedDates[clinic.id] || "Today" });
-                                  handleNext("details");
-                                }}
-                                className="border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white rounded-lg py-2.5 text-sm font-bold transition-colors w-full text-center"
-                              >
-                                {time}
-                              </button>
-                            ))}
-                          </div>
-                        </>
-                      )}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {["08:50 AM", "09:10 AM", "10:00 AM", "11:20 AM", "12:10 PM", "01:20 PM", "03:20 PM", "04:40 PM"].map(time => (
+                          <button 
+                            key={time}
+                            type="button"
+                            onClick={() => {
+                              setState({ ...state, location: clinic, time, date: clinicSelectedDates[clinic.id] || "Today" });
+                              handleNext("details");
+                            }}
+                            className="border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white rounded-lg py-2.5 text-sm font-bold transition-colors w-full text-center"
+                          >
+                            {time}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 );
