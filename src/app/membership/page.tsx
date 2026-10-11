@@ -252,7 +252,8 @@ export default function MembershipPage() {
                 ].map((item, i) => (
                   <div key={i} className={`p-4 rounded-2xl bg-white border ${item.border} shadow-sm text-center`}>
                     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-1">{item.tier}</span>
-                    <div className="text-2xl font-extrabold text-[#006537] mb-1">{item.price}</div>
+                    <div className="text-2xl font-extrabold text-[#006537] mb-0.5">{item.price}</div>
+                    <div className="text-[10px] text-gray-500 font-medium mb-1">+ GST applicable</div>
                     <div className="text-xs text-gray-500 font-medium">{item.desc}</div>
                   </div>
                 ))}
@@ -301,7 +302,8 @@ export default function MembershipPage() {
                       </div>
                     )}
                     <h3 className="text-xl font-bold text-center mb-2 text-[#006537]">{plan.name}</h3>
-                    <div className="text-center text-3xl font-bold mb-6">{plan.price}<span className="text-sm font-normal text-gray-500"> / year</span></div>
+                    <div className="text-center text-3xl font-bold mb-1">{plan.price}<span className="text-sm font-normal text-gray-500"> / year</span></div>
+                    <div className="text-center text-xs text-gray-500 font-medium mb-6">+ GST applicable</div>
                     
                     <div className="space-y-3 text-sm">
                       {[
@@ -366,11 +368,26 @@ export default function MembershipPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-sm">
                     <tr className="hover:bg-gray-50">
-                      <td className="p-5 font-medium text-gray-700">Annual Membership Fee</td>
-                      <td className="p-5 text-center font-bold text-lg">₹999</td>
-                      <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">₹2,999</td>
-                      <td className="p-5 text-center font-bold text-lg">₹6,999</td>
-                      <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">₹8,999</td>
+                      <td className="p-5 font-medium text-gray-700">
+                        Annual Membership Fee
+                        <span className="block text-xs font-normal text-gray-500 mt-0.5">(+ GST applicable for all plans)</span>
+                      </td>
+                      <td className="p-5 text-center font-bold text-lg">
+                        ₹999
+                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                      </td>
+                      <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">
+                        ₹2,999
+                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                      </td>
+                      <td className="p-5 text-center font-bold text-lg">
+                        ₹6,999
+                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                      </td>
+                      <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">
+                        ₹8,999
+                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                      </td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="p-5 text-gray-600">Members Covered</td>
@@ -981,6 +998,7 @@ export default function MembershipPage() {
                     <div>
                       <h4 className="font-bold text-gray-900 text-sm leading-tight">{plan.name}</h4>
                       <p className="text-xl font-extrabold text-[#006537] mt-1">{plan.price} <span className="text-[10px] text-gray-500 font-normal">/ yr</span></p>
+                      <p className="text-[10px] text-gray-500 font-medium mt-0.5">+ GST applicable</p>
                     </div>
                     <p className="text-[11px] text-gray-500 mt-2 leading-snug">{plan.desc}</p>
                   </div>
@@ -1109,6 +1127,10 @@ export default function MembershipPage() {
           <p>2. Membership benefits are available at participating AIRO locations and through the AIRO App.</p>
           <p>3. Complimentary consultations, screenings, and health assessments must be used within the membership year.</p>
           <p>4. The AIRO ONE™ Signature Comprehensive Health Assessment is a preventive health screening designed to help identify potential health risks. It is not intended to diagnose, treat, cure, or prevent any disease.</p>
+          <p>5. The products shown are for representation only, so what you get may look different.</p>
+          <p>6. Airo can change the offer: It reserves the right to terminate, modify, or extend the offer at its sole discretion, without prior notice and without liability.</p>
+          <p>7. The offer is valid at select stores only and while stocks last.</p>
+          <p>8. All offers are applied as discounts on the customer’s invoice.</p>
         </div>
 
       </div>

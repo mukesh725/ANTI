@@ -133,7 +133,12 @@ export default function PlanSelectionScreen({
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-semibold text-[#006537] mb-4">Choose Your Plan</h2>
-          <p className="text-gray-500 text-lg">Select the membership that fits your wellness journey.</p>
+          <p className="text-gray-500 text-lg">
+            Select the membership that fits your wellness journey.
+            <span className="inline-block text-xs font-semibold text-[#006537] bg-green-50 border border-[#006537]/20 px-3 py-1 rounded-full ml-2">
+              + GST applicable for all plans
+            </span>
+          </p>
         </div>
 
         {error && <div className="text-center text-[#D02029] mb-8 bg-red-50 p-4 rounded-xl max-w-md mx-auto">{error}</div>}
@@ -173,6 +178,7 @@ export default function PlanSelectionScreen({
                     <span className="text-3xl font-extrabold text-[#006537]">₹{plan.price || 0}</span>
                     <span className="text-gray-400 text-xs">/ year</span>
                   </div>
+                  <div className="text-[11px] font-medium text-gray-500 mt-1">+ GST applicable</div>
                   {plan.description && <p className="text-gray-500 mt-3 text-xs leading-relaxed">{plan.description}</p>}
                 </div>
 

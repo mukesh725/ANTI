@@ -47,11 +47,26 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
             </thead>
             <tbody className="divide-y divide-gray-100 text-sm">
               <tr className="hover:bg-gray-50">
-                <td className="p-5 font-medium text-gray-700">Annual Membership Fee</td>
-                <td className="p-5 text-center font-bold text-lg">₹999</td>
-                <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">₹2,999</td>
-                <td className="p-5 text-center font-bold text-lg">₹6,999</td>
-                <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">₹8,999</td>
+                <td className="p-5 font-medium text-gray-700">
+                  Annual Membership Fee
+                  <span className="block text-xs font-normal text-gray-500 mt-0.5">(+ GST applicable for all plans)</span>
+                </td>
+                <td className="p-5 text-center font-bold text-lg">
+                  ₹999
+                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                </td>
+                <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">
+                  ₹2,999
+                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                </td>
+                <td className="p-5 text-center font-bold text-lg">
+                  ₹6,999
+                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                </td>
+                <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">
+                  ₹8,999
+                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
+                </td>
               </tr>
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Members Covered</td>
@@ -340,12 +355,16 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
 
       {/* Terms & Conditions */}
       <div className="text-sm text-gray-500 max-w-4xl mx-auto space-y-2 opacity-75">
-        <p className="font-semibold mb-2">Terms & Conditions:</p>
+        <p className="font-semibold mb-2">Terms &amp; Conditions:</p>
         <p>1. Pharmacy discounts apply only to eligible products and are subject to applicable laws, regulations, and company policies.</p>
         <p>2. Membership benefits are available at participating AIRO locations and through the AIRO App.</p>
         <p>3. Complimentary consultations, screenings, and health assessments must be used within the membership year.</p>
         <p>4. The AIRO ONE™ Signature Comprehensive Health Assessment is a preventive health screening designed to help identify potential health risks. It is not intended to diagnose, treat, cure, or prevent any disease. Consult a qualified healthcare professional for interpretation of results.</p>
         <p>5. AIRO reserves the right to modify membership benefits, pricing, and promotional offers.</p>
+        <p>6. The products shown are for representation only, so what you get may look different.</p>
+        <p>7. Airo can change the offer: It reserves the right to terminate, modify, or extend the offer at its sole discretion, without prior notice and without liability.</p>
+        <p>8. The offer is valid at select stores only and while stocks last.</p>
+        <p>9. All offers are applied as discounts on the customer’s invoice.</p>
       </div>
     </div>
   );

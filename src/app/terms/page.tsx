@@ -70,7 +70,17 @@ export default function TermsPage() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="font-serif text-2xl text-ink tracking-wide border-b border-[#E6DFD5] pb-2">3. Minute Clinic & Telemedicine Guidelines</h2>
+          <h2 className="font-serif text-2xl text-ink tracking-wide border-b border-[#E6DFD5] pb-2">3. Offers, Promotions &amp; Product Representation</h2>
+          <ul className="list-disc pl-5 space-y-2 text-sm text-ink/85">
+            <li>The products shown are for representation only, so what you get may look different.</li>
+            <li>Airo can change the offer: It reserves the right to terminate, modify, or extend the offer at its sole discretion, without prior notice and without liability.</li>
+            <li>The offer is valid at select stores only and while stocks last.</li>
+            <li>All offers are applied as discounts on the customer&#39;s invoice.</li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="font-serif text-2xl text-ink tracking-wide border-b border-[#E6DFD5] pb-2">4. Minute Clinic &amp; Telemedicine Guidelines</h2>
           <p>
             AIRO&#39;s telehealth services and &quot;Minute Clinic&quot; operate in accordance with the Telemedicine Practice Guidelines issued by the Ministry of Health and Family Welfare (MoHFW) and NITI Aayog.
           </p>
@@ -80,7 +90,7 @@ export default function TermsPage() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="font-serif text-2xl text-ink tracking-wide border-b border-[#E6DFD5] pb-2">4. Cancellations & Returns</h2>
+          <h2 className="font-serif text-2xl text-ink tracking-wide border-b border-[#E6DFD5] pb-2">5. Cancellations &amp; Returns</h2>
           <p>
             AIRO maintains a transparent returns policy governed by the Consumer Protection (E-Commerce) Rules 2020. 
             For full details on non-returnable items (e.g., compounded medicines, perishable foods), refund timelines, and cancellation procedures, please read our dedicated <Link href="/refund-policy" className="underline font-medium text-emerald-700 hover:text-emerald-900">Refund Policy</Link> and <Link href="/shipping-policy" className="underline font-medium text-emerald-700 hover:text-emerald-900">Shipping Policy</Link>.
@@ -90,7 +100,7 @@ export default function TermsPage() {
         <div className="space-y-4 bg-theme text-paper p-6 rounded-2xl">
           <h2 className="font-serif text-xl tracking-wide flex items-center gap-2">
             <FileText className="w-5 h-5 text-theme" />
-            5. Governing Law & Dispute Resolution
+            6. Governing Law &amp; Dispute Resolution
           </h2>
           <p className="text-paper/80 text-sm">
             These Terms of Service are governed by and construed in accordance with the laws of the Republic of India. Any disputes arising out of or related to these terms, the website, or services provided shall be subject to the exclusive jurisdiction of the courts located in <strong>Hyderabad, Telangana, India</strong>.
