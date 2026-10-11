@@ -33,6 +33,7 @@ export default function MembershipPage() {
   const { user, profile } = useAuth();
   const [currentStep, setCurrentStep] = useState<0 | 1 | 2 | 3>(0); // 0 = Landing View, 1 = Personal Info, 2 = Plan Select, 3 = Confirmation
   const [isHealthDomain, setIsHealthDomain] = useState(false);
+  const [isOneDomain, setIsOneDomain] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const formSectionRef = useRef<HTMLDivElement>(null);
@@ -44,13 +45,15 @@ export default function MembershipPage() {
   const [lookupResult, setLookupResult] = useState<MemberRecord | null>(null);
   const [lookupError, setLookupError] = useState('');
   
-  // Detect domain (AIRO Essentials vs AIRO Health)
+  // Detect domain (AIRO Essentials vs AIRO Health vs AIRO ONE)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const host = window.location.hostname;
       const port = window.location.port;
       if (host.includes("airohealth") || host.includes("health.airo") || port === "3001") {
         setIsHealthDomain(true);
+      } else if (host.includes("airoone")) {
+        setIsOneDomain(true);
       }
     }
   }, []);
@@ -188,8 +191,8 @@ export default function MembershipPage() {
         {/* Domain-Aware Header Logo */}
         <div className="text-center mb-6">
           <img 
-            src={isHealthDomain ? "/airo-health-logo.png" : "/airo-essentials-logo.png"} 
-            alt={isHealthDomain ? "AIRO Health" : "AIRO Essentials"} 
+            src={isOneDomain ? "/airo-one-logo.png" : isHealthDomain ? "/airo-health-logo.png" : "/airo-essentials-logo.png"} 
+            alt={isOneDomain ? "AIRO ONE" : isHealthDomain ? "AIRO Health" : "AIRO Essentials"} 
             className="h-12 md:h-16 mx-auto object-contain mb-4 drop-shadow-sm"
           />
 
