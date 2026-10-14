@@ -82,7 +82,20 @@ export default function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pillars = (homeData.sections as any)?.pillars;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ecosystemCategories = (homeData.sections as any)?.ecosystemCategories || [];
+  const rawEcosystemCategories: Array<{ name: string; description: string; link: string; status: string }> = 
+    (homeData.sections as any)?.ecosystemCategories || [];
+  const ecosystemCategories = rawEcosystemCategories
+    .filter((cat) => {
+      const n = (cat.name || "").toLowerCase();
+      return !n.includes("diagnostic") && !n.includes("iv therapy");
+    })
+    .map((cat) => {
+      const nameLower = (cat.name || "").toLowerCase();
+      if (nameLower.includes("med") || cat.link === "/emed" || cat.link?.includes("airoemed.com")) {
+        return { ...cat, link: "/airomed" };
+      }
+      return cat;
+    });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lifestyleBanner = (homeData.sections as any)?.lifestyleBanner;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -192,9 +205,6 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-theme/10">
-                  <ArrowRight className="w-4 h-4 text-ink -rotate-45" />
-                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
                 <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.essentials?.title || "AIRO Essentials"}</h3>
@@ -218,9 +228,6 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-theme/10">
-                  <ArrowRight className="w-4 h-4 text-ink -rotate-45" />
-                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
                 <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.pharmacy?.title || "AIRO Pharmacy & Compounding"}</h3>
@@ -244,9 +251,6 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-theme/10">
-                  <ArrowRight className="w-4 h-4 text-ink -rotate-45" />
-                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
                 <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">{pillars?.clinic?.title || "AIRO Minute Clinic"}</h3>
@@ -260,10 +264,9 @@ export default function HomePage() {
             </div>
 
             {/* Pillar 4: AIRO eMed */}
-            <Link
-              href="/emed"
+            <div
               id="pillar-airo-emed-card"
-              className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+              className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-theme/5">
                 <ParallaxImage 
@@ -272,26 +275,17 @@ export default function HomePage() {
                   className="w-full h-full"
                   speed={0.06}
                 />
-                <div className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-sm border border-theme/10">
-                  <ArrowRight className="w-4 h-4 text-ink -rotate-45" />
-                </div>
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="font-serif text-3xl font-medium text-ink tracking-tight group-hover:text-theme transition-colors duration-300">AIRO eMed</h3>
-                  <span className="bg-theme/10 text-theme border border-theme/20 text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">Virtual Care</span>
-                </div>
+                <h3 className="font-serif text-3xl font-medium text-ink tracking-tight mb-2 group-hover:text-theme transition-colors duration-300">AIRO eMed</h3>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
                   Hair Loss • Weight Loss • Hormones • Longevity
                 </p>
-                <p className="font-sans text-sm text-ink/60 leading-relaxed font-light flex-grow mb-6">
+                <p className="font-sans text-sm text-ink/60 leading-relaxed font-light flex-grow">
                   Connect with licensed doctors through secure virtual consultations. Receive customized compounded prescriptions delivered directly to your door in discreet packaging.
                 </p>
-                <div className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-theme group-hover:translate-x-1 transition-transform">
-                  Explore AIRO eMed <ArrowRight className="w-3.5 h-3.5" />
-                </div>
               </div>
-            </Link>
+            </div>
 
 
           </div>
@@ -386,13 +380,17 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-col divide-y divide-[#1C1C1E]/10">
-          {ecosystemCategories.map((cat: { name: string; description: string; link: string; status: string }, idx: number) => (
-            <Link 
-              key={idx} 
-              href={cat.link || "/"}
-              {...(cat.link?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="group py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:px-4 silent-luxury-transition"
-            >
+          {ecosystemCategories.map((cat: { name: string; description: string; link: string; status: string }, idx: number) => {
+            const isEmed = (cat.name || "").toLowerCase().includes("med");
+            const href = isEmed ? "/airomed" : (cat.link || "/");
+            const isExternal = href.startsWith("http");
+            return (
+              <Link 
+                key={idx} 
+                href={href}
+                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="group py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:px-4 silent-luxury-transition"
+              >
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 flex-1">
                 {/* Index tag */}
                 <span className="font-serif text-lg md:text-xl text-ink/30 group-hover:text-ink silent-luxury-transition">
@@ -419,9 +417,9 @@ export default function HomePage() {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
-
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 

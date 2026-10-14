@@ -131,7 +131,7 @@ export function ClientLayoutWrapper({
       link.rel = 'icon';
       document.head.appendChild(link);
     }
-    link.href = isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png';
+    link.href = '/airo-1-logo.png';
   }, []);
 
   // Compute dynamic brand theme based on pathname

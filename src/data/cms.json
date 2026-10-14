@@ -2,7 +2,7 @@
   "theme": {
     "primary": "#09120F",
     "secondary": "#FAF8F5",
-    "accent": "#D4AF37"
+    "accent": "#16213E"
   },
   "settings": {
     "storeEnabled": false
@@ -86,22 +86,10 @@
             "status": "Coming Soon"
           },
           {
-            "name": "Diagnostics",
-            "description": "Full body health checks, blood tests, and routine screenings.",
-            "link": "/minute-clinic",
-            "status": "Coming Soon"
-          },
-          {
-            "name": "IV Therapy",
-            "description": "Direct vitamin drips and instant body hydration.",
-            "link": "/minute-clinic",
-            "status": "Coming Soon"
-          },
-          {
             "name": "AIRO eMed",
-            "description": "Virtual consultations, specialized medical treatments, and discreet prescriptions.",
-            "link": "/emed",
-            "status": "Telehealth"
+            "description": "Virtual consultations, personalized treatments, and home delivery.",
+            "link": "/airomed",
+            "status": "Visit Portal"
           }
         ],
         "lifestyleBanner": {
@@ -506,7 +494,7 @@
           "description": "People shouldn't feel they're using a machine. They should feel they're gaining unprecedented visibility into their own health."
         },
         "finalCta": {
-          "title": "Your Health Journey Starts Here.",
+          "title": "Download the App to Get Free Health Checkup.",
           "image": "/chair-4.jpg",
           "buttonText": "Book Your AIRO Health Scan",
           "buttonLink": "/minute-clinic"
@@ -592,8 +580,21 @@
         "details": {
           "title": "Contact Details",
           "phone": "+91 90001 72121",
+          "healthPhone": "+91 90000 182121",
           "email": "info@airoessentials.com",
-          "address": "#7-1-621/66, 2nd Floor, Near CMS Degree College, Sanjeev Reddy Nagar (SR Nagar), Ameerpet, Hyderabad, Telangana, India - 500038"
+          "address": "Shop No.2, Ground & 1st Floor, Vamsiram's Jyothi Granules, Sy.No.199, Kondapur, Ranga Reddy Dist., Hyderabad - 500084",
+          "locations": [
+            {
+              "name": "Kondapur Flagship",
+              "address": "Shop No.2, Ground & 1st Floor, Vamsiram's Jyothi Granules, Sy.No.199, Kondapur, Ranga Reddy Dist., Hyderabad - 500084",
+              "mapUrl": "https://share.google/aAEKjMbEpbbZ3Sq6l"
+            },
+            {
+              "name": "Kompally Hub",
+              "address": "Shop No. 12 & 112, Ground Floor & First Floor, Fairmount Downtown, Kompally, Dundigal, Hyderabad, Telangana - 500100, India",
+              "mapUrl": "https://share.google/kjLtlr771ylTznpGW"
+            }
+          ]
         }
       }
     }

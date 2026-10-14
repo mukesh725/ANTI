@@ -113,9 +113,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ["/og-image.jpg"],
     },
     icons: {
-      icon: isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png',
-      apple: isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png',
-      shortcut: isHealth ? '/airo-health-favicon.png' : '/airo-essentials-favicon.png',
+      icon: '/airo-1-logo.png',
+      apple: '/airo-1-logo.png',
+      shortcut: '/airo-1-logo.png',
     },
     verification: {
       google: !isHealth ? "MMmKD7sRUv2PaDkSZsna0nnJrknvi1AXh0MuZob40mo" : undefined,
@@ -143,7 +143,7 @@ export default async function RootLayout({
     "@type": "Organization",
     "name": "AIRO",
     "url": "https://www.airoessentials.com",
-    "logo": "https://www.airoessentials.com/airo-essentials-logo.png",
+    "logo": "https://www.airoessentials.com/airo-1-logo.png",
     "sameAs": [
       "https://www.instagram.com/airoessentials",
       "https://www.facebook.com/airoessentials"
@@ -154,7 +154,7 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
     "name": "AIRO Health Hub",
-    "image": "https://www.airohealthhub.com/airo-health-logo.png",
+    "image": "https://www.airohealthhub.com/airo-1-logo.png",
     "url": "https://www.airohealthhub.com",
     "telephone": "+1-800-555-AIRO",
     "address": {
@@ -175,7 +175,7 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "Store",
     "name": "AIRO Essentials",
-    "image": "https://www.airoessentials.com/airo-essentials-logo.png",
+    "image": "https://www.airoessentials.com/airo-1-logo.png",
     "url": "https://www.airoessentials.com",
     "telephone": "+1-800-555-AIRO",
     "address": {

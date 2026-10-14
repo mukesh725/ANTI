@@ -120,9 +120,7 @@ export async function generateDigitalMembershipCard(
   const isSelect = displayPlanTitle.includes('Select') || (!isInfinite && !isSignature && !isPreferred);
 
   // Base64 logo data URLs
-  const airoOneLogoUrl = await getLogoDataUrl('airo-one-logo.png');
-  const essentialsLogoUrl = await getLogoDataUrl('airo-essentials-logo.png');
-  const healthLogoUrl = await getLogoDataUrl('airo-health-logo.png');
+  const airoOneLogoUrl = await getLogoDataUrl('airo-1-logo.png');
 
   let activeTemplateUrl = '';
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://airoessentials.com';
@@ -335,8 +333,7 @@ export async function generateDigitalMembershipCard(
 
       <!-- Inner Logos -->
       ${activeTemplateUrl ? '' : `
-      <image href="${essentialsLogoUrl}" x="120" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
-      <image href="${healthLogoUrl}" x="480" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
+      <image href="${airoOneLogoUrl}" x="300" y="320" width="300" height="90" preserveAspectRatio="xMidYMid meet" />
       `}
 
       <!-- Member Details -->

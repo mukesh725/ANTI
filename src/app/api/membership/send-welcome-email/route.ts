@@ -149,18 +149,7 @@ export async function POST(request: Request) {
             
             <!-- Top Logo Header -->
             <div style="text-align: center; margin-bottom: 32px;">
-              <img src="https://airoessentials.com/airo-one-logo.png" width="160" alt="AIRO ONE" style="display: block; margin: 0 auto;"/>
-              
-              <table class="hide-on-mobile" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 20px; max-width: 320px; margin-left: auto; margin-right: auto;">
-                <tr>
-                  <td align="center" width="50%" style="padding-right: 12px;">
-                    <img src="https://airoessentials.com/airo-essentials-logo.png" width="110" alt="AIRO Essentials" style="display: block; margin: 0 auto;" />
-                  </td>
-                  <td align="center" width="50%" style="padding-left: 12px;">
-                    <img src="https://airoessentials.com/airo-health-logo.png" width="110" alt="AIRO Health" style="display: block; margin: 0 auto;" />
-                  </td>
-                </tr>
-              </table>
+              <img src="https://airoessentials.com/airo-1-logo.png" width="160" alt="AIRO ONE" style="display: block; margin: 0 auto;"/>
             </div>
 
             <!-- Hero Banner Card (Full Width Vertical) -->

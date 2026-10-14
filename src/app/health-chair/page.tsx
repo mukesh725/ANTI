@@ -358,7 +358,7 @@ export default function HealthChairPage() {
       </section>
 
       {/* SECTION 6: FINAL CTA */}
-      <section className="bg-paper text-ink py-32 md:py-48 px-6 md:px-16 relative overflow-hidden">
+      <section className="bg-paper text-ink py-28 md:py-40 px-6 md:px-16 relative overflow-hidden">
         {/* Spotlight effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-50 z-0 pointer-events-none" />
         
@@ -370,19 +370,54 @@ export default function HealthChairPage() {
             transition={{ duration: 1 }}
             src={finalCta?.image || "/chair-4.jpg"} 
             alt="AIRO Health Chair" 
-            className="max-w-[400px] w-full h-auto object-contain mix-blend-multiply mb-12" 
+            className="max-w-[360px] md:max-w-[420px] w-full h-auto object-contain mix-blend-multiply mb-10" 
           />
           
-          <h2 className="font-serif text-5xl md:text-7xl tracking-tight mb-12">
-            {(finalCta?.title || "Your Health Journey Starts Here.").split('Journey')[0]}Journey <span className="italic font-light">{(finalCta?.title || "Your Health Journey Starts Here.").split('Journey')[1]}</span>
+          <span className="inline-block px-4 py-1.5 rounded-full bg-theme/5 text-theme text-[10px] tracking-[0.25em] uppercase font-bold border border-theme/10 mb-4">
+            COMPLIMENTARY CLINICAL SCAN
+          </span>
+
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl tracking-tight mb-4 max-w-3xl leading-tight">
+            Download the App to Get <br />
+            <span className="italic font-light text-theme">Free Health Checkup.</span>
           </h2>
+
+          <p className="font-sans text-xs sm:text-sm md:text-base text-ink/70 max-w-xl mb-10 leading-relaxed font-light">
+            Unlock your complimentary 5-minute health scan on the AIRO Smart Chair. Track real-time vitals, cardiovascular biomarkers, and medical telemetrics right from your phone.
+          </p>
           
-          <Link 
-            href={finalCta?.buttonLink || "/book-health-scan"} 
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-theme text-paper text-[10px] tracking-widest uppercase font-bold hover:bg-[#2C2C2E] hover:shadow-[0_0_30px_rgba(11,33,20,0.3)] transition-all duration-500"
-          >
-            {finalCta?.buttonText || "Book Your AIRO Health Scan"}
-          </Link>
+          {/* App Store and Google Play Badge Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.airocustomer.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-xl"
+              aria-label="Download on Google Play"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/google-play-badge.svg"
+                alt="Get it on Google Play"
+                className="h-12 w-auto object-contain"
+              />
+            </a>
+
+            <a
+              href={process.env.NEXT_PUBLIC_APP_STORE_URL || "https://apps.apple.com/search?term=airo+customer"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-xl"
+              aria-label="Download on the App Store"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/app-store-badge.svg"
+                alt="Download on the App Store"
+                className="h-12 w-auto object-contain"
+              />
+            </a>
+          </div>
         </div>
       </section>
     </div>

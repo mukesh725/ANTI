@@ -10,7 +10,15 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-24"
       >
-        <span className="bg-[#006537] text-white px-4 py-1.5 rounded-full text-sm font-semibold tracking-widest uppercase mb-6 inline-block">AIRO ONE™</span>
+        <div className="mb-6 flex justify-center">
+          <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-white/80 backdrop-blur-2xl border border-gray-200/60 shadow-md">
+            <img 
+              src="/airo-1-logo.png" 
+              alt="AIRO 1" 
+              className="h-8 md:h-10 w-auto object-contain"
+            />
+          </div>
+        </div>
         <h1 className="text-4xl md:text-6xl font-semibold text-[#006537] mb-6 tracking-tight">
           One Membership. Complete Health. Everyday Savings.
         </h1>

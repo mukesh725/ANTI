@@ -87,6 +87,8 @@ export default function ContactPage() {
 
   const pageContent = cmsData.pages.contact;
   const { details } = pageContent.sections;
+  const essentialsPhone = (details.phone && details.phone !== "+91 8019241143") ? details.phone : "+91 90001 72121";
+  const healthPhone = (details as unknown as { healthPhone?: string })?.healthPhone || "+91 90000 182121";
 
   return (
     <div className="w-full bg-paper text-ink min-h-screen overflow-x-hidden selection:bg-theme selection:text-paper">
@@ -113,24 +115,45 @@ export default function ContactPage() {
             <h2 className="font-serif text-2xl mb-6 tracking-wide">Contact Us</h2>
 
             <div className="space-y-6">
+              {/* Phone Numbers */}
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5] shrink-0">
                   <Phone className="w-4 h-4" />
                 </div>
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Call</h4>
-                  <a
-                    href="tel:+919000172121"
-                    className="text-sm font-semibold hover:text-ink/70 transition-colors block"
-                  >
-                    {details.phone && details.phone !== "+91 8019241143" ? details.phone : "+91 90001 72121"}
-                  </a>
-                  <p className="text-xs text-ink/60 mt-0.5">Customer Support & Concierge</p>
+                <div className="space-y-3 w-full">
+                  <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium">Direct Helplines</h4>
+                  
+                  <div className="bg-[#FDFBF7] p-3 rounded-xl border border-[#E6DFD5]/80">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] uppercase tracking-wider font-bold text-ink">AIRO Essentials</span>
+                      <span className="text-[10px] text-ink/60 font-medium">Customer Support &amp; Concierge</span>
+                    </div>
+                    <a
+                      href="tel:+919000172121"
+                      className="text-sm font-semibold hover:text-emerald-800 transition-colors block mt-1"
+                    >
+                      {essentialsPhone}
+                    </a>
+                  </div>
+
+                  <div className="bg-[#FDFBF7] p-3 rounded-xl border border-[#E6DFD5]/80">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] uppercase tracking-wider font-bold text-emerald-900">AIRO Health Hub</span>
+                      <span className="text-[10px] text-ink/60 font-medium">Appointments &amp; Health Chair</span>
+                    </div>
+                    <a
+                      href="tel:+9190000182121"
+                      className="text-sm font-semibold hover:text-emerald-700 transition-colors block mt-1 text-emerald-900"
+                    >
+                      {healthPhone}
+                    </a>
+                  </div>
                 </div>
               </div>
 
+              {/* Email */}
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5] shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
@@ -145,16 +168,47 @@ export default function ContactPage() {
                 </div>
               </div>
 
+              {/* Locations */}
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5]">
+                <div className="p-2.5 bg-[#F5EFEB] rounded-full text-ink mt-0.5 border border-[#E6DFD5] shrink-0">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium mb-1">Flagship Location</h4>
-                  <p className="text-sm font-semibold">
-                    {details.address}
-                  </p>
-                  <p className="text-xs text-ink/60 mt-0.5"></p>
+                <div className="space-y-3 w-full">
+                  <h4 className="text-xs uppercase tracking-wider text-gray-500 font-medium">Clinic &amp; Store Locations</h4>
+                  
+                  <div className="bg-[#FDFBF7] p-3.5 rounded-xl border border-[#E6DFD5]/80">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-ink">Kondapur Flagship</span>
+                      <a
+                        href="https://share.google/aAEKjMbEpbbZ3Sq6l"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-semibold text-emerald-800 hover:text-emerald-900 underline inline-flex items-center gap-1"
+                      >
+                        Directions &rarr;
+                      </a>
+                    </div>
+                    <p className="text-xs text-ink/80 leading-relaxed">
+                      Shop No.2, Ground &amp; 1st Floor, Vamsiram&apos;s Jyothi Granules, Sy.No.199, Kondapur, Ranga Reddy Dist., Hyderabad - 500084
+                    </p>
+                  </div>
+
+                  <div className="bg-[#FDFBF7] p-3.5 rounded-xl border border-[#E6DFD5]/80">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-ink">Kompally Hub</span>
+                      <a
+                        href="https://share.google/kjLtlr771ylTznpGW"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-semibold text-emerald-800 hover:text-emerald-900 underline inline-flex items-center gap-1"
+                      >
+                        Directions &rarr;
+                      </a>
+                    </div>
+                    <p className="text-xs text-ink/80 leading-relaxed">
+                      Shop No. 12 &amp; 112, Ground Floor &amp; First Floor, Fairmount Downtown, Kompally, Dundigal, Hyderabad, Telangana - 500100, India
+                    </p>
+                  </div>
                 </div>
               </div>
 

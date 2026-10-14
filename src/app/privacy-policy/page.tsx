@@ -110,7 +110,7 @@ export default function PrivacyPolicyPage() {
           <div className="mt-4 space-y-1 text-sm font-medium text-emerald-900">
             <p><strong>Name:</strong> Compliance & Grievance Officer</p>
             <p><strong>Email:</strong> <a href="mailto:info@airoessentials.com" className="underline hover:text-emerald-700">info@airoessentials.com</a></p>
-            <p><strong>Address:</strong> #7-1-621/66, 2nd Floor, Near CMS Degree College, Sanjeev Reddy Nagar (SR Nagar), Ameerpet, Hyderabad, Telangana, India - 500038</p>
+            <p><strong>Address:</strong> Shop No.2, Ground &amp; 1st Floor, Vamsiram&apos;s Jyothi Granules, Sy.No.199, Kondapur, Ranga Reddy Dist., Hyderabad - 500084, Telangana, India</p>
             <p><strong>Response Time:</strong> We will acknowledge your grievance within 48 hours and resolve it within 30 days.</p>
           </div>
         </div>

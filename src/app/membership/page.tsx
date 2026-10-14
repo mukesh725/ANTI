@@ -190,11 +190,13 @@ export default function MembershipPage() {
         
         {/* Domain-Aware Header Logo */}
         <div className="text-center mb-6">
-          <img 
-            src={isOneDomain ? "/airo-one-logo.png" : isHealthDomain ? "/airo-health-logo.png" : "/airo-essentials-logo.png"} 
-            alt={isOneDomain ? "AIRO ONE" : isHealthDomain ? "AIRO Health" : "AIRO Essentials"} 
-            className="h-12 md:h-16 mx-auto object-contain mb-4 drop-shadow-sm"
-          />
+          <div className="inline-block px-6 py-3 rounded-3xl bg-white/80 backdrop-blur-2xl border border-white/60 shadow-lg mb-4">
+            <img 
+              src="/airo-1-logo.png" 
+              alt="AIRO 1" 
+              className="h-10 md:h-14 mx-auto object-contain"
+            />
+          </div>
 
           {/* Lookup Membership Button */}
           <div className="flex justify-center mb-4">

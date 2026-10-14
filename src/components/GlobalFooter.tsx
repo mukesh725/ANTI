@@ -16,7 +16,7 @@ const springDefault = {
 };
 
 export function GlobalFooter() {
-  const [brandName, setBrandName] = useState("AIRO Health");
+  const [brandName, setBrandName] = useState("AIRO ONE");
   const [supportEmail, setSupportEmail] = useState("info@airohealthhub.com");
   const [activeStore, setActiveStore] = useState<"playstore" | "appstore">("playstore");
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
@@ -24,23 +24,27 @@ export function GlobalFooter() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const host = window.location.hostname;
-      // Default to AIRO Health unless the hostname contains 'essential'
       if (host.includes("airoessential") || host.includes("essentials.airo")) {
-        setBrandName("AIRO Essentials");
         setSupportEmail("info@airoessentials.com");
       }
     }
   }, []);
 
   return (
-    <footer className="border-t border-theme/10 py-16 px-8 md:px-16 bg-theme text-paper rounded-t-[3rem] w-full mt-auto">
+    <footer className="border-t border-white/10 py-16 px-8 md:px-16 bg-[#0B1528] text-white rounded-t-[3rem] w-full mt-auto">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
 
         {/* Brand Column */}
         <div className="col-span-1 md:col-span-1">
-          <h2 className="font-serif text-3xl tracking-[0.2em] uppercase mb-6 text-paper">
-            AIRO<span className="opacity-50">.</span>
-          </h2>
+          <Link href="/" className="inline-block mb-6 group">
+            <div className="px-4 py-2.5 rounded-2xl bg-white/90 backdrop-blur-2xl border border-white/60 shadow-xl shadow-black/20 group-hover:bg-white group-hover:scale-105 transition-all duration-300 flex items-center justify-center">
+              <img 
+                src="/airo-1-logo.png" 
+                alt="AIRO 1" 
+                className="h-8 md:h-10 w-auto object-contain"
+              />
+            </div>
+          </Link>
           <p className="text-xs text-paper/60 leading-relaxed mb-8 max-w-xs pr-4 tracking-wide">
             A paradigm shift in modern longevity. Elevating daily essentials and wellness with uncompromising quality and clean ingredients.
           </p>

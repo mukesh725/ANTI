@@ -53,6 +53,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/airomed',
+        destination: '/emed',
+      },
+    ];
+  },
   async headers() {
     return [
       {

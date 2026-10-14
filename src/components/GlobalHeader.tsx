@@ -78,36 +78,15 @@ export function GlobalHeader() {
 
   const navLinks = isHealthDomain ? healthLinks : allLinks;
 
-  let logoNode;
-  if (isHealthDomain || pathname === "/pharmacy" || pathname === "/minute-clinic" || pathname === "/health-chair") {
-    logoNode = (
-      <div className={`p-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/60 backdrop-blur-xl saturate-[180%] shadow-sm" : ""}`}>
-        <img 
-          src="/airo-health-logo.png" 
-          alt="AIRO Health" 
-          className="h-8 md:h-10 object-contain"
-        />
-      </div>
-    );
-  } else if (pathname === "/grocery" || pathname === "/" || pathname === "/contact" || pathname === "/about" || pathname === "/membership" || pathname.startsWith("/member/")) {
-    logoNode = (
-      <div className={`px-2 py-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/60 backdrop-blur-xl saturate-[180%] shadow-sm" : ""}`}>
-        <img 
-          src="/airo-essentials-logo.png" 
-          alt="AIRO Essentials" 
-          className="h-8 md:h-10 object-contain"
-        />
-      </div>
-    );
-  } else {
-    logoNode = (
-      <span className={`font-serif text-2xl tracking-widest uppercase transition-colors duration-300 ${
-        isScrolled ? "text-ink" : (pathname === "/" || pathname === "/health" ? "text-paper" : "text-ink")
-      }`}>
-        AIRO<span className="opacity-50">.</span>
-      </span>
-    );
-  }
+  const logoNode = (
+    <div className="px-3.5 py-1.5 rounded-2xl bg-white/75 backdrop-blur-2xl saturate-[180%] border border-white/50 shadow-md shadow-black/5 hover:bg-white/90 transition-all duration-300 flex items-center justify-center">
+      <img 
+        src="/airo-1-logo.png" 
+        alt="AIRO 1" 
+        className="h-7 sm:h-8 md:h-9 w-auto object-contain"
+      />
+    </div>
+  );
 
   return (
     <>

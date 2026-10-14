@@ -48,9 +48,9 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
               className="flex items-center justify-center"
             >
               <img 
-                src={isHealthDomain ? "/airo-health-favicon.png" : "/airo-essentials-favicon.png"} 
-                alt="AIRO Logo" 
-                className="w-24 h-24 md:w-32 md:h-32 object-contain"
+                src="/airo-1-logo.png" 
+                alt="AIRO ONE" 
+                className="h-16 md:h-20 w-auto object-contain"
               />
             </motion.div>
           )}
