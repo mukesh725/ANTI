@@ -55,6 +55,7 @@ export function GlobalHeader() {
 
   // Use state to detect domain to prevent hydration mismatch
   const [isHealthDomain, setIsHealthDomain] = useState(false);
+  const [isOneDomain, setIsOneDomain] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,6 +64,8 @@ export function GlobalHeader() {
       
       if (host.includes("airohealth") || host.includes("health.airo") || port === "3001") {
         setIsHealthDomain(true);
+      } else if (host.includes("airoone")) {
+        setIsOneDomain(true);
       }
     }
   }, []);
@@ -78,7 +81,17 @@ export function GlobalHeader() {
   const navLinks = isHealthDomain ? healthLinks : allLinks;
 
   let logoNode;
-  if (isHealthDomain || pathname === "/pharmacy" || pathname === "/minute-clinic" || pathname === "/health-chair") {
+  if (isOneDomain) {
+    logoNode = (
+      <div className={`px-2 py-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/60 backdrop-blur-xl saturate-[180%] shadow-sm" : ""}`}>
+        <img 
+          src="/airo-one-logo.png" 
+          alt="AIRO ONE" 
+          className="h-8 md:h-10 object-contain"
+        />
+      </div>
+    );
+  } else if (isHealthDomain || pathname === "/pharmacy" || pathname === "/minute-clinic" || pathname === "/health-chair") {
     logoNode = (
       <div className={`p-1 rounded-xl transition-colors duration-300 ${!isScrolled ? "bg-white/60 backdrop-blur-xl saturate-[180%] shadow-sm" : ""}`}>
         <img 

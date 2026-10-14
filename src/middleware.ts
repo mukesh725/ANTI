@@ -9,6 +9,8 @@ const ALLOWED_ORIGINS = [
   'https://airohealth-test.vercel.app',
   'https://airoone.in',
   'https://www.airoone.in',
+  'https://airoone.com',
+  'https://www.airoone.com',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
@@ -24,6 +26,7 @@ export function middleware(request: NextRequest) {
     host.includes('airoessentials.com') ||
     host.includes('airohealthhub.com') ||
     host.includes('airoone.in') ||
+    host.includes('airoone.com') ||
     host.includes('vercel.app') ||
     host.includes('localhost') ||
     host.includes('127.0.0.1');
@@ -65,7 +68,7 @@ export function middleware(request: NextRequest) {
     host.includes('health.airo') ||
     host.includes('health.airoone') ||
     host.includes('localhost:3001');
-  const isOneDomain = host.includes('airoone.in');
+  const isOneDomain = host.includes('airoone.in') || host.includes('airoone.com');
   const isAdminDomain = host.startsWith('admin.');
 
   let response: NextResponse;
@@ -77,6 +80,10 @@ export function middleware(request: NextRequest) {
   } else if (isHealthDomain && url.pathname === '/') {
     // 4. Health Domain Routing
     url.pathname = '/health';
+    response = NextResponse.rewrite(url);
+  } else if (isOneDomain && url.pathname === '/') {
+    // 4.5. AIRO ONE Domain Routing - Serve membership page at root
+    url.pathname = '/membership';
     response = NextResponse.rewrite(url);
   } else {
     response = NextResponse.next();
