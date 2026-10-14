@@ -44,3 +44,6 @@ next-env.d.ts
 *.apk
 scratch/
 
+# documents and draft files
+*.pdf
+* 2.tsx
