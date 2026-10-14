@@ -259,14 +259,16 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Pillar 4: AIRO E-Med */}
-            <div 
-              className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2"
+            {/* Pillar 4: AIRO eMed */}
+            <Link
+              href="/emed"
+              id="pillar-airo-emed-card"
+              className="group relative flex flex-col h-full bg-theme/[0.02] rounded-[32px] overflow-hidden border border-theme/5 hover:bg-white hover:shadow-2xl hover:shadow-[#1C1C1E]/10 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-theme/5">
                 <ParallaxImage 
                   src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800"
-                  alt="AIRO E-Med Virtual Consultation"
+                  alt="AIRO eMed Virtual Care"
                   className="w-full h-full"
                   speed={0.06}
                 />
@@ -276,17 +278,20 @@ export default function HomePage() {
               </div>
               <div className="p-8 md:p-10 flex flex-col flex-grow">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="font-serif text-3xl font-medium text-ink tracking-tight group-hover:text-theme transition-colors duration-300">AIRO E-Med</h3>
-                  <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">Coming Soon</span>
+                  <h3 className="font-serif text-3xl font-medium text-ink tracking-tight group-hover:text-theme transition-colors duration-300">AIRO eMed</h3>
+                  <span className="bg-theme/10 text-theme border border-theme/20 text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">Virtual Care</span>
                 </div>
                 <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-ink/40 font-bold mb-6">
-                  Hair Loss • Sexual Health • Weight Management
+                  Hair Loss • Weight Loss • Hormones • Longevity
                 </p>
-                <p className="font-sans text-sm text-ink/60 leading-relaxed font-light flex-grow">
-                  Connect with doctors through secure virtual consultations for personalized treatment. Get your custom prescriptions delivered directly to your door in discreet packaging.
+                <p className="font-sans text-sm text-ink/60 leading-relaxed font-light flex-grow mb-6">
+                  Connect with licensed doctors through secure virtual consultations. Receive customized compounded prescriptions delivered directly to your door in discreet packaging.
                 </p>
+                <div className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-theme group-hover:translate-x-1 transition-transform">
+                  Explore AIRO eMed <ArrowRight className="w-3.5 h-3.5" />
+                </div>
               </div>
-            </div>
+            </Link>
 
 
           </div>

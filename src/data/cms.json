@@ -98,10 +98,10 @@
             "status": "Coming Soon"
           },
           {
-            "name": "Physician Portal",
-            "description": "Secure virtual consultations, clinical charting, and digital prescriptions.",
-            "link": "/doctor/portal",
-            "status": "Doctor Access"
+            "name": "AIRO eMed",
+            "description": "Virtual consultations, specialized medical treatments, and discreet prescriptions.",
+            "link": "/emed",
+            "status": "Telehealth"
           }
         ],
         "lifestyleBanner": {
@@ -168,10 +168,10 @@
             "status": "Coming Soon"
           },
           {
-            "name": "Physician Portal",
-            "description": "Virtual consultations, clinical charting, and digital prescriptions.",
-            "link": "/doctor/portal",
-            "status": "Doctor Access"
+            "name": "AIRO eMed",
+            "description": "Virtual consultations, clinical treatments, and discreet prescription delivery.",
+            "link": "/emed",
+            "status": "Telehealth"
           }
         ],
         "clinicalSectionLabel": "The Clinic",

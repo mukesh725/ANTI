@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot, RefreshCw, AlertTriangle } from "lucide-react";
 import { db } from "@/lib/firebase";
@@ -29,6 +30,7 @@ const INITIAL_MESSAGES: Message[] = [
 ];
 
 export function AiraChatbot() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputVal, setInputVal] = useState("");
@@ -49,7 +51,7 @@ export function AiraChatbot() {
   const getAiraResponse = (text: string): { text: string; chips?: string[]; isEmergency?: boolean } => {
     const input = text.toLowerCase().trim();
 
-    // 1. Emergency Validation
+    // 1. Emergency Validation: Recommend nearby hospitals/clinics and AIRO eMed
     const emergencyKeywords = [
       "emergency", "chest pain", "heart attack", "stroke", "accident", 
       "bleeding", "difficulty breathing", "choking", "suicide", "poison", 
@@ -57,9 +59,23 @@ export function AiraChatbot() {
     ];
     if (emergencyKeywords.some(keyword => input.includes(keyword))) {
       return {
-        text: "If this is a medical emergency, call emergency services or visit the nearest emergency room immediately.",
+        text: "If you are experiencing severe or acute symptoms, please immediately visit nearby hospitals or clinics.\n\nFor urgent clinical guidance and telehealth care coordination, you can also consult AIRO eMed.",
         isEmergency: true,
-        chips: ["Start Over", "Speak with an AIRO specialist"]
+        chips: ["Visit AIRO eMed", "Find Nearby Clinics", "Speak with an AIRO specialist"]
+      };
+    }
+
+    if (input.includes("hospital") || input.includes("nearby") || input.includes("clinic")) {
+      return {
+        text: "For emergency care, please visit your nearest hospital emergency center or local walk-in clinic immediately.\n\nFor routine doctor visits, immunizations, and preventive screenings, you can visit an AIRO Minute Clinic. For virtual doctor appointments, you can consult AIRO eMed.",
+        chips: ["Visit AIRO eMed", "Minute Clinic services", "Start Over"]
+      };
+    }
+
+    if (input.includes("emed") || input.includes("telemed") || input.includes("virtual doctor") || input.includes("online doctor")) {
+      return {
+        text: "AIRO eMed connects you with licensed doctors through secure virtual consultations. Receive personalized treatments, clinical guidance, and discreet home delivery for specialized care.",
+        chips: ["Visit AIRO eMed", "Speak with an AIRO specialist", "Start Over"]
       };
     }
 
@@ -299,6 +315,11 @@ export function AiraChatbot() {
   };
 
   const handleChipClick = (chipText: string) => {
+    if (chipText === "Visit AIRO eMed" || chipText === "Open AIRO eMed Portal") {
+      router.push("/emed");
+      setIsOpen(false);
+      return;
+    }
     handleSendMessage(chipText);
   };
 
@@ -411,7 +432,7 @@ export function AiraChatbot() {
             <div className="border-t border-[#E6DFD5] bg-paper p-3 space-y-2">
               {/* Disclaimer */}
               <p className="text-[10px] text-center text-gray-500 leading-normal px-2">
-                AIRO provides wellness insights and does not diagnose disease or replace professional medical advice. For emergencies, call 911 immediately.
+                AIRO provides wellness insights and does not diagnose disease or replace professional medical advice. For emergencies, please visit nearby hospitals or clinics, or access AIRO eMed.
               </p>
 
               {/* Form Input */}
