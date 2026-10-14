@@ -81,10 +81,6 @@ export function middleware(request: NextRequest) {
     // 4. Health Domain Routing
     url.pathname = '/health';
     response = NextResponse.rewrite(url);
-  } else if (isOneDomain && url.pathname === '/') {
-    // 4.5. AIRO ONE Domain Routing - Serve membership page at root
-    url.pathname = '/membership';
-    response = NextResponse.rewrite(url);
   } else {
     response = NextResponse.next();
   }

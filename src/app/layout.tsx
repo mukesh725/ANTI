@@ -15,27 +15,22 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = `${protocol}://${host}`;
 
   const isHealth = host.includes("airohealthhub") || host.includes("health.airo");
-  const isOne = host.includes("airoone");
   
   const cmsData = await getCmsData();
   const homeData = cmsData.pages.home;
   
-  const siteName = isOne ? "AIRO ONE" : isHealth ? "AIRO Health Hub" : "AIRO Essentials";
+  const siteName = isHealth ? "AIRO Health Hub" : "AIRO Essentials";
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cmsSeoTitle = (homeData as any)?.seoTitle;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cmsSeoDesc = (homeData as any)?.seoDescription;
 
-  const defaultTitle = isOne
-    ? "AIRO ONE | Comprehensive Preventive Longevity & Health Membership"
-    : isHealth 
+  const defaultTitle = isHealth 
     ? "AIRO Health Hub | Premium Clinical & Longevity Care Ecosystem"
     : (cmsSeoTitle || "AIRO Essentials | Premium Organic Grocery, Bakery & Superfoods");
     
-  const description = isOne
-    ? "AIRO ONE Membership offers proactive continuous biometric tracking, personalized longevity protocols, doctor consultations, and priority clinical care."
-    : isHealth
+  const description = isHealth
     ? "AIRO Health Hub is a premium clinical facility offering a 5-Minute Health Chair Scan, preventive medicine, longevity protocols, Minute Clinics, and advanced Compounding Pharmacy services."
     : (cmsSeoDesc || "AIRO Essentials is a premium organic grocery, superfood cafe, and clean-eating destination focused on longevity, nutrition, and 100% pesticide-free sourcing.");
     
