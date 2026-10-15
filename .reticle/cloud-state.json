@@ -1,10 +1,14 @@
 {
   "lastPushAt": 1791210707302,
   "cursor": "0:",
-  "lastPullAt": 1791398353864,
+  "lastPullAt": 1792084222394,
   "sentRunIds": [],
   "sentFlowsHash": "455607d5c97ac393db2a701c7ea52def",
   "refusedRuns": {},
   "refusedSets": {},
-  "sentRunHashes": {}
+  "sentRunHashes": {},
+  "link": "https://app.reticle.sh::org::org_cb833add15df41149774e3e9c5acb1c9::anti",
+  "sentFlowNames": [],
+  "sentScreenshots": {},
+  "screenshotsHeldLocal": []
 }

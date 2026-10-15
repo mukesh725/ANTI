@@ -9,13 +9,21 @@ export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const handleOpen = () => setIsVisible(true);
+    window.addEventListener("open-cookie-preferences", handleOpen);
+
     // Check if user already consented
     const consent = localStorage.getItem("airo_compliance_consent");
+    let timer: NodeJS.Timeout | null = null;
     if (!consent) {
       // Small delay to not block initial render LCP
-      const timer = setTimeout(() => setIsVisible(true), 1500);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setIsVisible(true), 1500);
     }
+
+    return () => {
+      window.removeEventListener("open-cookie-preferences", handleOpen);
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   const acceptAll = () => {

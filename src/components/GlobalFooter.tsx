@@ -3,14 +3,14 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, QrCode } from 'lucide-react';
+import { X, QrCode, Cookie } from 'lucide-react';
 
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.airocustomer.app";
 const APP_STORE_URL = process.env.NEXT_PUBLIC_APP_STORE_URL || "https://apps.apple.com/search?term=airo+customer";
 
 // Apple Design Spring (Critically damped)
 const springDefault = {
-  type: 'spring',
+  type: 'spring' as const,
   damping: 20, 
   stiffness: 100, 
 };
@@ -230,13 +230,53 @@ export function GlobalFooter() {
                 </motion.span>
               </Link>
             </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
+                  }
+                }}
+                className="inline-block text-left"
+              >
+                <motion.span 
+                  whileTap={{ scale: 0.96 }}
+                  transition={springDefault}
+                  className="block hover:text-paper transition-colors"
+                >
+                  Cookie Preferences
+                </motion.span>
+              </button>
+            </li>
           </ul>
         </div>
 
 
       </div>
 
-      <div className="max-w-[1400px] mx-auto mt-16 pt-8 border-t border-paper/10 flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* Cookie & Personalization Notice */}
+      <div className="max-w-[1400px] mx-auto mt-12 pt-6 border-t border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-paper/60">
+        <div className="flex items-center gap-2.5">
+          <Cookie className="w-4 h-4 text-emerald-400 shrink-0" />
+          <p className="leading-relaxed">
+            We utilize cookies to provide a personalized experience, secure sessions, and optimize health &amp; wellness services.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
+            }
+          }}
+          className="shrink-0 text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline underline-offset-4 transition-colors"
+        >
+          Cookie Preferences
+        </button>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto mt-6 pt-6 border-t border-paper/10 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-paper/30 text-[10px] tracking-[0.15em] uppercase font-bold">
           © {new Date().getFullYear()} {brandName}. All Rights Reserved.
         </p>
