@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = host.includes("localhost") ? "http" : "https";
   const baseUrl = `${protocol}://${host}`;
 
-  const isHealth = host.includes("airohealthhub") || host.includes("health.airo");
+  const isHealth = host.includes("airohealthhub") || host.includes("health.airo") || host.includes("airohealth-test");
   
   const cmsData = await getCmsData();
   const homeData = cmsData.pages.home;
@@ -118,7 +118,9 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: '/airo-1-logo.png',
     },
     verification: {
-      google: !isHealth ? "MMmKD7sRUv2PaDkSZsna0nnJrknvi1AXh0MuZob40mo" : undefined,
+      google: isHealth 
+        ? "RFAej7gtLQoXFPQw-zXvk8YiFE5s7lFnr-1FUkkpzAo" 
+        : "MMmKD7sRUv2PaDkSZsna0nnJrknvi1AXh0MuZob40mo",
     }
   };
 }
@@ -135,7 +137,7 @@ export default async function RootLayout({
   const forwardedHost = headersList.get("x-forwarded-host");
   const hostHeader = headersList.get("host");
   const host = forwardedHost || hostHeader || "airoessentials.com";
-  const isHealth = host.includes("airohealthhub") || host.includes("health.airo");
+  const isHealth = host.includes("airohealthhub") || host.includes("health.airo") || host.includes("airohealth-test");
   const isAiroOne = host.includes("airoone");
 
   // AIO/GEO Structured Data
@@ -193,13 +195,15 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-paper">
       <head>
-        {/* Google Tag Manager - Active exclusively on airoone.com */}
+        {/* Google Tag Manager - Active strictly & exclusively on airohealthhub.com */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){
               try {
                 var h = (w.location && w.location.hostname) ? w.location.hostname.toLowerCase() : '';
-                if (!h.includes('airoone.com') && !h.includes('airoone.in')) {
+                // STRICT DOMAIN ISOLATION: Only analyze users on airohealthhub.com
+                // Completely ignores airoessentials.com and airoone.com
+                if (!h.includes('airohealthhub') && !h.includes('health.airo') && !h.includes('airohealth-test')) {
                   return;
                 }
                 w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -214,8 +218,8 @@ export default async function RootLayout({
         <SchemaOrg schema={schema} />
       </head>
       <body className="antialiased bg-paper text-ink min-h-screen flex flex-col">
-        {/* Google Tag Manager (noscript) - Active exclusively on airoone.com */}
-        {isAiroOne && (
+        {/* Google Tag Manager (noscript) - Active strictly & exclusively on airohealthhub.com */}
+        {isHealth && (
           <noscript>
             <iframe
               src="https://www.googletagmanager.com/ns.html?id=GTM-WQTSLV2L"
