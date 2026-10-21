@@ -15,6 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = `${protocol}://${host}`;
 
   const isHealth = host.includes("airohealthhub") || host.includes("health.airo") || host.includes("airohealth-test");
+  const isAiroOne = host.includes("airoone");
   
   const cmsData = await getCmsData();
   const homeData = cmsData.pages.home;
@@ -120,7 +121,9 @@ export async function generateMetadata(): Promise<Metadata> {
     verification: {
       google: isHealth 
         ? "RFAej7gtLQoXFPQw-zXvk8YiFE5s7lFnr-1FUkkpzAo" 
-        : "MMmKD7sRUv2PaDkSZsna0nnJrknvi1AXh0MuZob40mo",
+        : isAiroOne
+        ? ["5l0JlpGXTEd68s6iu6VGXdeLIKYIJImZ6DBl11LcXuk", "u4tsheRcaLcoMG5niS00Yoay7Bj2uIJricQJaW55JPA"]
+        : ["u4tsheRcaLcoMG5niS00Yoay7Bj2uIJricQJaW55JPA", "5l0JlpGXTEd68s6iu6VGXdeLIKYIJImZ6DBl11LcXuk"],
     }
   };
 }
@@ -136,9 +139,15 @@ export default async function RootLayout({
   const headersList = headers();
   const forwardedHost = headersList.get("x-forwarded-host");
   const hostHeader = headersList.get("host");
-  const host = forwardedHost || hostHeader || "airoessentials.com";
+  const host = (forwardedHost || hostHeader || "airoessentials.com").toLowerCase();
   const isHealth = host.includes("airohealthhub") || host.includes("health.airo") || host.includes("airohealth-test");
   const isAiroOne = host.includes("airoone");
+
+  const gtmId = isHealth 
+    ? 'GTM-WQTSLV2L' 
+    : isAiroOne 
+    ? 'GTM-TXC5289J' 
+    : 'GTM-5Q324PFL';
 
   // AIO/GEO Structured Data
   const baseOrganizationSchema = {
@@ -195,40 +204,41 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-paper">
       <head>
-        {/* Google Tag Manager - Active strictly & exclusively on airohealthhub.com */}
+        {/* Google Tag Manager - Multi-Domain Isolated */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){
+            __html: `(function(w,d,s,l,defaultId){
               try {
                 var h = (w.location && w.location.hostname) ? w.location.hostname.toLowerCase() : '';
-                // STRICT DOMAIN ISOLATION: Only analyze users on airohealthhub.com
-                // Completely ignores airoessentials.com and airoone.com
-                if (!h.includes('airohealthhub') && !h.includes('health.airo') && !h.includes('airohealth-test')) {
-                  return;
+                var id = defaultId;
+                if (h.includes('airohealthhub') || h.includes('health.airo') || h.includes('airohealth-test')) {
+                  id = 'GTM-WQTSLV2L';
+                } else if (h.includes('airoone')) {
+                  id = 'GTM-TXC5289J';
+                } else {
+                  id = 'GTM-5Q324PFL';
                 }
                 w[l]=w[l]||[];w[l].push({'gtm.start':
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                'https://www.googletagmanager.com/gtm.js?id='+id+dl;f.parentNode.insertBefore(j,f);
               } catch(e) {}
-            })(window,document,'script','dataLayer','GTM-WQTSLV2L');`,
+            })(window,document,'script','dataLayer','${gtmId}');`,
           }}
         />
         {/* End Google Tag Manager */}
         <SchemaOrg schema={schema} />
       </head>
       <body className="antialiased bg-paper text-ink min-h-screen flex flex-col">
-        {/* Google Tag Manager (noscript) - Active strictly & exclusively on airohealthhub.com */}
-        {isHealth && (
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-WQTSLV2L"
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        )}
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         {/* End Google Tag Manager (noscript) */}
         <ClientLayoutWrapper cmsData={cmsData}>
           {children}
