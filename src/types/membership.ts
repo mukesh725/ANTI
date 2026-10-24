@@ -29,6 +29,7 @@ export interface MemberRecord {
   address: string;
   emergencyContact?: string | EmergencyContact | null;
   membershipPlan: MembershipPlanType;
+  billingCycle?: 'Annual' | 'Quarterly';
   paymentStatus: PaymentStatusType;
   paymentMethod: PaymentMethodType | null;
   membershipStatus: MembershipStatusType;
@@ -51,6 +52,7 @@ export interface PendingRegistrationInput {
   address: string;
   emergencyContact?: string;
   membershipPlan: MembershipPlanType;
+  billingCycle?: 'Annual' | 'Quarterly';
 }
 
 export interface ActivateMemberInput {

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, CheckCircle2, Shield, HeartPulse, Stethoscope, ShoppingBag, Gift } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, Shield, HeartPulse, Stethoscope, ShoppingBag, Gift, Store } from 'lucide-react';
 
 export default function LandingScreen({ onNext }: { onNext: () => void }) {
   return (
@@ -54,17 +54,42 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-sm">
+              {/* Quarterly Payment Row */}
+              <tr className="bg-emerald-50/50">
+                <td className="p-5 font-bold text-gray-900">
+                  Quarterly Payment Option
+                  <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay every 3 months • All taxes included</span>
+                </td>
+                <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
+                  ₹590 <span className="text-xs font-normal text-gray-500">/ qtr</span>
+                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
+                </td>
+                <td className="p-5 text-center font-extrabold text-lg text-[#006537] bg-green-100/40">
+                  ₹1,180 <span className="text-xs font-normal text-gray-500">/ qtr</span>
+                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
+                </td>
+                <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
+                  ₹2,065 <span className="text-xs font-normal text-gray-500">/ qtr</span>
+                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
+                </td>
+                <td className="p-5 text-center font-extrabold text-lg text-[#006537] bg-emerald-50">
+                  ₹2,655 <span className="text-xs font-normal text-gray-500">/ qtr</span>
+                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
+                </td>
+              </tr>
+
+              {/* Annual Fee */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 font-medium text-gray-700">
                   Annual Membership Fee
                   <span className="block text-xs font-normal text-gray-500 mt-0.5">(+ GST applicable for all plans)</span>
                 </td>
                 <td className="p-5 text-center font-bold text-lg">
-                  ₹999
+                  ₹1,999
                   <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
                 <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">
-                  ₹2,999
+                  ₹3,999
                   <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
                 <td className="p-5 text-center font-bold text-lg">
@@ -76,83 +101,123 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
                   <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
               </tr>
+
+              {/* In-Store Payment Mode Row */}
+              <tr className="bg-amber-50/50">
+                <td className="p-5 font-semibold text-amber-950 flex items-center gap-2">
+                  <Store className="w-4 h-4 text-amber-700 shrink-0" />
+                  <span>Payment &amp; Activation</span>
+                </td>
+                <td className="p-5 text-center text-xs font-bold text-amber-900">🏪 In-Store Only<div className="font-normal text-[10px] text-gray-500">Cash / UPI / Card</div></td>
+                <td className="p-5 text-center text-xs font-bold text-amber-900 bg-green-50">🏪 In-Store Only<div className="font-normal text-[10px] text-gray-500">Cash / UPI / Card</div></td>
+                <td className="p-5 text-center text-xs font-bold text-amber-900">🏪 In-Store Only<div className="font-normal text-[10px] text-gray-500">Cash / UPI / Card</div></td>
+                <td className="p-5 text-center text-xs font-bold text-amber-900 bg-emerald-50">🏪 In-Store Only<div className="font-normal text-[10px] text-gray-500">Cash / UPI / Card</div></td>
+              </tr>
+
+              {/* Members Covered */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Members Covered</td>
-                <td className="p-5 text-center">1 Member<div className="text-xs text-gray-400 font-normal">For Individuals</div></td>
-                <td className="p-5 text-center bg-green-50 font-medium">Up to 3 Members<div className="text-xs text-gray-400 font-normal">For Small Families</div></td>
-                <td className="p-5 text-center font-medium">Up to 5 Members<div className="text-xs text-gray-400 font-normal">For Families</div></td>
-                <td className="p-5 text-center bg-emerald-50 font-medium">Up to 6 Members<div className="text-xs text-gray-400 font-normal">For Large Families</div></td>
+                <td className="p-5 text-center font-semibold">Only One<div className="text-xs text-gray-400 font-normal">For Individuals</div></td>
+                <td className="p-5 text-center bg-green-50 font-semibold text-[#006537]">You + 1<div className="text-xs text-gray-400 font-normal">2 Members Total</div></td>
+                <td className="p-5 text-center font-semibold text-[#006537]">You + 3<div className="text-xs text-gray-400 font-normal">4 Members Total</div></td>
+                <td className="p-5 text-center bg-emerald-50 font-semibold text-[#006537]">You + 5<div className="text-xs text-gray-400 font-normal">6 Members Total</div></td>
               </tr>
+
+              {/* Free Medication Row */}
+              <tr className="hover:bg-gray-50 bg-amber-50/40">
+                <td className="p-5 font-bold text-amber-950">
+                  *Free Medication for Members
+                  <span className="block text-xs font-normal text-amber-800 mt-0.5">350+ chronic disease medicines 100% free</span>
+                </td>
+                <td className="p-5 text-center text-gray-400">—</td>
+                <td className="p-5 text-center bg-green-50 font-bold text-[#006537]">1 Member Covered</td>
+                <td className="p-5 text-center font-bold text-[#006537]">2 Members Covered</td>
+                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">4 Members Covered</td>
+              </tr>
+
+              {/* Pharmacy Discount */}
               <tr className="hover:bg-gray-50">
-                <td className="p-5 text-gray-600">AIRO Pharmacy Discount*</td>
+                <td className="p-5 text-gray-600">*AIRO Pharmacy Discount</td>
                 <td className="p-5 text-center font-semibold text-[#006537]">Up to 60%+</td>
                 <td className="p-5 text-center font-semibold bg-green-50 text-[#006537]">Up to 60%+</td>
                 <td className="p-5 text-center font-semibold text-[#006537]">Up to 60%+</td>
                 <td className="p-5 text-center font-semibold bg-emerald-50 text-[#006537]">Up to 60%+</td>
               </tr>
-              <tr className="hover:bg-gray-50">
-                <td className="p-5 text-gray-600">AIRO Branded Products Discount</td>
-                <td className="p-5 text-center text-gray-400">—</td>
-                <td className="p-5 text-center font-semibold bg-green-50 text-[#006537]">3%</td>
-                <td className="p-5 text-center font-semibold text-[#006537]">6%</td>
-                <td className="p-5 text-center font-semibold bg-emerald-50 text-[#006537]">8%</td>
-              </tr>
+
+              {/* Doctor Consultations */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Free In-Store Doctor Consultations</td>
-                <td className="p-5 text-center">2 / Year</td>
-                <td className="p-5 text-center bg-green-50">6 / Year</td>
-                <td className="p-5 text-center">10 / Year</td>
-                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">15 / Year</td>
+                <td className="p-5 text-center font-medium">3 / Year</td>
+                <td className="p-5 text-center bg-green-50 font-medium text-[#006537]">6 / Year</td>
+                <td className="p-5 text-center font-bold text-[#006537]">10 / Year</td>
+                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">12 / Year</td>
               </tr>
+
+              {/* Telemedicine */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Free Telemedicine Consultations</td>
-                <td className="p-5 text-center">2 / Year</td>
-                <td className="p-5 text-center bg-green-50">6 / Year</td>
-                <td className="p-5 text-center">10 / Year</td>
+                <td className="p-5 text-center font-medium">3 / Year</td>
+                <td className="p-5 text-center bg-green-50 font-medium text-[#006537]">6 / Year</td>
+                <td className="p-5 text-center font-bold text-[#006537]">10 / Year</td>
                 <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">Unlimited</td>
               </tr>
+
+              {/* Praana Screenings */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">AIRO Praana™ Health Screenings</td>
-                <td className="p-5 text-center">4 / Year</td>
-                <td className="p-5 text-center bg-green-50">10 / Year</td>
-                <td className="p-5 text-center font-semibold text-[#006537]">Unlimited</td>
-                <td className="p-5 text-center bg-emerald-50 font-semibold text-[#006537]">Unlimited</td>
+                <td className="p-5 text-center font-medium">4 / Year</td>
+                <td className="p-5 text-center bg-green-50 font-medium text-[#006537]">10 / Year</td>
+                <td className="p-5 text-center font-bold text-[#006537]">Unlimited</td>
+                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">Unlimited</td>
               </tr>
+
+              {/* Health Checkup */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Annual Preventive Health Check-up</td>
                 <td className="p-5 text-center text-gray-400">—</td>
-                <td className="p-5 text-center bg-green-50">1 Member / Year</td>
-                <td className="p-5 text-center">2 Members / Year</td>
-                <td className="p-5 text-center bg-emerald-50 font-semibold">3 Members / Year</td>
+                <td className="p-5 text-center bg-green-50 font-semibold text-[#006537]">You (1 Member / Yr)</td>
+                <td className="p-5 text-center font-semibold text-[#006537]">You + 1 (2 Members / Yr)</td>
+                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">You + 3 (4 Members / Yr)</td>
               </tr>
+
+              {/* Dietitian */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Dietitian Consultations</td>
                 <td className="p-5 text-center text-gray-400">—</td>
-                <td className="p-5 text-center bg-green-50">2 / Year</td>
-                <td className="p-5 text-center">6 / Year</td>
-                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">12 / Year</td>
+                <td className="p-5 text-center bg-green-50 font-semibold text-[#006537]">3 / Year</td>
+                <td className="p-5 text-center font-semibold text-[#006537]">6 / Year</td>
+                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">10 / Year</td>
               </tr>
+
+              {/* Home Delivery */}
               <tr className="hover:bg-gray-50">
                 <td className="p-5 text-gray-600">Medicine Home Delivery</td>
-                <td className="p-5 text-center">Free above ₹1,500</td>
-                <td className="p-5 text-center bg-green-50">Free above ₹1,500</td>
-                <td className="p-5 text-center font-semibold text-[#006537]">Unlimited</td>
-                <td className="p-5 text-center bg-emerald-50 font-semibold text-[#006537]">Unlimited</td>
+                <td className="p-5 text-center">Free above ₹1,000</td>
+                <td className="p-5 text-center bg-green-50">Free above ₹1,000</td>
+                <td className="p-5 text-center font-semibold text-[#006537]">Unlimited Free</td>
+                <td className="p-5 text-center bg-emerald-50 font-semibold text-[#006537]">Unlimited Free</td>
               </tr>
+
+              {/* Ambulance Assistance */}
               <tr className="hover:bg-gray-50">
-                <td className="p-5 text-gray-600">AIRO Care365™ (24/7 Emergency Support)</td>
+                <td className="p-5 text-gray-600">Ambulance Assistance</td>
+                <td className="p-5 text-center text-gray-400">—</td>
+                <td className="p-5 text-center text-gray-400 bg-green-50">—</td>
+                <td className="p-5 text-center font-bold text-[#006537]">Included</td>
+                <td className="p-5 text-center bg-emerald-50 font-bold text-[#006537]">Included</td>
+              </tr>
+
+              {/* Emergency Support Care365 */}
+              <tr className="hover:bg-gray-50 bg-[#D02029]/5 border-y border-[#D02029]/20">
+                <td className="p-5">
+                  <div className="font-bold text-[#D02029]">AIRO Care365™ (24/7 Emergency Support)</div>
+                </td>
                 <td className="p-5 text-center text-gray-400">—</td>
                 <td className="p-5 text-center text-gray-400 bg-green-50">—</td>
                 <td className="p-5 text-center font-bold text-[#D02029]">Included</td>
                 <td className="p-5 text-center bg-emerald-50 font-bold text-[#D02029]">Included</td>
               </tr>
-              <tr className="hover:bg-gray-50">
-                <td className="p-5 text-gray-600">AIRO Medication Gift Voucher</td>
-                <td className="p-5 text-center text-gray-400">—</td>
-                <td className="p-5 text-center font-bold text-[#006537] bg-green-50">₹500</td>
-                <td className="p-5 text-center font-bold text-[#006537]">₹1,000</td>
-                <td className="p-5 text-center font-bold text-[#006537] bg-emerald-50">₹1,500</td>
-              </tr>
+
               {[
                 "AIRO App / Digital Health Records",
                 "Health & Medication Reminders"

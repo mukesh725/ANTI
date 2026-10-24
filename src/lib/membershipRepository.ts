@@ -168,6 +168,7 @@ export async function submitPendingRegistration(
       address: input.address,
       emergencyContact: input.emergencyContact || null,
       membershipPlan: input.membershipPlan,
+      billingCycle: input.billingCycle || 'Annual',
       paymentStatus: 'Pending',
       paymentMethod: null,
       membershipStatus: 'Pending Activation',

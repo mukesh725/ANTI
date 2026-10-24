@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, Store } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -19,6 +19,7 @@ export default function PlanSelectionScreen({
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
+  const [billingCycle, setBillingCycle] = useState<'Quarterly' | 'Annual'>('Quarterly');
 
   useEffect(() => {
     fetch('/api/membership/plans')
@@ -131,14 +132,57 @@ export default function PlanSelectionScreen({
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
+          <span className="bg-emerald-100 text-[#006537] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 inline-block">
+            🏪 In-Store Membership Enrollment
+          </span>
           <h2 className="text-3xl md:text-5xl font-semibold text-[#006537] mb-4">Choose Your Plan</h2>
-          <p className="text-gray-500 text-lg">
-            Select the membership that fits your wellness journey.
-            <span className="inline-block text-xs font-semibold text-[#006537] bg-green-50 border border-[#006537]/20 px-3 py-1 rounded-full ml-2">
-              + GST applicable for all plans
-            </span>
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+            Select the membership tier and billing frequency that fits your wellness journey.
           </p>
+        </div>
+
+        {/* In-Store Payment Banner */}
+        <div className="max-w-3xl mx-auto mb-10 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-950 flex items-start gap-3 shadow-sm">
+          <Store className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-bold text-sm text-amber-900">In-Store Payment &amp; Activation</p>
+            <p className="text-amber-800 mt-0.5 leading-relaxed">
+              AIRO ONE memberships are issued and paid in-store (Cash, UPI, or Card) at any AIRO Clinic or Pharmacy. No online gateway payment is charged now.
+            </p>
+          </div>
+        </div>
+
+        {/* Billing Frequency Selector */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-gray-100 p-1.5 rounded-2xl border border-gray-200">
+            <button
+              type="button"
+              onClick={() => setBillingCycle('Quarterly')}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                billingCycle === 'Quarterly'
+                  ? 'bg-[#006537] text-white shadow-md'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <span>Quarterly Payments</span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${billingCycle === 'Quarterly' ? 'bg-white/20 text-white' : 'bg-green-100 text-[#006537]'}`}>
+                Incl. 18% GST
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setBillingCycle('Annual')}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                billingCycle === 'Annual'
+                  ? 'bg-[#006537] text-white shadow-md'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <span>Annual Payments</span>
+              <span className="text-[10px] text-gray-400 font-normal">+ GST</span>
+            </button>
+          </div>
         </div>
 
         {error && <div className="text-center text-[#D02029] mb-8 bg-red-50 p-4 rounded-xl max-w-md mx-auto">{error}</div>}
@@ -157,6 +201,9 @@ export default function PlanSelectionScreen({
 
               const isHighlight = plan.name?.toLowerCase().includes('preferred') || plan.name?.toLowerCase().includes('popular');
 
+              // Compute quarterly pricing if plan has quarterlyPrice or calculate (price * 1.18 / 4)
+              const quarterlyRate = plan.quarterlyPrice || Math.round((plan.price * 1.18) / 4);
+
               return (
               <motion.div 
                 key={plan.id || i}
@@ -174,11 +221,27 @@ export default function PlanSelectionScreen({
                 )}
                 <div className="mb-6 mt-3">
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{plan.name || 'AIRO Plan'}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-extrabold text-[#006537]">₹{plan.price || 0}</span>
-                    <span className="text-gray-400 text-xs">/ year</span>
-                  </div>
-                  <div className="text-[11px] font-medium text-gray-500 mt-1">+ GST applicable</div>
+                  {billingCycle === 'Quarterly' ? (
+                    <div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold text-[#006537]">₹{quarterlyRate}</span>
+                        <span className="text-gray-400 text-xs">/ quarter</span>
+                      </div>
+                      <div className="text-[10px] font-bold text-[#006537] bg-green-100/70 inline-block px-2 py-0.5 rounded-full mt-1">
+                        ✓ INCL. 18% GST
+                      </div>
+                      <p className="text-[10px] text-gray-400 mt-0.5">or ₹{plan.price}/yr (+ GST)</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold text-[#006537]">₹{plan.price || 0}</span>
+                        <span className="text-gray-400 text-xs">/ year</span>
+                      </div>
+                      <div className="text-[11px] font-medium text-gray-500 mt-1">+ GST applicable</div>
+                      <p className="text-[10px] text-gray-400 mt-0.5">or ₹{quarterlyRate}/qtr (Incl. GST)</p>
+                    </div>
+                  )}
                   {plan.description && <p className="text-gray-500 mt-3 text-xs leading-relaxed">{plan.description}</p>}
                 </div>
 
@@ -194,7 +257,7 @@ export default function PlanSelectionScreen({
                 </div>
 
                 <button 
-                  onClick={() => handleJoin(plan)}
+                  onClick={() => handleJoin({ ...plan, selectedCycle: billingCycle })}
                   disabled={processing}
                   className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-colors ${
                     isHighlight
@@ -202,7 +265,7 @@ export default function PlanSelectionScreen({
                       : 'bg-[#F8F7F4] text-[#006537] hover:bg-[#e8e6e1]'
                   } disabled:opacity-50`}
                 >
-                  {processing ? 'Processing...' : 'Choose Plan'}
+                  {processing ? 'Processing...' : `Select Plan (${billingCycle === 'Quarterly' ? `₹${quarterlyRate}/qtr` : `₹${plan.price}/yr`})`}
                 </button>
               </motion.div>
             )})}

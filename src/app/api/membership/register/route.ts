@@ -20,6 +20,7 @@ export async function POST(request: Request) {
       address,
       emergencyContact,
       membershipPlan,
+      billingCycle,
     } = body;
 
     // Strict validation (Point 7: Server-side input validation)
@@ -49,7 +50,8 @@ export async function POST(request: Request) {
       gender: String(gender).slice(0, 20),
       address: escapeHtml(String(address).trim().slice(0, 250)),
       emergencyContact: emergencyContact ? sanitizePhone(String(emergencyContact)) : undefined,
-      membershipPlan: String(membershipPlan).slice(0, 50),
+      membershipPlan: String(membershipPlan).slice(0, 50) as any,
+      billingCycle: billingCycle === 'Quarterly' ? 'Quarterly' : 'Annual',
     };
 
     const result = await submitPendingRegistration(input);
@@ -57,7 +59,7 @@ export async function POST(request: Request) {
     // Send Google Chat Notification (Fire and Forget)
     try {
       const webhookUrl = process.env.GOOGLE_CHAT_WEBHOOK_URL || 'https://chat.googleapis.com/v1/spaces/AAQAvRqcoks/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=hpf9sY74058MHnjbAhKydzNKpr4T9Cfi6Z4AQMLrN-Y';
-      const messageText = `🚨 *New Pending Registration*\n\n*Name:* ${firstName} ${lastName}\n*Plan:* ${membershipPlan}\n*Phone:* ${mobile}\n\nThis user is awaiting activation in the admin dashboard.`;
+      const messageText = `🚨 *New Pending Registration (In-Store Payment)*\n\n*Name:* ${firstName} ${lastName}\n*Plan:* ${membershipPlan} (${input.billingCycle})\n*Phone:* ${mobile}\n\nCustomer will complete in-store payment and activation.`;
       
       fetch(webhookUrl, {
         method: 'POST',
