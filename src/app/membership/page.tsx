@@ -26,7 +26,9 @@ import {
   X,
   CreditCard,
   Download,
-  Store
+  Store,
+  FileText,
+  ExternalLink
 } from 'lucide-react';
 import { MembershipPlanType, PendingRegistrationInput, MemberRecord } from '@/types/membership';
 
@@ -86,6 +88,12 @@ export default function MembershipPage() {
     }
   }, [profile, user]);
 
+  // Billing Cycle Toggle State (Quarterly vs Annual)
+  const [selectedBillingCycle, setSelectedBillingCycle] = useState<'Quarterly' | 'Annual'>('Quarterly');
+
+  // Leaflet Active Page State (1 to 4)
+  const [currentLeafletPage, setCurrentLeafletPage] = useState<number>(1);
+
   // Step 3 Result State
   const [registrationResult, setRegistrationResult] = useState<{
     registrationId: string;
@@ -98,14 +106,15 @@ export default function MembershipPage() {
   };
 
   const startRegistration = (planName?: MembershipPlanType, cycle?: 'Annual' | 'Quarterly') => {
+    const effectiveCycle = cycle || selectedBillingCycle || formData.billingCycle || 'Quarterly';
     if (planName) {
       setFormData(prev => ({ 
         ...prev, 
         membershipPlan: planName,
-        billingCycle: cycle || prev.billingCycle || 'Quarterly'
+        billingCycle: effectiveCycle
       }));
-    } else if (cycle) {
-      setFormData(prev => ({ ...prev, billingCycle: cycle }));
+    } else {
+      setFormData(prev => ({ ...prev, billingCycle: effectiveCycle }));
     }
     setCurrentStep(1);
     setTimeout(() => {
@@ -253,7 +262,7 @@ export default function MembershipPage() {
 
             {/* Membership Comparison Table Section */}
             <div>
-              <div className="text-center mb-10">
+              <div className="text-center mb-6">
                 <span className="bg-emerald-100 text-[#006537] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 inline-block">
                   🏪 In-Store Membership &amp; Flexible Payments
                 </span>
@@ -263,21 +272,70 @@ export default function MembershipPage() {
                 </p>
               </div>
 
+              {/* Billing Cycle Switcher Toggle */}
+              <div className="flex justify-center mb-8">
+                <div className="bg-white p-1.5 rounded-full inline-flex border border-gray-200 shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedBillingCycle('Quarterly');
+                      setFormData(prev => ({ ...prev, billingCycle: 'Quarterly' }));
+                    }}
+                    className={`px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                      selectedBillingCycle === 'Quarterly'
+                        ? 'bg-[#006537] text-white shadow-md'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Quarterly Payments
+                    <span className="ml-1.5 text-[10px] opacity-80 font-normal hidden sm:inline">(Every 3 Months)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedBillingCycle('Annual');
+                      setFormData(prev => ({ ...prev, billingCycle: 'Annual' }));
+                    }}
+                    className={`px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                      selectedBillingCycle === 'Annual'
+                        ? 'bg-[#006537] text-white shadow-md'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Annual Membership
+                    <span className="ml-1.5 text-[10px] bg-amber-400 text-amber-950 font-extrabold px-2 py-0.5 rounded-full">
+                      Best Value
+                    </span>
+                  </button>
+                </div>
+              </div>
+
               {/* AIRO ONE™ AT A GLANCE */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
                 {[
-                  { tier: "SELECT", price: "₹1,999", quarterly: "₹590", desc: "Only 1 Member", border: "border-gray-200" },
-                  { tier: "PREFERRED", price: "₹3,999", quarterly: "₹1,180", desc: "You + 1 Member", border: "border-[#006537]/40 bg-green-50/50" },
-                  { tier: "SIGNATURE", price: "₹6,999", quarterly: "₹2,065", desc: "You + 3 Members", border: "border-amber-200" },
-                  { tier: "INFINITE", price: "₹8,999", quarterly: "₹2,655", desc: "You + 5 Members", border: "border-emerald-300 bg-emerald-50/30" }
+                  { tier: "SELECT", plan: "AIRO ONE Select", price: "₹1,999", quarterly: "₹590", desc: "Only 1 Member", border: "border-gray-200" },
+                  { tier: "PREFERRED", plan: "AIRO ONE Preferred", price: "₹3,999", quarterly: "₹1,180", desc: "You + 1 Member", border: "border-[#006537]/40 bg-green-50/50" },
+                  { tier: "SIGNATURE", plan: "AIRO ONE Signature", price: "₹6,999", quarterly: "₹2,065", desc: "You + 3 Members", border: "border-amber-200" },
+                  { tier: "INFINITE", plan: "AIRO ONE Infinite", price: "₹8,999", quarterly: "₹2,655", desc: "You + 5 Members", border: "border-emerald-300 bg-emerald-50/30" }
                 ].map((item, i) => (
-                  <div key={i} className={`p-4 rounded-2xl bg-white border ${item.border} shadow-sm text-center relative`}>
+                  <div 
+                    key={i} 
+                    onClick={() => startRegistration(item.plan as any, selectedBillingCycle)}
+                    className={`p-4 rounded-2xl bg-white border ${item.border} shadow-sm text-center relative cursor-pointer hover:shadow-md transition-all hover:scale-[1.02]`}
+                  >
                     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-1">{item.tier}</span>
-                    <div className="text-2xl font-extrabold text-[#006537] mb-0.5">{item.quarterly} <span className="text-xs font-semibold text-gray-500">/ qtr</span></div>
+                    <div className="text-2xl font-extrabold text-[#006537] mb-0.5">
+                      {selectedBillingCycle === 'Quarterly' ? item.quarterly : item.price} 
+                      <span className="text-xs font-semibold text-gray-500">
+                        {selectedBillingCycle === 'Quarterly' ? ' / qtr' : ' / yr'}
+                      </span>
+                    </div>
                     <span className="inline-block text-[10px] font-bold text-[#006537] bg-green-50 border border-[#006537]/20 px-2 py-0.5 rounded-full mb-1">
-                      INCL. 18% GST
+                      {selectedBillingCycle === 'Quarterly' ? 'INCL. 18% GST' : '+ GST APPLICABLE'}
                     </span>
-                    <div className="text-[11px] text-gray-500 font-medium">or {item.price}/yr (+ GST)</div>
+                    <div className="text-[11px] text-gray-500 font-medium">
+                      {selectedBillingCycle === 'Quarterly' ? `or ${item.price}/yr (+ GST)` : `or ${item.quarterly}/qtr (incl. GST)`}
+                    </div>
                     <div className="text-xs text-gray-600 font-medium mt-1">{item.desc}</div>
                   </div>
                 ))}
@@ -353,7 +411,7 @@ export default function MembershipPage() {
                         <div key={i} className={`flex flex-col py-2.5 border-b border-black/5 last:border-0 ${feature.label.includes('Care365') ? 'bg-[#D02029]/5 px-4 -mx-4 rounded-xl border-y border-[#D02029]/20 my-1' : feature.label.includes('Senior') ? 'bg-[#006537]/5 px-4 -mx-4 rounded-xl border-y border-[#006537]/20 my-1' : feature.label.includes('Free Medication') ? 'bg-amber-50/70 px-4 -mx-4 rounded-xl border-y border-amber-200/60 my-1' : ''}`}>
                           <div className="flex justify-between items-center w-full">
                             {feature.label.includes('Care365') || feature.label.includes('Senior') ? (
-                              <a href={feature.label.includes('Care365') ? '#airo-care365' : '#senior-citizens-care'} className={`pr-4 font-bold ${feature.label.includes('Care365') ? 'text-[#D02029]' : 'text-[#006537]'} hover:underline block`}>
+                              <a href="/Leaf-Let-membership.pdf" target="_blank" rel="noopener noreferrer" className={`pr-4 font-bold ${feature.label.includes('Care365') ? 'text-[#D02029]' : 'text-[#006537]'} hover:underline block`}>
                                 {feature.label}
                               </a>
                             ) : (
@@ -364,8 +422,8 @@ export default function MembershipPage() {
                             </span>
                           </div>
                           {(feature.label.includes('Care365') || feature.label.includes('Senior')) && (
-                            <a href={feature.label.includes('Care365') ? '#airo-care365' : '#senior-citizens-care'} className={`text-xs mt-1 font-medium hover:underline ${feature.label.includes('Care365') ? 'text-[#D02029]/80' : 'text-[#006537]/80'}`}>
-                              Scroll down to view more details ↓
+                            <a href="/Leaf-Let-membership.pdf" target="_blank" rel="noopener noreferrer" className={`text-xs mt-1 font-medium hover:underline ${feature.label.includes('Care365') ? 'text-[#D02029]/80' : 'text-[#006537]/80'}`}>
+                              View details in leaflet ↗
                             </a>
                           )}
                         </div>
@@ -403,9 +461,12 @@ export default function MembershipPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-sm">
                     {/* Quarterly Payment Row */}
-                    <tr className="bg-emerald-50/40">
+                    <tr className={`transition-colors ${selectedBillingCycle === 'Quarterly' ? 'bg-emerald-50/70 border-y-2 border-[#006537]/30' : 'hover:bg-gray-50'}`}>
                       <td className="p-5 font-bold text-gray-900">
                         Quarterly Payment Option
+                        {selectedBillingCycle === 'Quarterly' && (
+                          <span className="ml-2 text-[10px] font-bold bg-[#006537] text-white px-2 py-0.5 rounded-full inline-block">Active Choice</span>
+                        )}
                         <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay every 3 months • All taxes included</span>
                       </td>
                       <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
@@ -427,9 +488,12 @@ export default function MembershipPage() {
                     </tr>
 
                     {/* Annual Fee Row */}
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-5 font-medium text-gray-700">
+                    <tr className={`transition-colors ${selectedBillingCycle === 'Annual' ? 'bg-emerald-50/70 border-y-2 border-[#006537]/30' : 'hover:bg-gray-50'}`}>
+                      <td className="p-5 font-bold text-gray-900">
                         Annual Membership Fee
+                        {selectedBillingCycle === 'Annual' && (
+                          <span className="ml-2 text-[10px] font-bold bg-[#006537] text-white px-2 py-0.5 rounded-full inline-block">Active Choice</span>
+                        )}
                         <span className="block text-xs font-normal text-gray-500 mt-0.5">(+ GST applicable for all plans)</span>
                       </td>
                       <td className="p-5 text-center font-bold text-lg">
@@ -558,9 +622,9 @@ export default function MembershipPage() {
                     {/* Emergency Support Care365 */}
                     <tr className="hover:bg-gray-50 bg-[#D02029]/5 border-y border-[#D02029]/20">
                       <td className="p-5">
-                        <a href="#airo-care365" className="block hover:opacity-80">
+                        <a href="/Leaf-Let-membership.pdf" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80">
                           <div className="font-bold text-[#D02029] hover:underline">AIRO Care365™ (24/7 Emergency Support)</div>
-                          <div className="text-xs text-[#D02029]/80 mt-1.5 font-medium hover:underline">Scroll down to view more details ↓</div>
+                          <div className="text-xs text-[#D02029]/80 mt-1.5 font-medium hover:underline">View details in leaflet ↗</div>
                         </a>
                       </td>
                       <td className="p-5 text-center text-gray-400">—</td>
@@ -572,9 +636,9 @@ export default function MembershipPage() {
                     {/* Senior Citizens Care */}
                     <tr className="hover:bg-gray-50 bg-[#006537]/5 border-y border-[#006537]/20">
                       <td className="p-5">
-                        <a href="#senior-citizens-care" className="block hover:opacity-80">
+                        <a href="/Leaf-Let-membership.pdf" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80">
                           <div className="font-bold text-[#006537] hover:underline">Senior Citizens Care (60+ Years)</div>
-                          <div className="text-xs text-[#006537]/80 mt-1.5 font-medium hover:underline">Scroll down to view more details ↓</div>
+                          <div className="text-xs text-[#006537]/80 mt-1.5 font-medium hover:underline">View details in leaflet ↗</div>
                         </a>
                       </td>
                       <td className="p-5 text-center font-semibold text-[#006537]">✔ Included</td>
@@ -596,37 +660,37 @@ export default function MembershipPage() {
                       </tr>
                     ))}
                     <tr className="bg-gray-50">
-                      <td className="p-5"></td>
+                      <td className="p-5 font-bold text-gray-700">Enroll Today:</td>
                       <td className="p-5 text-center">
                         <button 
-                          onClick={() => startRegistration('AIRO ONE Select', 'Quarterly')} 
-                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#004e2a] transition-all"
+                          onClick={() => startRegistration('AIRO ONE Select', selectedBillingCycle)} 
+                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#004e2a] transition-all shadow-sm"
                         >
-                          Join Select (₹590/qtr)
+                          Join Select ({selectedBillingCycle === 'Quarterly' ? '₹590/qtr' : '₹1,999/yr'})
                         </button>
                       </td>
                       <td className="p-5 text-center bg-green-50">
                         <button 
-                          onClick={() => startRegistration('AIRO ONE Preferred', 'Quarterly')} 
+                          onClick={() => startRegistration('AIRO ONE Preferred', selectedBillingCycle)} 
                           className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#004e2a] transition-all shadow-md"
                         >
-                          Join Preferred (₹1,180/qtr)
+                          Join Preferred ({selectedBillingCycle === 'Quarterly' ? '₹1,180/qtr' : '₹3,999/yr'})
                         </button>
                       </td>
                       <td className="p-5 text-center">
                         <button 
-                          onClick={() => startRegistration('AIRO ONE Signature', 'Quarterly')} 
-                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#004e2a] transition-all"
+                          onClick={() => startRegistration('AIRO ONE Signature', selectedBillingCycle)} 
+                          className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#004e2a] transition-all shadow-sm"
                         >
-                          Join Signature (₹2,065/qtr)
+                          Join Signature ({selectedBillingCycle === 'Quarterly' ? '₹2,065/qtr' : '₹6,999/yr'})
                         </button>
                       </td>
                       <td className="p-5 text-center bg-emerald-50">
                         <button 
-                          onClick={() => startRegistration('AIRO ONE Infinite', 'Quarterly')} 
+                          onClick={() => startRegistration('AIRO ONE Infinite', selectedBillingCycle)} 
                           className="bg-[#006537] text-white px-5 py-2.5 rounded-full text-xs font-bold hover:bg-[#004e2a] transition-all shadow-md"
                         >
-                          Join Infinite (₹2,655/qtr)
+                          Join Infinite ({selectedBillingCycle === 'Quarterly' ? '₹2,655/qtr' : '₹8,999/yr'})
                         </button>
                       </td>
                     </tr>
@@ -640,187 +704,155 @@ export default function MembershipPage() {
               </div>
             </div>
 
-            {/* Senior Citizens Care */}
-            <div id="senior-citizens-care" className="bg-[#004e2a] text-white p-8 md:p-12 rounded-3xl shadow-xl scroll-mt-24">
-              <h2 className="text-3xl font-semibold mb-6">Senior Citizens Care (Age 60+)</h2>
-              <p className="text-lg opacity-90 mb-10 max-w-4xl">
-                Every AIRO ONE™ Membership includes exclusive healthcare benefits for senior citizens aged 60 years and above.
-              </p>
-              
-              <div className="bg-white/10 p-6 rounded-2xl">
-                <h3 className="font-semibold text-xl mb-4 text-green-200">Included Benefits</h3>
-                <ul className="space-y-4 opacity-95">
-                  <li className="flex gap-3">
-                    <span className="mt-1">✅</span>
-                    <div>
-                      <strong className="block text-lg">75% OFF routine diagnostic tests including:</strong>
-                      <ul className="list-disc ml-5 mt-2 space-y-1 opacity-90 text-sm">
-                        <li>Blood Glucose</li>
-                        <li>HbA1c</li>
-                        <li>Kidney Function Tests (KFT)</li>
-                        <li>Thyroid Function Tests (TSH)</li>
-                        <li>Urine Routine Examination</li>
-                        <li>Other routine preventive blood investigations</li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1">✅</span>
-                    <strong className="text-lg">50% OFF in-store doctor consultations.</strong>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1">✅</span>
-                    <span className="text-base">Benefits are available alongside the member's AIRO Pharmacy Discount and other eligible AIRO ONE™ membership benefits.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* AIRO Praana™ Health Screening */}
-            <div className="bg-gradient-to-r from-emerald-900 to-[#006537] text-white p-8 md:p-12 rounded-3xl shadow-xl">
-              <div className="max-w-3xl mb-8">
-                <span className="bg-white/20 text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
-                  AIRO PRAANA™ HEALTH SCREENING
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-3">Quick. Easy. Essential.</h2>
-                <p className="text-emerald-100 text-lg">Know Your Numbers. Take Charge.</p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                {[
-                  'Blood Pressure',
-                  'Heart Rate & ECG',
-                  'SpO₂ / Oxygen Saturation',
-                  'Respiratory Rate',
-                  'Temperature',
-                  'Weight & BMI',
-                  'Diabetes Risk Assessment',
-                  'Cardiovascular Risk Assessment',
-                  'AIRO Praana™ Health Score'
-                ].map((check, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-white/10 px-4 py-3 rounded-xl border border-white/10">
-                    <Check className="text-emerald-300 w-4 h-4 shrink-0" />
-                    <span className="font-medium text-white">{check}</span>
+            {/* For More Information - Side-by-Side (Matches 404 / Showcase Card Style) */}
+            <div className="my-8 sm:my-14 bg-white rounded-[1.75rem] sm:rounded-[2.5rem] p-3.5 sm:p-8 lg:p-14 shadow-xl border border-gray-100 max-w-7xl mx-auto">
+              <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+                
+                {/* Left Side: Clean Minimalist Info & CTA */}
+                <div className="lg:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-[#006537] shadow-sm">
+                    <FileText className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* AIRO HEALTH™ Comprehensive Preventive Health Assessment */}
-            <div className="bg-[#004e2a] text-white p-8 md:p-12 rounded-3xl shadow-xl">
-              <span className="bg-white/20 text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
-                AIRO HEALTH™
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">Comprehensive Preventive Health Assessment</h2>
-              <p className="text-green-200 text-lg mb-4">Screen Early. Know Your Health. Prevent Better.</p>
-              <p className="text-sm md:text-base opacity-90 mb-10 max-w-4xl leading-relaxed">
-                A complete preventive health evaluation combining advanced body composition analysis, vital health measurements, and essential laboratory testing to provide a detailed picture of your health.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-6 text-sm">
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">1. Health &amp; Lifestyle</h3>
-                  <p className="opacity-90 leading-relaxed text-xs">Comprehensive review of health, lifestyle and preventive-care factors.</p>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">2. Vital Signs &amp; BMI</h3>
-                  <ul className="space-y-1.5 opacity-90 text-xs">
-                    <li>• Blood Pressure &amp; Heart Rate</li>
-                    <li>• Respiratory Rate &amp; SpO₂</li>
-                    <li>• Temperature, Height, Weight &amp; BMI</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">3. Blood &amp; Urine Tests</h3>
-                  <ul className="space-y-1.5 opacity-90 text-xs">
-                    <li>• CBC / Hemogram</li>
-                    <li>• Complete Urinalysis</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">4. Diabetes &amp; Cardio</h3>
-                  <ul className="space-y-1.5 opacity-90 text-xs">
-                    <li>• Fasting Blood Glucose</li>
-                    <li>• HbA1c</li>
-                    <li>• Complete Lipid Profile</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">5. Organ Health</h3>
-                  <ul className="space-y-1.5 opacity-90 text-xs">
-                    <li>• Liver Function Tests (LFT)</li>
-                    <li>• Kidney Function Tests (KFT)</li>
-                    <li>• Electrolytes &amp; TSH (Thyroid)</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">6. Vitamins &amp; Nutrition</h3>
-                  <ul className="space-y-1.5 opacity-90 text-xs">
-                    <li>• Vitamin D &amp; Vitamin B12</li>
-                    <li>• Folate, Iron &amp; Ferritin</li>
-                    <li>• Calcium &amp; Magnesium</li>
-                  </ul>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">7. Physical Examination</h3>
-                  <p className="opacity-90 leading-relaxed text-xs">Comprehensive physical assessment as part of the preventive evaluation.</p>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">8. Age &amp; Risk Screening</h3>
-                  <p className="opacity-90 leading-relaxed text-xs">Additional preventive screening based on age and individual risk factors.</p>
-                </div>
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <h3 className="text-base font-bold mb-3 text-green-200">9. Doctor Review</h3>
-                  <p className="opacity-90 leading-relaxed text-xs">Professional doctor review with a personalized health summary report.</p>
-                </div>
-              </div>
-            </div>
+                  <span className="text-xs font-bold text-[#006537] uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200/60">
+                    Official Membership Leaflet
+                  </span>
 
-            {/* AIRO Care365 - Exclusive to Signature & Infinite */}
-            <div id="airo-care365" className="bg-[#D02029] text-white p-8 md:p-12 rounded-3xl shadow-xl mt-12 scroll-mt-24">
-              <span className="bg-white/20 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-6 inline-block">
-                Exclusive to AIRO ONE™ Signature &amp; Infinite
-              </span>
-              <h2 className="text-3xl font-bold mb-2">AIRO Care365™</h2>
-              <p className="text-xl font-semibold mb-2">24/7 Emergency Support Membership</p>
-              <p className="text-lg opacity-90 mb-10 max-w-4xl">
-                Care Every Day. Support When You Need It Most.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-8 text-sm">
-                <div className="bg-white/10 p-6 rounded-2xl">
-                  <div className="text-4xl mb-4">🚨</div>
-                  <h3 className="text-xl font-bold mb-4">24/7 Response Coordination</h3>
-                  <ul className="space-y-3 opacity-90">
-                    <li>• Dedicated AIRO Emergency Support Line</li>
-                    <li>• Immediate assistance during medical emergencies</li>
-                    <li>• Rapid coordination with emergency services, hospitals, and designated family members</li>
-                  </ul>
+                  <h3 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                    Need Detailed Plan &amp; Screening Information?
+                  </h3>
+
+                  <p className="text-gray-500 text-xs sm:text-base leading-relaxed max-w-md">
+                    Review all comprehensive plan inclusions, doctor consults, diagnostic test packages, Senior Citizens Care (60+), and Care365™ emergency support in our official leaflet.
+                  </p>
+
+                  <div className="pt-2 flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                    <a
+                      href="/Leaf-Let-membership.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#006537] text-white hover:bg-[#004e2a] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+                    >
+                      <FileText className="w-4 h-4" />
+                      For More Information
+                      <ExternalLink className="w-4 h-4 ml-0.5 opacity-80" />
+                    </a>
+                    <a
+                      href="/Leaf-Let-membership.pdf"
+                      download="AIRO_ONE_Membership_Leaflet.pdf"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold text-xs sm:text-sm transition-all"
+                    >
+                      <Download className="w-4 h-4 text-gray-500" />
+                      Download PDF
+                    </a>
+                  </div>
                 </div>
-                <div className="bg-white/10 p-6 rounded-2xl border border-white/30">
-                  <div className="text-4xl mb-4">🚑</div>
-                  <h3 className="text-xl font-bold mb-4">Ambulance Assistance</h3>
-                  <ul className="space-y-3 opacity-90">
-                    <li>• Priority ambulance coordination</li>
-                    <li>• Assistance in arranging transportation to the nearest appropriate hospital</li>
-                    <li>• Real-time support from the moment you call until you reach medical care</li>
-                  </ul>
+
+                {/* Right Side: Cream Showcase Card with Responsive Outside Navigation Arrows */}
+                <div className="lg:col-span-7 flex flex-col items-center justify-center w-full">
+                  <div className="relative flex items-center justify-center gap-3 sm:gap-4 w-full max-w-[620px] mx-auto">
+                    
+                    {/* Left Navigation Arrow - Visible on Tablet/Desktop, Flanking Outside */}
+                    <button
+                      type="button"
+                      onClick={() => setCurrentLeafletPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentLeafletPage === 1}
+                      className="hidden sm:flex shrink-0 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white hover:bg-[#FAF7F2] text-stone-800 border-2 border-stone-200/90 shadow-md hover:shadow-xl hover:border-[#006537] hover:text-[#006537] disabled:opacity-20 disabled:cursor-not-allowed disabled:hover:scale-100 items-center justify-center transition-all hover:scale-110 active:scale-95 z-10"
+                      aria-label="Previous Page"
+                      title="Previous Page"
+                    >
+                      <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
+                    </button>
+
+                    {/* Cream Showcase Card - FULL WIDTH on Mobile for Maximum Readability! */}
+                    <div className="w-full max-w-[500px] rounded-[1.75rem] sm:rounded-[2.5rem] bg-gradient-to-b from-[#FDFCF9] via-[#FAF6EE] to-[#F5EFE4] p-3 sm:p-5 border-[2.5px] sm:border-[3px] border-[#E8E2D5] shadow-xl shadow-stone-400/20 flex flex-col justify-between">
+                      
+                      {/* Leaflet Page Image with Inner Rounded Frame (Matching Image 2) */}
+                      <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-sm border border-[#E7DFD1] aspect-[1313/1688] flex items-center justify-center">
+                        <AnimatePresence mode="wait">
+                          <motion.img
+                            key={currentLeafletPage}
+                            src={`/leaflet-pages/page-${currentLeafletPage}.png`}
+                            alt={`AIRO ONE Membership Leaflet - Page ${currentLeafletPage}`}
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            transition={{ duration: 0.2 }}
+                            className="w-full h-full object-contain select-none"
+                          />
+                        </AnimatePresence>
+                      </div>
+
+                      {/* Bottom Controls Bar inside Cream Card */}
+                      <div className="mt-3 sm:mt-3.5 pt-2.5 sm:pt-3 border-t border-[#E8E1D3] flex items-center justify-between text-stone-700 px-1">
+                        <div className="flex items-center gap-2 sm:gap-2.5">
+                          <span className="text-xs font-bold text-stone-800 tracking-wide">
+                            Page {currentLeafletPage} of 3
+                          </span>
+
+                          {/* Page Pill Indicators */}
+                          <div className="flex items-center gap-1 sm:gap-1.5">
+                            {[1, 2, 3].map((p) => (
+                              <button
+                                key={p}
+                                type="button"
+                                onClick={() => setCurrentLeafletPage(p)}
+                                className={`h-2 rounded-full transition-all ${
+                                  currentLeafletPage === p
+                                    ? 'w-6 sm:w-7 bg-[#006537] shadow-sm'
+                                    : 'w-2 bg-[#DDD5C7] hover:bg-[#C2B7A3]'
+                                }`}
+                                aria-label={`Go to page ${p}`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Mobile Only: Big Easy-To-Tap Arrow Buttons */}
+                        <div className="flex sm:hidden items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setCurrentLeafletPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentLeafletPage === 1}
+                            className="w-8 h-8 rounded-full bg-white text-stone-800 border border-stone-300 shadow-sm disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center active:scale-95"
+                            aria-label="Previous Page"
+                          >
+                            <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setCurrentLeafletPage(prev => Math.min(prev + 1, 3))}
+                            disabled={currentLeafletPage === 3}
+                            className="w-8 h-8 rounded-full bg-[#006537] text-white shadow-sm disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center active:scale-95"
+                            aria-label="Next Page"
+                          >
+                            <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                          </button>
+                        </div>
+
+                        {/* Desktop Only: P1 Badge */}
+                        <span className="hidden sm:inline-block text-[11px] font-bold text-[#006537] bg-[#EAE3D2] px-2.5 py-0.5 rounded-full border border-[#DDD5C5]">
+                          P{currentLeafletPage}
+                        </span>
+                      </div>
+
+                    </div>
+
+                    {/* Right Navigation Arrow - Visible on Tablet/Desktop, Flanking Outside */}
+                    <button
+                      type="button"
+                      onClick={() => setCurrentLeafletPage(prev => Math.min(prev + 1, 3))}
+                      disabled={currentLeafletPage === 3}
+                      className="hidden sm:flex shrink-0 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#006537] hover:bg-[#004e2a] text-white border-2 border-[#006537] shadow-md hover:shadow-xl disabled:opacity-20 disabled:cursor-not-allowed disabled:hover:scale-100 items-center justify-center transition-all hover:scale-110 active:scale-95 z-10"
+                      aria-label="Next Page"
+                      title="Next Page"
+                    >
+                      <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
+                    </button>
+
+                  </div>
                 </div>
-                <div className="bg-white/10 p-6 rounded-2xl">
-                  <div className="text-4xl mb-4">👨‍⚕️</div>
-                  <h3 className="text-xl font-bold mb-4">AIRO Doctor Emergency Support</h3>
-                  <ul className="space-y-3 opacity-90">
-                    <li>• Immediate access to an AIRO doctor via teleconsultation during emergencies</li>
-                    <li>• Medical guidance for patients and caregivers</li>
-                    <li>• Coordination with hospital teams using your AIRO Health Profile, when available</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="mt-8 bg-black/20 p-6 rounded-2xl text-center">
-                <p className="text-base font-medium opacity-100">
-                  Because AIRO knows your health history, medications, allergies, and medical conditions, we can help coordinate your care faster when every minute matters.
-                </p>
+
               </div>
             </div>
 

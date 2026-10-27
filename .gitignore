@@ -47,5 +47,6 @@ scratch/
 # documents and draft files
 *.pdf
 !docs/**/*.pdf
+!public/*.pdf
 * 2.tsx
 
