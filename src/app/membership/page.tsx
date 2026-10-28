@@ -722,8 +722,8 @@ export default function MembershipPage() {
                     Need Detailed Plan &amp; Screening Information?
                   </h3>
 
-                  <p className="text-gray-500 text-xs sm:text-base leading-relaxed max-w-md">
-                    Review all comprehensive plan inclusions, doctor consults, diagnostic test packages, Senior Citizens Care (60+), and Care365™ emergency support in our official leaflet.
+                  <p className="text-sm sm:text-base text-gray-600 max-w-md leading-relaxed">
+                    Find the right membership for you and your family. Explore plan benefits, pharmacy savings, doctor consultations, preventive health check-ups, and Care365™ emergency support in our official leaflet.
                   </p>
 
                   <div className="pt-2 flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -853,26 +853,6 @@ export default function MembershipPage() {
                   </div>
                 </div>
 
-              </div>
-            </div>
-
-            {/* Every Membership Includes Grid */}
-            <div>
-              <h2 className="text-3xl font-semibold text-center mb-10 text-[#006537]">Every AIRO ONE™ Membership Includes</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  { icon: <ShoppingBag />, text: 'Savings at AIRO Essentials Grocery' },
-                  { icon: <Shield />, text: 'Exclusive Pharmacy Benefits' },
-                  { icon: <Stethoscope />, text: 'Doctor & Telemedicine Access' },
-                  { icon: <HeartPulse />, text: 'AIRO Praana™ Screenings' },
-                  { icon: <CheckCircle2 />, text: 'AIRO App & Digital Records' },
-                  { icon: <Gift />, text: 'Birthday & Exclusive Rewards' }
-                ].map((item, i) => (
-                  <div key={i} className="bg-white p-6 rounded-2xl border border-gray-100 flex items-center gap-4 shadow-sm">
-                    <div className="text-[#006537] bg-green-50 p-3 rounded-full">{item.icon}</div>
-                    <span className="font-semibold text-gray-700 text-sm">{item.text}</span>
-                  </div>
-                ))}
               </div>
             </div>
 
