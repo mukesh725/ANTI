@@ -62,19 +62,15 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
                 </td>
                 <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
                   ₹590 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                 </td>
                 <td className="p-5 text-center font-extrabold text-lg text-[#006537] bg-green-100/40">
                   ₹1,180 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                 </td>
                 <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
                   ₹2,065 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                 </td>
                 <td className="p-5 text-center font-extrabold text-lg text-[#006537] bg-emerald-50">
                   ₹2,655 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                  <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                 </td>
               </tr>
 
@@ -82,23 +78,19 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
               <tr className="hover:bg-gray-50">
                 <td className="p-5 font-medium text-gray-700">
                   Annual Membership Fee
-                  <span className="block text-xs font-normal text-gray-500 mt-0.5">(+ GST applicable for all plans)</span>
+                  <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay annually • All taxes included</span>
                 </td>
                 <td className="p-5 text-center font-bold text-lg">
                   ₹1,999
-                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
                 <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">
                   ₹3,999
-                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
                 <td className="p-5 text-center font-bold text-lg">
                   ₹6,999
-                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
                 <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">
                   ₹8,999
-                  <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                 </td>
               </tr>
 

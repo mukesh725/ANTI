@@ -166,9 +166,6 @@ export default function PlanSelectionScreen({
               }`}
             >
               <span>Quarterly Payments</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${billingCycle === 'Quarterly' ? 'bg-white/20 text-white' : 'bg-green-100 text-[#006537]'}`}>
-                Incl. 18% GST
-              </span>
             </button>
             <button
               type="button"
@@ -180,7 +177,6 @@ export default function PlanSelectionScreen({
               }`}
             >
               <span>Annual Payments</span>
-              <span className="text-[10px] text-gray-400 font-normal">+ GST</span>
             </button>
           </div>
         </div>
@@ -227,10 +223,7 @@ export default function PlanSelectionScreen({
                         <span className="text-3xl font-extrabold text-[#006537]">₹{quarterlyRate}</span>
                         <span className="text-gray-400 text-xs">/ quarter</span>
                       </div>
-                      <div className="text-[10px] font-bold text-[#006537] bg-green-100/70 inline-block px-2 py-0.5 rounded-full mt-1">
-                        ✓ INCL. 18% GST
-                      </div>
-                      <p className="text-[10px] text-gray-400 mt-0.5">or ₹{plan.price}/yr (+ GST)</p>
+                      <p className="text-[10px] text-gray-400 mt-1">or ₹{plan.price}/yr</p>
                     </div>
                   ) : (
                     <div>
@@ -238,8 +231,7 @@ export default function PlanSelectionScreen({
                         <span className="text-3xl font-extrabold text-[#006537]">₹{plan.price || 0}</span>
                         <span className="text-gray-400 text-xs">/ year</span>
                       </div>
-                      <div className="text-[11px] font-medium text-gray-500 mt-1">+ GST applicable</div>
-                      <p className="text-[10px] text-gray-400 mt-0.5">or ₹{quarterlyRate}/qtr (Incl. GST)</p>
+                      <p className="text-[10px] text-gray-400 mt-0.5">or ₹{quarterlyRate}/qtr</p>
                     </div>
                   )}
                   {plan.description && <p className="text-gray-500 mt-3 text-xs leading-relaxed">{plan.description}</p>}

@@ -30,7 +30,7 @@ export async function GET() {
             '2 Free In-Store Doctor Consultations/Yr',
             '4 AIRO Praana™ Health Screenings/Yr',
             'Free Medicine Delivery Above ₹1,500',
-            'Quarterly Payment Option Available (₹590/qtr incl. GST)',
+            'Quarterly Payment Option Available (₹590/qtr)',
             'AIRO App & Digital Health Records',
             'In-Store Payment & Activation Only'
           ])
@@ -53,7 +53,7 @@ export async function GET() {
             '1 Annual Preventive Health Check-up/Yr',
             '2 Dietitian Consultations/Yr',
             '₹500 AIRO Medication Gift Voucher',
-            'Quarterly Payment Option Available (₹1,180/qtr incl. GST)',
+            'Quarterly Payment Option Available (₹1,180/qtr)',
             'In-Store Payment & Activation Only'
           ])
         },
@@ -76,7 +76,7 @@ export async function GET() {
             '6 Dietitian Consultations/Yr',
             '₹1,000 AIRO Medication Gift Voucher',
             'AIRO Care365™ (24/7 Emergency Support) + Ambulance',
-            'Quarterly Payment Option Available (₹2,065/qtr incl. GST)',
+            'Quarterly Payment Option Available (₹2,065/qtr)',
             'In-Store Payment & Activation Only'
           ])
         },
@@ -99,7 +99,7 @@ export async function GET() {
             '12 Dietitian Consultations/Yr',
             '₹1,500 AIRO Medication Gift Voucher',
             'AIRO Care365™ (24/7 Emergency Support) + Ambulance',
-            'Quarterly Payment Option Available (₹2,655/qtr incl. GST)',
+            'Quarterly Payment Option Available (₹2,655/qtr)',
             'In-Store Payment & Activation Only'
           ])
         }

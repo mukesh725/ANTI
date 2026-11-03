@@ -331,10 +331,10 @@ export default function MembershipPage() {
                       </span>
                     </div>
                     <span className="inline-block text-[10px] font-bold text-[#006537] bg-green-50 border border-[#006537]/20 px-2 py-0.5 rounded-full mb-1">
-                      {selectedBillingCycle === 'Quarterly' ? 'INCL. 18% GST' : '+ GST APPLICABLE'}
+                      ALL TAXES INCLUDED
                     </span>
                     <div className="text-[11px] text-gray-500 font-medium">
-                      {selectedBillingCycle === 'Quarterly' ? `or ${item.price}/yr (+ GST)` : `or ${item.quarterly}/qtr (incl. GST)`}
+                      {selectedBillingCycle === 'Quarterly' ? `or ${item.price}/yr` : `or ${item.quarterly}/qtr`}
                     </div>
                     <div className="text-xs text-gray-600 font-medium mt-1">{item.desc}</div>
                   </div>
@@ -345,7 +345,7 @@ export default function MembershipPage() {
               <div className="lg:hidden space-y-6 mb-8">
                 {[
                   {
-                    name: "AIRO ONE™ Select", price: "₹1,999", quarterly: "₹590 / quarter (INCL. 18% GST)", members: "Only One (1 Member)",
+                    name: "AIRO ONE™ Select", price: "₹1,999", quarterly: "₹590 / quarter", members: "Only One (1 Member)",
                     freeMeds: "—", pharmacy: "Up to 60%+*", doc: "3 / Year",
                     tele: "3 / Year", screen: "4 / Year", checkup: "—",
                     diet: "—", delivery: "Free Above ₹1,000", ambulance: "—", care365: "—", senior: "✔ Included", 
@@ -353,7 +353,7 @@ export default function MembershipPage() {
                     bg: "bg-white", highlight: false
                   },
                   {
-                    name: "AIRO ONE™ Preferred", price: "₹3,999", quarterly: "₹1,180 / quarter (INCL. 18% GST)", members: "You + 1 (2 Members)",
+                    name: "AIRO ONE™ Preferred", price: "₹3,999", quarterly: "₹1,180 / quarter", members: "You + 1 (2 Members)",
                     freeMeds: "1 Member Covered (350+ Meds)", pharmacy: "Up to 60%+*", doc: "6 / Year",
                     tele: "6 / Year", screen: "10 / Year", checkup: "You (1 Member / Year)",
                     diet: "3 / Year", delivery: "Free Above ₹1,000", ambulance: "—", care365: "—", senior: "✔ Included", 
@@ -361,7 +361,7 @@ export default function MembershipPage() {
                     bg: "bg-green-50 border-[#006537]/20", highlight: true
                   },
                   {
-                    name: "AIRO ONE™ Signature", price: "₹6,999", quarterly: "₹2,065 / quarter (INCL. 18% GST)", members: "You + 3 (4 Members)",
+                    name: "AIRO ONE™ Signature", price: "₹6,999", quarterly: "₹2,065 / quarter", members: "You + 3 (4 Members)",
                     freeMeds: "2 Members Covered (350+ Meds)", pharmacy: "Up to 60%+*", doc: "10 / Year",
                     tele: "10 / Year", screen: "Unlimited", checkup: "You + 1 (2 Members / Year)",
                     diet: "6 / Year", delivery: "Unlimited Free", ambulance: "Included", care365: "Included", senior: "✔ Included", 
@@ -369,7 +369,7 @@ export default function MembershipPage() {
                     bg: "bg-white", highlight: false
                   },
                   {
-                    name: "AIRO ONE™ Infinite", price: "₹8,999", quarterly: "₹2,655 / quarter (INCL. 18% GST)", members: "You + 5 (6 Members)",
+                    name: "AIRO ONE™ Infinite", price: "₹8,999", quarterly: "₹2,655 / quarter", members: "You + 5 (6 Members)",
                     freeMeds: "4 Members Covered (350+ Meds)", pharmacy: "Up to 60%+*", doc: "12 / Year",
                     tele: "Unlimited", screen: "Unlimited", checkup: "You + 3 (4 Members / Year)",
                     diet: "10 / Year", delivery: "Unlimited Free", ambulance: "Included", care365: "Included", senior: "✔ Included", 
@@ -387,9 +387,9 @@ export default function MembershipPage() {
                     <div className="text-center mb-1">
                       <span className="text-2xl font-extrabold text-gray-900">{plan.quarterly.split(' ')[0]}</span>
                       <span className="text-xs text-gray-500 font-medium"> / quarter</span>
-                      <div className="text-[10px] font-bold text-[#006537] mt-0.5">★ INCL. 18% GST</div>
+                      <div className="text-[10px] font-bold text-[#006537] mt-0.5">★ All Taxes Included</div>
                     </div>
-                    <div className="text-center text-xs text-gray-500 font-medium mb-6">or {plan.price} / year (+ GST)</div>
+                    <div className="text-center text-xs text-gray-500 font-medium mb-6">or {plan.price} / year</div>
                     
                     <div className="space-y-3 text-sm">
                       {[
@@ -471,19 +471,15 @@ export default function MembershipPage() {
                       </td>
                       <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
                         ₹590 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                        <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                       </td>
                       <td className="p-5 text-center font-extrabold text-lg text-[#006537] bg-green-100/30">
                         ₹1,180 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                        <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                       </td>
                       <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
                         ₹2,065 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                        <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                       </td>
                       <td className="p-5 text-center font-extrabold text-lg text-[#006537] bg-emerald-50">
                         ₹2,655 <span className="text-xs font-normal text-gray-500">/ qtr</span>
-                        <div className="text-[10px] font-bold text-[#006537] mt-0.5 bg-green-100/70 inline-block px-2 py-0.5 rounded-full">INCL. 18% GST</div>
                       </td>
                     </tr>
 
@@ -494,23 +490,19 @@ export default function MembershipPage() {
                         {selectedBillingCycle === 'Annual' && (
                           <span className="ml-2 text-[10px] font-bold bg-[#006537] text-white px-2 py-0.5 rounded-full inline-block">Active Choice</span>
                         )}
-                        <span className="block text-xs font-normal text-gray-500 mt-0.5">(+ GST applicable for all plans)</span>
+                        <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay annually • All taxes included</span>
                       </td>
                       <td className="p-5 text-center font-bold text-lg">
                         ₹1,999
-                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                       </td>
                       <td className="p-5 text-center font-bold text-lg bg-green-50 text-[#006537]">
                         ₹3,999
-                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                       </td>
                       <td className="p-5 text-center font-bold text-lg">
                         ₹6,999
-                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                       </td>
                       <td className="p-5 text-center font-bold text-lg bg-emerald-50 text-[#006537]">
                         ₹8,999
-                        <div className="text-[11px] font-normal text-gray-500 mt-0.5">+ GST applicable</div>
                       </td>
                     </tr>
 
@@ -1144,9 +1136,6 @@ export default function MembershipPage() {
                       }`}
                     >
                       <span>Quarterly (Every 3 Months)</span>
-                      <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isQuarterly ? 'bg-white/20 text-white' : 'bg-green-100 text-[#006537]'}`}>
-                        Incl. 18% GST
-                      </span>
                     </button>
 
                     <button
@@ -1159,7 +1148,6 @@ export default function MembershipPage() {
                       }`}
                     >
                       <span>Annual (1 Year)</span>
-                      <span className="text-[10px] text-gray-400 font-normal">+ GST</span>
                     </button>
                   </div>
                 </div>
@@ -1197,15 +1185,8 @@ export default function MembershipPage() {
                                 {isQuarterly ? ' / qtr' : ' / yr'}
                               </span>
                             </p>
-                            {isQuarterly ? (
-                              <div className="text-[10px] font-bold text-[#006537] bg-green-100/70 inline-block px-2 py-0.5 rounded-full mt-1">
-                                ✓ INCL. 18% GST
-                              </div>
-                            ) : (
-                              <p className="text-[10px] text-gray-500 font-medium mt-0.5">+ GST applicable</p>
-                            )}
                             <p className="text-[10px] text-gray-400 mt-1">
-                              {isQuarterly ? `or ${plan.annualPrice}/yr (+ GST)` : `or ${plan.quarterlyPrice}/qtr (Incl. GST)`}
+                              {isQuarterly ? `or ${plan.annualPrice}/yr` : `or ${plan.quarterlyPrice}/qtr`}
                             </p>
                           </div>
                         </div>
@@ -1237,8 +1218,8 @@ export default function MembershipPage() {
                       <strong>Membership Fee:</strong>{' '}
                       <span className="font-bold text-[#006537]">
                         {isQuarterly 
-                          ? `${currentSelectedPlan.quarterlyPrice} / quarter (INCL. 18% GST)` 
-                          : `${currentSelectedPlan.annualPrice} / year (+ GST)`}
+                          ? `${currentSelectedPlan.quarterlyPrice} / quarter` 
+                          : `${currentSelectedPlan.annualPrice} / year`}
                       </span>
                     </p>
                     <p><strong>Payment Method:</strong> 🏪 In-Store (Cash / UPI / Card)</p>
