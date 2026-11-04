@@ -26,7 +26,7 @@ const getMinBookingDate = () => {
   return getISTDateString();
 };
 
-type Step = "care-option" | "service" | "location" | "details" | "review" | "consent" | "confirmation";
+type Step = "location" | "details" | "review" | "consent" | "confirmation";
 
 interface BookingState {
   careOption: "in-person" | "virtual" | null;
@@ -67,10 +67,10 @@ interface BookingState {
 }
 
 export default function MinuteClinicBookingPage() {
-  const [step, setStep] = useState<Step>("care-option");
+  const [step, setStep] = useState<Step>("location");
   const [state, setState] = useState<BookingState>({
-    careOption: null,
-    service: null,
+    careOption: "in-person",
+    service: "general-medical-exam",
     location: null,
     date: null,
     time: null,
@@ -241,29 +241,25 @@ export default function MinuteClinicBookingPage() {
 
     setIsVirtualTestMode(isExplicitTestMode);
 
+    let matchedService = "general-medical-exam";
     if (serviceParam) {
-      if (type === "virtual" && !isExplicitTestMode) {
-        // On live public without bypass, default to in-person and pop up notice
-        setState(s => ({ ...s, service: serviceParam, careOption: "in-person" }));
-        setStep("location");
-        setShowVirtualComingSoonModal(true);
-      } else {
-        setState(s => ({ ...s, service: serviceParam, careOption: type === "virtual" ? "virtual" : "in-person" }));
-        setStep("location");
-      }
-    } else if (type === "in-person") {
-      setState(s => ({ ...s, careOption: "in-person" }));
-      setStep("service");
-    } else if (type === "virtual") {
-      if (isExplicitTestMode) {
-        setState(s => ({ ...s, careOption: "virtual" }));
-        setStep("service");
-      } else {
-        // On live public: keep on care-option or in-person, show coming soon modal
-        setState(s => ({ ...s, careOption: "in-person" }));
-        setShowVirtualComingSoonModal(true);
-      }
+      const match = minuteClinicServices.find(
+        s => s.id === serviceParam || s.id.toLowerCase() === serviceParam.toLowerCase()
+      );
+      matchedService = match ? match.id : serviceParam;
     }
+
+    if (type === "virtual") {
+      if (isExplicitTestMode) {
+        setState(s => ({ ...s, service: matchedService, careOption: "virtual" }));
+      } else {
+        setState(s => ({ ...s, service: matchedService, careOption: "in-person" }));
+        setShowVirtualComingSoonModal(true);
+      }
+    } else {
+      setState(s => ({ ...s, service: matchedService, careOption: "in-person" }));
+    }
+    setStep("location");
 
     const fetchLocations = async () => {
       try {
@@ -304,332 +300,19 @@ export default function MinuteClinicBookingPage() {
     now.setMinutes(roundedMinutes);
     return now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   };
-
-  const renderCareOption = () => (
-    <div className="max-w-[800px] mx-auto px-4 py-12">
-      <div className="mb-8">
-        <button onClick={() => window.history.back()} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back
-        </button>
-        
-        <div className="flex border-b border-gray-200 gap-6">
-          <button className="pb-3 border-b-2 border-[#0A1128] text-sm font-bold text-gray-900 flex items-center gap-2">
-            <Clock className="w-4 h-4" /> Soonest available
-          </button>
-          <button className="pb-3 text-sm font-medium text-gray-500 flex items-center gap-2 hover:text-gray-900 transition-colors">
-            <Search className="w-4 h-4" /> Search
-          </button>
-        </div>
-      </div>
-
-      <h1 className="text-3xl font-bold text-[#111827] mb-2 tracking-tight">Convenient care options</h1>
-      <p className="text-gray-600 mb-8">Results for AIRO Minute Clinic</p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* In-Person Option - Fully Active & Open */}
-        <button 
-          onClick={() => handleNext("service", "in-person")}
-          className="relative bg-white border-2 border-emerald-500/50 rounded-2xl p-8 text-left hover:shadow-xl hover:border-emerald-600 transition-all flex flex-col min-h-[300px] group bg-gradient-to-b from-emerald-50/20 to-white"
-        >
-          <div className="flex items-center justify-between gap-3 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="bg-emerald-50 p-3.5 rounded-xl text-emerald-600 border border-emerald-100">
-                <Building2 className="w-8 h-8" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">In-Person Visit</h2>
-                <p className="text-xs text-emerald-700 font-medium">Pay at clinic desk (Cash/UPI/Card)</p>
-              </div>
-            </div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Open for Booking
-            </span>
-          </div>
-          
-          <div className="mt-auto space-y-3">
-            <div className="flex items-start gap-2 text-sm text-gray-700">
-              <Calendar className="w-4 h-4 mt-0.5 text-emerald-600" />
-              <p>Store launch slots available from <span className="font-bold">tomorrow</span></p>
-            </div>
-            <div className="flex items-start gap-2 text-sm text-gray-700">
-              <Clock className="w-4 h-4 mt-0.5 text-emerald-600" />
-              <p><span className="font-bold">Walk-ins & scheduled appointments</span> welcome</p>
-            </div>
-            <div className="flex items-start gap-2 text-xs text-gray-500 bg-emerald-50/50 p-2.5 rounded-lg border border-emerald-100/60">
-              <span>💳 Zero online payment required upfront. Billing handled directly during your consultation.</span>
-            </div>
-          </div>
-          
-          <div className="mt-6 pt-4 border-t border-gray-100 flex items-center text-emerald-700 font-semibold text-sm group-hover:text-emerald-800">
-            Select in-person clinic visit <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </button>
-
-        {/* Virtual Option - Coming Soon on live, Active for localhost / ?preview=virtual */}
-        {isVirtualTestMode ? (
-          <button 
-            onClick={() => handleNext("service", "virtual")}
-            className="relative bg-white border-2 border-purple-400 rounded-2xl p-8 text-left hover:shadow-xl hover:border-purple-600 transition-all flex flex-col min-h-[300px] group bg-gradient-to-b from-purple-50/20 to-white"
-          >
-            <div className="flex items-center justify-between gap-3 mb-6">
-              <div className="flex items-center gap-3">
-                <div className="bg-purple-50 p-3.5 rounded-xl text-purple-600 border border-purple-100">
-                  <Smartphone className="w-8 h-8" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">Virtual Consultation</h2>
-                  <p className="text-xs text-purple-700 font-medium">Video call with doctors</p>
-                </div>
-              </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 border border-purple-200">
-                <Sparkles className="w-3 h-3 text-purple-600" />
-                Internal Demo Mode
-              </span>
-            </div>
-            
-            <div className="mt-auto space-y-3">
-              <div className="flex items-start gap-2 text-sm text-gray-700">
-                <Calendar className="w-4 h-4 mt-0.5 text-purple-600" />
-                <p>E-Med roster connected & active for internal test</p>
-              </div>
-              <div className="flex items-start gap-2 text-sm text-gray-700">
-                <Activity className="w-4 h-4 mt-0.5 text-purple-600" />
-                <p><span className="font-bold">HD WebRTC Video Room</span> enabled</p>
-              </div>
-            </div>
-            
-            <div className="mt-6 pt-4 border-t border-gray-100 flex items-center text-purple-700 font-semibold text-sm group-hover:text-purple-800">
-              Enter Virtual Demo Flow <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </button>
-        ) : (
-          <button 
-            onClick={() => setShowVirtualComingSoonModal(true)}
-            className="relative bg-white/95 border-2 border-amber-300 rounded-2xl p-8 text-left hover:shadow-xl hover:border-amber-500 transition-all flex flex-col min-h-[300px] group bg-gradient-to-b from-amber-50/40 via-amber-50/10 to-white"
-          >
-            <div className="flex items-center justify-between gap-3 mb-6">
-              <div className="flex items-center gap-3">
-                <div className="bg-amber-100/80 p-3.5 rounded-xl text-amber-700 border border-amber-200">
-                  <Smartphone className="w-8 h-8" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                    Virtual Consultation
-                  </h2>
-                  <p className="text-xs text-amber-800 font-medium">Online Video Care & Prescriptions</p>
-                </div>
-              </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-amber-500 text-white shadow-sm border border-amber-600">
-                Coming Soon
-              </span>
-            </div>
-            
-            <div className="mt-auto space-y-3">
-              <div className="flex items-start gap-2 text-sm text-gray-700">
-                <Clock className="w-4 h-4 mt-0.5 text-amber-600 font-bold" />
-                <p><span className="font-semibold text-amber-900">Launching Next Week:</span> Video consults with registered doctors</p>
-              </div>
-              <div className="flex items-start gap-2 text-sm text-gray-700">
-                <Building2 className="w-4 h-4 mt-0.5 text-emerald-600" />
-                <p><span className="font-bold text-emerald-900">Physical Clinic is Open:</span> Same-day appointments available</p>
-              </div>
-              <div className="flex items-start gap-2 text-xs text-amber-800 bg-amber-100/60 p-2.5 rounded-lg border border-amber-200/80 font-medium">
-                <span>⚠️ Online payment gateway integration in progress. In-person billing open at the clinic desk.</span>
-              </div>
-            </div>
-            
-            <div className="mt-6 pt-4 border-t border-amber-100 flex items-center text-amber-800 font-bold text-sm group-hover:text-amber-900">
-              Coming Soon — Click for Details <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </button>
-        )}
-      </div>
-      
-      <div className="mt-8 flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 cursor-pointer">
-        <Calendar className="w-4 h-4" /> Reschedule or cancel an existing visit
-      </div>
-    </div>
-  );
-
-  const filteredServices = minuteClinicServices.filter(s => {
-    if (!searchServiceQuery) return true;
-    const queryKeywords = getSearchKeywords(searchServiceQuery);
-    const serviceText = `${s.title} ${s.mainCategory} ${s.subCategory}`.toLowerCase();
-    return queryKeywords.some(kw => serviceText.includes(kw));
-  });
-
-  const commonCategories = [
-    {
-      id: "cold-upper-respiratory-infection-evaluation",
-      title: "Illness",
-      icon: <Stethoscope className="w-6 h-6" />,
-      iconBg: "bg-blue-100 text-blue-600",
-      subItems: ["Cold", "Congestion", "Sore throat", "Flu-like symptoms", "More"]
-    },
-    {
-      id: "sprain-strain-treatment",
-      title: "Injury",
-      icon: <Bandage className="w-6 h-6" />,
-      iconBg: "bg-teal-100 text-teal-600",
-      subItems: ["Sprains", "Joint Pain", "Headaches", "More"]
-    },
-    {
-      id: "yearly-wellness-physical",
-      title: "Primary care",
-      icon: <HeartPulse className="w-6 h-6" />,
-      iconBg: "bg-rose-100 text-rose-600",
-      subItems: ["Annual wellness", "Chronic care", "More"]
-    },
-    {
-      id: "vaccine-consultation",
-      title: "Vaccines",
-      icon: <Syringe className="w-6 h-6" />,
-      iconBg: "bg-sky-100 text-sky-600",
-      subItems: []
-    },
-    {
-      id: "tuberculosis-tb-test",
-      title: "TB testing",
-      icon: <Activity className="w-6 h-6" />,
-      iconBg: "bg-emerald-100 text-emerald-600",
-      subItems: []
-    },
-    {
-      id: "general-medical-exam",
-      title: "Physicals",
-      icon: <ClipboardList className="w-6 h-6" />,
-      iconBg: "bg-indigo-100 text-indigo-600",
-      subItems: ["Sports", "Camp", "DOT", "Wellness visits", "And more"]
-    },
-    {
-      id: "urinary-tract-infection-treatment",
-      title: "Urinary tract infection",
-      icon: <Droplets className="w-6 h-6" />,
-      iconBg: "bg-cyan-100 text-cyan-600",
-      subItems: []
-    },
-    {
-      id: "rash-treatment",
-      title: "Skin conditions",
-      icon: <Thermometer className="w-6 h-6" />,
-      iconBg: "bg-orange-100 text-orange-600",
-      subItems: ["Rash", "Acne", "Wound Care", "More"]
-    }
-  ];
-
-  const renderService = () => (
-    <div className="max-w-[800px] mx-auto px-4 py-12">
-      <div className="mb-8">
-        <button onClick={() => handleBack("care-option")} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back
-        </button>
-      </div>
-
-      <h1 className="text-3xl font-bold text-[#111827] mb-6 tracking-tight">Choose a service to get started</h1>
-
-      <div className="flex border-b border-gray-200 mb-6">
-        <button 
-          className={`flex items-center pb-3 px-4 font-bold transition-colors ${activeServiceTab === 'common' ? 'border-b-2 border-blue-800 text-blue-900' : 'text-gray-600 hover:text-gray-900'}`}
-          onClick={() => setActiveServiceTab('common')}
-        >
-          <ShieldCheck className="w-4 h-4 mr-2" /> Common services
-        </button>
-        <button 
-          className={`flex items-center pb-3 px-4 font-bold transition-colors ${activeServiceTab === 'search' ? 'border-b-2 border-blue-800 text-blue-900' : 'text-gray-600 hover:text-gray-900'}`}
-          onClick={() => setActiveServiceTab('search')}
-        >
-          <Search className="w-4 h-4 mr-2" /> Search
-        </button>
-      </div>
-
-      <p className="text-gray-700 mb-8 font-medium">If you're unsure, choose a service closest to the care you need. Your provider can always make an update at your visit.</p>
-
-      {activeServiceTab === 'common' ? (
-        <div className="space-y-4 mb-10 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-          {commonCategories.map((cat, idx) => (
-            <button 
-              key={idx}
-              onClick={() => setState({ ...state, service: cat.id })}
-              className={`w-full bg-white border rounded-xl p-5 text-left flex items-start transition-all ${state.service === cat.id ? 'border-blue-600 ring-1 ring-blue-600 shadow-md' : 'border-gray-300 hover:border-gray-400 hover:shadow-sm'}`}
-            >
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-5 flex-shrink-0 ${cat.iconBg}`}>
-                {cat.icon}
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-lg">{cat.title}</h3>
-                {cat.subItems.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
-                    {cat.subItems.map((sub, i) => (
-                      <div key={i} className="flex items-center text-xs text-gray-700 font-medium">
-                        <Check className="w-3 h-3 text-green-600 mr-1" />
-                        {sub}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
-      ) : (
-        <div className="mb-6">
-          <div className="mb-6 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search symptoms or services..."
-              value={searchServiceQuery}
-              onChange={(e) => setSearchServiceQuery(e.target.value)}
-              className="w-full bg-white border border-gray-300 rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-            />
-          </div>
-
-          <div className="space-y-3 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-            {filteredServices.map(service => (
-              <button 
-                key={service.id}
-                onClick={() => setState({ ...state, service: service.id })}
-                className={`w-full bg-white border rounded-xl p-4 text-left flex items-center transition-all ${state.service === service.id ? 'border-blue-600 ring-1 ring-blue-600 shadow-md bg-blue-50/30' : 'border-gray-200 hover:border-blue-300 hover:shadow-md'}`}
-              >
-                <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mr-4 flex-shrink-0">
-                  <Stethoscope className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900">{service.title}</h3>
-                  <p className="text-xs text-gray-500 mt-0.5 font-medium">
-                    {service.mainCategory} &bull; {service.subCategory}
-                  </p>
-                </div>
-              </button>
-            ))}
-            {filteredServices.length === 0 && (
-              <p className="text-center text-gray-500 py-8">No services found.</p>
-            )}
-          </div>
-        </div>
-      )}
-
-      <div className="border-t border-gray-200 pt-6 flex justify-start">
-        <button 
-          disabled={!state.service}
-          onClick={() => handleNext("location")}
-          className={`px-6 py-3 rounded-xl font-bold transition-all ${state.service ? 'bg-[#004696] hover:bg-blue-800 text-white shadow-md' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
-        >
-          Find availability
-        </button>
-      </div>
-    </div>
-  );
+  const currentService = minuteClinicServices.find(s => s.id === state.service) ||
+    minuteClinicServices.find(s => s.id.toLowerCase() === state.service?.toLowerCase()) ||
+    minuteClinicServices.find(s => s.title.toLowerCase() === state.service?.toLowerCase()) ||
+    minuteClinicServices[0];
 
   const renderLocation = () => {
     if (state.careOption === "virtual") {
       return (
         <div className="max-w-[850px] mx-auto px-4 py-12">
-          <div className="mb-8">
-            <button onClick={() => handleBack("service")} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
-              <ArrowLeft className="w-4 h-4 mr-1" /> Back
-            </button>
+          <div className="mb-6">
+            <Link href="/minute-clinic#services" className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 group transition-colors">
+              <ArrowLeft className="w-4 h-4 mr-1.5 transition-transform group-hover:-translate-x-1" /> Back
+            </Link>
           </div>
 
           <div className="flex items-center gap-2 mb-3 flex-wrap">
@@ -819,14 +502,105 @@ export default function MinuteClinicBookingPage() {
     }
 
     return (
-      <div className="max-w-[800px] mx-auto px-4 py-12">
-        <div className="mb-8">
-          <button onClick={() => handleBack("service")} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6">
-            <ArrowLeft className="w-4 h-4 mr-1" /> Back
-          </button>
+      <div className="max-w-[850px] mx-auto px-4 py-8 md:py-12">
+        {/* Direct Back Button to Minute Clinic Page */}
+        <div className="mb-6">
+          <Link 
+            href="/minute-clinic#services" 
+            className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 group transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-1.5 transition-transform group-hover:-translate-x-1" /> Back
+          </Link>
         </div>
 
-        <h1 className="text-3xl font-bold text-[#111827] mb-6 tracking-tight">Find care</h1>
+        {/* Section Explaining About the Service */}
+        <div className="bg-white border border-gray-200/90 rounded-2xl p-6 sm:p-8 mb-10 shadow-xs">
+          <div className="flex flex-col md:flex-row gap-6 items-start justify-between">
+            <div className="flex-1 min-w-0">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold tracking-wider uppercase mb-3">
+                <span>{currentService.mainCategory}</span>
+                <span>&bull;</span>
+                <span>{currentService.subCategory}</span>
+              </div>
+              
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-3">
+                {currentService.title}
+              </h1>
+              
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
+                {currentService.shortDescription || currentService.fullDescription}
+              </p>
+
+              {/* Care Highlights & Benefits */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                <div className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100">
+                    <Check className="w-3.5 h-3.5" />
+                  </div>
+                  <span>Same-day clinic appointments with on-site doctors</span>
+                </div>
+                <div className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100">
+                    <Check className="w-3.5 h-3.5" />
+                  </div>
+                  <span>Zero upfront online payment (pay at clinic desk)</span>
+                </div>
+                {currentService.benefits?.slice(0, 2).map((benefit, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700">
+                    <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100">
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                    <span>{benefit}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Clinical Description / What to Expect */}
+              {currentService.problemInformation?.whatIsIt && (
+                <div className="bg-gray-50/80 border border-gray-200/80 rounded-xl p-4 text-xs sm:text-sm text-gray-700 leading-relaxed mb-4">
+                  <p className="font-bold text-gray-900 mb-1">About this service:</p>
+                  <p className="text-gray-600 leading-relaxed">{currentService.problemInformation.whatIsIt}</p>
+                </div>
+              )}
+
+              {/* Common Symptoms / Indications */}
+              {currentService.problemInformation?.symptoms && currentService.problemInformation.symptoms.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  <span className="text-xs font-semibold text-gray-500 mr-1">Common reasons:</span>
+                  {currentService.problemInformation.symptoms.map((symptom, idx) => (
+                    <span key={idx} className="inline-block bg-blue-50/70 border border-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-md font-medium">
+                      {symptom}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {currentService.imageUrl && (
+              <div className="w-full md:w-56 lg:w-64 shrink-0">
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 shadow-xs">
+                  <img 
+                    src={currentService.imageUrl} 
+                    alt={currentService.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="mt-3 text-center">
+                  <Link 
+                    href="/minute-clinic#services" 
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1"
+                  >
+                    Change service <ChevronRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Find care Section - Exactly as 1st Screenshot */}
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#111827] mb-6 tracking-tight">Find care</h2>
         
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="flex-1 bg-white border border-gray-300 rounded-full flex items-center px-4 py-3 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
@@ -906,8 +680,9 @@ export default function MinuteClinicBookingPage() {
           )}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
   const submitBooking = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1322,7 +1097,7 @@ export default function MinuteClinicBookingPage() {
           <div>
             <h3 className="font-bold text-gray-900 mb-1">What</h3>
             <ul className="list-disc pl-4 text-sm text-gray-700">
-              <li>{state.service || "Illness"}</li>
+              <li>{currentService?.title || state.service || "General Medical Exam"}</li>
             </ul>
           </div>
         </div>
@@ -1571,8 +1346,6 @@ export default function MinuteClinicBookingPage() {
   return (
     <div className="min-h-screen bg-[#F4F7F6]">
       <main>
-        {step === "care-option" && renderCareOption()}
-        {step === "service" && renderService()}
         {step === "location" && renderLocation()}
         {step === "details" && renderDetails()}
         {step === "review" && renderReview()}
@@ -1674,7 +1447,7 @@ export default function MinuteClinicBookingPage() {
               <button
                 onClick={() => {
                   setShowVirtualComingSoonModal(false);
-                  handleNext("service", "in-person");
+                  handleNext("location", "in-person");
                 }}
                 className="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
               >
@@ -1696,7 +1469,7 @@ export default function MinuteClinicBookingPage() {
                   onClick={() => {
                     setIsVirtualTestMode(true);
                     setShowVirtualComingSoonModal(false);
-                    handleNext("service", "virtual");
+                    handleNext("location", "virtual");
                   }}
                   className="text-[11px] text-gray-400 hover:text-purple-600 underline transition-colors"
                 >

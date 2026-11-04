@@ -98,7 +98,7 @@ export default function MinuteClinicPage() {
 
             <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 w-full sm:w-auto">
               <Link 
-                href="/minute-clinic/booking?type=in-person"
+                href="/minute-clinic#services"
                 className="text-[10px] tracking-[0.2em] uppercase font-bold text-paper bg-theme px-8 py-4 rounded-full border border-theme hover:bg-blue-600 hover:border-blue-600 transition-all shadow-lg text-center w-full sm:w-auto flex-1 whitespace-nowrap"
               >
                 In-Person Visits

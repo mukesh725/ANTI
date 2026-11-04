@@ -45,7 +45,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           </div>
 
           <Link 
-            href="/book-health-scan"
+            href={`/minute-clinic/booking?service=${service.id}`}
             className="text-xs tracking-[0.2em] uppercase font-bold text-paper bg-theme px-8 py-4 rounded-full border border-theme hover:bg-blue-600 hover:border-blue-600 transition-all shadow-lg hover:shadow-xl"
           >
             Schedule an appointment
@@ -116,7 +116,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             </p>
           </div>
           <Link 
-            href="/book-health-scan"
+            href={`/minute-clinic/booking?service=${service.id}`}
             className="whitespace-nowrap text-xs tracking-[0.2em] uppercase font-bold text-ink bg-paper px-8 py-4 rounded-full hover:bg-gray-100 transition-all shadow-md"
           >
             Select a location
