@@ -58,7 +58,7 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
               <tr className="bg-emerald-50/50">
                 <td className="p-5 font-bold text-gray-900">
                   Quarterly Payment Option
-                  <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay every 3 months • All taxes included</span>
+                  <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay every 3 months</span>
                 </td>
                 <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
                   ₹590 <span className="text-xs font-normal text-gray-500">/ qtr</span>
@@ -78,7 +78,7 @@ export default function LandingScreen({ onNext }: { onNext: () => void }) {
               <tr className="hover:bg-gray-50">
                 <td className="p-5 font-medium text-gray-700">
                   Annual Membership Fee
-                  <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay annually • All taxes included</span>
+                  <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay annually</span>
                 </td>
                 <td className="p-5 text-center font-bold text-lg">
                   ₹1,999

@@ -324,15 +324,12 @@ export default function MembershipPage() {
                     className={`p-4 rounded-2xl bg-white border ${item.border} shadow-sm text-center relative cursor-pointer hover:shadow-md transition-all hover:scale-[1.02]`}
                   >
                     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-1">{item.tier}</span>
-                    <div className="text-2xl font-extrabold text-[#006537] mb-0.5">
+                    <div className="text-2xl font-extrabold text-[#006537] mb-1">
                       {selectedBillingCycle === 'Quarterly' ? item.quarterly : item.price} 
                       <span className="text-xs font-semibold text-gray-500">
                         {selectedBillingCycle === 'Quarterly' ? ' / qtr' : ' / yr'}
                       </span>
                     </div>
-                    <span className="inline-block text-[10px] font-bold text-[#006537] bg-green-50 border border-[#006537]/20 px-2 py-0.5 rounded-full mb-1">
-                      ALL TAXES INCLUDED
-                    </span>
                     <div className="text-[11px] text-gray-500 font-medium">
                       {selectedBillingCycle === 'Quarterly' ? `or ${item.price}/yr` : `or ${item.quarterly}/qtr`}
                     </div>
@@ -387,7 +384,6 @@ export default function MembershipPage() {
                     <div className="text-center mb-1">
                       <span className="text-2xl font-extrabold text-gray-900">{plan.quarterly.split(' ')[0]}</span>
                       <span className="text-xs text-gray-500 font-medium"> / quarter</span>
-                      <div className="text-[10px] font-bold text-[#006537] mt-0.5">★ All Taxes Included</div>
                     </div>
                     <div className="text-center text-xs text-gray-500 font-medium mb-6">or {plan.price} / year</div>
                     
@@ -467,7 +463,7 @@ export default function MembershipPage() {
                         {selectedBillingCycle === 'Quarterly' && (
                           <span className="ml-2 text-[10px] font-bold bg-[#006537] text-white px-2 py-0.5 rounded-full inline-block">Active Choice</span>
                         )}
-                        <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay every 3 months • All taxes included</span>
+                        <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay every 3 months</span>
                       </td>
                       <td className="p-5 text-center font-extrabold text-lg text-[#006537]">
                         ₹590 <span className="text-xs font-normal text-gray-500">/ qtr</span>
@@ -490,7 +486,7 @@ export default function MembershipPage() {
                         {selectedBillingCycle === 'Annual' && (
                           <span className="ml-2 text-[10px] font-bold bg-[#006537] text-white px-2 py-0.5 rounded-full inline-block">Active Choice</span>
                         )}
-                        <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay annually • All taxes included</span>
+                        <span className="block text-xs font-semibold text-[#006537] mt-0.5">Pay annually</span>
                       </td>
                       <td className="p-5 text-center font-bold text-lg">
                         ₹1,999
