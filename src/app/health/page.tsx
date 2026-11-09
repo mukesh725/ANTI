@@ -96,6 +96,12 @@ export default function HealthPage() {
             >
               {buttons?.primary?.text || "Pharmacy Portal"} <ArrowRight className="w-4 h-4 text-paper" />
             </Link>
+            <Link
+              href="/free-health-checkup-kondapur"
+              className="w-full sm:w-auto justify-center bg-brick hover:bg-brick-dark text-white px-8 py-5 text-[10px] tracking-[0.2em] uppercase font-bold silent-luxury-transition rounded-full shadow-lg inline-flex items-center gap-3"
+            >
+              Free Health Checkup <ArrowRight className="w-4 h-4 text-white" />
+            </Link>
           </div>
         </div>
       </section>
@@ -137,12 +143,21 @@ export default function HealthPage() {
                 {praana?.bodyText || "Step into the future of diagnostics. The AIRO Smart Assessment Chair captures a comprehensive suite of key physiological indicators in just minutes, establishing a detailed baseline for your personalized care plan."}
               </p>
 
-              <Link 
-                href={praana?.buttonLink || "/health-chair"} 
-                className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-paper hover:text-paper/60 silent-luxury-transition"
-              >
-                {praana?.buttonText || "Learn More"} <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <div className="mt-auto flex flex-wrap items-center gap-5">
+                <Link 
+                  href={praana?.buttonLink || "/health-chair"} 
+                  className="inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-paper hover:text-paper/60 silent-luxury-transition"
+                >
+                  {praana?.buttonText || "Learn More"} <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <span className="text-paper/30 hidden sm:inline">|</span>
+                <Link 
+                  href="/free-health-checkup-kondapur" 
+                  className="inline-flex items-center gap-2 text-[10px] tracking-widest uppercase font-bold text-rose-300 hover:text-white silent-luxury-transition"
+                >
+                  Free Checkup in Kondapur <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
 
             </div>
 

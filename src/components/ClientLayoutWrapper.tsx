@@ -147,7 +147,9 @@ export function ClientLayoutWrapper({
     pathname.startsWith("/pharmacy") || 
     pathname.startsWith("/minute-clinic") ||
     pathname.startsWith("/book-health-scan") ||
-    pathname.startsWith("/membership")
+    pathname.startsWith("/membership") ||
+    pathname.startsWith("/free-health-checkup") ||
+    pathname.startsWith("/free-checkup")
   ) {
     themeClass = "theme-health";
   }
@@ -155,7 +157,8 @@ export function ClientLayoutWrapper({
   const isFeedbackPage = pathname.startsWith("/store-feedback") || pathname.startsWith("/feedback");
   const isDoctorPage = pathname.startsWith("/doctor");
   const isConsultationRoom = pathname.startsWith("/consultations/room");
-  const isStandalonePage = pathname.startsWith("/admin") || isDoctorPage || isConsultationRoom || isFeedbackPage;
+  const isFunnelPage = pathname.startsWith("/free-health-checkup") || pathname.startsWith("/free-checkup");
+  const isStandalonePage = pathname.startsWith("/admin") || isDoctorPage || isConsultationRoom || isFeedbackPage || isFunnelPage;
 
   return (
     <>

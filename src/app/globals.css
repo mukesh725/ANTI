@@ -1,4 +1,6 @@
 
+@import "./free-health-checkup-kondapur/funnel.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -79,5 +81,25 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-ink/40;
+  }
+
+  /* Seamless Marquee Animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee:hover {
+    animation-play-state: paused;
   }
 }

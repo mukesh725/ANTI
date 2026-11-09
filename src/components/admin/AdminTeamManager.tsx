@@ -30,6 +30,7 @@ const AVAILABLE_MODULES = [
   { id: "categories", label: "Categories" },
   { id: "inventory", label: "Inventory" },
   { id: "customers", label: "Customers" },
+  { id: "funnel", label: "Funnel Data" },
   { id: "leads", label: "Leads" },
   { id: "feedback", label: "Store Reviews" },
   { id: "locations", label: "Locations" },

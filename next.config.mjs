@@ -59,6 +59,22 @@ const nextConfig = {
         source: '/airomed',
         destination: '/emed',
       },
+      {
+        source: '/free-checkup',
+        destination: '/free-health-checkup-kondapur',
+      },
+      {
+        source: '/free-health-checkup',
+        destination: '/free-health-checkup-kondapur',
+      },
+      {
+        source: '/free-checkup-kondapur',
+        destination: '/free-health-checkup-kondapur',
+      },
+      {
+        source: '/kondapur-checkup',
+        destination: '/free-health-checkup-kondapur',
+      },
     ];
   },
   async headers() {

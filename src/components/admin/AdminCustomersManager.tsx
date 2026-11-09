@@ -68,6 +68,42 @@ export default function AdminCustomersManager() {
         }
       });
 
+      // 1b. Fetch from Funnel Leads
+      try {
+        const funnelRef = collection(db, "funnelLeads");
+        const funnelQuery = query(funnelRef, orderBy("createdAt", "desc"));
+        const funnelSnapshot = await getDocs(funnelQuery);
+
+        funnelSnapshot.forEach((doc) => {
+          const data = doc.data();
+          const mobile = data.phone?.trim() || data.normalizedMobile?.trim();
+          const key = mobile;
+          if (!key) return;
+
+          const dateObj = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+
+          if (customersMap.has(key)) {
+            const existing = customersMap.get(key)!;
+            if (!existing.sources.includes("Health Funnel")) {
+              existing.sources.push("Health Funnel");
+            }
+            if (existing.lastActive < dateObj) existing.lastActive = dateObj;
+          } else {
+            customersMap.set(key, {
+              id: `f_${doc.id}`,
+              firstName: data.firstName || data.name?.split(" ")[0] || "Patient",
+              lastName: data.lastName || data.name?.split(" ").slice(1).join(" ") || "",
+              email: "",
+              mobile: mobile,
+              sources: ["Health Funnel"],
+              lastActive: dateObj,
+            });
+          }
+        });
+      } catch (fErr) {
+        console.warn("Could not fetch funnel leads for customers manager:", fErr);
+      }
+
       // 2. Fetch from Memberships
       const membersRef = collection(db, "members");
       const membersSnapshot = await getDocs(membersRef);

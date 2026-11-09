@@ -10,7 +10,7 @@ import {
   TrendingUp, TrendingDown, DollarSign, Activity,
   Trash2, CheckCircle2, BrainCircuit, ShieldCheck, Menu, X, MapPin, Stethoscope, FileText, Star,
   Sparkles, ExternalLink, Search, Bell, Clock, Calendar, ChevronRight,
-  Phone, Mail, Check, Building2, ArrowUpRight
+  Phone, Mail, Check, Building2, ArrowUpRight, Filter
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, limit, updateDoc } from "firebase/firestore";
@@ -28,6 +28,7 @@ import { AdminBlogManager } from "@/components/admin/AdminBlogManager";
 import { AdminPraanaManager } from "@/components/admin/AdminPraanaManager";
 import { AdminFeedbackManager } from "@/components/admin/AdminFeedbackManager";
 import { AdminDoctorsManager } from "@/components/admin/AdminDoctorsManager";
+import { AdminFunnelManager } from "@/components/admin/AdminFunnelManager";
 import Image from "next/image";
 
 // Types
@@ -93,6 +94,7 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: "Marketing & Customers",
     items: [
+      { id: "funnel", label: "Funnel Data", icon: Filter, badge: "Live" },
       { id: "blog", label: "Blog Articles", icon: FileText },
       { id: "customers", label: "Customers", icon: Users },
       { id: "leads", label: "Inquiries", icon: UserPlus },
@@ -486,6 +488,8 @@ export default function AdminDashboardPage() {
         return <CmsEditor />;
       case "customers":
         return <AdminCustomersManager />;
+      case "funnel":
+        return <AdminFunnelManager />;
       case "leads":
         return (
           <div className="p-6 md:p-8 max-w-[1400px] mx-auto space-y-6">

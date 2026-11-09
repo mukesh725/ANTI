@@ -71,6 +71,17 @@ export function middleware(request: NextRequest) {
   const isOneDomain = host.includes('airoone.in') || host.includes('airoone.com');
   const isAdminDomain = host.startsWith('admin.');
 
+  // 2.8 Funnel Domain Isolation: Strictly exclusive to airohealthhub.com
+  const isFunnelRoute =
+    url.pathname.startsWith('/free-health-checkup') ||
+    url.pathname.startsWith('/free-checkup') ||
+    url.pathname === '/kondapur-checkup';
+
+  if (isFunnelRoute && !isHealthDomain && !host.includes('localhost') && !host.includes('127.0.0.1')) {
+    const destination = new URL(`https://airohealthhub.com${url.pathname}${url.search}`);
+    return NextResponse.redirect(destination, 301);
+  }
+
   let response: NextResponse;
 
   // 3. Admin Subdomain Routing
