@@ -38,24 +38,28 @@ export function ClientLayoutWrapper({
   children: React.ReactNode;
   cmsData: CmsDataType;
 }) {
-  const [loading, setLoading] = useState(true);
   const pathname = usePathname();
+  const isFunnelPage = 
+    pathname.startsWith("/free-health-checkup") || 
+    pathname.startsWith("/free-checkup") ||
+    pathname === "/kondapur-checkup";
+
+  const [loading, setLoading] = useState(!isFunnelPage);
 
   // Prevent scrolling while loading
   useEffect(() => {
+    if (isFunnelPage) return;
     if (loading) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-  }, [loading]);
+  }, [loading, isFunnelPage]);
 
-  // Track page views globally in Firebase
+  // Track page views globally in Firebase (skipped on funnel landing page & admin)
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    // We don't want to track admin dashboard views
-    if (pathname.startsWith('/admin')) return;
+    if (isFunnelPage || pathname.startsWith('/admin')) return;
 
     const logEvent = async () => {
       // 1. Get location if we have it
@@ -80,11 +84,11 @@ export function ClientLayoutWrapper({
     };
     
     logEvent();
-  }, [pathname]);
+  }, [pathname, isFunnelPage]);
 
-  // Fetch real geolocation on first load
+  // Fetch real geolocation on first load (skipped on funnel landing page)
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || isFunnelPage) return;
 
     const fetchLocation = async () => {
       try {
@@ -157,8 +161,19 @@ export function ClientLayoutWrapper({
   const isFeedbackPage = pathname.startsWith("/store-feedback") || pathname.startsWith("/feedback");
   const isDoctorPage = pathname.startsWith("/doctor");
   const isConsultationRoom = pathname.startsWith("/consultations/room");
-  const isFunnelPage = pathname.startsWith("/free-health-checkup") || pathname.startsWith("/free-checkup");
   const isStandalonePage = pathname.startsWith("/admin") || isDoctorPage || isConsultationRoom || isFeedbackPage || isFunnelPage;
+
+  // Ultra-Fast Zero-Overhead Path for Funnel Landing Page:
+  // - No Preloader / logo loading animation
+  // - No client Firebase Auth / Firestore SDK (saves 93 KB bundle & eliminates timeout errors)
+  // - No CartProvider, Chatbot, CookieBanner, or Header/Footer DOM overhead
+  if (isFunnelPage) {
+    return (
+      <div className={themeClass}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <>

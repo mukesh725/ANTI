@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FreeHealthCheckupKondapurPage() {
   // 1. Phone support hours logic (Store is open 24/7, phone lines 6:00 AM - 10:00 PM IST)
@@ -194,12 +195,13 @@ export default function FreeHealthCheckupKondapurPage() {
       {/* ============ HEADER ============ */}
       <header className="site-header">
         <div className="wrap header-inner">
-          <img
+          <Image
             className="logo"
-            src="/funnel/airo-health-hub-logo.png"
+            src="/funnel/airo-health-hub-logo-opt.png"
             alt="AIRO Health Hub"
-            width="1370"
-            height="186"
+            width={192}
+            height={26}
+            priority
           />
           <div className="header-meta">
             <span className="status">
@@ -434,11 +436,13 @@ export default function FreeHealthCheckupKondapurPage() {
 
             {/* Hero visual */}
             <figure className="hero-visual">
-              <img
-                src="/funnel/hero-bp-check.jpg"
-                alt="A clinician checking a patient's blood pressure"
-                width="1600"
-                height="2273"
+              <Image
+                src="/funnel/hero-doctor-bp.jpg"
+                alt="AIRO Clinician measuring patient blood pressure"
+                fill
+                priority
+                sizes="(max-width: 820px) 100vw, 55vw"
+                className="hero-img"
               />
               <figcaption className="readout" aria-label="Sample readout">
                 <div className="readout-top">
@@ -692,20 +696,22 @@ export default function FreeHealthCheckupKondapurPage() {
         <section className="section sec-family" id="family">
           <div className="wrap family-grid">
             <div className="family-photos">
-              <img
+              <Image
                 className="ph-a"
                 src="/funnel/doctor-family-consult.jpg"
-                alt="A doctor going through health results with a senior man and a child"
-                width="1400"
-                height="788"
+                alt="A doctor consulting with family members"
+                width={700}
+                height={394}
+                sizes="(max-width: 820px) 86vw, 45vw"
                 loading="lazy"
               />
-              <img
+              <Image
                 className="ph-b"
                 src="/funnel/family-mother-daughter.jpg"
-                alt="A daughter hugging and kissing her smiling mother"
-                width="1400"
-                height="934"
+                alt="A daughter hugging and smiling with her mother"
+                width={450}
+                height={300}
+                sizes="(max-width: 820px) 52vw, 25vw"
                 loading="lazy"
               />
               <span className="float-chip chip-b" aria-hidden="true">
@@ -952,12 +958,12 @@ export default function FreeHealthCheckupKondapurPage() {
       {/* ============ FOOTER ============ */}
       <footer className="site-footer">
         <div className="wrap footer-inner">
-          <img
+          <Image
             className="logo"
-            src="/funnel/airo-health-hub-logo.png"
+            src="/funnel/airo-health-hub-logo-opt.png"
             alt="AIRO Health Hub"
-            width="1370"
-            height="186"
+            width={162}
+            height={22}
             loading="lazy"
           />
           <p>

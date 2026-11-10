@@ -275,7 +275,7 @@
 
 /* Hero visual */
 .funnel-page .hero-visual { position: relative; margin: 0; border-radius: var(--radius-lg); overflow: hidden; min-height: 750px; background: #e9e6e0; box-shadow: var(--shadow); }
-.funnel-page .hero-visual > img { width: 100%; height: 100%; object-fit: cover; object-position: 20% 12%; position: absolute; inset: 0; transform: scale(1.04); transition: transform 6s var(--ease); }
+.funnel-page .hero-visual > img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; position: absolute; inset: 0; transform: scale(1.04); transition: transform 6s var(--ease); }
 .funnel-page .hero-visual.in-view > img { transform: scale(1); }
 .funnel-page .readout {
   position: absolute; right: 18px; top: 18px;
@@ -568,7 +568,7 @@
 .funnel-page .family-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 .funnel-page .family-photos { position: relative; padding-bottom: 18%; }
 .funnel-page .family-photos img { border-radius: var(--radius-lg); object-fit: cover; height: auto; }
-.funnel-page .ph-a { width: 86%; aspect-ratio: 4 / 3; object-position: 60% center; box-shadow: var(--shadow); }
+.funnel-page .ph-a { width: 86%; aspect-ratio: 4 / 3; object-position: center center; box-shadow: var(--shadow); }
 .funnel-page .ph-b { position: absolute; right: 0; bottom: 0; width: 52%; aspect-ratio: 4 / 3; object-position: 45% 30%; border: 6px solid #fdf8f0; box-shadow: var(--shadow); }
 .funnel-page .chip-b { left: 16px; top: 16px; animation-delay: -2s; }
 .funnel-page .chip-b svg { background: var(--c-red-bg); color: var(--c-red); }

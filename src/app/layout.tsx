@@ -204,7 +204,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-paper">
       <head>
-        {/* Google Tag Manager - Multi-Domain Isolated */}
+        {/* Google Tag Manager - Defer Until Page Appears (Keeps FB Pixel, Clarity, GTM from blocking FCP/LCP) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,defaultId){
@@ -218,10 +218,40 @@ export default async function RootLayout({
                 } else {
                   id = 'GTM-5Q324PFL';
                 }
-                w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+id+dl;f.parentNode.insertBefore(j,f);
+                w[l]=w[l]||[];
+                w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+
+                var loadGTM = function() {
+                  if (w.__gtmLoaded) return;
+                  w.__gtmLoaded = true;
+                  var f = d.getElementsByTagName(s)[0];
+                  var j = d.createElement(s);
+                  var dl = l != 'dataLayer' ? '&l=' + l : '';
+                  j.async = true;
+                  j.src = 'https://www.googletagmanager.com/gtm.js?id=' + id + dl;
+                  if (f && f.parentNode) {
+                    f.parentNode.insertBefore(j, f);
+                  } else {
+                    d.head.appendChild(j);
+                  }
+                };
+
+                if (d.readyState === 'complete') {
+                  if ('requestIdleCallback' in w) {
+                    w.requestIdleCallback(loadGTM, { timeout: 1500 });
+                  } else {
+                    setTimeout(loadGTM, 1000);
+                  }
+                } else {
+                  w.addEventListener('load', function() {
+                    if ('requestIdleCallback' in w) {
+                      w.requestIdleCallback(loadGTM, { timeout: 1500 });
+                    } else {
+                      setTimeout(loadGTM, 1000);
+                    }
+                  });
+                  setTimeout(loadGTM, 3500);
+                }
               } catch(e) {}
             })(window,document,'script','dataLayer','${gtmId}');`,
           }}
