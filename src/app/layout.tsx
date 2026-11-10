@@ -209,6 +209,12 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,defaultId){
               try {
+                var p = (w.location && w.location.pathname) ? w.location.pathname : '';
+                var isFunnel = p.indexOf('/free-health-checkup') === 0 || p.indexOf('/free-checkup') === 0 || p === '/kondapur-checkup';
+                if (isFunnel) {
+                  // Funnel landing page carries its own dedicated GTM container script
+                  return;
+                }
                 var h = (w.location && w.location.hostname) ? w.location.hostname.toLowerCase() : '';
                 var id = defaultId;
                 if (h.includes('airohealthhub') || h.includes('health.airo') || h.includes('airohealth-test')) {
@@ -219,7 +225,10 @@ export default async function RootLayout({
                   id = 'GTM-5Q324PFL';
                 }
                 w[l]=w[l]||[];
+                function gtag(){w[l].push(arguments);}
+                w.gtag = w.gtag || gtag;
                 w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+                gtag('js', new Date());
 
                 var loadGTM = function() {
                   if (w.__gtmLoaded) return;

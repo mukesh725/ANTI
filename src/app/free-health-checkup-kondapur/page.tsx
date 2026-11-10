@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 
 export default function FreeHealthCheckupKondapurPage() {
   // 1. Phone support hours logic (Store is open 24/7, phone lines 6:00 AM - 10:00 PM IST)
@@ -172,13 +173,23 @@ export default function FreeHealthCheckupKondapurPage() {
         bookingReference: data.bookingReference || "FCK-CONFIRMED",
       });
 
-      // DataLayer conversion event
-      if (typeof window !== "undefined" && (window as any).dataLayer) {
-        (window as any).dataLayer.push({
-          event: "book_free_checkup",
-          booking_ref: data.bookingReference,
-          store: "Kondapur",
-        });
+      // DataLayer & gtag conversion events
+      if (typeof window !== "undefined") {
+        if ((window as any).dataLayer) {
+          (window as any).dataLayer.push({
+            event: "book_free_checkup",
+            booking_ref: data.bookingReference,
+            store: "Kondapur",
+          });
+        }
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "generate_lead", {
+            event_category: "Funnel",
+            event_label: "Free Health Checkup Kondapur",
+            booking_ref: data.bookingReference,
+            store: "Kondapur",
+          });
+        }
       }
     } catch (err: any) {
       setErrors((prev) => ({
@@ -192,6 +203,32 @@ export default function FreeHealthCheckupKondapurPage() {
 
   return (
     <div className="funnel-page">
+      {/* Google Tag Manager - Container: Airo Health Hub (GTM-WQTSLV2L) */}
+      <Script
+        id="gtm-funnel-script"
+        src="https://www.googletagmanager.com/gtm.js?id=GTM-WQTSLV2L"
+        strategy="afterInteractive"
+      />
+      <Script
+        id="gtm-funnel-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          `,
+        }}
+      />
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id=GTM-WQTSLV2L"
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
+
       {/* ============ HEADER ============ */}
       <header className="site-header">
         <div className="wrap header-inner">
